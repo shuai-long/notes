@@ -46,13 +46,23 @@
       autoHeader: true,
       // 只在访问主页时加载封面。
       onlyCover: false,
+      // 面包削导航
+      breadcrumb: {
+        showHome: true,
+        homeText: 'Home',
+        separator: ' &rsaquo; ',
+        casing: 'capitalize',
+        linkColor: 'var(--theme-color, #42b983)',
+        size: 'small'
+      },
+
       // 代码折叠
       hideCode: {
         scroll: false, // Enable scrolling
         height: 300 // Max height
       },
 
-      // 设置请求资源的请求头。      
+      // 设置请求资源的请求头。
       requestHeaders: {
         'cache-control': 'max-age=600',
       },
