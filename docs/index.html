@@ -15,6 +15,8 @@
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@latest/lib/themes/vue.css">
   <!-- 暗黑开关 -->
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-dark-mode@latest/dist/style.min.css" />
+  <!-- 侧边栏展开折叠 -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/sidebar-folder.min.css" />
 </head>
 
 <body>
@@ -32,10 +34,12 @@
       maxLevel: 6,
       // 侧边栏支持，默认加载的是项目根目录下的_sidebar.md文件
       loadSidebar: true,
-      // 导航栏支持，默认加载的是项目根目录下的_navbar.md文件
-      loadNavbar: true,
+      // set sidebar display level
+      sidebarDisplayLevel: 1,
       // 自定义侧边栏后默认不会再生成目录，设置生成目录的最大层级（建议配置为2-4）
       subMaxLevel: 4,
+      // 导航栏支持，默认加载的是项目根目录下的_navbar.md文件
+      loadNavbar: true,
       // 封面支持，默认加载的是项目根目录下的_coverpage.md文件
       coverpage: true,
       // 小屏设备下合并导航栏到侧边栏
@@ -44,8 +48,20 @@
       autoHeader: true,
       // 只在访问主页时加载封面。
       onlyCover: false,
-      // this is the default 'vue' color
+      // 暗黑模式按钮
       themeColor: "#42b983",
+      darkMode: {
+        dark: {
+          background: "#1c2022",
+          toggleBtnBg: "#34495e",
+          textColor: "#b4b4b4"
+        },
+        light: {
+          background: "white",
+          toggleBtnBg: "var(--theme-color)",
+          textColor: "var(--theme-color)"
+        }
+      },
 
       // 设置请求资源的请求头。      
       requestHeaders: {
@@ -85,6 +101,10 @@
   <script src="//cdn.jsdelivr.net/npm/prismjs@latest/components/prism-abap.min.js"></script>
   <!-- 暗黑开关 -->
   <script src="//cdn.jsdelivr.net/npm/docsify-dark-mode@latest/dist/index.min.js"></script>
+  <!-- 侧边栏展开折叠插件 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
+  <!-- 中英文添加空格 -->
+  <script src="//cdn.jsdelivr.net/npm/@sy-records/docsify-pangu/dist/pangu.min.js"></script>
   <!-- 注册 离线模式 SSR -->
   <script>
     if (typeof navigator.serviceWorker !== 'undefined') {
