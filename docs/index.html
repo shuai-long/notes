@@ -14,7 +14,7 @@
   <!-- 默认主题 -->
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@latest/lib/themes/vue.css">
   <!-- 暗黑开关 -->
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-dark-mode@latest/dist/style.min.css"/>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-dark-mode@latest/dist/style.min.css" />
 </head>
 
 <body>
@@ -44,10 +44,15 @@
       autoHeader: true,
       // 只在访问主页时加载封面。
       onlyCover: false,
-      // 设置请求资源的请求头。
+      // this is the default 'vue' color
+      themeColor: "#42b983",
+
+      // 设置请求资源的请求头。      
       requestHeaders: {
         'cache-control': 'max-age=600',
       },
+
+      // 设置全局搜索
       search: {
         maxAge: 86400000,// 过期时间，单位毫秒，默认一天
         paths: 'auto',// 注意：仅适用于 paths: 'auto' 模式
