@@ -1,19 +1,14 @@
 {
-  "name": "my-project",
+  "name": "docs",
+  "version": "1.0.0",
+  "main": "index.js",
   "scripts": {
-    "start": "docsify start . -c ssr.config.js",
+    "start": "docsify start . -c index.config.js",
     "deploy": "now -p"
   },
-  "files": [
-    "docs"
-  ],
-  "docsify": {
-    "config": {
-      "basePath": "https://shuai-long.github.io/notes/",
-      "loadSidebar": true,
-      "loadNavbar": true,
-      "coverpage": true,
-      "name": "docsify"
-    }
+  "description": "",
+  "devDependencies": {
+    "docsify-cli": "^4.4.4",
+    "now": "^21.0.1"
   }
 }

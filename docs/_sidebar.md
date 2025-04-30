@@ -1,2 +1,0 @@
-- [ABAP](ABAP)
-  - [test](ABAP/test.md)
