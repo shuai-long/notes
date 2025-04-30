@@ -17,6 +17,8 @@
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-dark-mode@latest/dist/style.min.css" />
   <!-- 侧边栏展开折叠 -->
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/sidebar-folder.min.css" />
+  <!-- 链接预览 -->
+  <link rel="stylesheet" href="//unpkg.com/docsify-link-preview/src/style.css" />
 </head>
 
 <body>
@@ -63,6 +65,11 @@
         }
       },
 
+      // 连接预览
+      linkpreview: {
+        key: "51e2d289b2d3d04fbde44912a12ca816",
+      },
+
       // 设置请求资源的请求头。      
       requestHeaders: {
         'cache-control': 'max-age=600',
@@ -103,6 +110,12 @@
   <script src="//cdn.jsdelivr.net/npm/docsify-dark-mode@latest/dist/index.min.js"></script>
   <!-- 侧边栏展开折叠插件 -->
   <script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
+  <!-- 连接预览 -->
+  <script src="//unpkg.com/docsify-link-preview/src/index.js"></script>
+
+  <!-- code内链 -->
+  <script src="//unpkg.com/@rakutentech/docsify-code-inline/dist/index.min.js" data-no-autoload
+    data-no-css-inject></script>
   <!-- 中英文添加空格 -->
   <script src="//cdn.jsdelivr.net/npm/@sy-records/docsify-pangu/dist/pangu.min.js"></script>
   <!-- 注册 离线模式 SSR -->
