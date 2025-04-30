@@ -1,0 +1,19 @@
+{
+  "name": "my-project",
+  "scripts": {
+    "start": "docsify start . -c ssr.config.js",
+    "deploy": "now -p"
+  },
+  "files": [
+    "docs"
+  ],
+  "docsify": {
+    "config": {
+      "basePath": "https://shuai-long.github.io/notes/",
+      "loadSidebar": true,
+      "loadNavbar": true,
+      "coverpage": true,
+      "name": "docsify"
+    }
+  }
+}
