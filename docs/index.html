@@ -13,12 +13,12 @@
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
   <!-- 默认主题 -->
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@latest/lib/themes/vue.css">
-  <!-- 暗黑开关 -->
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-dark-mode@latest/dist/style.min.css" />
+  <!-- 导航栏样式 -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/LIGMATV/docsify-navbar-fixed/navbar-fixed.css">
   <!-- 侧边栏展开折叠 -->
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/sidebar-folder.min.css" />
-  <!-- 链接预览 -->
-  <link rel="stylesheet" href="//unpkg.com/docsify-link-preview/src/style.css" />
+  <!-- 面包削导航 -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-breadcrumb@latest/dist/breadcrumb.min.css">
 </head>
 
 <body>
@@ -50,24 +50,10 @@
       autoHeader: true,
       // 只在访问主页时加载封面。
       onlyCover: false,
-      // 暗黑模式按钮
-      themeColor: "#42b983",
-      darkMode: {
-        dark: {
-          background: "#1c2022",
-          toggleBtnBg: "#34495e",
-          textColor: "#b4b4b4"
-        },
-        light: {
-          background: "white",
-          toggleBtnBg: "var(--theme-color)",
-          textColor: "var(--theme-color)"
-        }
-      },
-
-      // 连接预览
-      linkpreview: {
-        key: "51e2d289b2d3d04fbde44912a12ca816",
+      // 代码折叠
+      hideCode: {
+        scroll: false, // Enable scrolling
+        height: 300 // Max height
       },
 
       // 设置请求资源的请求头。      
@@ -90,8 +76,6 @@
   </script>
   <!-- docsify的js依赖 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@latest/lib/docsify.min.js"></script>
-  <!-- PDFObject.js is a required dependency of this plugin -->
-  <script src="//cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js"></script>
   <!-- emoji表情支持 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@latest/lib/plugins/emoji.min.js"></script>
   <!-- 图片放大缩小支持 -->
@@ -99,19 +83,21 @@
   <!-- 搜索功能支持 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@latest/lib/plugins/search.min.js"></script>
   <!--在所有的代码块上添加一个简单的Click to copy按钮来允许用户从你的文档中轻易地复制代码-->
-  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code@latest/dist/docsify-copy-code.min.js"></script>
+  <!-- <script src="//cdn.jsdelivr.net/npm/docsify-copy-code@latest/dist/docsify-copy-code.min.js"></script> -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-terminal-block@latest"></script>
   <!-- 添加ABAP代码高亮 -->
   <script src="//cdn.jsdelivr.net/npm/prismjs@latest/components/prism-abap.min.js"></script>
+  <!-- 代码折叠 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-hide-code/dist/docsify-hide-code.min.js"></script>
   <!-- 暗黑开关 -->
-  <script src="//cdn.jsdelivr.net/npm/docsify-dark-mode@latest/dist/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/LIGMATV/docsify-dark-switcher@latest/docsify-dark-switcher.js"></script>
   <!-- 侧边栏展开折叠插件 -->
   <script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
-  <!-- 连接预览 -->
-  <script src="//unpkg.com/docsify-link-preview/src/index.js"></script>
-
   <!-- code内链 -->
   <script src="//unpkg.com/@rakutentech/docsify-code-inline/dist/index.min.js" data-no-autoload
     data-no-css-inject></script>
+  <!-- 面包削导航 -->
+  <script src="cdn.jsdelivr.net/npm/docsify-breadcrumb@latest/dist/index.min.js"></script>
   <!-- 中英文添加空格 -->
   <script src="//cdn.jsdelivr.net/npm/pangu@latest/dist/browser/pangu.min.js"></script>
   <!-- 注册 离线模式 SSR -->
