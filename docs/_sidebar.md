@@ -1,2 +1,2 @@
-- [ABAP](./ABAP/)
-  - [test](/docs/ABAP/test.md)
+- [ABAP](ABAP)
+  - [test](ABAP/test.md)
