@@ -2,4 +2,4 @@
 
 > An awesome project.
 
-[new](/docs/ABAP/test.md)
+[new](/ABAP/test.md)
