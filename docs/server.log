@@ -1,0 +1,11 @@
+
+> start
+> docsify start . -c ssr.config.js
+
+
+[SSR] Serving . now.
+Listening at http://localhost:4000
+
+TypeError: Cannot read properties of undefined (reading 'indexOf')
+TypeError: Cannot read properties of undefined (reading 'indexOf')
+TypeError: Cannot read properties of undefined (reading 'indexOf')
