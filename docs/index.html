@@ -17,8 +17,6 @@
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-dark-mode@latest/dist/style.min.css" />
   <!-- 侧边栏展开折叠 -->
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/sidebar-folder.min.css" />
-  <!-- 面包削导航 -->
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-breadcrumb@latest/dist/breadcrumb.min.css">
 </head>
 
 <body>
@@ -48,6 +46,12 @@
       autoHeader: true,
       // 只在访问主页时加载封面。
       onlyCover: false,
+      // code Copy
+      copyCode: {
+        buttonText: 'Copy',
+        errorText: 'Error',
+        successText: 'Copied',
+      },
       //暗黑模式
       themeColor: "#42b983",
       dark: {
@@ -59,16 +63,6 @@
         background: "white",
         toggleBtnBg: "var(--theme-color)",
         textColor: "var(--theme-color)"
-      },
-
-      // 面包削导航
-      breadcrumb: {
-        showHome: true,
-        homeText: 'Home',
-        separator: ' &rsaquo; ',
-        casing: 'capitalize',
-        linkColor: 'var(--theme-color, #42b983)',
-        size: 'small'
       },
 
       // 设置请求资源的请求头。
@@ -105,8 +99,6 @@
   <script src="//cdn.jsdelivr.net/npm/docsify-dark-mode@latest/dist/index.min.js"></script>
   <!-- 侧边栏展开折叠插件 -->
   <script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
-  <!-- 面包削导航 -->
-  <script src="cdn.jsdelivr.net/npm/docsify-breadcrumb@latest/dist/index.min.js"></script>
   <!-- 中英文添加空格 -->
   <script src="//cdn.jsdelivr.net/npm/pangu@latest/dist/browser/pangu.min.js"></script>
   <!-- 注册 离线模式 SSR -->
