@@ -93,9 +93,9 @@
   <!-- PDFObject.js is a required dependency of this plugin -->
   <script src="//cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js"></script>
   <!-- This is the source code of the pdf embed plugin -->
-  <script src="path-to-file/docsify-pdf-embed.js"></script>
+  <!-- <script src="path-to-file/docsify-pdf-embed.js"></script> -->
   <!-- or use this if you are not hosting the file yourself -->
-  <script src="//unpkg.com/docsify-pdf-embed-plugin/src/docsify-pdf-embed.js"></script>
+  <!-- <script src="//unpkg.com/docsify-pdf-embed-plugin/src/docsify-pdf-embed.js"></script> -->
   <!-- emoji表情支持 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@latest/lib/plugins/emoji.min.js"></script>
   <!-- 图片放大缩小支持 -->
@@ -117,10 +117,9 @@
   <script src="//unpkg.com/@rakutentech/docsify-code-inline/dist/index.min.js" data-no-autoload
     data-no-css-inject></script>
   <!-- 中英文添加空格 -->
-  <script src="//cdn.jsdelivr.net/npm/@sy-records/docsify-pangu/dist/pangu.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@latest/dist/browser/pangu.min.js"></script>
   <!-- 注册 离线模式 SSR -->
-  <script>
-    if (typeof navigator.serviceWorker !== 'undefined') {
+  <script> if (typeof navigator.serviceWorker !== 'undefined') {
       navigator.serviceWorker.register('sw.js')
     }
   </script>
