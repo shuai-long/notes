@@ -1,7 +1,6 @@
 <!-- _sidebar.md -->
 
-* Typora+Docsify使用指南
-  * [Docsify使用指南](/ProjectDocs/Docsify使用指南.md) <!--注意这里是相对路径-->
-  * [Typora+Docsify快速入门](/ProjectDocs/Typora+Docsify快速入门.md)
-* Docsify部署
-  * [Docsify部署教程](/ProjectDocs/Docsify部署教程.md)
+- 使用教程
+  - [Docsify-zh](https://docsify.js.org/#/zh-cn/quickstart)
+  - [Docsify-en](https://docsify.js.org/#/)
+  - [Docsify-使用指南](https://ysgstudyhards.github.io/Docsify-Guide/#/ProjectDocs/Docsify使用指南)
