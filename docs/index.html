@@ -17,6 +17,9 @@
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-dark-mode@latest/dist/style.min.css" />
   <!-- 侧边栏展开折叠 -->
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/sidebar-folder.min.css" />
+  <!-- 添加tab标签 -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-dashboard@latest/dist/dashboard.min.css">
+
 </head>
 
 <body>
@@ -65,6 +68,15 @@
         textColor: "var(--theme-color)"
       },
 
+      // 添加tab标签
+      tabs: {
+        persist: false, // default 确定页面刷新/重新访问后是否恢复选项卡选择
+        sync: false, // default 确定选项卡选择是否将在具有匹配标签的选项卡之间同步。
+        theme: 'classic', // default 设置标签页主题。值为false表示不应用任何主题，该值应在创建自定义标签页主题时使用。
+        tabComments: true, // default 确定是否可以使用选项卡注释来定义选项卡集中的选项卡。
+        tabHeadings: true // default 确定是否可以使用标题 + 粗体标记来定义选项卡集中的选项卡。
+      },
+
       // 设置请求资源的请求头。
       requestHeaders: {
         'cache-control': 'max-age=600',
@@ -97,6 +109,9 @@
   <script src="//cdn.jsdelivr.net/npm/prismjs@latest/components/prism-abap.min.js"></script>
   <!-- 暗黑开关 -->
   <script src="//cdn.jsdelivr.net/npm/docsify-dark-mode@latest/dist/index.min.js"></script>
+  <!-- 添加tab标签 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-dashboard@latest/dist/docsify-dashboard.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-tabs@1/dist/docsify-tabs.min.js"></script>
   <!-- 侧边栏展开折叠插件 -->
   <script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
   <!-- 中英文添加空格 -->
