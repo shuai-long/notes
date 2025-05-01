@@ -14,11 +14,11 @@
   <!-- 默认主题 -->
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/lib/themes/vue.css">
   <!-- 暗黑模式 -->
-  <link rel="stylesheet" href="./css/docsify-drak-mode/dist/style.min.css" />
+  <link rel="stylesheet" href="./plugins/docsify-dark-mode/dist/style.min.css" />
   <!-- 侧边栏展开折叠 -->
-  <link rel="stylesheet" href="./css/docsify-sidebar-collapse/dist/sidebar-folder.min.css" />
+  <link rel="stylesheet" href="./plugins/docsify-sidebar-collapse/dist/sidebar-folder.min.css" />
   <!-- 添加tab标签 -->
-  <link rel="stylesheet" href="./css/docsify-dashboard/dist/dashboard.min.css">
+  <link rel="stylesheet" href="./plugins/docsify-dashboard/dist/dashboard.min.css">
 
 </head>
 
@@ -97,25 +97,26 @@
   </script>
   <!-- docsify的js依赖 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@latest/lib/docsify.min.js"></script>
-  <!-- emoji表情支持 -->
-  <script src="./js/docsify/lib/plugins/emoji.min.js"></script>
-  <!-- 图片放大缩小支持 -->
-  <script src="//cdn.jsdelivr.net/npm/docsify@latest/lib/plugins/zoom-image.min.js"></script>
-  <!-- 搜索功能支持 -->
-  <script src="//cdn.jsdelivr.net/npm/docsify@latest/lib/plugins/search.min.js"></script>
-  <!--在所有的代码块上添加一个简单的Click to copy按钮来允许用户从你的文档中轻易地复制代码-->
-  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code@latest/dist/docsify-copy-code.min.js"></script>
   <!-- 添加ABAP代码高亮 -->
-  <script src="//cdn.jsdelivr.net/npm/prismjs@latest/components/prism-abap.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-abap.min.js"></script>
+
+  <!-- emoji表情支持 -->
+  <script src="./plugins/docsify/lib/plugins/emoji.min.js"></script>
+  <!-- 图片放大缩小支持 -->
+  <script src="./plugins/docsify/lib/plugins/zoom-image.min.js"></script>
+  <!-- 搜索功能支持 -->
+  <script src="./plugins/docsify/lib/plugins/search.min.js"></script>
+  <!--在所有的代码块上添加一个简单的Click to copy按钮来允许用户从你的文档中轻易地复制代码-->
+  <script src="./plugins/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
   <!-- 暗黑开关 -->
-  <script src="//cdn.jsdelivr.net/npm/docsify-dark-mode@latest/dist/index.min.js"></script>
+  <script src="./plugins/docsify-dark-mode/dist/index.min.js"></script>
   <!-- 添加tab标签 -->
-  <script src="//cdn.jsdelivr.net/npm/docsify-dashboard@latest/dist/docsify-dashboard.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/docsify-tabs@1/dist/docsify-tabs.min.js"></script>
+  <script src="./plugins/docsify-dashboard/dist/docsify-dashboard.min.js"></script>
+  <script src="./plugins/docsify-tabs/dist/docsify-tabs.min.js"></script>
   <!-- 侧边栏展开折叠插件 -->
-  <script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
+  <script src="./plugins/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
   <!-- 中英文添加空格 -->
-  <script src="//cdn.jsdelivr.net/npm/pangu@latest/dist/browser/pangu.min.js"></script>
+  <script src="./plugins/pangu/dist/browser/pangu.min.js"></script>
   <!-- 注册 离线模式 SSR -->
   <script> if (typeof navigator.serviceWorker !== 'undefined') {
       navigator.serviceWorker.register('sw.js')
