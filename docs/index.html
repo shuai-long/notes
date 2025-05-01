@@ -12,15 +12,18 @@
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
   <!-- 默认主题 -->
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/lib/themes/vue.css">
-  <!-- <link rel="stylesheet" href="cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css"> -->
-  <!-- 暗黑模式 -->
-  <link rel="stylesheet" href="./plugins/docsify-dark-mode/dist/style.min.css" />
+  <link rel="stylesheet" media="(prefers-color-scheme: light)"
+    href="//cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css">
+  <link rel="stylesheet" media="(prefers-color-scheme: dark)"
+    href="//cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css">
   <!-- 侧边栏展开折叠 -->
   <link rel="stylesheet" href="./plugins/docsify-sidebar-collapse/dist/sidebar-folder.min.css" />
   <!-- 添加tab标签 -->
   <link rel="stylesheet" href="./plugins/docsify-dashboard/dist/dashboard.min.css">
-
+  <!-- 主题快捷修改 必须在所有插件之后-->
+  <link rel="stylesheet" media="(prefers-color-scheme: dark)" href="./_css/colors-dark.css">
+  <link rel="stylesheet" media="(prefers-color-scheme: light)" href="./_css/colors-light.css">
+  <link rel="stylesheet" href="https://unpkg.com/docsify-simple-themeable@1.0.5/dist/main.min.css">
 </head>
 
 <body>
@@ -57,7 +60,7 @@
       // 流程图缩放
       mermaidZoom: {
         minimumScale: 1,
-        maximumScale: 20,
+        maximumScale: 5,
         zoomPannel: true
       },
       // code Copy
@@ -66,17 +69,10 @@
         errorText: 'Error',
         successText: 'Copied',
       },
-      //暗黑模式
-      themeColor: "#42b983",
-      dark: {
-        background: "#1c2022",
-        toggleBtnBg: "#34495e",
-        textColor: "#b4b4b4"
-      },
-      light: {
-        background: "white",
-        toggleBtnBg: "var(--theme-color)",
-        textColor: "var(--theme-color)"
+      // 主题样式
+      themeable: {
+        readyTransition: true, // default
+        responsiveTables: true  // default
       },
 
       // 添加tab标签
@@ -110,6 +106,8 @@
   <script src="//cdn.jsdelivr.net/npm/docsify@latest/lib/docsify.min.js"></script>
   <!-- 添加ABAP代码高亮 -->
   <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-abap.min.js"></script>
+  <!-- docsify的主题 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-themeable@0/dist/js/docsify-themeable.min.js"></script>
   <!-- 插入pdf插件 -->
   <script src="//cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js"></script>
   <script src="//unpkg.com/docsify-pdf-embed-plugin/src/docsify-pdf-embed.js"></script>
@@ -122,6 +120,10 @@
   </script>
   <script src="//unpkg.com/docsify-mermaid@2.0.1/dist/docsify-mermaid.js"></script>
   <script src="//unpkg.com/docsify-mermaid-zoom/dist/docsify-mermaid-zoom.js"></script>
+  <!-- 显示图像标题 -->
+  <script src="//cdn.jsdelivr.net/gh/h-hg/docsify-image-caption/dist/docsify-image-caption.min.js"></script>
+  <!-- 警告块 -->
+  <script src="//unpkg.com/docsify-plugin-flexible-alerts"></script>
   <!-- emoji表情支持 -->
   <script src="./plugins/docsify/lib/plugins/emoji.min.js"></script>
   <!-- 图片放大缩小支持 -->
@@ -130,15 +132,13 @@
   <script src="./plugins/docsify/lib/plugins/search.min.js"></script>
   <!--在所有的代码块上添加一个简单的Click to copy按钮来允许用户从你的文档中轻易地复制代码-->
   <script src="./plugins/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
-  <!-- 暗黑开关 -->
-  <script src="./plugins/docsify-dark-mode/dist/index.min.js"></script>
   <!-- 添加tab标签 -->
   <script src="./plugins/docsify-dashboard/dist/docsify-dashboard.min.js"></script>
   <script src="./plugins/docsify-tabs/dist/docsify-tabs.min.js"></script>
   <!-- 侧边栏展开折叠插件 -->
   <script src="./plugins/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
   <!-- 中英文添加空格 -->
-  <script src="./plugins/pangu/dist/browser/pangu.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js"></script>
   <!-- 注册 离线模式 SSR -->
   <script>
     if (typeof navigator.serviceWorker !== 'undefined') {
