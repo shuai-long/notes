@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css" title="light">
   <link rel="stylesheet alternative" href="//cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css"
     title="dark">
+  <link rel="stylesheet" href="./_css/theme-custom.css">
   <!-- 侧边栏展开折叠 -->
   <link rel="stylesheet" href="./plugins/docsify-sidebar-collapse/dist/sidebar-folder.min.css" />
   <!-- 添加tab标签 -->
@@ -36,7 +37,7 @@
       // 最大支持渲染的标题层级
       maxLevel: 6,
       // 侧边栏支持，默认加载的是项目根目录下的_sidebar.md文件
-      loadSidebar: false,
+      loadSidebar: true,
       // set sidebar display level
       sidebarDisplayLevel: 1,
       // 自定义侧边栏后默认不会再生成目录，设置生成目录的最大层级（建议配置为2-4）
@@ -66,6 +67,11 @@
         buttonText: 'Copy',
         errorText: 'Error',
         successText: 'Copied',
+      },
+      // 代码块折叠
+      hideCode: {
+        scroll: false, // Enable scrolling
+        height: 300 // Max height
       },
       // 主题样式
       themeable: {
@@ -142,6 +148,8 @@
   <script src="./plugins/docsify-tabs/dist/docsify-tabs.min.js"></script>
   <!-- 侧边栏展开折叠插件 -->
   <script src="./plugins/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
+  <!-- 代码块折叠 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-hide-code/dist/docsify-hide-code.min.js"></script>
   <!-- 中英文添加空格 -->
   <script src="//cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js"></script>
   <!-- 注册 离线模式 SSR -->
