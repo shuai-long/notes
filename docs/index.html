@@ -50,6 +50,10 @@
       autoHeader: false,
       // 只在访问主页时加载封面。
       onlyCover: false,
+      // 显示流程图插件
+      mermaidConfig: {
+        querySelector: ".mermaid"
+      },
       // code Copy
       copyCode: {
         buttonText: 'Copy',
@@ -100,6 +104,13 @@
   <script src="//cdn.jsdelivr.net/npm/docsify@latest/lib/docsify.min.js"></script>
   <!-- 添加ABAP代码高亮 -->
   <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-abap.min.js"></script>
+  <!-- 显示流程图插件 -->
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true });
+    window.mermaid = mermaid;
+  </script>
+  <script src="//unpkg.com/docsify-mermaid@2.0.1/dist/docsify-mermaid.js"></script>
 
   <!-- emoji表情支持 -->
   <script src="./plugins/docsify/lib/plugins/emoji.min.js"></script>
@@ -119,7 +130,8 @@
   <!-- 中英文添加空格 -->
   <script src="./plugins/pangu/dist/browser/pangu.min.js"></script>
   <!-- 注册 离线模式 SSR -->
-  <script> if (typeof navigator.serviceWorker !== 'undefined') {
+  <script>
+    if (typeof navigator.serviceWorker !== 'undefined') {
       navigator.serviceWorker.register('sw.js')
     }
   </script>
