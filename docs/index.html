@@ -54,6 +54,12 @@
       mermaidConfig: {
         querySelector: ".mermaid"
       },
+      // 流程图缩放
+      mermaidZoom: {
+        minimumScale: 1,
+        maximumScale: 5,
+        zoomPannel: true
+      },
       // code Copy
       copyCode: {
         buttonText: 'Copy',
@@ -107,13 +113,15 @@
   <script src="//unpkg.com/docsify-pdf-embed-plugin/src/docsify-pdf-embed.js"></script>
   <!-- 添加ABAP代码高亮 -->
   <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-abap.min.js"></script>
-  <!-- 显示流程图插件 -->
+  <!-- 显示流程图插件+流程图缩放插件 -->
+  <script src="//cdn.jsdelivr.net/npm/d3@7"></script>
   <script type="module">
     import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
     mermaid.initialize({ startOnLoad: true });
     window.mermaid = mermaid;
   </script>
-  <script src="//unpkg.com/docsify-mermaid@2.0.1/dist/docsify-mermaid.js"></script>
+  <script src="//unpkg.com/docsify-mermaid@2.0.0/dist/docsify-mermaid.js"></script>
+  <script src="//unpkg.com/docsify-mermaid-zoom/dist/docsify-mermaid-zoom.js"></script>
   <!-- emoji表情支持 -->
   <script src="./plugins/docsify/lib/plugins/emoji.min.js"></script>
   <!-- 图片放大缩小支持 -->
