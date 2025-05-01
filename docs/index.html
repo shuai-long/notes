@@ -80,6 +80,14 @@
       },
 
       // 添加tab标签
+      dashboard: {
+        numTabContent: 3,  //幻灯片中显示的卡片数量
+        metadataUrl: 'metadata/posts',       // do not include '.json' extension
+        sort: false,                         // sort the posts by time
+        theme: 'default',                    // (1) default, (2) cards, (3) list
+        tagboardTheme: 'default'             // options are same as above
+      },
+      
       tabs: {
         persist: false, // default 确定页面刷新/重新访问后是否恢复选项卡选择
         sync: false, // default 确定选项卡选择是否将在具有匹配标签的选项卡之间同步。
