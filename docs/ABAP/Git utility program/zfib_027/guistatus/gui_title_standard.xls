@@ -1,0 +1,66 @@
+STANDARD	Standard for General List Output
+功能代码	功能文本	图标别名	图标文本	信息文本	字段名	功能键号	按钮数	菜单类型	功能文本编号	数据元素
+&KOM	选择...	@3T@			ICON_COLLAPSE			X	001	
+&LFO	列表状态...							X	001	
+&LFO	列表状态	@0S@			ICON_INFORMATION	41	26	X	002	
+&LIS	基本列表							X	001	
+&MAX	最大值							X	001	
+&MIN	最小值							X	001	
+&NFO	选择...	@0S@	选择		ICON_INFORMATION	07	27	X	001	
+&NTE	刷新	@42@			ICON_REFRESH	08		X	001	
+&OAD	选择...							X	001	
+&OAD	选择布局...	@DM@			ICON_ALV_VARIANT_CHOOSE	33	23	X	002	
+&ODN	按降序排序	@3F@			ICON_SORT_DOWN	40	08	X	001	
+&OL0	更改布局...	@LZ@			ICON_ALV_VARIANTS	32	22	X	001	
+&OLX	更改...	@0R@			ICON_VARIANTS			X	001	
+&OMP	折叠	@3T@			ICON_COLLAPSE	47	14	X	001	
+&OPT	调整到最佳宽度							X	001	
+&OUP	按升序排序	@3E@			ICON_SORT_UP	28	07	X	001	
+&RNT	打印	@0X@			ICON_PRINT	86		X	001	
+&RNT_PREV	打印预览	@3G@			ICON_LAYOUT_CONTROL	46			001	
+&SAL	取消全选	@4D@			ICON_DESELECT_ALL	06	05	X	001	
+&SUM	小计...	@5V@			ICON_INTERMEDIATE_SUM	42	12	X	001	
+&UMC	总计	@3Z@			ICON_SUM	30	11	X	001	
+&XML	XML 导出					48		X	001	
+&XPA	展开	@3S@			ICON_EXPAND	35	13	X	001	
+&XXL	电子表格...	@DJ@			ICON_XXL	43	16	X	001	
+BC	保存	@2L@			ICON_SYSTEM_SAVE	16	29	X	001	
+CREATE	批量创建	@0Y@			ICON_CREATE	13		X	001	
+D_LOAD	Excel 导出					94		X	001	
+EXPORT	导出					14		X	001	
+P+	下一页					82		X	001	
+P++	最后一页					83		X	001	
+P-	上一页					81		X	001	
+P--	第一页					80		X	001	
+%ML	文件夹							X	001	
+%PC	本地文件...	@49@			ICON_EXPORT	45	18	X	001	
+%SC	查找	@13@			ICON_SEARCH	71		X	001	
+%SC+	查找下一个	@4E@			ICON_SEARCH_NEXT	84		X	001	
+%SL	收件人	@1S@			ICON_MAIL	31	19	X	001	
+&ABC	ABC 分析	@DL@			ICON_ABC	25	20	X	001	
+&ALL	全选	@4B@			ICON_SELECT_ALL	05	04	X	001	
+&AQW	文字处理...	@DK@			ICON_WORD_PROCESSING	44	17	X	001	
+&AUF	定义细分...							X	001	
+&AVE	保存...							X	001	
+&AVE	保存布局...	@DN@			ICON_ALV_VARIANT_SAVE	34	24	X	002	
+&AVR	平均值							X	001	
+&CDF	解冻							X	001	
+&CFI	冻结至列							X	001	
+&COUNT	计算							X	001	
+&CRB	第一列	@0B@			ICON_TOTAL_LEFT	18		X	001	
+&CRE	最后一列	@0C@			ICON_TOTAL_RIGHT	19		X	001	
+&CRL	左列	@0D@			ICON_COLUMN_LEFT	26		X	001	
+&CRR	右列	@0E@			ICON_COLUMN_RIGHT	27		X	001	
+&DAU	自动分隔符							X	001	
+&DOF	分隔符始终关闭							X	001	
+&DON	分隔符始终打开							X	001	
+&EB9	调用报表...	@36@			ICON_TABLE_SETTINGS	37	02	X	001	
+&ELP	帮助	@35@			ICON_SYSTEM_HELP	01		X	001	
+&ERW	管理...							X	001	
+&ETA	详细信息	@16@			ICON_SELECT_DETAIL	39	01	X	001	
+&F03	返回					03		X	001	
+&F12	取消	@0W@			ICON_CANCEL	12		X	001	
+&F15	退出					15		X	001	
+&IC1	选择	@16@			ICON_SELECT_DETAIL	02		X	001	
+&ILD	删除过滤器							X	001	
+&ILT	设置过滤器	@4G@			ICON_FILTER	29	09	X	001	

@@ -1,0 +1,420 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=GB2312" />
+<title>ZHRB_063_ALV</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: ZHRB_063_ALV</h2>
+<h3> Description: Include ZHRB_063_ALV</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;包含&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ZHRB_063_ALV<br />
+*&---------------------------------------------------------------------*<br />
+<br />
+   </div>
+   <div class="code">
+FORM FRM_CREATE_ALV.<br />
+<br />
+&nbsp;&nbsp;DATA:LT_FCAT&nbsp;&nbsp;&nbsp;TYPE&nbsp;LVC_T_FCAT,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LS_LAYOUT&nbsp;TYPE&nbsp;LVC_S_LAYO,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LT_FILTER&nbsp;TYPE&nbsp;LVC_T_FILT.<br />
+<br />
+&nbsp;&nbsp;PERFORM&nbsp;FRM_SET_LAYOUT&nbsp;&nbsp;&nbsp;CHANGING&nbsp;LS_LAYOUT."样式设置<br />
+&nbsp;&nbsp;PERFORM&nbsp;FRM_SET_FIELDCAT&nbsp;CHANGING&nbsp;LT_FCAT.&nbsp;&nbsp;"设置FIELDCAT&nbsp;&nbsp;仅显示<br />
+&nbsp;&nbsp;IF&nbsp;SY-UNAME&nbsp;NE&nbsp;'SAPIF'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;FRM_ALV_DISPLAY_OO&nbsp;CHANGING&nbsp;LT_FCAT&nbsp;LS_LAYOUT&nbsp;GT_ALV_TMP[]."ALV显示<br />
+&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;FRM_ALV_DISPLAY_S&nbsp;CHANGING&nbsp;LT_FCAT&nbsp;LS_LAYOUT&nbsp;GT_ALV_TMP[].<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+<br />
+ENDFORM.<br />
+<br />
+FORM FRM_SET_LAYOUT CHANGING CS_LAYOUT TYPE LVC_S_LAYO.<br />
+&nbsp;&nbsp;CS_LAYOUT-CWIDTH_OPT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;'A'.<br />
+ENDFORM.<br />
+<br />
+FORM FRM_INIT_SCREEN .<br />
+&nbsp;&nbsp;B1_TEXT&nbsp;=&nbsp;'按页显示'.<br />
+&nbsp;&nbsp;%_P_NUMBER_%_APP_%-TEXT&nbsp;=&nbsp;'每页数量'.<br />
+ENDFORM.<br />
+<br />
+FORM FRM_ALV_DISPLAY_OO  CHANGING CT_FCAT   TYPE LVC_T_FCAT<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CS_LAYOUT&nbsp;TYPE&nbsp;LVC_S_LAYO<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CT_TAB&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;STANDARD&nbsp;TABLE.<br />
+<br />
+&nbsp;&nbsp;CREATE&nbsp;OBJECT&nbsp;G_CL_EVENT_HANDLE.<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;&nbsp;IS_STABLE&nbsp;TYPE&nbsp;LVC_S_STBL.<br />
+&nbsp;&nbsp;IF&nbsp;G_CL_ALV_GRID&nbsp;IS&nbsp;INITIAL.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CREATE&nbsp;OBJECT&nbsp;G_CL_DOCKING_CONTAINER<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;REPID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;SY-REPID<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DYNNR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;SY-DYNNR<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXTENSION&nbsp;=&nbsp;3000.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CREATE&nbsp;OBJECT&nbsp;G_CL_ALV_GRID<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I_PARENT&nbsp;=&nbsp;G_CL_DOCKING_CONTAINER.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;"添加按钮<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SET&nbsp;HANDLER&nbsp;G_CL_EVENT_HANDLE-&gt;HANDLE_TOOLBAR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FOR&nbsp;G_CL_ALV_GRID.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;"按钮事件<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SET&nbsp;HANDLER&nbsp;G_CL_EVENT_HANDLE-&gt;HANDLE_USER_COMMAND&nbsp;&nbsp;FOR&nbsp;G_CL_ALV_GRID.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;"调用此方法才能激活工具栏上增加的自定义按钮<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;METHOD&nbsp;G_CL_ALV_GRID-&gt;SET_TOOLBAR_INTERACTIVE.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;"注册编辑事件，否则不会触发更新事件<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;METHOD&nbsp;G_CL_ALV_GRID-&gt;REGISTER_EDIT_EVENT<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I_EVENT_ID&nbsp;=&nbsp;CL_GUI_ALV_GRID=&gt;MC_EVT_MODIFIED.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;METHOD&nbsp;G_CL_ALV_GRID-&gt;SET_TABLE_FOR_FIRST_DISPLAY<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IS_LAYOUT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;CS_LAYOUT<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHANGING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IT_OUTTAB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;CT_TAB[]<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IT_FIELDCATALOG&nbsp;=&nbsp;CT_FCAT[].<br />
+<br />
+&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;FRM_REFRESH_ALV.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+<br />
+ENDFORM.<br />
+<br />
+FORM FRM_ALV_DISPLAY_S CHANGING CT_FCAT   TYPE LVC_T_FCAT<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CS_LAYOUT&nbsp;TYPE&nbsp;LVC_S_LAYO<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CT_TAB&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;STANDARD&nbsp;TABLE.<br />
+<br />
+&nbsp;&nbsp;CALL&nbsp;FUNCTION&nbsp;'REUSE_ALV_GRID_DISPLAY_LVC'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IS_LAYOUT_LVC&nbsp;&nbsp;&nbsp;=&nbsp;CS_LAYOUT<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IT_FIELDCAT_LVC&nbsp;=&nbsp;CT_FCAT<br />
+&nbsp;&nbsp;&nbsp;&nbsp;TABLES<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T_OUTTAB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;CT_TAB[]<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXCEPTIONS<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PROGRAM_ERROR&nbsp;&nbsp;&nbsp;=&nbsp;1<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OTHERS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;2.<br />
+ENDFORM.<br />
+<br />
+<br />
+FORM FRM_SET_TOOLBAR  USING E_OBJECT TYPE REF TO CL_ALV_EVENT_TOOLBAR_SET..<br />
+&nbsp;&nbsp;DATA:&nbsp;LS_TOOLBAR&nbsp;TYPE&nbsp;STB_BUTTON.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;P_NUMBER&nbsp;IS&nbsp;NOT&nbsp;INITIAL&nbsp;AND&nbsp;P_NUMBER&nbsp;LT&nbsp;LINES(&nbsp;GT_ALV&nbsp;).<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CLEAR&nbsp;LS_TOOLBAR.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;LS_TOOLBAR-BUTN_TYPE&nbsp;=&nbsp;3.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;LS_TOOLBAR&nbsp;TO&nbsp;E_OBJECT-&gt;MT_TOOLBAR.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CLEAR&nbsp;LS_TOOLBAR.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;LS_TOOLBAR-FUNCTION&nbsp;=&nbsp;'PREVIOUS'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;LS_TOOLBAR-QUICKINFO&nbsp;=&nbsp;'上一页'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;LS_TOOLBAR-TEXT&nbsp;=&nbsp;'上一页'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;LS_TOOLBAR-DISABLED&nbsp;=&nbsp;''.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;LS_TOOLBAR&nbsp;TO&nbsp;E_OBJECT-&gt;MT_TOOLBAR.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CLEAR&nbsp;LS_TOOLBAR.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;LS_TOOLBAR-FUNCTION&nbsp;=&nbsp;'NEXT'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;LS_TOOLBAR-QUICKINFO&nbsp;=&nbsp;'下一页'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;LS_TOOLBAR-TEXT&nbsp;=&nbsp;'下一页'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;LS_TOOLBAR-DISABLED&nbsp;=&nbsp;''.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;LS_TOOLBAR&nbsp;TO&nbsp;E_OBJECT-&gt;MT_TOOLBAR.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.<br />
+<br />
+FORM FRM_USER_COMMAND  USING E_UCOMM.<br />
+<br />
+&nbsp;&nbsp;CASE&nbsp;E_UCOMM.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'PREVIOUS'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;GV_PAGE&nbsp;EQ&nbsp;1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MESSAGE&nbsp;'当前已是第一页'&nbsp;TYPE&nbsp;'S'&nbsp;DISPLAY&nbsp;LIKE&nbsp;'E'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GV_PAGE&nbsp;=&nbsp;GV_PAGE&nbsp;-&nbsp;1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;FRM_DEAL_DATA.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;FRM_REFRESH_ALV.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'NEXT'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&nbsp;P_NUMBER&nbsp;*&nbsp;GV_PAGE&nbsp;GE&nbsp;LINES(&nbsp;GT_ALV&nbsp;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MESSAGE&nbsp;'当前已是最后一页'&nbsp;TYPE&nbsp;'S'&nbsp;DISPLAY&nbsp;LIKE&nbsp;'E'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ADD&nbsp;1&nbsp;TO&nbsp;GV_PAGE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;FRM_DEAL_DATA.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;FRM_REFRESH_ALV.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDCASE.<br />
+<br />
+<br />
+<br />
+ENDFORM.<br />
+<br />
+FORM FRM_REFRESH_ALV.<br />
+&nbsp;&nbsp;DATA:&nbsp;&nbsp;IS_STABLE&nbsp;TYPE&nbsp;LVC_S_STBL.<br />
+<br />
+&nbsp;&nbsp;IS_STABLE-ROW&nbsp;=&nbsp;'X'.<br />
+&nbsp;&nbsp;IS_STABLE-COL&nbsp;=&nbsp;'X'.<br />
+&nbsp;&nbsp;CALL&nbsp;METHOD&nbsp;G_CL_ALV_GRID-&gt;REFRESH_TABLE_DISPLAY<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IS_STABLE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;IS_STABLE<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I_SOFT_REFRESH&nbsp;=&nbsp;'X'.<br />
+ENDFORM.<br />
+<br />
+FORM FRM_DEAL_DATA.<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;LV_INDEX_START&nbsp;TYPE&nbsp;I,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_INDEX_END&nbsp;&nbsp;&nbsp;TYPE&nbsp;I.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;P_NUMBER&nbsp;IS&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;GT_ALV_TMP&nbsp;=&nbsp;GT_ALV.<br />
+&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;REFRESH&nbsp;GT_ALV_TMP.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;P_NUMBER&nbsp;GE&nbsp;LINES(&nbsp;GT_ALV&nbsp;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GT_ALV_TMP&nbsp;=&nbsp;GT_ALV.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXIT.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;LV_INDEX_START&nbsp;=&nbsp;(&nbsp;GV_PAGE&nbsp;-&nbsp;1&nbsp;)&nbsp;*&nbsp;P_NUMBER&nbsp;+&nbsp;1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;LV_INDEX_END&nbsp;=&nbsp;GV_PAGE&nbsp;*&nbsp;P_NUMBER.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;LV_INDEX_END&nbsp;GE&nbsp;LINES(&nbsp;GT_ALV&nbsp;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_INDEX_END&nbsp;=&nbsp;LINES(&nbsp;GT_ALV&nbsp;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;GT_ALV&nbsp;INTO&nbsp;GS_ALV&nbsp;FROM&nbsp;LV_INDEX_START&nbsp;&nbsp;TO&nbsp;LV_INDEX_END.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;GS_ALV&nbsp;TO&nbsp;&nbsp;GT_ALV_TMP.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDLOOP.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.<br />
+<br />
+<br />
+FORM FRM_SET_FIELDCAT CHANGING CT_FCAT TYPE LVC_T_FCAT.<br />
+&nbsp;&nbsp;DATA:LS_FCAT&nbsp;TYPE&nbsp;LVC_S_FCAT.<br />
+&nbsp;&nbsp;CLEAR:CT_FCAT.<br />
+<br />
+&nbsp;&nbsp;DEFINE&nbsp;SET_FIELDCAT.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CLEAR&nbsp;LS_FCAT.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;LS_FCAT-FIELDNAME&nbsp;&nbsp;=&nbsp;&1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;LS_FCAT-COLTEXT&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&2.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;LS_FCAT-SCRTEXT_L&nbsp;&nbsp;=&nbsp;&2.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;LS_FCAT-SCRTEXT_M&nbsp;&nbsp;=&nbsp;&2.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;LS_FCAT-SCRTEXT_S&nbsp;&nbsp;=&nbsp;&2.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;LS_FCAT-FIX_COLUMN&nbsp;=&nbsp;&3.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;LS_FCAT-EDIT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&4.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;LS_FCAT-OUTPUTLEN&nbsp;&nbsp;=&nbsp;&5.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;LS_FCAT&nbsp;TO&nbsp;CT_FCAT.<br />
+&nbsp;&nbsp;END-OF-DEFINITION.<br />
+<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'ZHR_INDEX'&nbsp;'序号'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'WERKS'&nbsp;'隶属公司'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'ORGEH1_TXT'&nbsp;'一级部门'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'ORGEH2_TXT'&nbsp;'二级部门'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'ORGEH_TXT'&nbsp;'所在部门'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'PERNR'&nbsp;'职工编号'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'NACHN'&nbsp;'职工姓名'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'GESCH'&nbsp;'性别'&nbsp;''&nbsp;&nbsp;''&nbsp;'4'.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'AGE'&nbsp;'年龄'&nbsp;''&nbsp;&nbsp;''&nbsp;'4'.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRCSZY'&nbsp;'从事专业'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'RACKY'&nbsp;'民族'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'ICNUM'&nbsp;'身份证号'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'MASSG'&nbsp;'员工来源'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRFZJRB'&nbsp;'是否有参军经历'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRLWPQ'&nbsp;'劳务派遣公司单位名称'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'STAT1'&nbsp;'在岗状态'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZWJB'&nbsp;'职级'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZWJB_DATE'&nbsp;'职级日期'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'GBDAT'&nbsp;'出生日期'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'DAT04'&nbsp;'进公司时间'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'LWPQ_DATE'&nbsp;'劳务派遣转正时间'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZTYPE'&nbsp;'特贴发放方式'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRBEGDA'&nbsp;'特贴获得日期'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'DAT01'&nbsp;'参加工作时间'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'MASSN'&nbsp;'变动类型'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'MASSN_BEGDA'&nbsp;'变动日期'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'DAT13'&nbsp;'离职时间'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'DAT14'&nbsp;'去世时间'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'DAT04_C1'&nbsp;'返聘时间'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZCDJ'&nbsp;'技术职称-评定级别'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZCMC'&nbsp;'技术职称-专业技术资格名称'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZCPSSJ'&nbsp;'技术职称-评定日期'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z01HRPSDW'&nbsp;'技术职称-评审单位'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'ACAQU_1'&nbsp;'教育背景1-学历'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'ENDDA_22_1'&nbsp;'教育背景1-毕业日期'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'INSTI_1'&nbsp;'教育背景1-毕业学校'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZGXLBZ_1'&nbsp;'教育背景1-学校所在地'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZYMC_1'&nbsp;'教育背景1-所学专业'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRXW_1'&nbsp;'教育背景1-学位'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'ACAQU_2'&nbsp;'教育背景2-学历'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'ENDDA_22_2'&nbsp;'教育背景2-毕业日期'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'INSTI_2'&nbsp;'教育背景2-毕业学校'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZGXLBZ_2'&nbsp;'教育背景2-学校所在地'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZYMC_2'&nbsp;'教育背景2-所学专业'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRXW_2'&nbsp;'教育背景2-学位'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'ACAQU_3'&nbsp;'教育背景3-学历'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'ENDDA_22_3'&nbsp;'教育背景3-毕业日期'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'INSTI_3'&nbsp;'教育背景3-毕业学校'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZGXLBZ_3'&nbsp;'教育背景3-学校所在地'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZYMC_3'&nbsp;'教育背景3-所学专业'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRXW_3'&nbsp;'教育背景3-学位'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'PCODE'&nbsp;'政治面貌'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'BEGDA_534'&nbsp;'入党日期'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRXDMC_1'&nbsp;'任职情况1-职位'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZW_1'&nbsp;'任职情况1-岗位'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRXDJB_1'&nbsp;'任职情况1-岗位级别'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRBEGDA_1'&nbsp;'任职情况1-任职时间'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRGWXH_1'&nbsp;'任职情况1-岗位顺序'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRXDMC_2'&nbsp;'任职情况2-职位'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZW_2'&nbsp;'任职情况2-岗位'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRXDJB_2'&nbsp;'任职情况2-岗位级别'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRBEGDA_2'&nbsp;'任职情况2-任职时间'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRGWXH_2'&nbsp;'任职情况2-岗位顺序'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRXDMC_3'&nbsp;'任职情况3-职位'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZW_3'&nbsp;'任职情况3-岗位'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRXDJB_3'&nbsp;'任职情况3-岗位级别'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRBEGDA_3'&nbsp;'任职情况3-任职时间'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRGWXH_3'&nbsp;'任职情况3-岗位顺序'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRXDMC_4'&nbsp;'任职情况4-职位'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZW_4'&nbsp;'任职情况4-岗位'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRXDJB_4'&nbsp;'任职情况4-岗位级别'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRBEGDA_4'&nbsp;'任职情况4-任职时间'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRGWXH_4'&nbsp;'任职情况4-岗位顺序'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRXDMC_5'&nbsp;'任职情况5-职位'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZW_5'&nbsp;'任职情况5-岗位'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRXDJB_5'&nbsp;'任职情况5-岗位级别'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRBEGDA_5'&nbsp;'任职情况5-任职时间'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRGWXH_5'&nbsp;'任职情况5-岗位顺序'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'CTTYP'&nbsp;'合同类型'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'BEGDA_16'&nbsp;'合同开始日期'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'CTEDT'&nbsp;'合同到期日期'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRSYQJSSJ'&nbsp;'试用期到期日期'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRHTQXY'&nbsp;'合同签订年限'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRHTZZRQ'&nbsp;'合同解除时间'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRQDCS'&nbsp;'签约顺序'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZYZGMC_1'&nbsp;'职业资格1-注册类别或名称'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZYZGZCSX_1'&nbsp;'职业资格1-注册顺序'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZYZGBH_1'&nbsp;'职业资格1-注册证书号'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'BEGDA_9611_1'&nbsp;'职业资格1-资格取得日期'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZYZGZH_1'&nbsp;'职业资格1-注册章号'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZYZGYXQ_1'&nbsp;'职业资格1-注册章有效期'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZYZGMC_2'&nbsp;'职业资格2-注册类别或名称'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZYZGZCSX_2'&nbsp;'职业资格2-注册顺序'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZYZGBH_2'&nbsp;'职业资格2-注册证书号'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'BEGDA_9611_2'&nbsp;'职业资格2-资格取得日期'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZYZGZH_2'&nbsp;'职业资格2-注册章号'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZYZGYXQ_2'&nbsp;'职业资格2-注册章有效期'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZYZGMC_3'&nbsp;'职业资格3-注册类别或名称'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZYZGZCSX_3'&nbsp;'职业资格3-注册顺序'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZYZGBH_3'&nbsp;'职业资格3-注册证书号'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'BEGDA_9611_3'&nbsp;'职业资格3-资格取得日期'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZYZGZH_3'&nbsp;'职业资格3-注册章号'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZYZGYXQ_3'&nbsp;'职业资格3-注册章有效期'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZYZGMC_4'&nbsp;'职业资格4-注册类别或名称'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZYZGZCSX_4'&nbsp;'职业资格4-注册顺序'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZYZGBH_4'&nbsp;'职业资格4-注册证书号'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'BEGDA_9611_4'&nbsp;'职业资格4-资格取得日期'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZYZGZH_4'&nbsp;'职业资格4-注册章号'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZYZGYXQ_4'&nbsp;'职业资格4-注册章有效期'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZYZGMC_5'&nbsp;'职业资格5-注册类别或名称'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZYZGZCSX_5'&nbsp;'职业资格5-注册顺序'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZYZGBH_5'&nbsp;'职业资格5-注册证书号'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'BEGDA_9611_5'&nbsp;'职业资格5-资格取得日期'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZYZGZH_5'&nbsp;'职业资格5-注册章号'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRZYZGYXQ_5'&nbsp;'职业资格5-注册章有效期'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'USRID'&nbsp;'本人手机号'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRJGS'&nbsp;'籍贯'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRSHGX'&nbsp;'主要社会关系所在城市'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'PSTLZ_JT'&nbsp;'家庭邮编'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'STATE'&nbsp;'居住地'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'PSTLZ'&nbsp;'邮编'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRHKXZ'&nbsp;'户籍类型'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'LOCAT'&nbsp;'户籍地址'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRLSYXM'&nbsp;'紧急联系人姓名'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'USRID_5'&nbsp;'家庭联系人手机'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'USRID_1'&nbsp;'办公电话'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'GBORT'&nbsp;'出生地'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRGKSZD'&nbsp;'生源地'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRGWXZ'&nbsp;'岗位性质'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRXZMC'&nbsp;'行政职务'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'ORT01'&nbsp;'办公地址'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRLXGJ'&nbsp;'留学经历'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRHGSJ'&nbsp;'回国日期'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRHKZB'&nbsp;'户口指标'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRLHND'&nbsp;'落户年度'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'Z00HRRZKS'&nbsp;'入职考试'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'DAT11'&nbsp;'退休日期'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'CJNJ'&nbsp;'参加年金'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+&nbsp;&nbsp;SET_FIELDCAT:&nbsp;'DAT15'&nbsp;'参加年金时间'&nbsp;''&nbsp;&nbsp;''&nbsp;''.<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+ENDFORM.<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2023. Sap Release 755</td>
+   </tr>
+</table>
+</body>
+</html>

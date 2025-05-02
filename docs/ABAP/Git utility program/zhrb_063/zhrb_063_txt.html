@@ -1,0 +1,283 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=GB2312" />
+<title>ZHRB_063_TXT</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: ZHRB_063_TXT</h2>
+<h3> Description: Include ZHRB_063_TXT</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;包含&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ZHRB_063_TXT<br />
+*&---------------------------------------------------------------------*<br />
+<br />
+   </div>
+   <div class="code">
+"取文本描述<br />
+FORM FRM_GET_TEXT.<br />
+&nbsp;&nbsp;RANGES:&nbsp;R_DOMNAME&nbsp;FOR&nbsp;DD07V-DOMNAME,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;R_MASSN&nbsp;&nbsp;&nbsp;FOR&nbsp;P0000-MASSN.<br />
+<br />
+&nbsp;&nbsp;R_DOMNAME[]&nbsp;=&nbsp;VALUE&nbsp;#(&nbsp;SIGN&nbsp;=&nbsp;'I'&nbsp;OPTION&nbsp;=&nbsp;'EQ'<br />
+&nbsp;&nbsp;(&nbsp;LOW&nbsp;=&nbsp;'ZD_HRCSZY'&nbsp;)<br />
+&nbsp;&nbsp;(&nbsp;LOW&nbsp;=&nbsp;'ZD_HRZWJB'&nbsp;)<br />
+&nbsp;&nbsp;(&nbsp;LOW&nbsp;=&nbsp;'ZD_HRZTYPE'&nbsp;)<br />
+&nbsp;&nbsp;(&nbsp;LOW&nbsp;=&nbsp;'ZD_HRZCDJ'&nbsp;)<br />
+&nbsp;&nbsp;(&nbsp;LOW&nbsp;=&nbsp;'ZD_HRZYZGMC'&nbsp;)<br />
+&nbsp;&nbsp;(&nbsp;LOW&nbsp;=&nbsp;'ZD_HRGWXZ'&nbsp;)<br />
+&nbsp;&nbsp;(&nbsp;LOW&nbsp;=&nbsp;'ZD_HRHKZB'&nbsp;)<br />
+&nbsp;&nbsp;(&nbsp;LOW&nbsp;=&nbsp;'ZD_HRXDJB'&nbsp;)<br />
+&nbsp;&nbsp;(&nbsp;LOW&nbsp;=&nbsp;'ZD_HRHKXZ'&nbsp;)<br />
+&nbsp;&nbsp;).<br />
+&nbsp;&nbsp;R_MASSN[]&nbsp;=&nbsp;VALUE&nbsp;#(&nbsp;SIGN&nbsp;=&nbsp;'I'&nbsp;OPTION&nbsp;=&nbsp;'EQ'<br />
+&nbsp;&nbsp;(&nbsp;LOW&nbsp;=&nbsp;'A1'&nbsp;)<br />
+&nbsp;&nbsp;(&nbsp;LOW&nbsp;=&nbsp;'A2'&nbsp;)<br />
+&nbsp;&nbsp;(&nbsp;LOW&nbsp;=&nbsp;'C2'&nbsp;)<br />
+&nbsp;&nbsp;(&nbsp;LOW&nbsp;=&nbsp;'Z2'&nbsp;)<br />
+&nbsp;&nbsp;(&nbsp;LOW&nbsp;=&nbsp;'Z2'&nbsp;)<br />
+&nbsp;&nbsp;).<br />
+<br />
+&nbsp;&nbsp;"域值<br />
+&nbsp;&nbsp;SELECT&nbsp;DOMNAME&nbsp;DOMVALUE_L&nbsp;DDTEXT&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;GT_STEXT&nbsp;FROM&nbsp;DD07V<br />
+&nbsp;&nbsp;WHERE&nbsp;DDLANGUAGE&nbsp;EQ&nbsp;'1'&nbsp;AND&nbsp;DOMNAME&nbsp;IN&nbsp;R_DOMNAME[].<br />
+<br />
+&nbsp;&nbsp;"操作类型<br />
+&nbsp;&nbsp;SELECT&nbsp;*&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;GT_T529T&nbsp;FROM&nbsp;T529T&nbsp;WHERE&nbsp;SPRSL&nbsp;EQ&nbsp;'1'.<br />
+<br />
+&nbsp;&nbsp;"操作原因<br />
+&nbsp;&nbsp;SELECT&nbsp;*&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;GT_T530T&nbsp;FROM&nbsp;T530T&nbsp;WHERE&nbsp;SPRSL&nbsp;EQ&nbsp;'1'.<br />
+<br />
+&nbsp;&nbsp;"劳务派遣<br />
+&nbsp;&nbsp;SELECT&nbsp;*&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;GT_ZHRT_028&nbsp;FROM&nbsp;ZHRT_028.<br />
+<br />
+&nbsp;&nbsp;"单位岗位文本<br />
+&nbsp;&nbsp;SELECT&nbsp;OTYPE,&nbsp;OBJID,&nbsp;BEGDA,&nbsp;STEXT&nbsp;INTO&nbsp;TABLE&nbsp;@DATA(LT_HRP1000)&nbsp;FROM&nbsp;HRP1000<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;PLVAR&nbsp;EQ&nbsp;'01'&nbsp;AND&nbsp;BEGDA&nbsp;LE&nbsp;@PN-ENDDA&nbsp;AND&nbsp;ENDDA&nbsp;GE&nbsp;@PN-BEGDA&nbsp;AND&nbsp;OTYPE&nbsp;IN&nbsp;('O','S').<br />
+&nbsp;&nbsp;SORT&nbsp;LT_HRP1000&nbsp;BY&nbsp;OTYPE&nbsp;OBJID&nbsp;BEGDA&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;DELETE&nbsp;ADJACENT&nbsp;DUPLICATES&nbsp;FROM&nbsp;LT_HRP1000&nbsp;COMPARING&nbsp;OTYPE&nbsp;OBJID.<br />
+&nbsp;&nbsp;GT_OBJID&nbsp;=&nbsp;LT_HRP1000.<br />
+<br />
+&nbsp;&nbsp;"获取单位层级<br />
+&nbsp;&nbsp;SELECT&nbsp;OBJID,&nbsp;BEGDA,&nbsp;Z00HRNJGCJ&nbsp;INTO&nbsp;TABLE&nbsp;@DATA(LT_HRP9811)&nbsp;FROM&nbsp;HRP9811<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;PLVAR&nbsp;EQ&nbsp;'01'&nbsp;AND&nbsp;BEGDA&nbsp;LE&nbsp;@PN-ENDDA&nbsp;AND&nbsp;ENDDA&nbsp;GE&nbsp;@PN-BEGDA&nbsp;AND&nbsp;Z00HRNJGCJ&nbsp;IN&nbsp;('1','2').<br />
+&nbsp;&nbsp;SORT&nbsp;LT_HRP9811&nbsp;BY&nbsp;OBJID&nbsp;BEGDA&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;DELETE&nbsp;ADJACENT&nbsp;DUPLICATES&nbsp;FROM&nbsp;LT_HRP9811&nbsp;COMPARING&nbsp;OBJID.<br />
+&nbsp;&nbsp;GT_Z00HRNJGCJ&nbsp;=&nbsp;LT_HRP9811.<br />
+<br />
+&nbsp;&nbsp;"单位关系<br />
+&nbsp;&nbsp;SELECT&nbsp;OBJID,&nbsp;BEGDA,&nbsp;SOBID&nbsp;INTO&nbsp;TABLE&nbsp;@DATA(LT_HRP1001)&nbsp;FROM&nbsp;HRP1001<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;PLVAR&nbsp;EQ&nbsp;'01'&nbsp;AND&nbsp;OTYPE&nbsp;EQ&nbsp;'O'&nbsp;AND&nbsp;RSIGN&nbsp;EQ&nbsp;'A'&nbsp;AND&nbsp;&nbsp;RELAT&nbsp;EQ&nbsp;'002'&nbsp;AND&nbsp;BEGDA&nbsp;LE&nbsp;@PN-ENDDA&nbsp;AND&nbsp;ENDDA&nbsp;GE&nbsp;@PN-BEGDA.<br />
+&nbsp;&nbsp;SORT&nbsp;LT_HRP1001&nbsp;BY&nbsp;OBJID&nbsp;BEGDA&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;DELETE&nbsp;ADJACENT&nbsp;DUPLICATES&nbsp;FROM&nbsp;&nbsp;LT_HRP1001&nbsp;COMPARING&nbsp;OBJID.<br />
+&nbsp;&nbsp;GT_HRP1001&nbsp;=&nbsp;LT_HRP1001.<br />
+<br />
+&nbsp;&nbsp;"岗位性质<br />
+&nbsp;&nbsp;SELECT&nbsp;OBJID,&nbsp;BEGDA&nbsp;,Z00HRGWXZ&nbsp;INTO&nbsp;TABLE&nbsp;@DATA(LT_HRP9812)&nbsp;FROM&nbsp;HRP9812<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;PLVAR&nbsp;EQ&nbsp;'01'&nbsp;AND&nbsp;BEGDA&nbsp;LE&nbsp;@PN-ENDDA&nbsp;AND&nbsp;ENDDA&nbsp;GE&nbsp;@PN-BEGDA.<br />
+&nbsp;&nbsp;SORT&nbsp;LT_HRP9812&nbsp;BY&nbsp;OBJID&nbsp;BEGDA&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;DELETE&nbsp;ADJACENT&nbsp;DUPLICATES&nbsp;FROM&nbsp;LT_HRP9812&nbsp;COMPARING&nbsp;OBJID.<br />
+&nbsp;&nbsp;GT_HRP9812&nbsp;=&nbsp;LT_HRP9812.<br />
+<br />
+&nbsp;&nbsp;"民族文本<br />
+&nbsp;&nbsp;SELECT&nbsp;*&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;GT_T505S&nbsp;FROM&nbsp;T505S&nbsp;WHERE&nbsp;SPRSL&nbsp;EQ&nbsp;'1'&nbsp;AND&nbsp;MOLGA&nbsp;EQ&nbsp;'28'.<br />
+<br />
+&nbsp;&nbsp;"员工来源<br />
+&nbsp;&nbsp;SELECT&nbsp;PERNR,&nbsp;BEGDA,&nbsp;MASSN&nbsp;INTO&nbsp;TABLE&nbsp;@DATA(LT_P0000)&nbsp;FROM&nbsp;PA0000<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;PERNR&nbsp;IN&nbsp;@PNPPERNR[]&nbsp;AND&nbsp;MASSN&nbsp;IN&nbsp;@R_MASSN[].<br />
+&nbsp;&nbsp;SORT&nbsp;LT_P0000&nbsp;BY&nbsp;PERNR&nbsp;BEGDA&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;DELETE&nbsp;ADJACENT&nbsp;DUPLICATES&nbsp;FROM&nbsp;LT_P0000&nbsp;COMPARING&nbsp;PERNR.<br />
+&nbsp;&nbsp;GT_PERNR&nbsp;=&nbsp;LT_P0000.<br />
+<br />
+&nbsp;&nbsp;"政治面貌文本<br />
+&nbsp;&nbsp;SELECT&nbsp;*&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;GT_T7CN5R&nbsp;FROM&nbsp;T7CN5R&nbsp;WHERE&nbsp;LANGU&nbsp;EQ&nbsp;'1'.<br />
+<br />
+&nbsp;&nbsp;"学历文本<br />
+&nbsp;&nbsp;SELECT&nbsp;*&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;GT_T7CNA4T&nbsp;FROM&nbsp;T7CNA4T&nbsp;WHERE&nbsp;SPRSL&nbsp;EQ&nbsp;'1'.<br />
+<br />
+&nbsp;&nbsp;"合同类型文本<br />
+&nbsp;&nbsp;SELECT&nbsp;*&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;GT_T547S&nbsp;FROM&nbsp;T547S&nbsp;WHERE&nbsp;SPRSL&nbsp;EQ&nbsp;'1'.<br />
+<br />
+<br />
+&nbsp;&nbsp;"隶属单位文本<br />
+&nbsp;&nbsp;SELECT&nbsp;PERSA&nbsp;NAME1&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;GT_T500P&nbsp;FROM&nbsp;T500P.<br />
+<br />
+&nbsp;&nbsp;"状态文本<br />
+&nbsp;&nbsp;SELECT&nbsp;*&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;GT_T529U&nbsp;FROM&nbsp;T529U&nbsp;WHERE&nbsp;SPRSL&nbsp;EQ&nbsp;'1'.<br />
+<br />
+&nbsp;&nbsp;"户籍文本<br />
+&nbsp;&nbsp;SELECT&nbsp;*&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;GT_T005U&nbsp;FROM&nbsp;T005U&nbsp;WHERE&nbsp;SPRAS&nbsp;EQ&nbsp;'1'.<br />
+<br />
+ENDFORM.<br />
+<br />
+"读文本描述<br />
+FORM FRM_GET_DOMAIN_STEXT USING DOMNAME DOMVALUE_L STEXT.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;GT_STEXT&nbsp;INTO&nbsp;GS_STEXT&nbsp;WITH&nbsp;KEY&nbsp;DOMNAME&nbsp;=&nbsp;DOMNAME&nbsp;DOMVALUE_L&nbsp;=&nbsp;DOMVALUE_L&nbsp;BINARY&nbsp;SEARCH.<br />
+&nbsp;&nbsp;IF&nbsp;SY-SUBRC&nbsp;=&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;STEXT&nbsp;=&nbsp;GS_STEXT-DDTEXT.<br />
+&nbsp;&nbsp;ENDIF.<br />
+ENDFORM.<br />
+<br />
+"获取年龄<br />
+FORM FRM_GET_AGE USING GBDAT AGE.<br />
+&nbsp;&nbsp;DATA:&nbsp;LV_YEAR&nbsp;TYPE&nbsp;I.<br />
+<br />
+&nbsp;&nbsp;CALL&nbsp;FUNCTION&nbsp;'HR_99S_INTERVAL_BETWEEN_DATES'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BEGDA&nbsp;&nbsp;&nbsp;=&nbsp;GBDAT<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDDA&nbsp;&nbsp;&nbsp;=&nbsp;SY-DATUM<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IMPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C_YEARS&nbsp;=&nbsp;LV_YEAR.<br />
+<br />
+&nbsp;&nbsp;AGE&nbsp;=&nbsp;LV_YEAR.<br />
+ENDFORM.<br />
+<br />
+"获取时间<br />
+FORM FRM_GET_0041 USING DATAR P0041 ENDDA.<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;MESSAGE_HANDLER&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;IF_HRPA_MESSAGE_HANDLER.<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;LV_ENDDA&nbsp;TYPE&nbsp;D.<br />
+<br />
+&nbsp;&nbsp;CALL&nbsp;FUNCTION&nbsp;'HR_ECM_READ_IT0041_DATE_TYPE'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DATAR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;DATAR<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P0041&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;P0041<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MESSAGE_HANDLER&nbsp;=&nbsp;MESSAGE_HANDLER<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IMPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DATE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;LV_ENDDA.<br />
+<br />
+&nbsp;&nbsp;ENDDA&nbsp;=&nbsp;LV_ENDDA.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;PERFORM&nbsp;FRM_SPLICE_DATE&nbsp;USING&nbsp;LV_ENDDA&nbsp;ENDDA.<br />
+   </div>
+   <div class="code">
+ENDFORM.<br />
+<br />
+"将日期转换为字符串<br />
+FORM FRM_SPLICE_DATE USING DATE STRING.<br />
+&nbsp;&nbsp;IF&nbsp;DATE&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;STRING&nbsp;=&nbsp;&nbsp;|{&nbsp;DATE+0(4)&nbsp;}.{&nbsp;DATE+4(2)&nbsp;}.{&nbsp;&nbsp;DATE+6(2)&nbsp;}　　　　|.<br />
+&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;STRING&nbsp;=&nbsp;&nbsp;|　　　　　　　　　　|.<br />
+&nbsp;&nbsp;ENDIF.<br />
+ENDFORM.<br />
+<br />
+"获取组织层级<br />
+FORM FRM_GET_OBJID USING OBJID Z00HRNJGCJ ORGEH STEXT.<br />
+<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;GT_Z00HRNJGCJ&nbsp;INTO&nbsp;GS_Z00HRNJGCJ&nbsp;WITH&nbsp;KEY&nbsp;OBJID&nbsp;=&nbsp;OBJID&nbsp;BINARY&nbsp;SEARCH.<br />
+&nbsp;&nbsp;IF&nbsp;SY-SUBRC&nbsp;=&nbsp;0&nbsp;AND&nbsp;GS_Z00HRNJGCJ-Z00HRNJGCJ&nbsp;EQ&nbsp;Z00HRNJGCJ.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;GT_OBJID&nbsp;INTO&nbsp;GS_OBJID&nbsp;WITH&nbsp;KEY&nbsp;OTYPE&nbsp;=&nbsp;'O'&nbsp;OBJID&nbsp;=&nbsp;OBJID&nbsp;BINARY&nbsp;SEARCH.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;SY-SUBRC&nbsp;=&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ORGEH&nbsp;=&nbsp;OBJID.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;STEXT&nbsp;=&nbsp;GS_OBJID-STEXT.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;RETURN.<br />
+&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;GT_HRP1001&nbsp;INTO&nbsp;GS_HRP1001&nbsp;WITH&nbsp;KEY&nbsp;OBJID&nbsp;=&nbsp;OBJID&nbsp;BINARY&nbsp;SEARCH.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;SY-SUBRC&nbsp;=&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_OBJID&nbsp;USING&nbsp;GS_HRP1001-SOBID&nbsp;Z00HRNJGCJ&nbsp;ORGEH&nbsp;STEXT.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.<br />
+<br />
+"获取职务级别的日期<br />
+FORM FRM_GET_Z00HRZWJB_DATE USING Z00HRZWJB DATE.<br />
+&nbsp;&nbsp;DATA(LT_P0001)&nbsp;=&nbsp;P0001[].<br />
+&nbsp;&nbsp;SORT&nbsp;LT_P0001&nbsp;BY&nbsp;BEGDA.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;LT_P0001&nbsp;INTO&nbsp;DATA(LS_P0001)&nbsp;WITH&nbsp;KEY&nbsp;Z00HRZWJB&nbsp;=&nbsp;Z00HRZWJB&nbsp;.<br />
+&nbsp;&nbsp;IF&nbsp;SY-SUBRC&nbsp;=&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;DATE&nbsp;=&nbsp;LS_P0001-BEGDA.<br />
+&nbsp;&nbsp;ENDIF.<br />
+ENDFORM.<br />
+<br />
+"获取是否参军<br />
+FORM FRM_GET_Z00HRFZJRB USING Z00HRFZJRB.<br />
+&nbsp;&nbsp;SORT&nbsp;P9610[]&nbsp;BY&nbsp;Z00HRFZJRB&nbsp;DESCENDING.<br />
+<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;P9610&nbsp;INTO&nbsp;DATA(LS_P9610)&nbsp;INDEX&nbsp;1.<br />
+&nbsp;&nbsp;IF&nbsp;SY-SUBRC&nbsp;=&nbsp;0&nbsp;AND&nbsp;LS_P9610-Z00HRFZJRB&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;Z00HRFZJRB&nbsp;=&nbsp;'是'.<br />
+&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;Z00HRFZJRB&nbsp;=&nbsp;'否'.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.<br />
+<br />
+"取岗位性质<br />
+FORM FRM_GET_Z00HRGWXZ USING OBJID Z00HRGWXZ.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;GT_HRP9812&nbsp;INTO&nbsp;GS_HRP9812&nbsp;WITH&nbsp;KEY&nbsp;OBJID&nbsp;=&nbsp;OBJID&nbsp;BINARY&nbsp;SEARCH.<br />
+&nbsp;&nbsp;IF&nbsp;SY-SUBRC&nbsp;=&nbsp;0&nbsp;AND&nbsp;GS_HRP9812-Z00HRGWXZ&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_DOMAIN_STEXT&nbsp;USING&nbsp;'ZD_HRGWXZ'&nbsp;&nbsp;GS_HRP9812-Z00HRGWXZ&nbsp;Z00HRGWXZ.<br />
+&nbsp;&nbsp;ENDIF.<br />
+ENDFORM.<br />
+<br />
+FORM FRM_GET_PERNR_MASSN  USING PERNR MASSG.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;GT_PERNR&nbsp;INTO&nbsp;GS_PERNR&nbsp;WITH&nbsp;KEY&nbsp;PERNR&nbsp;=&nbsp;PERNR&nbsp;BINARY&nbsp;SEARCH.<br />
+&nbsp;&nbsp;IF&nbsp;SY-SUBRC&nbsp;=&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;GT_T529T&nbsp;INTO&nbsp;DATA(LS_T529T)&nbsp;WITH&nbsp;KEY&nbsp;MASSN&nbsp;=&nbsp;GS_PERNR-MASSN&nbsp;BINARY&nbsp;SEARCH.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;SY-SUBRC&nbsp;=&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MASSG&nbsp;=&nbsp;LS_T529T-MNTXT.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDIF.<br />
+ENDFORM.<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2023. Sap Release 755</td>
+   </tr>
+</table>
+</body>
+</html>

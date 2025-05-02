@@ -1,0 +1,935 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=GB2312" />
+<title>ZFIB_028</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: ZFIB_028</h2>
+<h3> Description: 利润表</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Report&nbsp;ZFIB_028<br />
+*&---------------------------------------------------------------------*<br />
+*&<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+REPORT zfib_028.<br />
+<br />
+TABLES : zfit_027, zfit_028,acdoca,sscrfields.<br />
+<br />
+DATA:BEGIN OF gs_alv,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;zxmmc&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;zfit_019-zxmmc,&nbsp;"项目<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;int4,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"行次<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;byje&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;faglflexa-hsl,&nbsp;&nbsp;"本月金额<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bqje&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;faglflexa-hsl,&nbsp;&nbsp;"本期金额<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bnljje&nbsp;&nbsp;&nbsp;TYPE&nbsp;faglflexa-hsl,&nbsp;&nbsp;"本年累计金额<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sntqljje&nbsp;TYPE&nbsp;faglflexa-hsl,&nbsp;&nbsp;"上年同期累计金额<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;datum&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;sy-datum,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uzeit&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;sy-uzeit,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_alv.<br />
+DATA:gt_alv LIKE TABLE OF gs_alv.<br />
+<br />
+DATA:BEGIN OF gs_dmbtr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;zrow(3)&nbsp;&nbsp;TYPE&nbsp;c,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;byje&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;faglflexa-hsl,&nbsp;&nbsp;"本月金额<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bqje&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;faglflexa-hsl,&nbsp;&nbsp;"本期金额<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bnljje&nbsp;&nbsp;&nbsp;TYPE&nbsp;faglflexa-hsl,&nbsp;&nbsp;"本年累计金额<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sntqljje&nbsp;TYPE&nbsp;faglflexa-hsl,&nbsp;&nbsp;"上年同期累计金额<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_dmbtr.<br />
+DATA: gt_dmbtr LIKE TABLE OF gs_dmbtr.<br />
+DATA:lv_zhc(3) TYPE c.<br />
+<br />
+DATA: BEGIN OF gs_fag,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rbukrs&nbsp;LIKE&nbsp;faglflext-rbukrs,&nbsp;"公司代码<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ryear&nbsp;&nbsp;LIKE&nbsp;faglflext-ryear,&nbsp;"会计年度<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rpmax&nbsp;&nbsp;LIKE&nbsp;faglflext-rpmax,&nbsp;"期间<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;racct&nbsp;&nbsp;LIKE&nbsp;faglflext-racct,&nbsp;"科目号<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rfarea&nbsp;LIKE&nbsp;faglflext-rfarea,&nbsp;"功能范围<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rtcur&nbsp;&nbsp;LIKE&nbsp;faglflext-rtcur,&nbsp;&nbsp;"货币码<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drcrk&nbsp;&nbsp;LIKE&nbsp;faglflext-drcrk,&nbsp;&nbsp;"借贷标识<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hslvt&nbsp;&nbsp;LIKE&nbsp;faglflext-hslvt,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hsl01&nbsp;&nbsp;LIKE&nbsp;faglflext-hsl01,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hsl02&nbsp;&nbsp;LIKE&nbsp;faglflext-hsl02,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hsl03&nbsp;&nbsp;LIKE&nbsp;faglflext-hsl03,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hsl04&nbsp;&nbsp;LIKE&nbsp;faglflext-hsl04,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hsl05&nbsp;&nbsp;LIKE&nbsp;faglflext-hsl05,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hsl06&nbsp;&nbsp;LIKE&nbsp;faglflext-hsl06,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hsl07&nbsp;&nbsp;LIKE&nbsp;faglflext-hsl07,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hsl08&nbsp;&nbsp;LIKE&nbsp;faglflext-hsl08,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hsl09&nbsp;&nbsp;LIKE&nbsp;faglflext-hsl09,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hsl10&nbsp;&nbsp;LIKE&nbsp;faglflext-hsl10,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hsl11&nbsp;&nbsp;LIKE&nbsp;faglflext-hsl11,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hsl12&nbsp;&nbsp;LIKE&nbsp;faglflext-hsl12,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hsl13&nbsp;&nbsp;LIKE&nbsp;faglflext-hsl13,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hsl14&nbsp;&nbsp;LIKE&nbsp;faglflext-hsl14,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hsl15&nbsp;&nbsp;LIKE&nbsp;faglflext-hsl15,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hsl16&nbsp;&nbsp;LIKE&nbsp;faglflext-hsl16,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_fag&nbsp;.<br />
+DATA: gt_fag LIKE TABLE OF gs_fag.<br />
+<br />
+DATA: gt_zfit_027 LIKE TABLE OF zfit_027."配置表<br />
+<br />
+DATA: gt_zfit_027_hc1 LIKE TABLE OF zfit_027."配置表<br />
+DATA: gt_zfit_027_hc2 LIKE TABLE OF zfit_027."配置表<br />
+<br />
+DATA:alv_grid1      TYPE REF TO cl_gui_alv_grid, "cl_gui_alv_grid类引用<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alv_container1&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;cl_gui_docking_container.<br />
+DATA:gs_toolbar TYPE stb_button."功能按钮<br />
+DATA:layout   TYPE lvc_s_layo,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fieldcat&nbsp;TYPE&nbsp;lvc_t_fcat&nbsp;WITH&nbsp;HEADER&nbsp;LINE.&nbsp;"alv显示设置<br />
+<br />
+CLASS cl_event_handle1 DEFINITION. "事件处理类定义<br />
+&nbsp;&nbsp;PUBLIC&nbsp;SECTION.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;METHODS&nbsp;handle_toolbar&nbsp;FOR&nbsp;EVENT&nbsp;toolbar&nbsp;OF&nbsp;cl_gui_alv_grid&nbsp;"初始化ALV工具栏对象事件，如增加按钮并设定属性<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IMPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e_object<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e_interactive.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;METHODS&nbsp;handle_onf4&nbsp;FOR&nbsp;EVENT&nbsp;onf4&nbsp;OF&nbsp;cl_gui_alv_grid&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"增加搜索帮助<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IMPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e_fieldname&nbsp;"代表用户点击了ALV的哪个字段来触发搜索帮助，<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;es_row_no&nbsp;&nbsp;&nbsp;"代表了当前行信息，es_row_no-row_id就是ALV中内表记录的INDEX。<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;er_event_data."当前用户对ALV进行了哪些编辑的信息<br />
+<br />
+ENDCLASS.<br />
+<br />
+DATA: event_handle1 TYPE REF TO cl_event_handle1."定义类对象的引用<br />
+<br />
+CLASS cl_event_handle1 IMPLEMENTATION."事件处理类实现部分<br />
+<br />
+&nbsp;&nbsp;METHOD&nbsp;handle_toolbar.<br />
+&nbsp;&nbsp;ENDMETHOD.<br />
+<br />
+&nbsp;&nbsp;METHOD&nbsp;handle_onf4.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;er_event_data-&gt;m_event_handled&nbsp;=&nbsp;'X'.&nbsp;"在Method的最后，记得加上<br />
+&nbsp;&nbsp;ENDMETHOD.<br />
+ENDCLASS.<br />
+<br />
+SELECTION-SCREEN BEGIN OF BLOCK s1  WITH FRAME TITLE TEXT-001.<br />
+&nbsp;&nbsp;PARAMETERS:&nbsp;p_bukrs&nbsp;TYPE&nbsp;t001-bukrs&nbsp;OBLIGATORY,&nbsp;"公司代码<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p_gjahr&nbsp;TYPE&nbsp;acdoca-gjahr&nbsp;DEFAULT&nbsp;sy-datum+0(4)&nbsp;OBLIGATORY.&nbsp;"会计年度<br />
+&nbsp;&nbsp;SELECT-OPTIONS:&nbsp;s_monat&nbsp;FOR&nbsp;acdoca-poper&nbsp;OBLIGATORY&nbsp;DEFAULT&nbsp;sy-datum+4(2),"会计期间<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s_prctr&nbsp;FOR&nbsp;acdoca-prctr.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;PARAMETERS:&nbsp;p_prctr&nbsp;TYPE&nbsp;acdoca-prctr&nbsp;OBLIGATORY&nbsp;DEFAULT&nbsp;10015001."利润中心<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;PARAMETERS:p_1&nbsp;TYPE&nbsp;c&nbsp;AS&nbsp;CHECKBOX&nbsp;USER-COMMAND&nbsp;uc&nbsp;&nbsp;DEFAULT&nbsp;''.<br />
+SELECTION-SCREEN END OF BLOCK s1.<br />
+<br />
+SELECTION-SCREEN FUNCTION KEY 1.<br />
+SELECTION-SCREEN FUNCTION KEY 2.<br />
+<br />
+INITIALIZATION.<br />
+&nbsp;&nbsp;sscrfields-functxt_01&nbsp;=&nbsp;VALUE&nbsp;smp_dyntxt(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;icon_id&nbsp;=&nbsp;icon_toggle_display_change<br />
+&nbsp;&nbsp;&nbsp;&nbsp;icon_text&nbsp;=&nbsp;'配置数据维护'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;quickinfo&nbsp;=&nbsp;'配置数据维护'<br />
+&nbsp;&nbsp;).<br />
+<br />
+&nbsp;&nbsp;sscrfields-functxt_02&nbsp;=&nbsp;VALUE&nbsp;smp_dyntxt(<br />
+&nbsp;&nbsp;icon_id&nbsp;=&nbsp;icon_toggle_display_change<br />
+&nbsp;&nbsp;icon_text&nbsp;=&nbsp;'利润表科目限制'<br />
+&nbsp;&nbsp;quickinfo&nbsp;=&nbsp;'利润表科目限制'<br />
+).<br />
+<br />
+AT SELECTION-SCREEN.<br />
+&nbsp;&nbsp;CASE&nbsp;sy-ucomm.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'FC01'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;SCREEN&nbsp;9001.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'FC02'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;TRANSACTION&nbsp;'ZFIT027'.<br />
+&nbsp;&nbsp;ENDCASE.<br />
+<br />
+START-OF-SELECTION.<br />
+&nbsp;&nbsp;IF&nbsp;p_1&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;frm_get_data.&nbsp;&nbsp;&nbsp;"取数<br />
+&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;frm_get_data.&nbsp;&nbsp;&nbsp;"取数<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;frm_deal_data.&nbsp;&nbsp;"处理<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;frm_create_data."展现<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+END-OF-SELECTION.<br />
+&nbsp;&nbsp;PERFORM&nbsp;frm_display_data.<br />
+<br />
+<br />
+MODULE status_9001 OUTPUT.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;SET&nbsp;PF-STATUS&nbsp;'xxxxxxxx'.<br />
+*&nbsp;SET&nbsp;TITLEBAR&nbsp;'xxx'.<br />
+   </div>
+   <div class="code">
+ENDMODULE.<br />
+<br />
+MODULE out_screen_9001 OUTPUT.<br />
+&nbsp;&nbsp;PERFORM&nbsp;frm_create_alv.<br />
+ENDMODULE.<br />
+<br />
+MODULE user_command_9001 INPUT.<br />
+&nbsp;&nbsp;CASE&nbsp;sy-ucomm.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'E'&nbsp;OR&nbsp;'ENDE'&nbsp;OR&nbsp;'ECAN'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LEAVE&nbsp;TO&nbsp;SCREEN&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'SPOS'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DELETE&nbsp;zfit_027&nbsp;FROM&nbsp;TABLE&nbsp;gt_zfit_027_hc1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MODIFY&nbsp;zfit_027&nbsp;FROM&nbsp;TABLE&nbsp;gt_zfit_027_hc2.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;COMMIT&nbsp;WORK.<br />
+&nbsp;&nbsp;ENDCASE.<br />
+ENDMODULE.<br />
+<br />
+FORM frm_create_alv.<br />
+&nbsp;&nbsp;REFRESH&nbsp;gt_zfit_027_hc1[].<br />
+&nbsp;&nbsp;SELECT&nbsp;*<br />
+&nbsp;&nbsp;&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_zfit_027_hc1<br />
+&nbsp;&nbsp;FROM&nbsp;zfit_027.<br />
+<br />
+&nbsp;&nbsp;gt_zfit_027_hc2[]&nbsp;=&nbsp;gt_zfit_027_hc1[].<br />
+&nbsp;&nbsp;SORT&nbsp;&nbsp;gt_zfit_027_hc1&nbsp;BY&nbsp;bukrs&nbsp;zhc&nbsp;zxh.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;alv_container1&nbsp;IS&nbsp;INITIAL."绘制第一个ALV<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CREATE&nbsp;OBJECT&nbsp;alv_container1&nbsp;&nbsp;&nbsp;&nbsp;"创建ALV容器对象<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;container_name&nbsp;=&nbsp;'CON1'<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;side&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;cl_gui_docking_container=&gt;dock_at_left<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;repid&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;sy-repid<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dynnr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;sy-dynnr<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;extension&nbsp;=&nbsp;3000.&nbsp;"alv宽度<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CREATE&nbsp;OBJECT&nbsp;alv_grid1&nbsp;"创建ALV控件<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_parent&nbsp;=&nbsp;alv_container1.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;frm_set_style.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;METHOD&nbsp;alv_grid1-&gt;set_table_for_first_display<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;is_layout&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;layout<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHANGING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;it_outtab&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;gt_zfit_027_hc2[]<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;it_fieldcatalog&nbsp;=&nbsp;fieldcat[].&nbsp;"如果fieldcat内表为空，则相当于没有配置，采用默认方式显示<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;"为ALV按钮注册监听事件<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CREATE&nbsp;OBJECT&nbsp;:event_handle1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SET&nbsp;HANDLER&nbsp;:&nbsp;&nbsp;event_handle1-&gt;handle_toolbar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FOR&nbsp;alv_grid1,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;event_handle1-&gt;handle_onf4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FOR&nbsp;alv_grid1."F4帮助注册事件<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;event_handle1-&gt;handle_user_command&nbsp;&nbsp;FOR&nbsp;alv_grid1,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;event_handle1-&gt;handle_enter&nbsp;&nbsp;FOR&nbsp;alv_grid1.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;event_handle1-&gt;handle_hotspot_click&nbsp;FOR&nbsp;alv_grid1.<br />
+<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;METHOD&nbsp;alv_grid1-&gt;set_toolbar_interactive.&nbsp;"调用此方法才能激活工具栏上增加的自定义按钮<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;METHOD&nbsp;alv_grid1-&gt;register_edit_event&nbsp;"注册编辑事件，否则不会触发更新事件<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_event_id&nbsp;=&nbsp;cl_gui_alv_grid=&gt;mc_evt_modified.<br />
+<br />
+&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;METHOD&nbsp;alv_grid1-&gt;refresh_table_display.<br />
+&nbsp;&nbsp;ENDIF.<br />
+ENDFORM.<br />
+<br />
+FORM frm_set_style.<br />
+&nbsp;&nbsp;layout-cwidth_opt&nbsp;=&nbsp;abap_true.<br />
+&nbsp;&nbsp;layout-sel_mode&nbsp;&nbsp;&nbsp;=&nbsp;''.<br />
+&nbsp;&nbsp;layout-zebra&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;abap_true.<br />
+<br />
+&nbsp;&nbsp;DEFINE&nbsp;set_fieldcat.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;fieldcat-fieldname&nbsp;=&nbsp;&1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;fieldcat-scrtext_m&nbsp;=&nbsp;&2.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;fieldcat-edit&nbsp;=&nbsp;'X'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;fieldcat-f4availabl&nbsp;=&nbsp;&3.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;fieldcat-outputlen&nbsp;=&nbsp;&4.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;&nbsp;fieldcat.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CLEAR&nbsp;fieldcat.<br />
+&nbsp;&nbsp;END-OF-DEFINITION.<br />
+&nbsp;&nbsp;set_fieldcat&nbsp;:&nbsp;'BUKRS'&nbsp;&nbsp;&nbsp;'公司代码'&nbsp;&nbsp;&nbsp;&nbsp;''&nbsp;''&nbsp;,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ZHC'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'行次'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;''&nbsp;''&nbsp;,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ZXH'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'序号'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;''&nbsp;''&nbsp;,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ZXMMC'&nbsp;&nbsp;&nbsp;'描述'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;''&nbsp;'60'&nbsp;,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ZHKONTF'&nbsp;'起始科目号'&nbsp;&nbsp;''&nbsp;''&nbsp;,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ZHKONTT'&nbsp;'结束科目号'&nbsp;&nbsp;''&nbsp;''&nbsp;,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ZZSZH'&nbsp;&nbsp;&nbsp;'正负反转'&nbsp;&nbsp;&nbsp;&nbsp;''&nbsp;''&nbsp;,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ZGS'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'计算公式'&nbsp;&nbsp;&nbsp;&nbsp;''&nbsp;'128'&nbsp;,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ZQIC'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'期初'&nbsp;&nbsp;&nbsp;&nbsp;''&nbsp;''&nbsp;.<br />
+ENDFORM.<br />
+<br />
+FORM frm_get_data.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;s_monat-high&nbsp;IS&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;s_monat-high&nbsp;=&nbsp;s_monat-low.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;tp_cond&nbsp;&nbsp;TYPE&nbsp;string,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tp_field&nbsp;TYPE&nbsp;c&nbsp;LENGTH&nbsp;5.<br />
+&nbsp;&nbsp;DATA&nbsp;&nbsp;tp_perio&nbsp;TYPE&nbsp;char3&nbsp;.<br />
+&nbsp;&nbsp;DATA:&nbsp;tp_monat&nbsp;TYPE&nbsp;c&nbsp;LENGTH&nbsp;2&nbsp;VALUE&nbsp;'00'.<br />
+&nbsp;&nbsp;DATA:&nbsp;tp_year&nbsp;TYPE&nbsp;&nbsp;faglflext-ryear&nbsp;.<br />
+<br />
+&nbsp;&nbsp;CLEAR:&nbsp;tp_year&nbsp;.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"用于取上年同期<br />
+&nbsp;&nbsp;tp_year&nbsp;=&nbsp;p_gjahr&nbsp;-&nbsp;2.<br />
+<br />
+&nbsp;&nbsp;tp_perio&nbsp;=&nbsp;s_monat-high.<br />
+<br />
+&nbsp;&nbsp;DO&nbsp;tp_perio&nbsp;TIMES.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;tp_monat&nbsp;=&nbsp;tp_monat&nbsp;+&nbsp;1&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SHIFT&nbsp;tp_monat&nbsp;RIGHT&nbsp;DELETING&nbsp;TRAILING&nbsp;space&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;OVERLAY&nbsp;tp_monat&nbsp;WITH&nbsp;'00'&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CLEAR:&nbsp;tp_field&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CONCATENATE&nbsp;'HSL'&nbsp;tp_monat&nbsp;INTO&nbsp;&nbsp;tp_field&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CONCATENATE&nbsp;tp_cond&nbsp;tp_field&nbsp;INTO&nbsp;tp_cond&nbsp;SEPARATED&nbsp;BY&nbsp;space&nbsp;.<br />
+&nbsp;&nbsp;ENDDO.<br />
+&nbsp;&nbsp;CONCATENATE&nbsp;'RBUKRS'&nbsp;'RYEAR'&nbsp;'RPMAX'&nbsp;'RACCT'&nbsp;'RTCUR'&nbsp;'DRCRK'&nbsp;'RFAREA'&nbsp;'HSLVT'<br />
+&nbsp;&nbsp;tp_cond&nbsp;INTO&nbsp;tp_cond&nbsp;SEPARATED&nbsp;BY&nbsp;space&nbsp;.<br />
+<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;p_1&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SELECT&nbsp;zhc&nbsp;AS&nbsp;hc<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;zxmmc<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;byje<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bqje<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bnljje<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sntqljje<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;datum<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uzeit<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_alv<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FROM&nbsp;zfit_029<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;bukrs&nbsp;EQ&nbsp;p_bukrs<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;gjahr&nbsp;EQ&nbsp;p_gjahr<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;fpoper&nbsp;LE&nbsp;s_monat-high<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;tpoper&nbsp;GE&nbsp;s_monat-low<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;fprctr&nbsp;LE&nbsp;s_prctr-high<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;tprctr&nbsp;GE&nbsp;s_prctr-low.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;prctr&nbsp;eq&nbsp;p_prctr.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;RANGES&nbsp;r_racct&nbsp;FOR&nbsp;faglflexa-racct.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SELECT&nbsp;*&nbsp;INTO&nbsp;TABLE&nbsp;@DATA(lt_zfit_028)&nbsp;FROM&nbsp;zfit_028&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;lt_zfit_028&nbsp;INTO&nbsp;DATA(ls_zfit_028).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLEAR&nbsp;r_racct.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r_racct+0(3)&nbsp;=&nbsp;'IBT'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r_racct-low&nbsp;=&nbsp;ls_zfit_028-zhkontf.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r_racct-high&nbsp;=&nbsp;ls_zfit_028-zhkontt.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;r_racct.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDLOOP.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SELECT&nbsp;(tp_cond)&nbsp;&nbsp;&nbsp;"查询发生额数据<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_fag<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FROM&nbsp;faglflext<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;rbukrs&nbsp;EQ&nbsp;p_bukrs<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;(&nbsp;ryear&nbsp;&nbsp;LE&nbsp;p_gjahr&nbsp;AND&nbsp;ryear&nbsp;GE&nbsp;tp_year&nbsp;)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;rldnr&nbsp;EQ&nbsp;'0L'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;prctr&nbsp;IN&nbsp;s_prctr<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;prctr&nbsp;EQ&nbsp;p_prctr<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;racct&nbsp;IN&nbsp;r_racct.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gt_fag[]&nbsp;IS&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MESSAGE&nbsp;'当前期间内未有数据'&nbsp;TYPE&nbsp;'S'&nbsp;DISPLAY&nbsp;LIKE&nbsp;'E'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LEAVE&nbsp;LIST-PROCESSING.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;STOP..<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SELECT&nbsp;*<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_zfit_027<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FROM&nbsp;zfit_027.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+ENDFORM.<br />
+FORM frm_deal_data.<br />
+&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;hsl&gt;&nbsp;TYPE&nbsp;any&nbsp;.<br />
+&nbsp;&nbsp;RANGES:&nbsp;r_racct&nbsp;FOR&nbsp;faglflexa-racct."会计科目<br />
+&nbsp;&nbsp;DATA:&nbsp;lv_gjahr&nbsp;TYPE&nbsp;acdoca-gjahr.&nbsp;&nbsp;&nbsp;"上年<br />
+&nbsp;&nbsp;DATA:&nbsp;lv_gjahr2&nbsp;TYPE&nbsp;acdoca-gjahr.&nbsp;&nbsp;&nbsp;"千年<br />
+<br />
+&nbsp;&nbsp;lv_gjahr&nbsp;=&nbsp;p_gjahr&nbsp;-&nbsp;1.<br />
+&nbsp;&nbsp;lv_gjahr2&nbsp;=&nbsp;p_gjahr&nbsp;-&nbsp;2.<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;lv_monat_low&nbsp;&nbsp;TYPE&nbsp;int4,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_monat_high&nbsp;TYPE&nbsp;int4.<br />
+&nbsp;&nbsp;lv_monat_low&nbsp;=&nbsp;s_monat-low.<br />
+&nbsp;&nbsp;lv_monat_high&nbsp;=&nbsp;s_monat-high.<br />
+<br />
+<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;gt_zfit_027&nbsp;INTO&nbsp;DATA(gs_zfit_027).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_zfit_027-zgs&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;caculate_results&nbsp;CHANGING&nbsp;gs_zfit_027-zgs&nbsp;&nbsp;gs_dmbtr-byje&nbsp;&nbsp;&nbsp;gs_dmbtr-bqje&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"公式计算和资产负债表的相同&nbsp;参考资产负债表注释各项<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_dmbtr-bnljje&nbsp;gs_dmbtr-sntqljje&nbsp;&nbsp;.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"有计算公式的行没有分科目号段照成多行的问题<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_dmbtr-zrow&nbsp;=&nbsp;gs_zfit_027-zhc.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SHIFT&nbsp;gs_dmbtr-zrow&nbsp;RIGHT&nbsp;DELETING&nbsp;TRAILING&nbsp;''&nbsp;."20220212&nbsp;CHANGE&nbsp;BY&nbsp;LQY.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OVERLAY&nbsp;gs_dmbtr-zrow&nbsp;WITH&nbsp;'000'&nbsp;.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"20220212&nbsp;CHANGE&nbsp;BY&nbsp;LQY.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;COLLECT&nbsp;gs_dmbtr&nbsp;INTO&nbsp;gt_dmbtr&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLEAR&nbsp;gs_dmbtr.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_zfit_027-zhkontf&nbsp;IS&nbsp;NOT&nbsp;INITIAL&nbsp;OR&nbsp;gs_zfit_027-zhkontt&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;REFRESH&nbsp;r_racct.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"整合科目范围<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_zfit_027-zhkontf&nbsp;IS&nbsp;NOT&nbsp;INITIAL&nbsp;AND&nbsp;gs_zfit_027-zhkontt&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r_racct-sign&nbsp;=&nbsp;'I'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r_racct-option&nbsp;=&nbsp;'BT'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r_racct-low&nbsp;=&nbsp;gs_zfit_027-zhkontf.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r_racct-high&nbsp;=&nbsp;gs_zfit_027-zhkontt.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;r_racct.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLEAR&nbsp;r_racct.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ELSEIF&nbsp;gs_zfit_027-zhkontf&nbsp;IS&nbsp;NOT&nbsp;INITIAL&nbsp;AND&nbsp;gs_zfit_027-zhkontt&nbsp;IS&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r_racct+0(3)&nbsp;=&nbsp;'IEQ'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r_racct-low&nbsp;=&nbsp;gs_zfit_027-zhkontf.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;r_racct.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLEAR&nbsp;r_racct.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ELSEIF&nbsp;gs_zfit_027-zhkontf&nbsp;IS&nbsp;INITIAL&nbsp;AND&nbsp;gs_zfit_027-zhkontt&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r_racct+0(3)&nbsp;=&nbsp;'IEQ'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r_racct-low&nbsp;=&nbsp;gs_zfit_027-zhkontt.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;r_racct.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLEAR&nbsp;r_racct.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;gt_fag&nbsp;INTO&nbsp;gs_fag&nbsp;WHERE&nbsp;racct&nbsp;IN&nbsp;r_racct.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_zfit_027-zqic&nbsp;EQ&nbsp;'X'."期初<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;p_gjahr&nbsp;EQ&nbsp;p_gjahr.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ADD&nbsp;gs_fag-hslvt&nbsp;TO&nbsp;gs_dmbtr-bnljje.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;p_gjahr&nbsp;EQ&nbsp;lv_gjahr2.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ADD&nbsp;gs_fag-hslvt&nbsp;TO&nbsp;gs_dmbtr-sntqljje.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_fag-ryear&nbsp;=&nbsp;p_gjahr&nbsp;.&nbsp;&nbsp;"当年<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DO&nbsp;16&nbsp;TIMES.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;(&nbsp;sy-index&nbsp;+&nbsp;8&nbsp;)&nbsp;OF&nbsp;STRUCTURE&nbsp;gs_fag&nbsp;TO&nbsp;&lt;hsl&gt;&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHECK&nbsp;sy-subrc&nbsp;EQ&nbsp;0&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;sy-index&nbsp;EQ&nbsp;&nbsp;lv_monat_high.&nbsp;"本月<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ADD&nbsp;&lt;hsl&gt;&nbsp;TO&nbsp;gs_dmbtr-byje&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;sy-index&nbsp;GE&nbsp;lv_monat_low&nbsp;AND&nbsp;sy-index&nbsp;LE&nbsp;lv_monat_high."本期<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ADD&nbsp;&lt;hsl&gt;&nbsp;TO&nbsp;gs_dmbtr-bqje&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;sy-index&nbsp;LE&nbsp;lv_monat_high.&nbsp;"本年<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ADD&nbsp;&lt;hsl&gt;&nbsp;TO&nbsp;gs_dmbtr-bnljje&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDDO.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ELSEIF&nbsp;gs_fag-ryear&nbsp;=&nbsp;lv_gjahr.&nbsp;&nbsp;"上年同期<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DO&nbsp;16&nbsp;TIMES.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;(&nbsp;sy-index&nbsp;+&nbsp;8&nbsp;)&nbsp;OF&nbsp;STRUCTURE&nbsp;gs_fag&nbsp;TO&nbsp;&lt;hsl&gt;&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHECK&nbsp;sy-subrc&nbsp;EQ&nbsp;0&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&nbsp;sy-index&nbsp;LE&nbsp;lv_monat_high."本期<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ADD&nbsp;&lt;hsl&gt;&nbsp;TO&nbsp;gs_dmbtr-sntqljje&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDDO.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDLOOP.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_zfit_027-zzszh&nbsp;=&nbsp;'X'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_dmbtr-byje&nbsp;=&nbsp;0&nbsp;-&nbsp;gs_dmbtr-byje.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_dmbtr-bqje&nbsp;=&nbsp;0&nbsp;-&nbsp;gs_dmbtr-bqje.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_dmbtr-bnljje&nbsp;=&nbsp;0&nbsp;-&nbsp;gs_dmbtr-bnljje.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_dmbtr-sntqljje&nbsp;=&nbsp;0&nbsp;-&nbsp;gs_dmbtr-sntqljje.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_dmbtr-zrow&nbsp;=&nbsp;gs_zfit_027-zhc.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SHIFT&nbsp;gs_dmbtr-zrow&nbsp;RIGHT&nbsp;DELETING&nbsp;TRAILING&nbsp;''&nbsp;."20220212&nbsp;CHANGE&nbsp;BY&nbsp;LQY.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OVERLAY&nbsp;gs_dmbtr-zrow&nbsp;WITH&nbsp;'000'&nbsp;.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"20220212&nbsp;CHANGE&nbsp;BY&nbsp;LQY.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;COLLECT&nbsp;gs_dmbtr&nbsp;INTO&nbsp;gt_dmbtr.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLEAR&nbsp;gs_dmbtr.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_dmbtr-zrow&nbsp;=&nbsp;gs_zfit_027-zhc.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SHIFT&nbsp;gs_dmbtr-zrow&nbsp;RIGHT&nbsp;DELETING&nbsp;TRAILING&nbsp;''&nbsp;."20220212&nbsp;CHANGE&nbsp;BY&nbsp;LQY.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OVERLAY&nbsp;gs_dmbtr-zrow&nbsp;WITH&nbsp;'000'&nbsp;.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"20220212&nbsp;CHANGE&nbsp;BY&nbsp;LQY.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;COLLECT&nbsp;gs_dmbtr&nbsp;INTO&nbsp;gt_dmbtr.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLEAR&nbsp;gs_dmbtr.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+<br />
+&nbsp;&nbsp;"再次计算公式，避免一些公式取后面的值失败<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;&nbsp;gt_zfit_027&nbsp;INTO&nbsp;gs_zfit_027.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_zfit_027-zgs&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+**20220212&nbsp;CHANGE&nbsp;BY&nbsp;LQY<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_zhc&nbsp;=&nbsp;gs_zfit_027-zhc.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SHIFT&nbsp;lv_zhc&nbsp;RIGHT&nbsp;DELETING&nbsp;TRAILING&nbsp;''.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OVERLAY&nbsp;lv_zhc&nbsp;WITH&nbsp;'000'&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_dmbtr&nbsp;ASSIGNING&nbsp;FIELD-SYMBOL(&lt;f_dmbtr&gt;)&nbsp;WITH&nbsp;KEY&nbsp;zrow&nbsp;=&nbsp;lv_zhc.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_dmbtr&nbsp;ASSIGNING&nbsp;FIELD-SYMBOL(&lt;f_dmbtr&gt;)&nbsp;WITH&nbsp;KEY&nbsp;zrow&nbsp;=&nbsp;gs_zfit_027-zhc.<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;sy-subrc&nbsp;=&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLEAR:&nbsp;&lt;f_dmbtr&gt;-byje,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;f_dmbtr&gt;-bqje,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;f_dmbtr&gt;-bnljje,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;f_dmbtr&gt;-sntqljje&nbsp;&nbsp;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;caculate_results&nbsp;CHANGING&nbsp;gs_zfit_027-zgs&nbsp;&nbsp;&lt;f_dmbtr&gt;-byje<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;f_dmbtr&gt;-bqje&nbsp;&nbsp;&nbsp;&lt;f_dmbtr&gt;-bnljje<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;f_dmbtr&gt;-sntqljje&nbsp;&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+<br />
+ENDFORM.<br />
+FORM caculate_results CHANGING p_formula p_lmhsl p_lyhsl p_nmhsl p_nyhsl .<br />
+&nbsp;&nbsp;DATA:&nbsp;wa_dmbtr&nbsp;LIKE&nbsp;LINE&nbsp;OF&nbsp;gt_dmbtr&nbsp;.<br />
+&nbsp;&nbsp;DATA:&nbsp;formula_len&nbsp;TYPE&nbsp;&nbsp;i,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;i.<br />
+&nbsp;&nbsp;DATA:&nbsp;tp_char&nbsp;TYPE&nbsp;c,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l_row&nbsp;&nbsp;&nbsp;TYPE&nbsp;c&nbsp;LENGTH&nbsp;3.<br />
+&nbsp;&nbsp;DATA:&nbsp;tp_lmhsl&nbsp;TYPE&nbsp;string,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tp_lyhsl&nbsp;TYPE&nbsp;string,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tp_nmhsl&nbsp;TYPE&nbsp;string,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tp_nyhsl&nbsp;TYPE&nbsp;string,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tp_value&nbsp;TYPE&nbsp;string.<br />
+&nbsp;&nbsp;DATA:&nbsp;l_value&nbsp;TYPE&nbsp;f&nbsp;.<br />
+<br />
+&nbsp;&nbsp;formula_len&nbsp;=&nbsp;strlen(&nbsp;p_formula&nbsp;)&nbsp;.&nbsp;&nbsp;&nbsp;"计算公式长度<br />
+<br />
+&nbsp;&nbsp;CLEAR:tp_lmhsl,tp_lyhsl,tp_nmhsl,tp_nyhsl,tp_char,l_row&nbsp;.<br />
+<br />
+&nbsp;&nbsp;CONDENSE&nbsp;p_formula&nbsp;NO-GAPS&nbsp;.<br />
+&nbsp;&nbsp;DO&nbsp;formula_len&nbsp;TIMES.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;last&nbsp;=&nbsp;sy-index&nbsp;-&nbsp;1&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;tp_char&nbsp;=&nbsp;p_formula+last(1)&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;tp_char&nbsp;CO&nbsp;'0123456789'&nbsp;.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"为数字<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CONCATENATE&nbsp;l_row&nbsp;tp_char&nbsp;INTO&nbsp;l_row&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLEAR:&nbsp;tp_char&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;tp_char&nbsp;CO&nbsp;'+-*/'&nbsp;OR&nbsp;sy-index&nbsp;=&nbsp;formula_len&nbsp;."为计算符号<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SHIFT&nbsp;l_row&nbsp;RIGHT&nbsp;DELETING&nbsp;TRAILING&nbsp;''&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OVERLAY&nbsp;l_row&nbsp;WITH&nbsp;'000'&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLEAR:&nbsp;wa_dmbtr&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_dmbtr&nbsp;INTO&nbsp;wa_dmbtr&nbsp;WITH&nbsp;KEY&nbsp;zrow&nbsp;=&nbsp;l_row&nbsp;.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;sy-subrc&nbsp;=&nbsp;0&nbsp;.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLEAR:tp_value&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tp_value&nbsp;=&nbsp;wa_dmbtr-byje&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;FUNCTION&nbsp;'CLOI_PUT_SIGN_IN_FRONT'&nbsp;&nbsp;&nbsp;"负数负号前置<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHANGING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value&nbsp;=&nbsp;tp_value.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CONCATENATE&nbsp;tp_lmhsl&nbsp;'('&nbsp;tp_value&nbsp;')'&nbsp;&nbsp;tp_char&nbsp;INTO&nbsp;tp_lmhsl&nbsp;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLEAR:tp_value&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tp_value&nbsp;=&nbsp;wa_dmbtr-bqje&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;FUNCTION&nbsp;'CLOI_PUT_SIGN_IN_FRONT'&nbsp;&nbsp;&nbsp;"负数负号前置<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHANGING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value&nbsp;=&nbsp;tp_value.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CONCATENATE&nbsp;tp_lyhsl&nbsp;'('&nbsp;tp_value&nbsp;')'&nbsp;&nbsp;tp_char&nbsp;INTO&nbsp;tp_lyhsl&nbsp;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLEAR:tp_value&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tp_value&nbsp;=&nbsp;wa_dmbtr-bnljje&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;FUNCTION&nbsp;'CLOI_PUT_SIGN_IN_FRONT'&nbsp;&nbsp;&nbsp;"负数负号前置<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHANGING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value&nbsp;=&nbsp;tp_value.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CONCATENATE&nbsp;tp_nmhsl&nbsp;'('&nbsp;tp_value&nbsp;')'&nbsp;&nbsp;tp_char&nbsp;INTO&nbsp;tp_nmhsl&nbsp;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLEAR:tp_value&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tp_value&nbsp;=&nbsp;wa_dmbtr-sntqljje&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;FUNCTION&nbsp;'CLOI_PUT_SIGN_IN_FRONT'&nbsp;&nbsp;&nbsp;"负数负号前置<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHANGING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value&nbsp;=&nbsp;tp_value.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CONCATENATE&nbsp;tp_nyhsl&nbsp;'('&nbsp;tp_value&nbsp;')'&nbsp;&nbsp;tp_char&nbsp;INTO&nbsp;tp_nyhsl&nbsp;.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLEAR:&nbsp;l_row&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDDO.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;tp_lmhsl&nbsp;&lt;&gt;&nbsp;''&nbsp;&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CLEAR:&nbsp;l_value&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;FUNCTION&nbsp;'CHECK_FORMULA'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;formula&nbsp;=&nbsp;tp_lmhsl.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;sy-subrc&nbsp;=&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;FUNCTION&nbsp;'EVAL_FORMULA'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;formula&nbsp;=&nbsp;tp_lmhsl<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IMPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value&nbsp;&nbsp;&nbsp;=&nbsp;l_value.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p_lmhsl&nbsp;=&nbsp;l_value&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;tp_lyhsl&nbsp;&lt;&gt;&nbsp;''&nbsp;&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CLEAR:&nbsp;l_value&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;FUNCTION&nbsp;'CHECK_FORMULA'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;formula&nbsp;=&nbsp;tp_lyhsl.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;sy-subrc&nbsp;=&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;FUNCTION&nbsp;'EVAL_FORMULA'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;formula&nbsp;=&nbsp;tp_lyhsl<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IMPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value&nbsp;&nbsp;&nbsp;=&nbsp;l_value.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p_lyhsl&nbsp;=&nbsp;l_value&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;tp_nmhsl&nbsp;&lt;&gt;&nbsp;''&nbsp;&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CLEAR:&nbsp;l_value&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;FUNCTION&nbsp;'CHECK_FORMULA'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;formula&nbsp;=&nbsp;tp_nmhsl.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;sy-subrc&nbsp;=&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;FUNCTION&nbsp;'EVAL_FORMULA'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;formula&nbsp;=&nbsp;tp_nmhsl<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IMPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value&nbsp;&nbsp;&nbsp;=&nbsp;l_value.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p_nmhsl&nbsp;=&nbsp;l_value&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;tp_nyhsl&nbsp;&lt;&gt;&nbsp;''&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CLEAR:&nbsp;l_value&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;FUNCTION&nbsp;'CHECK_FORMULA'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;formula&nbsp;=&nbsp;tp_nyhsl.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;sy-subrc&nbsp;=&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;FUNCTION&nbsp;'EVAL_FORMULA'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;formula&nbsp;=&nbsp;tp_nyhsl<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IMPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value&nbsp;&nbsp;&nbsp;=&nbsp;l_value.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p_nyhsl&nbsp;=&nbsp;l_value&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.<br />
+FORM frm_create_data .<br />
+&nbsp;&nbsp;DATA:&nbsp;lv_index&nbsp;TYPE&nbsp;int4&nbsp;VALUE&nbsp;0.<br />
+&nbsp;&nbsp;SORT&nbsp;gt_dmbtr&nbsp;BY&nbsp;zrow.<br />
+<br />
+&nbsp;&nbsp;DATA:lv_len&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;int4,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_need_len&nbsp;TYPE&nbsp;int4.<br />
+<br />
+&nbsp;&nbsp;CLEAR&nbsp;gs_alv.<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;gt_dmbtr&nbsp;INTO&nbsp;gs_dmbtr&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ADD&nbsp;1&nbsp;TO&nbsp;lv_index.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;gs_dmbtr-zrow&nbsp;=&nbsp;|{&nbsp;gs_dmbtr-zrow&nbsp;ALPHA&nbsp;=&nbsp;OUT&nbsp;}|.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_zfit_027&nbsp;INTO&nbsp;DATA(ls_zfit_027)&nbsp;WITH&nbsp;KEY&nbsp;zhc&nbsp;=&nbsp;gs_dmbtr-zrow.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;sy-subrc&nbsp;=&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_alv-zxmmc&nbsp;=&nbsp;ls_zfit_027-zxmmc.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_alv-hc&nbsp;=&nbsp;lv_index.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_alv-byje&nbsp;=&nbsp;gs_dmbtr-byje.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_alv-bqje&nbsp;=&nbsp;gs_dmbtr-bqje.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_alv-bnljje&nbsp;=&nbsp;gs_dmbtr-bnljje.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_alv-sntqljje&nbsp;=&nbsp;gs_dmbtr-sntqljje.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;gs_alv&nbsp;TO&nbsp;gt_alv.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+<br />
+ENDFORM.<br />
+<br />
+FORM frm_display_data .<br />
+&nbsp;&nbsp;DATA:lt_fcat&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;lvc_t_fcat,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_layout&nbsp;&nbsp;TYPE&nbsp;lvc_s_layo,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lt_events&nbsp;&nbsp;TYPE&nbsp;slis_t_event,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lt_exclude&nbsp;TYPE&nbsp;slis_t_extab.<br />
+&nbsp;&nbsp;PERFORM&nbsp;frm_set_layout&nbsp;&nbsp;&nbsp;CHANGING&nbsp;ls_layout."样式设置<br />
+&nbsp;&nbsp;PERFORM&nbsp;frm_set_fieldcat&nbsp;CHANGING&nbsp;lt_fcat.&nbsp;&nbsp;"设置FIELDCAT&nbsp;&nbsp;仅显示<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;PERFORM&nbsp;frm_set_value.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;PERFORM&nbsp;frm_alv_display&nbsp;&nbsp;USING&nbsp;&nbsp;&nbsp;&nbsp;lt_events<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHANGING&nbsp;lt_fcat<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_layout<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lt_exclude<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_alv."ALV显示<br />
+ENDFORM.<br />
+FORM frm_set_layout CHANGING cs_layout TYPE lvc_s_layo.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&lt;---设置列优化及行选择---&gt;<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;cs_layout-cwidth_opt&nbsp;=&nbsp;abap_true.<br />
+&nbsp;&nbsp;cs_layout-sel_mode&nbsp;&nbsp;&nbsp;=&nbsp;'A'.<br />
+&nbsp;&nbsp;cs_layout-zebra&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;abap_true.<br />
+<br />
+ENDFORM. " FRM_SET_LAYOUT<br />
+FORM frm_set_fieldcat CHANGING ct_fcat TYPE lvc_t_fcat.<br />
+<br />
+&nbsp;&nbsp;DATA:ls_fcat&nbsp;TYPE&nbsp;lvc_s_fcat.<br />
+<br />
+&nbsp;&nbsp;CLEAR:ct_fcat.<br />
+<br />
+&nbsp;&nbsp;DEFINE&nbsp;m_fcat.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ls_fcat-fieldname&nbsp;=&nbsp;&1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ls_fcat-scrtext_m&nbsp;=&nbsp;&2.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ls_fcat-currency&nbsp;&nbsp;=&nbsp;&3.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;ls_fcat&nbsp;TO&nbsp;ct_fcat.<br />
+&nbsp;&nbsp;END-OF-DEFINITION.<br />
+<br />
+&nbsp;&nbsp;"构建FIELDCAT<br />
+&nbsp;&nbsp;m_fcat:'ZXMMC'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'项目'&nbsp;'',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'HC&nbsp;&nbsp;&nbsp;'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'行次'&nbsp;'',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'BYJE'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'本月金额'&nbsp;'CNY',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'BQJE'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'本期金额'&nbsp;'CNY',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'BNLJJE'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'本年累计金额'&nbsp;'CNY',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'SNTQLJJE'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'上年同期累计金额'&nbsp;'CNY'.<br />
+<br />
+ENDFORM. " FRM_SET_FIELDCAT<br />
+<br />
+FORM frm_alv_display USING    it_events  TYPE slis_t_event<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHANGING&nbsp;ct_fcat&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;lvc_t_fcat<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cs_layout&nbsp;&nbsp;TYPE&nbsp;lvc_s_layo<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ct_exclude&nbsp;TYPE&nbsp;slis_t_extab<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ct_tab&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;STANDARD&nbsp;TABLE.<br />
+<br />
+&nbsp;&nbsp;CALL&nbsp;FUNCTION&nbsp;'REUSE_ALV_GRID_DISPLAY_LVC'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_callback_program&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;sy-repid<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;is_layout_lvc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;cs_layout<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;it_fieldcat_lvc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;ct_fcat<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_callback_pf_status_set&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;'SET_PF_STATUS'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"GUI状态设置<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_callback_user_command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;'ALV_USER_COMMAND'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"用户状态PAI<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_callback_html_top_of_page&nbsp;=&nbsp;'HTML_TOP_OF_PAGE'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_html_height_top&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;13<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;it_excluding&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;ct_exclude<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;it_events&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;it_events<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_default&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;abap_true<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_save&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;'A'<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;TABLES<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t_outtab&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;ct_tab<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXCEPTIONS<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OTHERS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;0.<br />
+<br />
+ENDFORM. " FRM_ALV_DISPLAY<br />
+<br />
+FORM set_pf_status USING pt_exclude TYPE kkblo_t_extab.<br />
+<br />
+&nbsp;&nbsp;DATA:lt_exclude&nbsp;TYPE&nbsp;kkblo_t_extab&nbsp;WITH&nbsp;HEADER&nbsp;LINE.<br />
+<br />
+&nbsp;&nbsp;SET&nbsp;PF-STATUS&nbsp;'STANDARD'&nbsp;EXCLUDING&nbsp;lt_exclude[].<br />
+<br />
+ENDFORM.<br />
+<br />
+FORM alv_user_command USING p_ucomm LIKE sy-ucomm<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rs_selfield&nbsp;TYPE&nbsp;slis_selfield.<br />
+&nbsp;&nbsp;DATA:&nbsp;l_name&nbsp;TYPE&nbsp;string&nbsp;.<br />
+&nbsp;&nbsp;DATA:&nbsp;lr_grid&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;cl_gui_alv_grid.<br />
+<br />
+&nbsp;&nbsp;CALL&nbsp;FUNCTION&nbsp;'GET_GLOBALS_FROM_SLVC_FULLSCR'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IMPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e_grid&nbsp;=&nbsp;lr_grid.<br />
+<br />
+&nbsp;&nbsp;CALL&nbsp;METHOD&nbsp;lr_grid-&gt;check_changed_data.<br />
+<br />
+&nbsp;&nbsp;rs_selfield-refresh&nbsp;=&nbsp;'X'.&nbsp;&nbsp;"自动刷新<br />
+&nbsp;&nbsp;rs_selfield-col_stable&nbsp;=&nbsp;'X'.<br />
+&nbsp;&nbsp;rs_selfield-row_stable&nbsp;=&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;CASE&nbsp;p_ucomm&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'BC'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;frm_update_data.<br />
+<br />
+&nbsp;&nbsp;ENDCASE.<br />
+ENDFORM. "USER_COMMAND_ALV<br />
+<br />
+FORM html_top_of_page USING document TYPE REF TO cl_dd_document.<br />
+&nbsp;&nbsp;DATA:&nbsp;text&nbsp;TYPE&nbsp;sdydo_text_element.<br />
+&nbsp;&nbsp;DATA:&nbsp;position&nbsp;TYPE&nbsp;i.<br />
+&nbsp;&nbsp;DATA:&nbsp;l_text&nbsp;TYPE&nbsp;string.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;SELECT&nbsp;SINGLE&nbsp;ltext&nbsp;INTO&nbsp;@DATA(lv_butxt)&nbsp;FROM&nbsp;cepct&nbsp;WHERE&nbsp;kokrs&nbsp;=&nbsp;'CCTC'&nbsp;AND&nbsp;spras&nbsp;=&nbsp;'1'&nbsp;AND&nbsp;prctr&nbsp;=&nbsp;@p_prctr.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;s_prctr-high&nbsp;IS&nbsp;INITIAL&nbsp;AND&nbsp;s_prctr-low&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SELECT&nbsp;SINGLE&nbsp;ltext&nbsp;INTO&nbsp;@DATA(lv_butxt)&nbsp;FROM&nbsp;cepct&nbsp;WHERE&nbsp;kokrs&nbsp;=&nbsp;'CCTC'&nbsp;AND&nbsp;spras&nbsp;=&nbsp;'1'&nbsp;AND&nbsp;prctr&nbsp;=&nbsp;@s_prctr-low.<br />
+&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;lv_butxt&nbsp;=&nbsp;'多利润中心汇总'.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;SEARCH&nbsp;document-&gt;html_table&nbsp;FOR&nbsp;document-&gt;cursor.<br />
+&nbsp;&nbsp;IF&nbsp;sy-subrc&nbsp;EQ&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;position&nbsp;=&nbsp;sy-tabix.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;METHOD&nbsp;document-&gt;html_insert<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;contents&nbsp;=&nbsp;'&lt;div&gt;&lt;span&nbsp;style="text-align:center"&gt;&lt;h2&gt;利润表&lt;/h2&gt;&lt;/span&gt;&lt;/div&gt;'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHANGING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;position&nbsp;=&nbsp;position.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;METHOD&nbsp;document-&gt;html_insert<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;contents&nbsp;=&nbsp;'&lt;div&nbsp;style="position:absolute;top:60px;"&gt;&lt;span&gt;编制单位：'&nbsp;&&&nbsp;lv_butxt&nbsp;&&&nbsp;'&lt;/span&gt;'&nbsp;&&&nbsp;'&lt;/div&gt;'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHANGING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;position&nbsp;=&nbsp;position.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;METHOD&nbsp;document-&gt;html_insert<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;contents&nbsp;=&nbsp;'&lt;div&nbsp;style="position:absolute;top:90px;"&gt;'&nbsp;&&&nbsp;'&lt;span&gt;单位：元&lt;/span&gt;&nbsp;'&nbsp;&&&nbsp;'&nbsp;&lt;/div&gt;'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHANGING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;position&nbsp;=&nbsp;position.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;p_1&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_alv&nbsp;INTO&nbsp;DATA(ls_alv)&nbsp;INDEX&nbsp;1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;sy-subrc&nbsp;=&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CONCATENATE&nbsp;'保存日期：'&nbsp;ls_alv-datum+0(4)&nbsp;'年'&nbsp;ls_alv-datum+4(2)&nbsp;'月'&nbsp;ls_alv-datum+6(2)&nbsp;'日'&nbsp;ls_alv-uzeit+0(2)&nbsp;'时'&nbsp;ls_alv-uzeit+2(2)&nbsp;'分'&nbsp;ls_alv-uzeit+4(2)&nbsp;'秒'&nbsp;INTO&nbsp;l_text&nbsp;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;METHOD&nbsp;document-&gt;html_insert<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;contents&nbsp;=&nbsp;'&lt;div&nbsp;style="position:absolute;top:120px;"&gt;&lt;span&gt;'&nbsp;&&&nbsp;l_text&nbsp;&&&nbsp;'&lt;/span&gt;'&nbsp;&&&nbsp;'&lt;/div&gt;'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHANGING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;position&nbsp;=&nbsp;position.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM. "HTML_TOP_OF_PAGE<br />
+<br />
+FORM frm_update_data.<br />
+&nbsp;&nbsp;DATA:&nbsp;lt_zfit029&nbsp;TYPE&nbsp;TABLE&nbsp;OF&nbsp;zfit_029,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_zfit029&nbsp;TYPE&nbsp;zfit_029.<br />
+&nbsp;&nbsp;IF&nbsp;s_monat-high&nbsp;IS&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;s_monat-high&nbsp;=&nbsp;s_monat-low.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;gt_alv&nbsp;INTO&nbsp;DATA(ls_alv).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE-CORRESPONDING&nbsp;ls_alv&nbsp;TO&nbsp;ls_zfit029.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ls_zfit029-bukrs&nbsp;=&nbsp;p_bukrs.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ls_zfit029-gjahr&nbsp;=&nbsp;p_gjahr.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ls_zfit029-fpoper&nbsp;=&nbsp;s_monat-low.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ls_zfit029-tpoper&nbsp;=&nbsp;s_monat-high.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;ls_zfit029-prctr&nbsp;=&nbsp;p_prctr.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;ls_zfit029-fprctr&nbsp;=&nbsp;s_prctr-low.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ls_zfit029-tprctr&nbsp;=&nbsp;s_prctr-high.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ls_zfit029-zhc&nbsp;=&nbsp;ls_alv-hc.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ls_zfit029-datum&nbsp;=&nbsp;sy-datum.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ls_zfit029-uzeit&nbsp;=&nbsp;sy-uzeit.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;ls_zfit029&nbsp;TO&nbsp;lt_zfit029.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+<br />
+&nbsp;&nbsp;SELECT&nbsp;*&nbsp;INTO&nbsp;TABLE&nbsp;@DATA(lt_zfit_029)&nbsp;FROM&nbsp;zfit_029&nbsp;WHERE&nbsp;bukrs&nbsp;EQ&nbsp;@p_bukrs&nbsp;AND&nbsp;gjahr&nbsp;EQ&nbsp;@p_gjahr&nbsp;AND&nbsp;fpoper&nbsp;LE&nbsp;@s_monat-high&nbsp;AND&nbsp;tpoper&nbsp;GE&nbsp;@s_monat-low&nbsp;AND&nbsp;fprctr&nbsp;le&nbsp;@s_prctr-high&nbsp;AND&nbsp;tprctr&nbsp;ge&nbsp;@s_prctr-low...<br />
+&nbsp;&nbsp;DELETE&nbsp;zfit_029&nbsp;FROM&nbsp;TABLE&nbsp;lt_zfit_029.<br />
+&nbsp;&nbsp;MODIFY&nbsp;zfit_029&nbsp;FROM&nbsp;TABLE&nbsp;lt_zfit029.<br />
+&nbsp;&nbsp;MESSAGE&nbsp;'保存成功'&nbsp;TYPE&nbsp;'S'.<br />
+<br />
+ENDFORM.<br />
+<br />
+<br />
+   </div>
+   <div class="codeComment">
+*Selection&nbsp;texts<br />
+*----------------------------------------------------------<br />
+*&nbsp;P_1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查询已存数据<br />
+*&nbsp;P_BUKRS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;公司代码<br />
+*&nbsp;P_GJAHR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;会计年度<br />
+*&nbsp;S_MONAT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;会计期间<br />
+*&nbsp;S_PRCTR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;利润中心<br />
+<br />
+<br />
+*Messages<br />
+*----------------------------------------------------------<br />
+*<br />
+*&nbsp;Message&nbsp;class:&nbsp;Hard&nbsp;coded<br />
+*&nbsp;&nbsp;&nbsp;当前期间内未有数据<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2022. Sap Release 755</td>
+   </tr>
+</table>
+</body>
+</html>

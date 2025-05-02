@@ -1,0 +1,5 @@
+STANDARD	STATUS
+功能代码	功能文本	图标别名	图标文本	信息文本	字段名	功能键号	按钮数	菜单类型	功能文本编号	数据元素
+BACK	返回					03		X	001	
+EXIT	取消	@0W@			ICON_CANCEL	12		X	001	
+UPPER	退出					15		X	001	

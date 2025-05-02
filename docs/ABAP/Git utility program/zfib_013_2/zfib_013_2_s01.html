@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=GB2312" />
+<title>ZFIB_013_2_S01</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: ZFIB_013_2_S01</h2>
+<h3> Description: Include ZHRB_013_S01</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;包含&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ZHRB_013_S01<br />
+*&---------------------------------------------------------------------*<br />
+<br />
+   </div>
+   <div class="code">
+SELECTION-SCREEN BEGIN OF BLOCK s1  WITH FRAME TITLE TEXT-001.<br />
+&nbsp;&nbsp;PARAMETERS&nbsp;p_bukrs&nbsp;TYPE&nbsp;t001-bukrs&nbsp;DEFAULT&nbsp;'1000'."公司代码<br />
+&nbsp;&nbsp;SELECT-OPTIONS&nbsp;s_saknr&nbsp;FOR&nbsp;skat-saknr."总账科目<br />
+&nbsp;&nbsp;PARAMETERS&nbsp;p_gjahr&nbsp;TYPE&nbsp;acdoca-gjahr&nbsp;DEFAULT&nbsp;sy-datum+0(4)."会计年度<br />
+&nbsp;&nbsp;SELECT-OPTIONS&nbsp;s_monat&nbsp;FOR&nbsp;acdoca-poper&nbsp;DEFAULT&nbsp;001&nbsp;OBLIGATORY&nbsp;NO-EXTENSION."会计期间<br />
+&nbsp;&nbsp;SELECT-OPTIONS&nbsp;s_prctr&nbsp;FOR&nbsp;acdoca-prctr."利润中心<br />
+SELECTION-SCREEN END OF BLOCK s1.<br />
+<br />
+SELECTION-SCREEN BEGIN OF BLOCK s3  WITH FRAME TITLE TEXT-003.<br />
+&nbsp;&nbsp;SELECTION-SCREEN&nbsp;BEGIN&nbsp;OF&nbsp;LINE.&nbsp;"下拉框带描述<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PARAMETERS:&nbsp;p_zzfi01&nbsp;AS&nbsp;CHECKBOX&nbsp;USER-COMMAND&nbsp;uc1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SELECTION-SCREEN&nbsp;COMMENT&nbsp;2(10)&nbsp;TEXT-101&nbsp;FOR&nbsp;FIELD&nbsp;p_zzfi01.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PARAMETERS:&nbsp;p_zzfi02&nbsp;AS&nbsp;CHECKBOX&nbsp;USER-COMMAND&nbsp;uc1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SELECTION-SCREEN&nbsp;COMMENT&nbsp;16(10)&nbsp;TEXT-102&nbsp;FOR&nbsp;FIELD&nbsp;p_zzfi02.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PARAMETERS:&nbsp;p_zzfi03&nbsp;AS&nbsp;CHECKBOX&nbsp;USER-COMMAND&nbsp;uc1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SELECTION-SCREEN&nbsp;COMMENT&nbsp;31(10)&nbsp;TEXT-103&nbsp;FOR&nbsp;FIELD&nbsp;p_zzfi03.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PARAMETERS:&nbsp;p_zzfi04&nbsp;AS&nbsp;CHECKBOX&nbsp;USER-COMMAND&nbsp;uc1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SELECTION-SCREEN&nbsp;COMMENT&nbsp;46(10)&nbsp;TEXT-104&nbsp;FOR&nbsp;FIELD&nbsp;p_zzfi04.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PARAMETERS:&nbsp;p_zzfi05&nbsp;AS&nbsp;CHECKBOX&nbsp;USER-COMMAND&nbsp;uc1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SELECTION-SCREEN&nbsp;COMMENT&nbsp;61(10)&nbsp;TEXT-105&nbsp;FOR&nbsp;FIELD&nbsp;p_zzfi05.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PARAMETERS:&nbsp;p_zzfi06&nbsp;AS&nbsp;CHECKBOX&nbsp;USER-COMMAND&nbsp;uc1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SELECTION-SCREEN&nbsp;COMMENT&nbsp;76(10)&nbsp;TEXT-106&nbsp;FOR&nbsp;FIELD&nbsp;p_zzfi06.<br />
+<br />
+&nbsp;&nbsp;SELECTION-SCREEN&nbsp;END&nbsp;OF&nbsp;LINE.<br />
+<br />
+&nbsp;&nbsp;SELECTION-SCREEN&nbsp;BEGIN&nbsp;OF&nbsp;LINE.&nbsp;"下拉框带描述<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PARAMETERS:&nbsp;p_zzfi07&nbsp;AS&nbsp;CHECKBOX&nbsp;USER-COMMAND&nbsp;uc1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SELECTION-SCREEN&nbsp;COMMENT&nbsp;2(10)&nbsp;TEXT-107&nbsp;FOR&nbsp;FIELD&nbsp;p_zzfi07.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PARAMETERS:&nbsp;p_zzfi09&nbsp;AS&nbsp;CHECKBOX&nbsp;USER-COMMAND&nbsp;uc1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SELECTION-SCREEN&nbsp;COMMENT&nbsp;16(10)&nbsp;TEXT-108&nbsp;FOR&nbsp;FIELD&nbsp;p_zzfi09.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PARAMETERS:&nbsp;p_zzfi10&nbsp;AS&nbsp;CHECKBOX&nbsp;USER-COMMAND&nbsp;uc1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SELECTION-SCREEN&nbsp;COMMENT&nbsp;31(10)&nbsp;TEXT-109&nbsp;FOR&nbsp;FIELD&nbsp;p_zzfi10.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PARAMETERS:&nbsp;p_posid&nbsp;&nbsp;AS&nbsp;CHECKBOX&nbsp;USER-COMMAND&nbsp;uc1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SELECTION-SCREEN&nbsp;COMMENT&nbsp;46(10)&nbsp;TEXT-110&nbsp;FOR&nbsp;FIELD&nbsp;p_posid.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PARAMETERS:&nbsp;p_glo&nbsp;&nbsp;&nbsp;&nbsp;AS&nbsp;CHECKBOX&nbsp;USER-COMMAND&nbsp;uc1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SELECTION-SCREEN&nbsp;COMMENT&nbsp;61(10)&nbsp;TEXT-111&nbsp;FOR&nbsp;FIELD&nbsp;p_glo.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PARAMETERS:&nbsp;p_xref1&nbsp;&nbsp;AS&nbsp;CHECKBOX&nbsp;USER-COMMAND&nbsp;uc1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SELECTION-SCREEN&nbsp;COMMENT&nbsp;76(10)&nbsp;TEXT-112&nbsp;FOR&nbsp;FIELD&nbsp;p_xref1.<br />
+&nbsp;&nbsp;SELECTION-SCREEN&nbsp;END&nbsp;OF&nbsp;LINE.<br />
+<br />
+&nbsp;&nbsp;SELECTION-SCREEN&nbsp;BEGIN&nbsp;OF&nbsp;LINE.&nbsp;"下拉框带描述<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PARAMETERS:&nbsp;p_rstgr&nbsp;AS&nbsp;CHECKBOX&nbsp;USER-COMMAND&nbsp;uc1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SELECTION-SCREEN&nbsp;COMMENT&nbsp;2(10)&nbsp;TEXT-113&nbsp;FOR&nbsp;FIELD&nbsp;p_rstgr.<br />
+<br />
+&nbsp;&nbsp;SELECTION-SCREEN&nbsp;END&nbsp;OF&nbsp;LINE.<br />
+SELECTION-SCREEN END OF BLOCK s3.<br />
+<br />
+<br />
+<br />
+<br />
+SELECTION-SCREEN BEGIN OF BLOCK s2  WITH FRAME TITLE TEXT-002.<br />
+&nbsp;&nbsp;SELECT-OPTIONS:&nbsp;s_zzfi01&nbsp;FOR&nbsp;acdoca-zzfi01&nbsp;MATCHCODE&nbsp;OBJECT&nbsp;zzfi01_h&nbsp;MODIF&nbsp;ID&nbsp;s1,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s_zzfi02&nbsp;FOR&nbsp;acdoca-zzfi02&nbsp;MODIF&nbsp;ID&nbsp;s2,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s_zzfi03&nbsp;FOR&nbsp;acdoca-zzfi03&nbsp;MODIF&nbsp;ID&nbsp;s3,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s_zzfi04&nbsp;FOR&nbsp;acdoca-zzfi04&nbsp;MATCHCODE&nbsp;OBJECT&nbsp;debi&nbsp;MODIF&nbsp;ID&nbsp;s4,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s_zzfi05&nbsp;FOR&nbsp;acdoca-zzfi05&nbsp;MATCHCODE&nbsp;OBJECT&nbsp;kred_c&nbsp;MODIF&nbsp;ID&nbsp;s5,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s_zzfi06&nbsp;FOR&nbsp;acdoca-zzfi06&nbsp;MATCHCODE&nbsp;OBJECT&nbsp;kost&nbsp;MODIF&nbsp;ID&nbsp;s6,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s_zzfi07&nbsp;FOR&nbsp;acdoca-zzfi07&nbsp;MODIF&nbsp;ID&nbsp;s7,<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s_zzfi08&nbsp;FOR&nbsp;acdoca-zzfi08,<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s_zzfi09&nbsp;FOR&nbsp;acdoca-zzfi09&nbsp;MODIF&nbsp;ID&nbsp;s8,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s_zzfi10&nbsp;FOR&nbsp;acdoca-zzfi10&nbsp;MODIF&nbsp;ID&nbsp;s9,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s_posid&nbsp;&nbsp;FOR&nbsp;acdoca-ps_posid&nbsp;MODIF&nbsp;ID&nbsp;s10,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s_glo&nbsp;&nbsp;&nbsp;&nbsp;FOR&nbsp;bseg-glo_ref1&nbsp;MODIF&nbsp;ID&nbsp;s11,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s_xref1&nbsp;&nbsp;FOR&nbsp;bseg-xref1&nbsp;MODIF&nbsp;ID&nbsp;s12,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s_rstgr&nbsp;&nbsp;FOR&nbsp;bseg-rstgr&nbsp;MODIF&nbsp;ID&nbsp;s13.<br />
+SELECTION-SCREEN END OF BLOCK s2.<br />
+<br />
+SELECTION-SCREEN: FUNCTION KEY 1.<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2022. Sap Release 755</td>
+   </tr>
+</table>
+</body>
+</html>

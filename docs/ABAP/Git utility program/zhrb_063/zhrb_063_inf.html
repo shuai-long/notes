@@ -1,0 +1,633 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=GB2312" />
+<title>ZHRB_063_INF</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: ZHRB_063_INF</h2>
+<h3> Description: Include ZHRB_063_INF</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;包含&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ZHRB_063_INF<br />
+*&---------------------------------------------------------------------*<br />
+<br />
+   </div>
+   <div class="code">
+FORM FRM_GET_INFTY_0000.<br />
+<br />
+&nbsp;&nbsp;"职工编号<br />
+&nbsp;&nbsp;GS_ALV-PERNR&nbsp;=&nbsp;P0000-PERNR.<br />
+<br />
+&nbsp;&nbsp;"员工来源<br />
+&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_PERNR_MASSN&nbsp;USING&nbsp;P0000-PERNR&nbsp;&nbsp;GS_ALV-MASSG.<br />
+<br />
+&nbsp;&nbsp;"变动类型<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;GT_T529T&nbsp;INTO&nbsp;DATA(LS_T529T)&nbsp;WITH&nbsp;KEY&nbsp;MASSN&nbsp;=&nbsp;P0000-MASSN&nbsp;BINARY&nbsp;SEARCH.<br />
+&nbsp;&nbsp;IF&nbsp;SY-SUBRC&nbsp;=&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;GS_ALV-MASSN&nbsp;=&nbsp;LS_T529T-MNTXT.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+<br />
+<br />
+&nbsp;&nbsp;"劳务派遣转正时间<br />
+&nbsp;&nbsp;IF&nbsp;P0000-MASSN&nbsp;EQ&nbsp;'B1'.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;FRM_SPLICE_DATE&nbsp;USING&nbsp;P0000-BEGDA&nbsp;GS_ALV-LWPQ_DATE.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;GS_ALV-LWPQ_DATE&nbsp;=&nbsp;P0000-BEGDA.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;"在岗状态<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;GT_T529U&nbsp;INTO&nbsp;DATA(LS_T529U)&nbsp;WITH&nbsp;KEY&nbsp;STATN&nbsp;=&nbsp;'1'&nbsp;STATV&nbsp;=&nbsp;P0000-STAT1&nbsp;BINARY&nbsp;SEARCH.<br />
+&nbsp;&nbsp;IF&nbsp;SY-SUBRC&nbsp;=&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;GS_ALV-STAT1&nbsp;=&nbsp;LS_T529U-TEXT1.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+<br />
+&nbsp;&nbsp;"变动日期<br />
+&nbsp;&nbsp;GS_ALV-MASSN_BEGDA&nbsp;=&nbsp;P0000-BEGDA.<br />
+<br />
+<br />
+ENDFORM.<br />
+<br />
+FORM FRM_GET_INFTY_0001.<br />
+<br />
+&nbsp;&nbsp;"隶属公司<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;GT_T500P&nbsp;INTO&nbsp;DATA(LS_T500P)&nbsp;WITH&nbsp;KEY&nbsp;PERSA&nbsp;=&nbsp;P0001-WERKS&nbsp;BINARY&nbsp;SEARCH.<br />
+&nbsp;&nbsp;IF&nbsp;SY-SUBRC&nbsp;=&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;GS_ALV-WERKS&nbsp;=&nbsp;LS_T500P-NAME1.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;"一级部门<br />
+&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_OBJID&nbsp;USING&nbsp;P0001-ORGEH&nbsp;'1'&nbsp;GS_ALV-ORGEH1&nbsp;GS_ALV-ORGEH1_TXT.<br />
+<br />
+&nbsp;&nbsp;"二级部门<br />
+&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_OBJID&nbsp;USING&nbsp;P0001-ORGEH&nbsp;'2'&nbsp;GS_ALV-ORGEH2&nbsp;GS_ALV-ORGEH2_TXT.<br />
+<br />
+&nbsp;&nbsp;"所在部门<br />
+&nbsp;&nbsp;GS_ALV-ORGEH_TXT&nbsp;=&nbsp;P0001-Z00HRSSBM.<br />
+&nbsp;&nbsp;GS_ALV-ORGEH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;P0001-Z00HRSSBMID.<br />
+<br />
+&nbsp;&nbsp;"劳务派遣公司单位名称<br />
+&nbsp;&nbsp;IF&nbsp;P0001-Z00HRLWPQ&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;GT_ZHRT_028&nbsp;INTO&nbsp;DATA(LS_ZHRT_028)&nbsp;WITH&nbsp;KEY&nbsp;ZHRLWPQ&nbsp;=&nbsp;P0001-Z00HRLWPQ&nbsp;BINARY&nbsp;SEARCH.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;SY-SUBRC&nbsp;=&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GS_ALV-Z00HRLWPQ&nbsp;=&nbsp;LS_ZHRT_028-ZHRLWPQ_T.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;"职级&nbsp;&nbsp;&nbsp;职级日期<br />
+&nbsp;&nbsp;IF&nbsp;P0001-Z00HRZWJB&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_DOMAIN_STEXT&nbsp;USING&nbsp;'ZD_HRZWJB'&nbsp;P0001-Z00HRZWJB&nbsp;GS_ALV-Z00HRZWJB.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_Z00HRZWJB_DATE&nbsp;USING&nbsp;P0001-Z00HRZWJB&nbsp;GS_ALV-Z00HRZWJB_DATE.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;"岗位性质<br />
+&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_Z00HRGWXZ&nbsp;USING&nbsp;P0001-PLANS&nbsp;GS_ALV-Z00HRGWXZ.<br />
+<br />
+ENDFORM.<br />
+<br />
+<br />
+FORM FRM_GET_INFTY_0002.<br />
+<br />
+&nbsp;&nbsp;"职工姓名<br />
+&nbsp;&nbsp;GS_ALV-NACHN&nbsp;=&nbsp;P0002-NACHN.<br />
+<br />
+&nbsp;&nbsp;"性别<br />
+&nbsp;&nbsp;CASE&nbsp;P0002-GESCH.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'1'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GS_ALV-GESCH&nbsp;=&nbsp;|男|.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'2'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GS_ALV-GESCH&nbsp;=&nbsp;|女|.<br />
+&nbsp;&nbsp;ENDCASE.<br />
+<br />
+&nbsp;&nbsp;"年龄&nbsp;出生日期<br />
+&nbsp;&nbsp;IF&nbsp;P0002-GBDAT&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_AGE&nbsp;USING&nbsp;P0002-GBDAT&nbsp;GS_ALV-AGE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;GS_ALV-GBDAT&nbsp;=&nbsp;P0002-GBDAT&nbsp;.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;"出生地<br />
+&nbsp;&nbsp;GS_ALV-GBORT&nbsp;=&nbsp;P0002-GBORT.<br />
+<br />
+ENDFORM.<br />
+<br />
+FORM FRM_GET_INFTY_0006.<br />
+<br />
+&nbsp;&nbsp;"家庭邮编<br />
+&nbsp;&nbsp;GS_ALV-PSTLZ_JT&nbsp;=&nbsp;P0006-PSTLZ.<br />
+<br />
+<br />
+&nbsp;&nbsp;RP_PROVIDE_FROM_LAST&nbsp;&nbsp;P0006&nbsp;'1'&nbsp;&nbsp;&nbsp;&nbsp;PN-BEGDA&nbsp;PN-ENDDA.<br />
+&nbsp;&nbsp;"居住地<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;GT_T005U&nbsp;INTO&nbsp;DATA(LS_T005U)&nbsp;WITH&nbsp;KEY&nbsp;LAND1&nbsp;=&nbsp;P0006-LAND1&nbsp;BLAND&nbsp;=&nbsp;P0006-STATE&nbsp;BINARY&nbsp;SEARCH.<br />
+&nbsp;&nbsp;IF&nbsp;SY-SUBRC&nbsp;=&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;DATA(LV_STATE)&nbsp;=&nbsp;LS_T005U-BEZEI.<br />
+&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;GS_ALV-STATE&nbsp;=&nbsp;LV_STATE&nbsp;&&&nbsp;P0006-ORT01&nbsp;&&&nbsp;P0006-ORT02&nbsp;&&&nbsp;P0006-LOCAT&nbsp;&&&nbsp;P0006-STRAS.<br />
+<br />
+&nbsp;&nbsp;"邮编<br />
+&nbsp;&nbsp;GS_ALV-PSTLZ&nbsp;=&nbsp;P0006-PSTLZ.<br />
+<br />
+&nbsp;&nbsp;RP_PROVIDE_FROM_LAST&nbsp;&nbsp;P0006&nbsp;'2'&nbsp;&nbsp;&nbsp;&nbsp;PN-BEGDA&nbsp;PN-ENDDA.<br />
+&nbsp;&nbsp;"户籍地址<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;GT_T005U&nbsp;INTO&nbsp;LS_T005U&nbsp;WITH&nbsp;KEY&nbsp;LAND1&nbsp;=&nbsp;P0006-LAND1&nbsp;BLAND&nbsp;=&nbsp;P0006-STATE&nbsp;BINARY&nbsp;SEARCH.<br />
+&nbsp;&nbsp;IF&nbsp;SY-SUBRC&nbsp;=&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;DATA(LV_LOCAT)&nbsp;=&nbsp;LS_T005U-BEZEI.<br />
+&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;GS_ALV-LOCAT&nbsp;=&nbsp;LV_LOCAT&nbsp;&&&nbsp;P0006-ORT01&nbsp;&&&nbsp;P0006-ORT02&nbsp;&&&nbsp;P0006-LOCAT&nbsp;&&&nbsp;P0006-STRAS.<br />
+<br />
+<br />
+&nbsp;&nbsp;RP_PROVIDE_FROM_LAST&nbsp;&nbsp;P0006&nbsp;'7'&nbsp;&nbsp;&nbsp;&nbsp;PN-BEGDA&nbsp;PN-ENDDA.<br />
+&nbsp;&nbsp;"办公地址<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;GT_T005U&nbsp;INTO&nbsp;LS_T005U&nbsp;WITH&nbsp;KEY&nbsp;LAND1&nbsp;=&nbsp;P0006-LAND1&nbsp;BLAND&nbsp;=&nbsp;P0006-STATE&nbsp;BINARY&nbsp;SEARCH.<br />
+&nbsp;&nbsp;IF&nbsp;SY-SUBRC&nbsp;=&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;DATA(LV_ORT01)&nbsp;=&nbsp;LS_T005U-BEZEI.<br />
+&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;GS_ALV-ORT01&nbsp;=&nbsp;LV_ORT01&nbsp;&&&nbsp;P0006-ORT01&nbsp;&&&nbsp;P0006-ORT02&nbsp;&&&nbsp;P0006-LOCAT&nbsp;&&&nbsp;P0006-STRAS.<br />
+<br />
+<br />
+<br />
+ENDFORM.<br />
+<br />
+FORM FRM_GET_INFTY_0016.<br />
+<br />
+&nbsp;&nbsp;"合同类型<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;GT_T547S&nbsp;INTO&nbsp;DATA(LS_T547S)&nbsp;WITH&nbsp;KEY&nbsp;CTTYP&nbsp;=&nbsp;P0016-CTTYP&nbsp;BINARY&nbsp;SEARCH.<br />
+&nbsp;&nbsp;IF&nbsp;SY-SUBRC&nbsp;=&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;GS_ALV-CTTYP&nbsp;=&nbsp;LS_T547S-CTTXT.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;"合同开始日期<br />
+&nbsp;&nbsp;GS_ALV-BEGDA_16&nbsp;=&nbsp;P0016-BEGDA.<br />
+<br />
+&nbsp;&nbsp;"合同结束日期<br />
+&nbsp;&nbsp;GS_ALV-CTEDT&nbsp;=&nbsp;P0016-CTEDT.<br />
+<br />
+&nbsp;&nbsp;"试用期到期日期<br />
+&nbsp;&nbsp;GS_ALV-Z00HRSYQJSSJ&nbsp;=&nbsp;P3211-Z00HRSYQJSSJ.<br />
+<br />
+&nbsp;&nbsp;"合同签订年限<br />
+&nbsp;&nbsp;IF&nbsp;P3211-Z00HRHTQXY&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;GS_ALV-Z00HRHTQXY&nbsp;=&nbsp;P3211-Z00HRHTQXY&nbsp;/&nbsp;12.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;"合同解除时间<br />
+&nbsp;&nbsp;GS_ALV-Z00HRHTZZRQ&nbsp;=&nbsp;P3211-Z00HRHTZZRQ.<br />
+<br />
+&nbsp;&nbsp;"签约顺序<br />
+&nbsp;&nbsp;GS_ALV-Z00HRQDCS&nbsp;=&nbsp;P3211-Z00HRQDCS.<br />
+<br />
+<br />
+<br />
+ENDFORM.<br />
+<br />
+<br />
+FORM FRM_GET_INFTY_0022 .<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;LV_INDEX&nbsp;TYPE&nbsp;I.<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;LV_FIELD_NAME1&nbsp;TYPE&nbsp;CHAR30,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_FIELD_NAME2&nbsp;TYPE&nbsp;CHAR30,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_FIELD_NAME3&nbsp;TYPE&nbsp;CHAR30,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_FIELD_NAME4&nbsp;TYPE&nbsp;CHAR30,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_FIELD_NAME5&nbsp;TYPE&nbsp;CHAR30,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_FIELD_NAME6&nbsp;TYPE&nbsp;CHAR30.<br />
+<br />
+&nbsp;&nbsp;SORT&nbsp;P0022&nbsp;BY&nbsp;BEGDA&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;SORT&nbsp;P3529&nbsp;BY&nbsp;BEGDA&nbsp;DESCENDING.<br />
+<br />
+&nbsp;&nbsp;DO&nbsp;3&nbsp;TIMES.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;LV_INDEX&nbsp;=&nbsp;SY-INDEX.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;P0022&nbsp;INTO&nbsp;DATA(LS_P0022)&nbsp;INDEX&nbsp;LV_INDEX.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;SY-SUBRC&nbsp;=&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;P3529&nbsp;INTO&nbsp;DATA(LS_P3529)&nbsp;WITH&nbsp;KEY&nbsp;BEGDA&nbsp;=&nbsp;LS_P0022-BEGDA&nbsp;ENDDA&nbsp;=&nbsp;LS_P0022-ENDDA<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SUBTY&nbsp;=&nbsp;LS_P0022-SUBTY&nbsp;SEQNR&nbsp;=&nbsp;LS_P0022-SEQNR.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;SY-SUBRC&nbsp;=&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"学历<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_FIELD_NAME1&nbsp;=&nbsp;|GS_ALV-ACAQU_{&nbsp;LV_INDEX&nbsp;}|.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;(LV_FIELD_NAME1)&nbsp;TO&nbsp;FIELD-SYMBOL(&lt;FS_ACAQU&gt;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;FS_ACAQU&gt;&nbsp;IS&nbsp;ASSIGNED.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;GT_T7CNA4T&nbsp;INTO&nbsp;DATA(LS_T7CNA4T)&nbsp;WITH&nbsp;KEY&nbsp;SLART&nbsp;=&nbsp;LS_P3529-SUBTY&nbsp;ACAQU&nbsp;=&nbsp;LS_P3529-ACAQU&nbsp;BINARY&nbsp;SEARCH.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;SY-SUBRC&nbsp;=&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;FS_ACAQU&gt;&nbsp;=&nbsp;LS_T7CNA4T-ACAQT.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"毕业日期<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_FIELD_NAME2&nbsp;=&nbsp;|GS_ALV-ENDDA_22_{&nbsp;LV_INDEX&nbsp;}|.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;(LV_FIELD_NAME2)&nbsp;TO&nbsp;FIELD-SYMBOL(&lt;FS_ENDDA&gt;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;FS_ENDDA&gt;&nbsp;IS&nbsp;ASSIGNED.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;FS_ENDDA&gt;&nbsp;=&nbsp;LS_P3529-ENDDA.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"毕业院校<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_FIELD_NAME3&nbsp;=&nbsp;|GS_ALV-INSTI_{&nbsp;LV_INDEX&nbsp;}|.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;(LV_FIELD_NAME3)&nbsp;TO&nbsp;FIELD-SYMBOL(&lt;FS_INSTI&gt;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;FS_INSTI&gt;&nbsp;IS&nbsp;ASSIGNED.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;FS_INSTI&gt;&nbsp;=&nbsp;LS_P0022-INSTI.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"学校所在地<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_FIELD_NAME4&nbsp;=&nbsp;|GS_ALV-Z00HRZGXLBZ_{&nbsp;LV_INDEX&nbsp;}|.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;(LV_FIELD_NAME4)&nbsp;TO&nbsp;FIELD-SYMBOL(&lt;FS_Z00HRZGXLBZ&gt;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;FS_Z00HRZGXLBZ&gt;&nbsp;IS&nbsp;ASSIGNED.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;LS_P0022-SLAND.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'CN'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;FS_Z00HRZGXLBZ&gt;&nbsp;=&nbsp;'中国'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;FS_Z00HRZGXLBZ&gt;&nbsp;=&nbsp;'海外'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"所学专业<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_FIELD_NAME5&nbsp;=&nbsp;|GS_ALV-Z00HRZYMC_{&nbsp;LV_INDEX&nbsp;}|.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;(LV_FIELD_NAME5)&nbsp;TO&nbsp;FIELD-SYMBOL(&lt;FS_Z00HRZYMC&gt;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;FS_Z00HRZYMC&gt;&nbsp;IS&nbsp;ASSIGNED.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;FS_Z00HRZYMC&gt;&nbsp;=&nbsp;LS_P0022-Z00HRZYMC.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"学位<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_FIELD_NAME6&nbsp;=&nbsp;|GS_ALV-Z00HRXW_{&nbsp;LV_INDEX&nbsp;}|.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;(LV_FIELD_NAME6)&nbsp;TO&nbsp;FIELD-SYMBOL(&lt;FS_Z00HRXW&gt;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;FS_Z00HRXW&gt;&nbsp;IS&nbsp;ASSIGNED.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;FS_Z00HRXW&gt;&nbsp;=&nbsp;LS_P0022-Z00HRXWMC.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UNASSIGN:&nbsp;&lt;FS_ACAQU&gt;,&nbsp;&lt;FS_ENDDA&gt;,&nbsp;&lt;FS_INSTI&gt;,&nbsp;&lt;FS_Z00HRZGXLBZ&gt;,&nbsp;&lt;FS_Z00HRZYMC&gt;,&nbsp;&lt;FS_Z00HRXW&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXIT.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDDO.<br />
+<br />
+ENDFORM.<br />
+<br />
+<br />
+FORM FRM_GET_INFTY_0041.<br />
+<br />
+&nbsp;&nbsp;"参加工作时间<br />
+&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_0041&nbsp;USING&nbsp;'01'&nbsp;P0041&nbsp;GS_ALV-DAT01.<br />
+<br />
+&nbsp;&nbsp;"离职时间<br />
+&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_0041&nbsp;USING&nbsp;'13'&nbsp;P0041&nbsp;GS_ALV-DAT13.<br />
+<br />
+&nbsp;&nbsp;"去世时间<br />
+&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_0041&nbsp;USING&nbsp;'14'&nbsp;P0041&nbsp;GS_ALV-DAT14.<br />
+<br />
+&nbsp;&nbsp;"进公司时间&nbsp;返聘时间<br />
+&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_0041&nbsp;USING&nbsp;'04'&nbsp;P0041&nbsp;GS_ALV-DAT04.<br />
+&nbsp;&nbsp;IF&nbsp;P0000-MASSN&nbsp;EQ&nbsp;'C1'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;GS_ALV-DAT04_C1&nbsp;=&nbsp;GS_ALV-DAT04.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;"退休日期<br />
+&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_0041&nbsp;USING&nbsp;'11'&nbsp;P0041&nbsp;GS_ALV-DAT11.<br />
+<br />
+<br />
+&nbsp;&nbsp;"参加年金时间<br />
+&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_0041&nbsp;USING&nbsp;'15'&nbsp;P0041&nbsp;GS_ALV-DAT15.<br />
+<br />
+&nbsp;&nbsp;"参加年金<br />
+&nbsp;&nbsp;IF&nbsp;GS_ALV-DAT15&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;GS_ALV-CJNJ&nbsp;=&nbsp;'是'.<br />
+&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;GS_ALV-CJNJ&nbsp;=&nbsp;'否'.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+<br />
+ENDFORM.<br />
+<br />
+FORM FRM_GET_INFTY_0105.<br />
+&nbsp;&nbsp;"本人手机号<br />
+&nbsp;&nbsp;GS_ALV-USRID&nbsp;=&nbsp;P0105-USRID.<br />
+<br />
+&nbsp;&nbsp;RP_PROVIDE_FROM_LAST&nbsp;&nbsp;P0105&nbsp;'0005'&nbsp;PN-BEGDA&nbsp;PN-ENDDA.<br />
+&nbsp;&nbsp;"家庭联系人姓名<br />
+&nbsp;&nbsp;GS_ALV-Z00HRLSYXM&nbsp;=&nbsp;P0105-Z00HRLSYXM.<br />
+<br />
+&nbsp;&nbsp;"家庭联系人手机<br />
+&nbsp;&nbsp;GS_ALV-USRID_5&nbsp;=&nbsp;P0105-USRID.<br />
+<br />
+&nbsp;&nbsp;RP_PROVIDE_FROM_LAST&nbsp;&nbsp;P0105&nbsp;'0001'&nbsp;PN-BEGDA&nbsp;PN-ENDDA.<br />
+&nbsp;&nbsp;"办公电话<br />
+&nbsp;&nbsp;GS_ALV-USRID_1&nbsp;=&nbsp;P0105-USRID.<br />
+<br />
+<br />
+ENDFORM.<br />
+<br />
+FORM FRM_GET_INFTY_0185.<br />
+<br />
+&nbsp;&nbsp;"身份证号<br />
+&nbsp;&nbsp;IF&nbsp;P0185-ENDDA&nbsp;EQ&nbsp;GC_DATE_ENDDA.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;GS_ALV-ICNUM&nbsp;=&nbsp;P0185-ICNUM.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.<br />
+<br />
+FORM FRM_GET_INFTY_0529.<br />
+<br />
+&nbsp;&nbsp;"从事专业<br />
+&nbsp;&nbsp;IF&nbsp;P0529-Z00HRCSZY&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_DOMAIN_STEXT&nbsp;USING&nbsp;'ZD_HRCSZY'&nbsp;P0529-Z00HRCSZY&nbsp;GS_ALV-Z00HRCSZY.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;"民族<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;GT_T505S&nbsp;INTO&nbsp;DATA(LS_T505S)&nbsp;WITH&nbsp;KEY&nbsp;RACKY&nbsp;=&nbsp;P0529-RACKY.<br />
+&nbsp;&nbsp;IF&nbsp;SY-SUBRC&nbsp;=&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;GS_ALV-RACKY&nbsp;=&nbsp;LS_T505S-LTEXT.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;"籍贯<br />
+&nbsp;&nbsp;GS_ALV-Z00HRJGS&nbsp;=&nbsp;P0529-Z00HRJGSMS&nbsp;&&&nbsp;P0529-Z00HRJGMS.<br />
+<br />
+&nbsp;&nbsp;"主要社会关系所在城市<br />
+&nbsp;&nbsp;GS_ALV-Z00HRSHGX&nbsp;=&nbsp;P0529-Z00HRSHGX.<br />
+<br />
+&nbsp;&nbsp;"户籍类型<br />
+&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_DOMAIN_STEXT&nbsp;USING&nbsp;'ZD_HRHKXZ'&nbsp;P0529-Z00HRHKXZ&nbsp;GS_ALV-Z00HRHKXZ.<br />
+<br />
+&nbsp;&nbsp;"生源地<br />
+&nbsp;&nbsp;GS_ALV-Z00HRGKSZD&nbsp;=&nbsp;P0529-Z00HRGKSZD.<br />
+<br />
+&nbsp;&nbsp;"户口指标<br />
+&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_DOMAIN_STEXT&nbsp;USING&nbsp;'ZD_HRHKZB'&nbsp;P0529-Z00HRHKZB&nbsp;GS_ALV-Z00HRHKZB.<br />
+<br />
+&nbsp;&nbsp;"落户年度<br />
+&nbsp;&nbsp;GS_ALV-Z00HRLHND&nbsp;=&nbsp;P0529-Z00HRLHND.<br />
+<br />
+&nbsp;&nbsp;"入职考试<br />
+&nbsp;&nbsp;IF&nbsp;P0529-Z00HRRZKS&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;GS_ALV-Z00HRRZKS&nbsp;=&nbsp;'是'.<br />
+&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;GS_ALV-Z00HRRZKS&nbsp;=&nbsp;'否'.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.<br />
+<br />
+FORM FRM_GET_INFTY_0534.<br />
+<br />
+&nbsp;&nbsp;"政治面貌<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;GT_T7CN5R&nbsp;INTO&nbsp;DATA(LS_T7CN5R)&nbsp;WITH&nbsp;KEY&nbsp;PCODE&nbsp;=&nbsp;P0534-PCODE&nbsp;BINARY&nbsp;SEARCH.<br />
+&nbsp;&nbsp;IF&nbsp;SY-SUBRC&nbsp;=&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;GS_ALV-PCODE&nbsp;=&nbsp;LS_T7CN5R-PTEXT.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;"入党日期<br />
+&nbsp;&nbsp;GS_ALV-BEGDA_534&nbsp;=&nbsp;P0534-BEGDA.<br />
+<br />
+ENDFORM.<br />
+<br />
+FORM FRM_GET_INFTY_9610.<br />
+<br />
+&nbsp;&nbsp;"是否有参军经历<br />
+&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_Z00HRFZJRB&nbsp;USING&nbsp;GS_ALV-Z00HRFZJRB.<br />
+<br />
+ENDFORM.<br />
+<br />
+FORM FRM_GET_INFTY_9611.<br />
+&nbsp;&nbsp;DATA:&nbsp;LV_FIELD_NAME1&nbsp;TYPE&nbsp;CHAR30,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_FIELD_NAME2&nbsp;TYPE&nbsp;CHAR30,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_FIELD_NAME3&nbsp;TYPE&nbsp;CHAR30,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_FIELD_NAME4&nbsp;TYPE&nbsp;CHAR30,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_FIELD_NAME5&nbsp;TYPE&nbsp;CHAR30,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_FIELD_NAME6&nbsp;TYPE&nbsp;CHAR30.<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;LV_INDEX&nbsp;TYPE&nbsp;I.<br />
+<br />
+&nbsp;&nbsp;SORT&nbsp;P9611&nbsp;BY&nbsp;Z00HRZYZGZCSX.<br />
+&nbsp;&nbsp;DO&nbsp;5&nbsp;TIMES.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;LV_INDEX&nbsp;=&nbsp;SY-INDEX.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;P9611&nbsp;INTO&nbsp;DATA(LS_P9611)&nbsp;INDEX&nbsp;LV_INDEX.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;SY-SUBRC&nbsp;=&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"注册类别或名称<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_FIELD_NAME1&nbsp;=&nbsp;|GS_ALV-Z00HRZYZGMC_{&nbsp;LV_INDEX&nbsp;}|.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;(LV_FIELD_NAME1)&nbsp;TO&nbsp;FIELD-SYMBOL(&lt;FS_Z00HRZYZGMC&gt;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;FS_Z00HRZYZGMC&gt;&nbsp;IS&nbsp;ASSIGNED.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_DOMAIN_STEXT&nbsp;USING&nbsp;'ZD_HRZYZGMC'&nbsp;&nbsp;LS_P9611-Z00HRZYZGMC&nbsp;&lt;FS_Z00HRZYZGMC&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"注册顺序<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_FIELD_NAME2&nbsp;=&nbsp;|GS_ALV-Z00HRZYZGZCSX_{&nbsp;LV_INDEX&nbsp;}|.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;(LV_FIELD_NAME2)&nbsp;TO&nbsp;FIELD-SYMBOL(&lt;FS_Z00HRZYZGZCSX&gt;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;FS_Z00HRZYZGZCSX&gt;&nbsp;IS&nbsp;ASSIGNED..<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;FS_Z00HRZYZGZCSX&gt;&nbsp;=&nbsp;LS_P9611-Z00HRZYZGZCSX.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"注册证书号<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_FIELD_NAME3&nbsp;=&nbsp;|GS_ALV-Z00HRZYZGBH_{&nbsp;LV_INDEX&nbsp;}|.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;(LV_FIELD_NAME3)&nbsp;TO&nbsp;FIELD-SYMBOL(&lt;FS_Z00HRZYZGBH&gt;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;FS_Z00HRZYZGBH&gt;&nbsp;IS&nbsp;ASSIGNED..<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;FS_Z00HRZYZGBH&gt;&nbsp;=&nbsp;LS_P9611-Z00HRZYZGBH.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"资格取得日期<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_FIELD_NAME4&nbsp;=&nbsp;|GS_ALV-BEGDA_9611_{&nbsp;LV_INDEX&nbsp;}|.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;(LV_FIELD_NAME4)&nbsp;TO&nbsp;FIELD-SYMBOL(&lt;FS_BEGDA_9611&gt;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;FS_BEGDA_9611&gt;&nbsp;IS&nbsp;ASSIGNED..<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;FS_BEGDA_9611&gt;&nbsp;=&nbsp;LS_P9611-BEGDA.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"注册章号<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_FIELD_NAME5&nbsp;=&nbsp;|GS_ALV-Z00HRZYZGZH_{&nbsp;LV_INDEX&nbsp;}|.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;(LV_FIELD_NAME5)&nbsp;TO&nbsp;FIELD-SYMBOL(&lt;FS_Z00HRZYZGZH&gt;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;FS_Z00HRZYZGZH&gt;&nbsp;IS&nbsp;ASSIGNED..<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;FS_Z00HRZYZGZH&gt;&nbsp;=&nbsp;LS_P9611-Z00HRZYZGZH.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"注册章有效期<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_FIELD_NAME6&nbsp;=&nbsp;|GS_ALV-Z00HRZYZGYXQ_{&nbsp;LV_INDEX&nbsp;}|.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;(LV_FIELD_NAME6)&nbsp;TO&nbsp;FIELD-SYMBOL(&lt;FS_Z00HRZYZGYXQ&gt;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;FS_Z00HRZYZGYXQ&gt;&nbsp;IS&nbsp;ASSIGNED..<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;FS_Z00HRZYZGYXQ&gt;&nbsp;=&nbsp;LS_P9611-Z00HRZYZGYXQ.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UNASSIGN:&nbsp;&lt;FS_Z00HRZYZGMC&gt;,&nbsp;&lt;FS_Z00HRZYZGZCSX&gt;,&lt;FS_Z00HRZYZGBH&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UNASSIGN:&nbsp;&lt;FS_BEGDA_9611&gt;,&lt;FS_Z00HRZYZGZH&gt;,&lt;FS_Z00HRZYZGYXQ&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXIT.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDDO.<br />
+<br />
+ENDFORM.<br />
+<br />
+FORM FRM_GET_INFTY_9612.<br />
+<br />
+&nbsp;&nbsp;"评定级别<br />
+&nbsp;&nbsp;IF&nbsp;P9612-Z00HRZCDJ&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_DOMAIN_STEXT&nbsp;USING&nbsp;'ZD_HRZCDJ'&nbsp;P9612-Z00HRZCDJ&nbsp;GS_ALV-Z00HRZCDJ.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;"专业技术资格名称<br />
+&nbsp;&nbsp;GS_ALV-Z00HRZCMC&nbsp;=&nbsp;P9612-Z00HRZCMC.<br />
+<br />
+&nbsp;&nbsp;"评定日期<br />
+&nbsp;&nbsp;GS_ALV-Z00HRZCPSSJ&nbsp;=&nbsp;P9612-Z00HRZCPSSJ.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;PERFORM&nbsp;FRM_SPLICE_DATE&nbsp;USING&nbsp;P9612-Z00HRZCPSSJ&nbsp;GS_ALV-Z00HRZCPSSJ.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;"评审单位<br />
+&nbsp;&nbsp;GS_ALV-Z01HRPSDW&nbsp;=&nbsp;P9612-Z01HRPSDW.<br />
+<br />
+ENDFORM.<br />
+<br />
+FORM FRM_GET_INFTY_9616.<br />
+<br />
+&nbsp;&nbsp;"留学经历&nbsp;&nbsp;&nbsp;回国日期<br />
+&nbsp;&nbsp;SORT&nbsp;P9616&nbsp;BY&nbsp;Z00HRLXGJ&nbsp;DESCENDING&nbsp;Z00HRHGSJ&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;P9616&nbsp;INTO&nbsp;DATA(LS_P9616)&nbsp;INDEX&nbsp;1.<br />
+&nbsp;&nbsp;IF&nbsp;SY-SUBRC&nbsp;EQ&nbsp;0&nbsp;AND&nbsp;LS_P9616-Z00HRLXGJ&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;GS_ALV-Z00HRLXGJ&nbsp;=&nbsp;'是'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;GS_ALV-Z00HRHGSJ&nbsp;=&nbsp;LS_P9616-Z00HRHGSJ.<br />
+&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;GS_ALV-Z00HRLXGJ&nbsp;=&nbsp;'否'.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;DATA(LT_P9616)&nbsp;=&nbsp;P9616[].<br />
+*&nbsp;&nbsp;DELETE&nbsp;LT_P9616&nbsp;WHERE&nbsp;ENDDA&nbsp;LT&nbsp;PN-BEGDA&nbsp;OR&nbsp;BEGDA&nbsp;GT&nbsp;PN-ENDDA.<br />
+*&nbsp;&nbsp;SORT&nbsp;LT_P9616&nbsp;BY&nbsp;Z00HRLXGJ&nbsp;DESCENDING&nbsp;Z00HRHGSJ&nbsp;DESCENDING.<br />
+*&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;LT_P9616&nbsp;INTO&nbsp;LS_P9616&nbsp;INDEX&nbsp;1.<br />
+*&nbsp;&nbsp;IF&nbsp;SY-SUBRC&nbsp;EQ&nbsp;0.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;GS_ALV-Z00HRHGSJ&nbsp;=&nbsp;LS_P9616-Z00HRHGSJ.<br />
+*&nbsp;&nbsp;ENDIF.<br />
+<br />
+   </div>
+   <div class="code">
+ENDFORM.<br />
+<br />
+FORM FRM_GET_INFTY_9618.<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;LV_FIELD_NAME1&nbsp;TYPE&nbsp;CHAR30,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_FIELD_NAME2&nbsp;TYPE&nbsp;CHAR30,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_FIELD_NAME3&nbsp;TYPE&nbsp;CHAR30,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_FIELD_NAME4&nbsp;TYPE&nbsp;CHAR30,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_FIELD_NAME5&nbsp;TYPE&nbsp;CHAR30.<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;LV_INDEX&nbsp;TYPE&nbsp;I.<br />
+<br />
+&nbsp;&nbsp;SORT&nbsp;P9618[]&nbsp;BY&nbsp;Z00HRGWXH.<br />
+&nbsp;&nbsp;DO&nbsp;5&nbsp;TIMES.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;LV_INDEX&nbsp;=&nbsp;SY-INDEX.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;P9618&nbsp;INTO&nbsp;DATA(LS_9618)&nbsp;INDEX&nbsp;LV_INDEX.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;SY-SUBRC&nbsp;=&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"职务<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_FIELD_NAME1&nbsp;=&nbsp;|GS_ALV-Z00HRXDMC_{&nbsp;LV_INDEX&nbsp;}|.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;(LV_FIELD_NAME1)&nbsp;TO&nbsp;FIELD-SYMBOL(&lt;FS_Z00HRXDMC&gt;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;FS_Z00HRXDMC&gt;&nbsp;IS&nbsp;ASSIGNED..<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;FS_Z00HRXDMC&gt;&nbsp;=&nbsp;LS_9618-Z00HRXDMC.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"岗位<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_FIELD_NAME2&nbsp;=&nbsp;|GS_ALV-Z00HRGW_{&nbsp;LV_INDEX&nbsp;}|.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;(LV_FIELD_NAME2)&nbsp;TO&nbsp;FIELD-SYMBOL(&lt;FS_Z00HRGW&gt;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;FS_Z00HRGW&gt;&nbsp;IS&nbsp;ASSIGNED..<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;FS_Z00HRGW&gt;&nbsp;=&nbsp;LS_9618-Z00HRGW.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"岗位级别<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_FIELD_NAME3&nbsp;=&nbsp;|GS_ALV-Z00HRXDJB_{&nbsp;LV_INDEX&nbsp;}|.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;(LV_FIELD_NAME3)&nbsp;TO&nbsp;FIELD-SYMBOL(&lt;FS_Z00HRXDJB&gt;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;FS_Z00HRXDJB&gt;&nbsp;IS&nbsp;ASSIGNED.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_DOMAIN_STEXT&nbsp;USING&nbsp;'ZD_HRXDJB'&nbsp;LS_9618-Z00HRXDJB&nbsp;&lt;FS_Z00HRXDJB&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"任职时间<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_FIELD_NAME4&nbsp;=&nbsp;|GS_ALV-Z00HRBEGDA_{&nbsp;LV_INDEX&nbsp;}|.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;(LV_FIELD_NAME4)&nbsp;TO&nbsp;FIELD-SYMBOL(&lt;FS_Z00HRBEGDA&gt;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;FS_Z00HRBEGDA&gt;&nbsp;IS&nbsp;ASSIGNED.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;FS_Z00HRBEGDA&gt;&nbsp;=&nbsp;LS_9618-Z00HRBEGDA.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"岗位顺序<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LV_FIELD_NAME5&nbsp;=&nbsp;|GS_ALV-Z00HRGWXH_{&nbsp;LV_INDEX&nbsp;}|.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;(LV_FIELD_NAME5)&nbsp;TO&nbsp;FIELD-SYMBOL(&lt;FS_Z00HRGWXH&gt;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;FS_Z00HRGWXH&gt;&nbsp;IS&nbsp;ASSIGNED..<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;FS_Z00HRGWXH&gt;&nbsp;=&nbsp;LS_9618-Z00HRGWXH.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UNASSIGN:&nbsp;&lt;FS_Z00HRXDMC&gt;,&nbsp;&lt;FS_Z00HRGW&gt;,&lt;FS_Z00HRXDJB&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UNASSIGN:&nbsp;&lt;FS_Z00HRBEGDA&gt;,&lt;FS_Z00HRGWXH&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXIT.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDDO.<br />
+<br />
+&nbsp;&nbsp;"行政职务<br />
+&nbsp;&nbsp;GS_ALV-Z00HRXZMC&nbsp;=&nbsp;P9618-Z00HRXDMC.<br />
+ENDFORM.<br />
+<br />
+<br />
+FORM FRM_GET_INFTY_9640.<br />
+<br />
+&nbsp;&nbsp;"特贴发放方式<br />
+&nbsp;&nbsp;IF&nbsp;P9640-Z00HRZTYPE&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_DOMAIN_STEXT&nbsp;USING&nbsp;'ZD_HRZTYPE'&nbsp;P9640-Z00HRZTYPE&nbsp;GS_ALV-Z00HRZTYPE.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;"特贴获得日期<br />
+&nbsp;&nbsp;GS_ALV-Z00HRBEGDA&nbsp;=&nbsp;P9640-Z00HRBEGDA.<br />
+<br />
+ENDFORM.<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2023. Sap Release 755</td>
+   </tr>
+</table>
+</body>
+</html>

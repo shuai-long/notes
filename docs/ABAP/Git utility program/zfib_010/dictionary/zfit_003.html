@@ -1,0 +1,411 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=GB2312" />
+<title>Dictionary object- ZFIT_003</title>
+<style type="text/css">
+  th{text-align:left}
+  .cell{
+     font-family:"Courier New", Courier, monospace;
+     color:#000;
+     font-size:12px;
+     background-color:#F2F4F7;
+  }
+  .cell td { border: thin solid #ccc; }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+  <table class="outerTable">
+    <tr>
+      <td><h2>Table: ZFIT_003</h2>
+  <h3>Description: 财务三大报表</h3></td>
+    </tr>
+    <tr>
+      <td><!--This is where our main table begins  -->
+<table class="innerTable">
+<tr>
+  <th>Row</th>
+  <th>Field name</th>
+  <th>Position</th>
+  <th>Key</th>
+  <th>Data element</th>
+  <th>Domain</th>
+  <th>Datatype</th>
+  <th>Length</th>
+  <th>Lowercase</th>
+  <th>Domain text</th>
+</tr>
+<tr class="cell">
+  <td> 1</td>
+  <td>MANDT</td>
+  <td>1</td>
+  <td>X</td>
+  <td>MANDT</td>
+  <td>MANDT</td>
+  <td>CLNT</td>
+  <td>3</td>
+  <td>&nbsp;</td>
+  <td>集团</td>
+</tr>
+<tr class="cell">
+  <td> 2</td>
+  <td>BUKRS</td>
+  <td>2</td>
+  <td>X</td>
+  <td>BUKRS</td>
+  <td>BUKRS</td>
+  <td>CHAR</td>
+  <td>4</td>
+  <td>&nbsp;</td>
+  <td>公司代码</td>
+</tr>
+<tr class="cell">
+  <td> 3</td>
+  <td>ZTYPE</td>
+  <td>3</td>
+  <td>X</td>
+  <td>ZTYPE</td>
+  <td>ZTYPE</td>
+  <td>CHAR</td>
+  <td>3</td>
+  <td>&nbsp;</td>
+  <td>报表类型</td>
+</tr>
+<tr class="cell">
+  <td> 4</td>
+  <td>VERSION</td>
+  <td>4</td>
+  <td>X</td>
+  <td>QVERSNR</td>
+  <td>QVERSNR</td>
+  <td>CHAR</td>
+  <td>6</td>
+  <td>&nbsp;</td>
+  <td>版本编号</td>
+</tr>
+<tr class="cell">
+  <td> 5</td>
+  <td>ZCOLUMN</td>
+  <td>5</td>
+  <td>X</td>
+  <td>ZCOLUMN</td>
+  <td>&nbsp;</td>
+  <td>CHAR</td>
+  <td>1</td>
+  <td>&nbsp;</td>
+  <td>列编号（若报表为纵向表，则维护A列；若横向报表，分两列)</td>
+</tr>
+<tr class="cell">
+  <td> 6</td>
+  <td>ZROW</td>
+  <td>6</td>
+  <td>X</td>
+  <td>ZROW</td>
+  <td>&nbsp;</td>
+  <td>CHAR</td>
+  <td>3</td>
+  <td>&nbsp;</td>
+  <td>行号(报表中的行号)</td>
+</tr>
+<tr class="cell">
+  <td> 7</td>
+  <td>ZSNUM</td>
+  <td>7</td>
+  <td>X</td>
+  <td>ZSNUM</td>
+  <td>&nbsp;</td>
+  <td>CHAR</td>
+  <td>2</td>
+  <td>&nbsp;</td>
+  <td>序号(区分相同行号有多个科目号码段)</td>
+</tr>
+<tr class="cell">
+  <td> 8</td>
+  <td>LANGU</td>
+  <td>8</td>
+  <td>X</td>
+  <td>SPRAS</td>
+  <td>SPRAS</td>
+  <td>LANG</td>
+  <td>1</td>
+  <td>X</td>
+  <td>语言代码</td>
+</tr>
+<tr class="cell">
+  <td> 9</td>
+  <td>ZTEXT</td>
+  <td>9</td>
+  <td>&nbsp;</td>
+  <td>ZTEXT1</td>
+  <td>&nbsp;</td>
+  <td>CHAR</td>
+  <td>60</td>
+  <td>&nbsp;</td>
+  <td>描述</td>
+</tr>
+<tr class="cell">
+  <td>10</td>
+  <td>FSAKNR</td>
+  <td>10</td>
+  <td>&nbsp;</td>
+  <td>ZFSAKNR</td>
+  <td>&nbsp;</td>
+  <td>CHAR</td>
+  <td>10</td>
+  <td>&nbsp;</td>
+  <td>起始科目号</td>
+</tr>
+<tr class="cell">
+  <td>11</td>
+  <td>TSAKNR</td>
+  <td>11</td>
+  <td>&nbsp;</td>
+  <td>ZTSAKNR</td>
+  <td>&nbsp;</td>
+  <td>CHAR</td>
+  <td>10</td>
+  <td>&nbsp;</td>
+  <td>结束科目号</td>
+</tr>
+<tr class="cell">
+  <td>12</td>
+  <td>ZWLDW</td>
+  <td>12</td>
+  <td>&nbsp;</td>
+  <td>ZE_WLDW</td>
+  <td>ZD_WLDW</td>
+  <td>CHAR</td>
+  <td>1</td>
+  <td>&nbsp;</td>
+  <td>往来单位</td>
+</tr>
+<tr class="cell">
+  <td>13</td>
+  <td>FRFAREA</td>
+  <td>13</td>
+  <td>&nbsp;</td>
+  <td>ZFFKBER</td>
+  <td>&nbsp;</td>
+  <td>CHAR</td>
+  <td>16</td>
+  <td>&nbsp;</td>
+  <td>起始功能范围</td>
+</tr>
+<tr class="cell">
+  <td>14</td>
+  <td>TRFAREA</td>
+  <td>14</td>
+  <td>&nbsp;</td>
+  <td>ZTFKBER</td>
+  <td>&nbsp;</td>
+  <td>CHAR</td>
+  <td>16</td>
+  <td>&nbsp;</td>
+  <td>结束功能范围</td>
+</tr>
+<tr class="cell">
+  <td>15</td>
+  <td>RSTGR</td>
+  <td>15</td>
+  <td>&nbsp;</td>
+  <td>ZRSTGR</td>
+  <td>&nbsp;</td>
+  <td>CHAR</td>
+  <td>3</td>
+  <td>&nbsp;</td>
+  <td>现金流量码</td>
+</tr>
+<tr class="cell">
+  <td>16</td>
+  <td>ZJFBS</td>
+  <td>16</td>
+  <td>&nbsp;</td>
+  <td>ZJFBS</td>
+  <td>&nbsp;</td>
+  <td>CHAR</td>
+  <td>1</td>
+  <td>&nbsp;</td>
+  <td>借方标识</td>
+</tr>
+<tr class="cell">
+  <td>17</td>
+  <td>ZDFBS</td>
+  <td>17</td>
+  <td>&nbsp;</td>
+  <td>ZDFBS</td>
+  <td>&nbsp;</td>
+  <td>CHAR</td>
+  <td>1</td>
+  <td>&nbsp;</td>
+  <td>贷方标识</td>
+</tr>
+<tr class="cell">
+  <td>18</td>
+  <td>REVERSAL</td>
+  <td>18</td>
+  <td>&nbsp;</td>
+  <td>ZREVERSAL</td>
+  <td>&nbsp;</td>
+  <td>CHAR</td>
+  <td>1</td>
+  <td>&nbsp;</td>
+  <td>正负反转</td>
+</tr>
+<tr class="cell">
+  <td>19</td>
+  <td>KURST</td>
+  <td>19</td>
+  <td>&nbsp;</td>
+  <td>KURST_CURR</td>
+  <td>KURST</td>
+  <td>CHAR</td>
+  <td>4</td>
+  <td>&nbsp;</td>
+  <td>汇率类型</td>
+</tr>
+<tr class="cell">
+  <td>20</td>
+  <td>SHKZGS</td>
+  <td>20</td>
+  <td>&nbsp;</td>
+  <td>ZSHKZG</td>
+  <td>ZSHKZG</td>
+  <td>CHAR</td>
+  <td>1</td>
+  <td>&nbsp;</td>
+  <td>借方标识</td>
+</tr>
+<tr class="cell">
+  <td>21</td>
+  <td>SHKZGH</td>
+  <td>21</td>
+  <td>&nbsp;</td>
+  <td>ZSHKZGD</td>
+  <td>ZSHKZGD</td>
+  <td>CHAR</td>
+  <td>1</td>
+  <td>&nbsp;</td>
+  <td>贷方标识</td>
+</tr>
+<tr class="cell">
+  <td>22</td>
+  <td>ZJDQZ</td>
+  <td>22</td>
+  <td>&nbsp;</td>
+  <td>ZE_JDQZ</td>
+  <td>ZD_JDQZ</td>
+  <td>CHAR</td>
+  <td>2</td>
+  <td>&nbsp;</td>
+  <td>借贷取值</td>
+</tr>
+<tr class="cell">
+  <td>23</td>
+  <td>FORMULA</td>
+  <td>23</td>
+  <td>&nbsp;</td>
+  <td>ZFORMULA</td>
+  <td>&nbsp;</td>
+  <td>CHAR</td>
+  <td>128</td>
+  <td>&nbsp;</td>
+  <td>计算公式</td>
+</tr>
+      </table>
+     </td>
+   </tr>
+<br/>
+  <table class="outerTable">
+    <tr>
+      <td><h2>Fixed Domain Values </h2>
+    </tr>
+    <tr>
+      <td><!--This is where our main table begins  -->
+<table class="innerTable">
+<tr>
+  <th>Domain Name</th>
+  <th>Value Low</th>
+  <th>Value High</th>
+  <th>Text</th>
+</tr>
+<tr class="cell">
+  <td>ZTYPE</td>
+  <td>BS</td>
+  <td>&nbsp;</td>
+  <td>资产负债表</td>
+</tr>
+<tr class="cell">
+  <td>ZTYPE</td>
+  <td>CF</td>
+  <td>&nbsp;</td>
+  <td>现金流量表</td>
+</tr>
+<tr class="cell">
+  <td>ZTYPE</td>
+  <td>IS</td>
+  <td>&nbsp;</td>
+  <td>利润表</td>
+</tr>
+<tr class="cell">
+  <td>ZSHKZG</td>
+  <td>H</td>
+  <td>&nbsp;</td>
+  <td>贷方(-)</td>
+</tr>
+<tr class="cell">
+  <td>ZSHKZG</td>
+  <td>S</td>
+  <td>&nbsp;</td>
+  <td>借方(+)</td>
+</tr>
+<tr class="cell">
+  <td>ZSHKZGD</td>
+  <td>H</td>
+  <td>&nbsp;</td>
+  <td>贷方(-)</td>
+</tr>
+<tr class="cell">
+  <td>ZSHKZGD</td>
+  <td>S</td>
+  <td>&nbsp;</td>
+  <td>借方(+)</td>
+</tr>
+      </table>
+     </td>
+   </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2022. Sap Release 755</td>
+   </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=GB2312" />
+<title>ZHRB_063_GET</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: ZHRB_063_GET</h2>
+<h3> Description: Include ZHRB_063_GET</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;包含&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ZHRB_063_GET<br />
+*&---------------------------------------------------------------------*<br />
+<br />
+   </div>
+   <div class="code">
+FORM FRM_APPEND_DATA.<br />
+&nbsp;&nbsp;ADD&nbsp;1&nbsp;TO&nbsp;GV_INDEX.<br />
+&nbsp;&nbsp;CLEAR&nbsp;GS_ALV.<br />
+<br />
+&nbsp;&nbsp;GS_ALV-ZHR_INDEX&nbsp;=&nbsp;GV_INDEX.&nbsp;&nbsp;&nbsp;"序号<br />
+&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_INFTY_0000.&nbsp;&nbsp;&nbsp;&nbsp;"0000<br />
+&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_INFTY_0001.&nbsp;&nbsp;&nbsp;&nbsp;"0001<br />
+&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_INFTY_0002.&nbsp;&nbsp;&nbsp;&nbsp;"0002<br />
+&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_INFTY_0006.&nbsp;&nbsp;&nbsp;&nbsp;"0006<br />
+&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_INFTY_0016.&nbsp;&nbsp;&nbsp;&nbsp;"0016<br />
+&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_INFTY_0022.&nbsp;&nbsp;&nbsp;&nbsp;"0022<br />
+&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_INFTY_0041.&nbsp;&nbsp;&nbsp;&nbsp;"0041<br />
+&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_INFTY_0105.&nbsp;&nbsp;&nbsp;&nbsp;"0105<br />
+&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_INFTY_0185.&nbsp;&nbsp;&nbsp;&nbsp;"0185<br />
+&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_INFTY_0529.&nbsp;&nbsp;&nbsp;&nbsp;"0529<br />
+&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_INFTY_0534.&nbsp;&nbsp;&nbsp;&nbsp;"0534<br />
+&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_INFTY_9610.&nbsp;&nbsp;&nbsp;&nbsp;"9610<br />
+&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_INFTY_9611.&nbsp;&nbsp;&nbsp;&nbsp;"9611<br />
+&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_INFTY_9612.&nbsp;&nbsp;&nbsp;&nbsp;"9612<br />
+&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_INFTY_9616.&nbsp;&nbsp;&nbsp;&nbsp;"9616<br />
+&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_INFTY_9618.&nbsp;&nbsp;&nbsp;&nbsp;"9618<br />
+&nbsp;&nbsp;PERFORM&nbsp;FRM_GET_INFTY_9640.&nbsp;&nbsp;&nbsp;&nbsp;"9640<br />
+<br />
+&nbsp;&nbsp;APPEND&nbsp;GS_ALV&nbsp;TO&nbsp;GT_ALV.<br />
+ENDFORM.<br />
+<br />
+FORM FRM_SET_MACRO .<br />
+<br />
+&nbsp;&nbsp;RP_PROVIDE_FROM_LAST&nbsp;&nbsp;P0000&nbsp;SPACE&nbsp;PN-BEGDA&nbsp;PN-ENDDA.<br />
+&nbsp;&nbsp;IF&nbsp;P0000-STAT1&nbsp;NOT&nbsp;IN&nbsp;PNPSTAT1[].&nbsp;REJECT.&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;RP_PROVIDE_FROM_LAST&nbsp;&nbsp;P0001&nbsp;SPACE&nbsp;PN-BEGDA&nbsp;PN-ENDDA.<br />
+&nbsp;&nbsp;IF&nbsp;P0001-BUKRS&nbsp;NOT&nbsp;IN&nbsp;PNPBUKRS[].&nbsp;REJECT.&nbsp;ENDIF.<br />
+&nbsp;&nbsp;IF&nbsp;P0001-WERKS&nbsp;NOT&nbsp;IN&nbsp;PNPWERKS[].&nbsp;REJECT.&nbsp;ENDIF.<br />
+&nbsp;&nbsp;IF&nbsp;P0001-PERSG&nbsp;NOT&nbsp;IN&nbsp;PNPPERSG[].&nbsp;REJECT.&nbsp;ENDIF.<br />
+&nbsp;&nbsp;IF&nbsp;P0001-PERSK&nbsp;NOT&nbsp;IN&nbsp;PNPPERSK[].&nbsp;REJECT.&nbsp;ENDIF.<br />
+&nbsp;&nbsp;IF&nbsp;P0001-ABKRS&nbsp;NOT&nbsp;IN&nbsp;PNPABKRS[].&nbsp;REJECT.&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;RP_PROVIDE_FROM_LAST&nbsp;&nbsp;P0002&nbsp;SPACE&nbsp;&nbsp;PN-BEGDA&nbsp;PN-ENDDA.<br />
+&nbsp;&nbsp;IF&nbsp;P0002-NACHN&nbsp;NOT&nbsp;IN&nbsp;PNPENAME[].&nbsp;REJECT.&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;RP_PROVIDE_FROM_LAST&nbsp;&nbsp;P0006&nbsp;'3'&nbsp;&nbsp;&nbsp;&nbsp;PN-BEGDA&nbsp;PN-ENDDA.<br />
+&nbsp;&nbsp;RP_PROVIDE_FROM_LAST&nbsp;&nbsp;P0016&nbsp;SPACE&nbsp;&nbsp;PN-BEGDA&nbsp;PN-ENDDA.<br />
+&nbsp;&nbsp;RP_PROVIDE_FROM_LAST&nbsp;&nbsp;P0041&nbsp;SPACE&nbsp;&nbsp;PN-BEGDA&nbsp;PN-ENDDA.<br />
+&nbsp;&nbsp;RP_PROVIDE_FROM_LAST&nbsp;&nbsp;P0105&nbsp;'0002'&nbsp;PN-BEGDA&nbsp;PN-ENDDA.<br />
+&nbsp;&nbsp;RP_PROVIDE_FROM_LAST&nbsp;&nbsp;P0185&nbsp;'01'&nbsp;&nbsp;&nbsp;PN-BEGDA&nbsp;PN-ENDDA.<br />
+&nbsp;&nbsp;RP_PROVIDE_FROM_LAST&nbsp;&nbsp;P0529&nbsp;SPACE&nbsp;&nbsp;PN-BEGDA&nbsp;PN-ENDDA.<br />
+&nbsp;&nbsp;RP_PROVIDE_FROM_LAST&nbsp;&nbsp;P0534&nbsp;SPACE&nbsp;&nbsp;PN-BEGDA&nbsp;PN-ENDDA.<br />
+&nbsp;&nbsp;RP_PROVIDE_FROM_LAST&nbsp;&nbsp;P3211&nbsp;SPACE&nbsp;&nbsp;PN-BEGDA&nbsp;PN-ENDDA.<br />
+&nbsp;&nbsp;RP_PROVIDE_FROM_LAST&nbsp;&nbsp;P9612&nbsp;SPACE&nbsp;&nbsp;PN-BEGDA&nbsp;PN-ENDDA.<br />
+&nbsp;&nbsp;RP_PROVIDE_FROM_LAST&nbsp;&nbsp;P9618&nbsp;SPACE&nbsp;&nbsp;PN-BEGDA&nbsp;PN-ENDDA.<br />
+&nbsp;&nbsp;RP_PROVIDE_FROM_LAST&nbsp;&nbsp;P9640&nbsp;SPACE&nbsp;&nbsp;PN-BEGDA&nbsp;PN-ENDDA.<br />
+<br />
+<br />
+<br />
+ENDFORM.<br />
+<br />
+FORM FRM_SET_DATE_FOR_INFTY.<br />
+&nbsp;&nbsp;RP_SET_DATA_INTERVAL&nbsp;'0185'&nbsp;GC_DATE_BEGDA&nbsp;GC_DATE_ENDDA.<br />
+&nbsp;&nbsp;RP_SET_DATA_INTERVAL&nbsp;'9610'&nbsp;GC_DATE_BEGDA&nbsp;GC_DATE_ENDDA.<br />
+&nbsp;&nbsp;RP_SET_DATA_INTERVAL&nbsp;'9616'&nbsp;GC_DATE_BEGDA&nbsp;GC_DATE_ENDDA.<br />
+&nbsp;&nbsp;RP_SET_DATA_INTERVAL&nbsp;'0022'&nbsp;GC_DATE_BEGDA&nbsp;GC_DATE_ENDDA.<br />
+&nbsp;&nbsp;RP_SET_DATA_INTERVAL&nbsp;'3529'&nbsp;GC_DATE_BEGDA&nbsp;GC_DATE_ENDDA.<br />
+ENDFORM.<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2023. Sap Release 755</td>
+   </tr>
+</table>
+</body>
+</html>
