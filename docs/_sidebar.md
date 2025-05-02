@@ -6,6 +6,5 @@
 
 <script>
   window.$docsify.dashboard.metadataUrl = 'metadata/posts'.
-
 </script>
 <!-- tag-list -->
