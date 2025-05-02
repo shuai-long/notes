@@ -1,4 +1,5 @@
 import os
+from urllib.parse import quote
 
 # 推荐全小写格式
 EXCLUDE = ['_css', 'metadata', 'plugins', '_coverpage.md', '_navbar.md', '_sidebar.md', 'tags.md', 'readme.md', ]  
@@ -68,16 +69,31 @@ def process_directory(root_dir, current_dir, exclude_lower, level, md_lines):
         md_lines.append(f"{indent}- {dir_name}")
         process_directory(root_dir, dir_path, exclude_lower, level + 1, md_lines)
 
+    # # 处理文件链接
+    # for file_name in files:
+    #     rel_dir = os.path.relpath(current_dir, root_dir)
+    #     rel_dir = '' if rel_dir == '.' else rel_dir
+        
+    #     # 保留原始文件名大小写
+    #     link_path = os.path.join('/', rel_dir, file_name).replace('\\', '/')
+    #     indent = '  ' * (level - 1)
+    #     display_name = os.path.splitext(file_name)[0]
+    #     md_lines.append(f"{indent}- [{display_name}]({link_path})")
+    
     # 处理文件链接
     for file_name in files:
         rel_dir = os.path.relpath(current_dir, root_dir)
         rel_dir = '' if rel_dir == '.' else rel_dir
         
-        # 保留原始文件名大小写
-        link_path = os.path.join('/', rel_dir, file_name).replace('\\', '/')
+        # 生成编码后的链接路径
+        raw_link = os.path.join('/', rel_dir, file_name).replace('\\', '/')
+        parts = raw_link.split('/')
+        encoded_parts = [quote(part) for part in parts if part]  # 跳过空部分
+        encoded_link = '/' + '/'.join(encoded_parts)
+        
         indent = '  ' * (level - 1)
         display_name = os.path.splitext(file_name)[0]
-        md_lines.append(f"{indent}- [{display_name}]({link_path})")
+        md_lines.append(f"{indent}- [{display_name}]({encoded_link})")
 
 if __name__ == '__main__':
     import sys
