@@ -81,6 +81,15 @@
         responsiveTables: true  // default
       },
 
+      //语法高亮
+      Prism:{
+        plugins:{
+          autoloader:{
+            languages_path : 'https://cdn.jsdelivr.net/npm/prismjs/components/'
+          }
+        }
+      },
+
       // parse twemoji
       plugins: [
         function (hook, vm) {
