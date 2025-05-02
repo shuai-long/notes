@@ -12,9 +12,9 @@
 - [抢救车知识](/护理相关知识/抢救车知识.md)
 
 <!-- tabs:start -->
-<!-- dashboard: { numTabContent: 4, metadataUrl: "metadata/posts" } -->
+<!-- dashboard:metadata/posts -->
 <!-- tabs:end -->
 
 <!-- tabs:start -->
-<!-- dashboard: { numTabContent: 4, metadataUrl: "metadata/posts1" } -->
+<!-- dashboard:metadata/posts1 -->
 <!-- tabs:end -->
