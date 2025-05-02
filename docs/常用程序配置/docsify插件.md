@@ -11,7 +11,7 @@
 
 要创建仪表板，只需将以下代码添加到您的 markdown 文件中
 
-```mark
+```markdown
 <!-- tabs:start -->
 
 <!-- dashboard: metadata/posts numTabContent=5 -->
