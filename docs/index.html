@@ -11,6 +11,12 @@
   <!-- 设置浏览器图标 -->
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <!-- 代码高亮 -->
+  <link href="//cdn.jsdelivr.net/npm/prismjs@v1.x/themes/prism-okaidia.min.css" rel="stylesheet" />
+  <!-- 侧边栏展开折叠 -->
+  <link rel="stylesheet" href="./plugins/docsify-sidebar-collapse/dist/sidebar-folder.min.css" />
+  <!-- 添加tab标签 -->
+  <link rel="stylesheet" href="./plugins/docsify-dashboard/dist/dashboard.min.css">
   <!-- 主题切换 -->
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-darklight-theme@3/dist/docsify-themeable/style.min.css"
     type="text/css">
@@ -19,12 +25,6 @@
   <link rel="stylesheet alternative" href="//cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css"
     title="dark">
   <link rel="stylesheet" href="./_css/theme-custom.css">
-  <!-- 代码高亮 -->
-  <link href="//cdn.jsdelivr.net/npm/prismjs@v1.x/themes/prism-coy.min.css" rel="stylesheet" />
-  <!-- 侧边栏展开折叠 -->
-  <link rel="stylesheet" href="./plugins/docsify-sidebar-collapse/dist/sidebar-folder.min.css" />
-  <!-- 添加tab标签 -->
-  <link rel="stylesheet" href="./plugins/docsify-dashboard/dist/dashboard.min.css">
 </head>
 
 <body>
@@ -82,10 +82,10 @@
       },
 
       //语法高亮
-      Prism:{
-        plugins:{
-          autoloader:{
-            languages_path : 'https://cdn.jsdelivr.net/npm/prismjs/components/'
+      Prism: {
+        plugins: {
+          autoloader: {
+            languages_path: 'https://cdn.jsdelivr.net/npm/prismjs/components/'
           }
         }
       },
@@ -139,7 +139,7 @@
   <!-- 添加代码高亮 -->
   <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-abap.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/prismjs@v1.x/components/prism-core.min.js"></script>
-	<script src="//cdn.jsdelivr.net/npm/prismjs@v1.x/plugins/autoloader/prism-autoloader.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@v1.x/plugins/autoloader/prism-autoloader.min.js"></script>
   <!-- docsify的主题 -->
   <script src="//cdn.jsdelivr.net/npm/docsify-themeable@0/dist/js/docsify-themeable.min.js"></script>
   <!-- 主题切换 -->
