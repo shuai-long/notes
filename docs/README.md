@@ -15,7 +15,7 @@
 
 <!-- tabs:start -->
 <script>
-  window.$docsify.dashboard.metadataUrl = 'metadata/posts_copy'.
+  window.$docsify = { ashboard: { metadataUrl : 'metadata/posts_copy' } }
 </script>
 <!-- dashboard -->
 
@@ -23,7 +23,7 @@
 
 <!-- tabs:start -->
 <script>
-  window.$docsify.dashboard.metadataUrl = 'metadata/posts_copy_2'.
+  window.$docsify = { ashboard: { metadataUrl : 'metadata/posts_copy_2' } }
 </script>
 <!-- dashboard -->
 
