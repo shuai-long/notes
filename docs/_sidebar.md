@@ -3,3 +3,9 @@
 - ABAP
   - 屏幕开发
     - [选择屏幕常用组件](/ABAP/屏幕开发/选择屏幕常用组件.md)
+
+<script>
+  window.$docsify.dashboard.metadataUrl = 'metadata/posts'.
+
+</script>
+<!-- tag-list -->
