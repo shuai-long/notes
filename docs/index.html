@@ -19,8 +19,8 @@
   <link rel="stylesheet alternative" href="//cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css"
     title="dark">
   <link rel="stylesheet" href="./_css/theme-custom.css">
-  <!-- livedemo -->
-  <link rel="stylesheet" href="./plugins/docsify-live-demo/src/live-demo.css">
+  <!-- 代码高亮 -->
+  <link href="//cdn.jsdelivr.net/npm/prismjs@v1.x/themes/prism.css" rel="stylesheet" />
   <!-- 侧边栏展开折叠 -->
   <link rel="stylesheet" href="./plugins/docsify-sidebar-collapse/dist/sidebar-folder.min.css" />
   <!-- 添加tab标签 -->
@@ -127,8 +127,10 @@
   </script>
   <!-- docsify的js依赖 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@latest/lib/docsify.min.js"></script>
-  <!-- 添加ABAP代码高亮 -->
-  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-abap.min.js"></script>
+  <!-- 添加代码高亮 -->
+  <!-- <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-abap.min.js"></script> -->
+  <script src="//cdn.jsdelivr.net/npm/prismjs@v1.x/components/prism-core.min.js"></script>
+	<script src="//cdn.jsdelivr.net/npm/prismjs@v1.x/plugins/autoloader/prism-autoloader.min.js"></script>
   <!-- docsify的主题 -->
   <script src="//cdn.jsdelivr.net/npm/docsify-themeable@0/dist/js/docsify-themeable.min.js"></script>
   <!-- 主题切换 -->
@@ -152,8 +154,6 @@
   <script src="//unpkg.com/docsify-mermaid-zoom/dist/docsify-mermaid-zoom.js"></script>
   <!-- 显示图像标题 -->
   <script src="//cdn.jsdelivr.net/gh/h-hg/docsify-image-caption/dist/docsify-image-caption.min.js"></script>
-  <!-- livedemo -->
-  <script src="./plugins/docsify-live-demo/src/live-demo.js"></script>
   <!-- 警告块 -->
   <script src="//unpkg.com/docsify-plugin-flexible-alerts"></script>
   <!-- emoji表情支持 -->
