@@ -19,6 +19,8 @@
   <link rel="stylesheet alternative" href="//cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css"
     title="dark">
   <link rel="stylesheet" href="./_css/theme-custom.css">
+  <!-- livedemo -->
+  <link rel="stylesheet" href="./plugins/docsify-live-demo/src/live-demo.css">
   <!-- 侧边栏展开折叠 -->
   <link rel="stylesheet" href="./plugins/docsify-sidebar-collapse/dist/sidebar-folder.min.css" />
   <!-- 添加tab标签 -->
@@ -79,6 +81,15 @@
         responsiveTables: true  // default
       },
 
+      // parse twemoji
+      plugins: [
+        function (hook, vm) {
+          hook.doneEach(function () {
+            twemoji.parse(document);
+          });
+        },
+      ],
+
       // 添加tab标签
       dashboard: {
         numTabContent: 3,  //幻灯片中显示的卡片数量
@@ -87,7 +98,7 @@
         theme: 'default',                    // (1) default, (2) cards, (3) list
         tagboardTheme: 'default'             // options are same as above
       },
-      
+
       tabs: {
         persist: false, // default 确定页面刷新/重新访问后是否恢复选项卡选择
         sync: false, // default 确定选项卡选择是否将在具有匹配标签的选项卡之间同步。
@@ -141,10 +152,14 @@
   <script src="//unpkg.com/docsify-mermaid-zoom/dist/docsify-mermaid-zoom.js"></script>
   <!-- 显示图像标题 -->
   <script src="//cdn.jsdelivr.net/gh/h-hg/docsify-image-caption/dist/docsify-image-caption.min.js"></script>
+  <!-- livedemo -->
+  <script src="./plugins/docsify-live-demo/src/live-demo.js"></script>
   <!-- 警告块 -->
   <script src="//unpkg.com/docsify-plugin-flexible-alerts"></script>
   <!-- emoji表情支持 -->
   <script src="./plugins/docsify/lib/plugins/emoji.min.js"></script>
+  <!-- twemoji -->
+  <script src="//cdn.jsdelivr.net/gh/TaQini/docsify-twemoji@master/twemoji.min.js"></script>
   <!-- 图片放大缩小支持 -->
   <script src="./plugins/docsify/lib/plugins/zoom-image.min.js"></script>
   <!-- 搜索功能支持 -->
