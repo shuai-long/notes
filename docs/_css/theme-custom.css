@@ -1,4 +1,4 @@
 :root {
-  --base-font-size: 14px;
-  --theme-color   : purple;
+  --content-max-width: 100em;
+  --search-input-border-radius: 1px;
 }
