@@ -11,16 +11,13 @@
 
     /* sidebar */
     --sidebar-nav-indent: 0.75em;
-    --sidebar-nav-link-before-content: "\f15b";
-    --sidebar-nav-link-before-content--active: "\f15c";
-    --sidebar-nav-link-before-content-l1: "\f0c9";
-    --sidebar-nav-link-before-content-l1--active: "\f550";
-    --sidebar-nav-link-before-content-l2: "\f0c9";
-    --sidebar-nav-link-before-content-l2--active: "\f550";
-    --sidebar-nav-link-before-content-l3: "\f0c9";
-    --sidebar-nav-link-before-content-l3--active: "\f550";
+    --sidebar-nav-link-before-content-l3: "\f15b";
+    --sidebar-nav-link-before-content-l3--active: "\f15c";
     --sidebar-nav-link-before-content-l4: "\f0c9";
-    --sidebar-nav-link-before-content-l5--active: "\f550";
+    --sidebar-nav-link-before-content-l4--active: "\f550";
+
+
+
 }
 
 .sidebar-nav>ul>li a::before {
@@ -35,6 +32,9 @@
     font-weight: 900;
 }
 
-.markdown-section figure, .markdown-section p, .markdown-section ol, .markdown-section ul {
+.markdown-section figure,
+.markdown-section p,
+.markdown-section ol,
+.markdown-section ul {
     margin: .25em 0;
 }
