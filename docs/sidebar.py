@@ -2,7 +2,7 @@ import os
 from urllib.parse import quote
 
 # 推荐全小写格式
-EXCLUDE = ['_css', 'metadata', 'plugins', '_coverpage.md', '_navbar.md', '_sidebar.md', 'tags.md', 'readme.md', ]  
+EXCLUDE = ['_css', 'metadata', 'plugins', '_coverpage.md', '_navbar.md', '_sidebar.md', 'tags.md', 'readme.md']  
 
 def is_hidden(path):
     """判断是否为隐藏文件/目录（支持跨平台）"""
@@ -45,11 +45,8 @@ def process_directory(root_dir, current_dir, exclude_lower, level, md_lines):
         
         # 保留目录或.md文件
         if os.path.isdir(full_path):
-            # 在 process_directory 函数开头添加：
-            print(f"正在扫描：{item}")
             filtered.append((item, 'dir'))
         elif os.path.isfile(full_path) and item.lower().endswith('.md'):
-            print(f"正在扫描：{item}")
             filtered.append((item, 'file'))
 
     # 分类处理（目录优先）
@@ -66,20 +63,13 @@ def process_directory(root_dir, current_dir, exclude_lower, level, md_lines):
     for dir_name in dirs:
         dir_path = os.path.join(current_dir, dir_name)
         indent = '  ' * (level - 1)
+        start_len = len(md_lines)
         md_lines.append(f"{indent}- {dir_name}")
         process_directory(root_dir, dir_path, exclude_lower, level + 1, md_lines)
+        # 检查是否为空目录
+        if len(md_lines) == start_len + 1:
+            del md_lines[start_len]
 
-    # # 处理文件链接
-    # for file_name in files:
-    #     rel_dir = os.path.relpath(current_dir, root_dir)
-    #     rel_dir = '' if rel_dir == '.' else rel_dir
-        
-    #     # 保留原始文件名大小写
-    #     link_path = os.path.join('/', rel_dir, file_name).replace('\\', '/')
-    #     indent = '  ' * (level - 1)
-    #     display_name = os.path.splitext(file_name)[0]
-    #     md_lines.append(f"{indent}- [{display_name}]({link_path})")
-    
     # 处理文件链接
     for file_name in files:
         rel_dir = os.path.relpath(current_dir, root_dir)

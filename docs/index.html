@@ -2,195 +2,194 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <title>abap notes</title>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <meta name="description" content="Description">
-  <meta name="viewport"
-    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <!-- 设置浏览器图标 -->
-  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-  <!-- 代码高亮 -->
-  <link href="//cdn.jsdelivr.net/npm/prismjs@v1.x/themes/prism-okaidia.min.css" rel="stylesheet" />
-  <!-- 侧边栏展开折叠 -->
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse@1.3.5/dist/sidebar.min.css" />
-  <!-- 添加tab标签 -->
-  <link rel="stylesheet" href="./plugins/docsify-dashboard/dist/dashboard.min.css">
-  <!-- 主题切换 -->
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-darklight-theme@3/dist/docsify-themeable/style.min.css"
-    type="text/css">
-  <!-- 主题 -->
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css" title="light">
-  <link rel="stylesheet alternative" href="//cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css"
-    title="dark">
-  <link rel="stylesheet" href="./_css/theme-custom.css">
+    <meta charset="UTF-8">
+    <title>abap notes</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="description" content="Description">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <!-- 设置浏览器图标 -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <!-- 图标 -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- 代码高亮 -->
+    <link href="//cdn.jsdelivr.net/npm/prismjs@v1.x/themes/prism-okaidia.min.css" rel="stylesheet" />
+    <!-- 添加tab标签 -->
+    <link rel="stylesheet" href="./plugins/docsify-dashboard/dist/dashboard.min.css">
+    <!-- 主题切换 -->
+    <link rel="stylesheet" href="./plugins/docsify-darklight-theme/dist/dicsify-themeable/style.min.css">
+    <!-- 主题 -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css" title="light">
+    <link rel="stylesheet alternative" href="//cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css" title="dark">
+    <link rel="stylesheet" href="./_css/theme-custom.css">
 </head>
 
 <body>
-  <!-- 定义加载时候的动作 -->
-  <div id="app">加载中...</div>
-  <script>
-    window.$docsify = {
-      // 项目名称
-      name: 'notes',
-      // 仓库地址，点击右上角的Github章鱼猫头像会跳转到此地址
-      repo: ' https://github.com/shuai-long/notes',
-      // 最大支持渲染的标题层级
-      maxLevel: 6,
-      // 侧边栏支持，默认加载的是项目根目录下的_sidebar.md文件
-      loadSidebar: true,
-      // set sidebar display level
-      sidebarDisplayLevel: 6,
-      // 自定义侧边栏后默认不会再生成目录，设置生成目录的最大层级（建议配置为2-4）
-      subMaxLevel: 4,
-      // 导航栏支持，默认加载的是项目根目录下的_navbar.md文件
-      loadNavbar: true,
-      // 封面支持，默认加载的是项目根目录下的_coverpage.md文件
-      coverpage: true,
-      // 小屏设备下合并导航栏到侧边栏
-      mergeNavbar: true,
-      // 自动为每个页面增加标题。
-      autoHeader: false,
-      // 只在访问主页时加载封面。
-      onlyCover: false,
-      // 显示流程图插件
-      mermaidConfig: {
-        querySelector: ".mermaid"
-      },
-      // 流程图缩放
-      mermaidZoom: {
-        minimumScale: 1,
-        maximumScale: 5,
-        zoomPannel: true
-      },
-      // code Copy
-      copyCode: {
-        buttonText: 'Copy',
-        errorText: 'Error',
-        successText: 'Copied',
-      },
-      // 代码块折叠
-      hideCode: {
-        scroll: false, // Enable scrolling
-        height: 300 // Max height
-      },
-      // 主题样式
-      themeable: {
-        readyTransition: true, // default
-        responsiveTables: true  // default
-      },
+    <!-- 定义加载时候的动作 -->
+    <div id="app">加载中...</div>
+    <script>
+        window.$docsify = {
+            // 项目名称
+            name: 'notes',
+            // 仓库地址，点击右上角的Github章鱼猫头像会跳转到此地址
+            repo: ' https://github.com/shuai-long/notes',
+            // 最大支持渲染的标题层级
+            maxLevel: 6,
+            // 侧边栏支持，默认加载的是项目根目录下的_sidebar.md文件
+            loadSidebar: true,
+            // 自定义侧边栏后默认不会再生成目录，设置生成目录的最大层级（建议配置为2-4）
+            subMaxLevel: 4,
+            // 导航栏支持，默认加载的是项目根目录下的_navbar.md文件
+            loadNavbar: true,
+            // 封面支持，默认加载的是项目根目录下的_coverpage.md文件
+            coverpage: true,
+            // 小屏设备下合并导航栏到侧边栏
+            mergeNavbar: true,
+            // 自动为每个页面增加标题。
+            autoHeader: false,
+            // 只在访问主页时加载封面。
+            onlyCover: false,
+            // 显示流程图插件
+            mermaidConfig: {
+                querySelector: ".mermaid"
+            },
+            // 流程图缩放
+            mermaidZoom: {
+                minimumScale: 1,
+                maximumScale: 5,
+                zoomPannel: true
+            },
+            // code Copy
+            copyCode: {
+                buttonText: 'Copy',
+                errorText: 'Error',
+                successText: 'Copied',
+            },
+            // 代码块折叠
+            hideCode: {
+                scroll: false, // Enable scrolling
+                height: 300 // Max height
+            },
+            // 分页插件
+            pagination: {
+                previousText: 'Pre',
+                nextText: 'Next',
+                crossChapter: true,
+                crossChapterText: true,
+            },
+            // 主题样式
+            themeable: {
+                readyTransition: true, // default
+                responsiveTables: true // default
+            },
 
-      //语法高亮
-      Prism: {
-        plugins: {
-          autoloader: {
-            languages_path: 'https://cdn.jsdelivr.net/npm/prismjs/components/'
-          }
+            //语法高亮
+            Prism: {
+                plugins: {
+                    autoloader: {
+                        languages_path: 'https://cdn.jsdelivr.net/npm/prismjs/components/'
+                    }
+                }
+            },
+
+            // parse twemoji
+            plugins: [
+                function(hook, vm) {
+                    hook.doneEach(function() {
+                        twemoji.parse(document);
+                    });
+                },
+            ],
+
+            // 添加tab标签
+            dashboard: {
+                numTabContent: 3, //幻灯片中显示的卡片数量
+                metadataUrl: 'metadata/posts',
+                sort: false, // sort the posts by time
+                theme: 'default', // (1) default, (2) cards, (3) list
+                tagboardTheme: 'default' // options are same as above
+            },
+
+            tabs: {
+                persist: false, // default 确定页面刷新/重新访问后是否恢复选项卡选择
+                sync: false, // default 确定选项卡选择是否将在具有匹配标签的选项卡之间同步。
+                theme: 'classic', // default 设置标签页主题。值为false表示不应用任何主题，该值应在创建自定义标签页主题时使用。
+                tabComments: true, // default 确定是否可以使用选项卡注释来定义选项卡集中的选项卡。
+                tabHeadings: true // default 确定是否可以使用标题 + 粗体标记来定义选项卡集中的选项卡。
+            },
+
+            // 设置请求资源的请求头。
+            requestHeaders: {
+                'cache-control': 'max-age=600',
+            },
+
+            // 设置全局搜索
+            search: {
+                maxAge: 86400000, // 过期时间，单位毫秒，默认一天
+                paths: 'auto', // 注意：仅适用于 paths: 'auto' 模式
+                placeholder: '搜索',
+                noData: 'No Results',
+                depth: 4,
+                hideOtherSidebarContent: false,
+                namespace: 'Docsify-Guide',
+            }
+
         }
-      },
-
-      // parse twemoji
-      plugins: [
-        function (hook, vm) {
-          hook.doneEach(function () {
-            twemoji.parse(document);
-          });
-        },
-      ],
-
-      // 添加tab标签
-      dashboard: {
-        numTabContent: 3,  //幻灯片中显示的卡片数量
-        metadataUrl: 'metadata/posts',
-        sort: false,                         // sort the posts by time
-        theme: 'default',                    // (1) default, (2) cards, (3) list
-        tagboardTheme: 'default'             // options are same as above
-      },
-
-      tabs: {
-        persist: false, // default 确定页面刷新/重新访问后是否恢复选项卡选择
-        sync: false, // default 确定选项卡选择是否将在具有匹配标签的选项卡之间同步。
-        theme: 'classic', // default 设置标签页主题。值为false表示不应用任何主题，该值应在创建自定义标签页主题时使用。
-        tabComments: true, // default 确定是否可以使用选项卡注释来定义选项卡集中的选项卡。
-        tabHeadings: true // default 确定是否可以使用标题 + 粗体标记来定义选项卡集中的选项卡。
-      },
-
-      // 设置请求资源的请求头。
-      requestHeaders: {
-        'cache-control': 'max-age=600',
-      },
-
-      // 设置全局搜索
-      search: {
-        maxAge: 86400000,// 过期时间，单位毫秒，默认一天
-        paths: 'auto',// 注意：仅适用于 paths: 'auto' 模式
-        placeholder: '搜索',
-        noData: 'No Results',
-        depth: 4,
-        hideOtherSidebarContent: false,
-        namespace: 'Docsify-Guide',
-      }
-
-    }
-  </script>
-  <!-- docsify的js依赖 -->
-  <script src="//cdn.jsdelivr.net/npm/docsify@latest/lib/docsify.min.js"></script>
-  <!-- 添加代码高亮 -->
-  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-abap.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/prismjs@v1.x/components/prism-core.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/prismjs@v1.x/plugins/autoloader/prism-autoloader.min.js"></script>
-  <!-- docsify的主题 -->
-  <script src="//cdn.jsdelivr.net/npm/docsify-themeable@0/dist/js/docsify-themeable.min.js"></script>
-  <!-- 主题切换 -->
-  <script src="//cdn.jsdelivr.net/npm/docsify-darklight-theme@3/dist/docsify-themeable/main.min.js"
-    type="text/javascript">
     </script>
-  <script src="//cdn.jsdelivr.net/npm/docsify-darklight-theme@3/dist/docsify-themeable/index.min.js"
-    type="text/javascript">
+    <!-- docsify的js依赖 -->
+    <script src="//cdn.jsdelivr.net/npm/docsify@latest/lib/docsify.min.js"></script>
+    <!-- 添加代码高亮 -->
+    <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-abap.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs@v1.x/components/prism-core.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs@v1.x/plugins/autoloader/prism-autoloader.min.js"></script>
+    <!-- docsify的主题 -->
+    <script src="//cdn.jsdelivr.net/npm/docsify-themeable/dist/js/docsify-themeable.min.js"></script>
+    <!-- 主题切换 -->
+    <script src="//cdn.jsdelivr.net/npm/docsify-darklight-theme@3/dist/docsify-themeable/main.min.js" type="text/javascript">
     </script>
-  <!-- 插入pdf插件 -->
-  <script src="//cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js"></script>
-  <script src="//unpkg.com/docsify-pdf-embed-plugin/src/docsify-pdf-embed.js"></script>
-  <!-- 显示流程图插件+流程图缩放插件 -->
-  <script src="//cdn.jsdelivr.net/npm/d3@7"></script>
-  <script type="module">
-    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
-    mermaid.initialize({ startOnLoad: true });
-    window.mermaid = mermaid;
-  </script>
-  <script src="//unpkg.com/docsify-mermaid@2.0.1/dist/docsify-mermaid.js"></script>
-  <script src="//unpkg.com/docsify-mermaid-zoom/dist/docsify-mermaid-zoom.js"></script>
-  <!-- 显示图像标题 -->
-  <script src="//cdn.jsdelivr.net/gh/h-hg/docsify-image-caption/dist/docsify-image-caption.min.js"></script>
-  <!-- 警告块 -->
-  <script src="//unpkg.com/docsify-plugin-flexible-alerts@1.1.1/dist/docsify-plugin-flexible-alerts.min.js"></script>
-  <!-- emoji表情支持 -->
-  <script src="./plugins/docsify/lib/plugins/emoji.min.js"></script>
-  <!-- twemoji -->
-  <script src="//cdn.jsdelivr.net/gh/TaQini/docsify-twemoji@master/twemoji.min.js"></script>
-  <!-- 图片放大缩小支持 -->
-  <script src="./plugins/docsify/lib/plugins/zoom-image.min.js"></script>
-  <!-- 搜索功能支持 -->
-  <script src="./plugins/docsify/lib/plugins/search.min.js"></script>
-  <!--在所有的代码块上添加一个简单的Click to copy按钮来允许用户从你的文档中轻易地复制代码-->
-  <script src="./plugins/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
-  <!-- 添加tab标签 -->
-  <!-- <script src="./plugins/docsify-dashboard/dist/docsify-dashboard.min.js"></script> -->
-  <script src="./plugins/docsify-dashboard/dist/docsify-dashboard.min.js"></script>
-  <script src="./plugins/docsify-tabs/dist/docsify-tabs.min.js"></script>
-  <!-- 侧边栏展开折叠插件 -->
-  <script src="./plugins/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
-  <!-- 代码块折叠 -->
-  <script src="//cdn.jsdelivr.net/npm/docsify-hide-code/dist/docsify-hide-code.min.js"></script>
-  <!-- 中英文添加空格 -->
-  <script src="//cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js"></script>
-  <!-- 注册 离线模式 SSR -->
-  <script>
-    if (typeof navigator.serviceWorker !== 'undefined') {
-      navigator.serviceWorker.register('sw.js')
-    }
-  </script>
+    <script src="//cdn.jsdelivr.net/npm/docsify-darklight-theme@3/dist/docsify-themeable/index.min.js" type="text/javascript">
+    </script>
+    <!-- 插入pdf插件 -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js"></script>
+    <script src="//unpkg.com/docsify-pdf-embed-plugin/src/docsify-pdf-embed.js"></script>
+    <!-- 显示流程图插件+流程图缩放插件 -->
+    <script src="//cdn.jsdelivr.net/npm/d3@7"></script>
+    <script type="module">
+        import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs"; mermaid.initialize({ startOnLoad: true }); window.mermaid = mermaid;
+    </script>
+    <script src="//unpkg.com/docsify-mermaid@2.0.1/dist/docsify-mermaid.js"></script>
+    <script src="//unpkg.com/docsify-mermaid-zoom/dist/docsify-mermaid-zoom.js"></script>
+    <!-- 显示图像标题 -->
+    <script src="//cdn.jsdelivr.net/gh/h-hg/docsify-image-caption/dist/docsify-image-caption.min.js"></script>
+    <!-- 警告块 -->
+    <script src="//unpkg.com/docsify-plugin-flexible-alerts@1.1.1/dist/docsify-plugin-flexible-alerts.min.js"></script>
+    <!-- emoji表情支持 -->
+    <script src="./plugins/docsify/lib/plugins/emoji.min.js"></script>
+    <!-- twemoji -->
+    <script src="//cdn.jsdelivr.net/gh/TaQini/docsify-twemoji@master/twemoji.min.js"></script>
+    <!-- 图片放大缩小支持 -->
+    <script src="./plugins/docsify/lib/plugins/zoom-image.min.js"></script>
+    <!-- 搜索功能支持 -->
+    <script src="./plugins/docsify/lib/plugins/search.min.js"></script>
+    <!--复制代码-->
+    <script src="./plugins/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
+    <!-- 添加tab标签 -->
+    <script src="./plugins/docsify-dashboard/dist/docsify-dashboard.min.js"></script>
+    <script src="./plugins/docsify-tabs/dist/docsify-tabs.min.js"></script>
+    <!-- 代码块折叠 -->
+    <script src="./plugins/docsify-high-code/dist/docsify-hide-code.min.js"></script>
+    <!-- 行内代码高亮 -->
+    <script src="./plugins/docsify-inline-code-highling/dist/docsify-inline-code-highing.min.js"></script>
+    <!-- 分页插件 -->
+    <script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
+    <!-- 中英文添加空格 -->
+    <script src="//cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js"></script>
+    <!-- 注册 离线模式 SSR -->
+    <script>
+        if (typeof navigator.serviceWorker !== 'undefined') {
+            navigator.serviceWorker.register('./plugins/docsify/lib/plugins/sw.js')
+        }
+    </script>
 </body>
 
 </html>
