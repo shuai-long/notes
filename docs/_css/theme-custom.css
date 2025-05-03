@@ -2,6 +2,7 @@
     --base-font-family: Consolas, Courier, monospace, '隶变-简', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     --content-max-width: 80em;
     --search-input-border-radius: 1px;
+    --code-font-size: calc(var(--font-size-m) * 0.7);
     /* sidebar */
     --sidebar-nav-indent: 0.75em;
     --sidebar-nav-link-before-content: "\f15b";
@@ -26,4 +27,8 @@
     font-family: "Font Awesome 5 Free";
     font-style: normal;
     font-weight: 900;
+}
+
+.markdown-section figure, .markdown-section p, .markdown-section ol, .markdown-section ul {
+    margin: .25em 0;
 }
