@@ -1,32 +1,29 @@
 :root {
-  --base-font-family: Consolas, Courier, monospace, '隶变-简', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  --content-max-width: 80em;
-  --search-input-border-radius: 1px;
-
-  /* sidebar */
-  --sidebar-nav-indent: 0.75em;
-
-
-  --sidebar-nav-link-before-content: "\f15b";
-  --sidebar-nav-link-before-content--active: "\f15c";
-  --sidebar-nav-link-before-content-l1: "\f0c9";
-  --sidebar-nav-link-before-content-l1--active: "\f550";
-  --sidebar-nav-link-before-content-l2: "\f0c9";
-  --sidebar-nav-link-before-content-l2--active: "\f550";
-  --sidebar-nav-link-before-content-l3: "\f0c9";
-  --sidebar-nav-link-before-content-l3--active: "\f550";
-  --sidebar-nav-link-before-content-l4: "\f0c9";
-  --sidebar-nav-link-before-content-l5--active: "\f550";
+    --base-font-family: Consolas, Courier, monospace, '隶变-简', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --content-max-width: 80em;
+    --search-input-border-radius: 1px;
+    /* sidebar */
+    --sidebar-nav-indent: 0.75em;
+    --sidebar-nav-link-before-content: "\f15b";
+    --sidebar-nav-link-before-content--active: "\f15c";
+    --sidebar-nav-link-before-content-l1: "\f0c9";
+    --sidebar-nav-link-before-content-l1--active: "\f550";
+    --sidebar-nav-link-before-content-l2: "\f0c9";
+    --sidebar-nav-link-before-content-l2--active: "\f550";
+    --sidebar-nav-link-before-content-l3: "\f0c9";
+    --sidebar-nav-link-before-content-l3--active: "\f550";
+    --sidebar-nav-link-before-content-l4: "\f0c9";
+    --sidebar-nav-link-before-content-l5--active: "\f550";
 }
 
 .sidebar-nav>ul>li a::before {
-  font-family: "Font Awesome 5 Free";
-  font-style: normal;
-  font-weight: 900;
+    font-family: "Font Awesome 5 Free";
+    font-style: normal;
+    font-weight: 900;
 }
 
 .sidebar-nav>ul>li.active a::before {
-  font-family: "Font Awesome 5 Free";
-  font-style: normal;
-  font-weight: 900;
+    font-family: "Font Awesome 5 Free";
+    font-style: normal;
+    font-weight: 900;
 }
