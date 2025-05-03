@@ -1,4 +1,3 @@
-/*! docsify-live-demo v1.0.0 by Kossi D. T. S. | MIT */
 .live-demo {
     display: flex;
     box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
@@ -6,10 +5,12 @@
     overflow: hidden;
     margin-bottom: 3rem;
 }
+
 .live-demo .CodeMirror {
     border-right: 2px solid rgba(0, 0, 0, 0.2);
     height: auto;
 }
+
 .live-demo .preview {
     padding: 0.5rem;
 }
@@ -24,7 +25,7 @@
     content: "Loading...";
 }
 
-.live-demo > * {
+.live-demo>* {
     flex-basis: 100%;
 }
 
@@ -34,4 +35,3 @@
     min-width: 100%;
     border: none;
 }
-

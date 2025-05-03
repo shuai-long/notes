@@ -8,10 +8,10 @@
     <meta name="description" content="Description">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <!-- 设置浏览器图标 -->
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <!-- <link rel="icon" href="/favicon.ico" type="image/x-icon" /> -->
+    <!-- <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" /> -->
     <!-- 图标 -->
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="./_css/font-awesome-all.min.css">
     <!-- 代码高亮 -->
     <link href="//cdn.jsdelivr.net/npm/prismjs@v1.x/themes/prism-okaidia.min.css" rel="stylesheet" />
     <!-- 添加tab标签 -->
@@ -151,7 +151,8 @@
     </script>
     <!-- 插入pdf插件 -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js"></script>
-    <script src="//unpkg.com/docsify-pdf-embed-plugin/src/docsify-pdf-embed.js"></script>
+    <!-- <script src="//unpkg.com/docsify-pdf-embed-plugin/src/docsify-pdf-embed.js"></script> -->
+    <script src="./plugins/docsify-pdf-embed-plugin/src/docsify-pdf-embed.min.js"></script>
     <!-- 显示流程图插件+流程图缩放插件 -->
     <script src="//cdn.jsdelivr.net/npm/d3@7"></script>
     <script type="module">
@@ -187,7 +188,7 @@
     <!-- 注册 离线模式 SSR -->
     <script>
         if (typeof navigator.serviceWorker !== 'undefined') {
-            navigator.serviceWorker.register('./plugins/docsify/lib/plugins/sw.js')
+            navigator.serviceWorker.register('sw.js')
         }
     </script>
 </body>
