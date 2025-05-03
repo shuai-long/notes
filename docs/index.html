@@ -47,7 +47,7 @@
             // 小屏设备下合并导航栏到侧边栏
             mergeNavbar: true,
             // 自动为每个页面增加标题。
-            autoHeader: true,
+            autoHeader: false,
             // 只在访问主页时加载封面。
             onlyCover: false,
             // 显示流程图插件
@@ -68,7 +68,7 @@
             },
             // 代码块折叠
             hideCode: {
-                scroll: false, // Enable scrolling
+                scroll: true, // Enable scrolling
                 height: 500 // Max height
             },
 
@@ -156,7 +156,9 @@
     <!-- 显示流程图插件+流程图缩放插件 -->
     <script src="//cdn.jsdelivr.net/npm/d3@7"></script>
     <script type="module">
-        import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs"; mermaid.initialize({ startOnLoad: true }); window.mermaid = mermaid;
+        import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs"; 
+        mermaid.initialize({ startOnLoad: true }); 
+        window.mermaid = mermaid;
     </script>
     <script src="//unpkg.com/docsify-mermaid@2.0.1/dist/docsify-mermaid.js"></script>
     <script src="//unpkg.com/docsify-mermaid-zoom/dist/docsify-mermaid-zoom.js"></script>
