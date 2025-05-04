@@ -2,24 +2,24 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>abap notes</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="description" content="Description">
+    <meta name="description" content="Description" />
     <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
     <!-- 图标 -->
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
     <!-- 添加tab标签 -->
-    <link rel="stylesheet" href="./_css/dashboard.min.css">
+    <link rel="stylesheet" href="./_css/dashboard.min.css" />
 
     <!-- 主题 -->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple.css"
-        id="docsify-theme-light">
+        id="docsify-theme-light" />
     <link rel=" stylesheet" href="//cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple-dark.css"
-        id="docsify-theme-dark">
-    <link rel="stylesheet" href="./_css/theme-custom.css">
+        id="docsify-theme-dark" />
+    <link rel="stylesheet" href="./_css/theme-custom.min.css" />
 </head>
 
 <body>
@@ -28,9 +28,9 @@
     <script>
         window.$docsify = {
             // 项目名称
-            name: 'notes',
+            name: "notes",
             // 仓库地址，点击右上角的Github章鱼猫头像会跳转到此地址
-            repo: ' https://github.com/shuai-long/notes',
+            repo: " https://github.com/shuai-long/notes",
             // 最大支持渲染的标题层级
             maxLevel: 6,
             // 侧边栏支持，默认加载的是项目根目录下的_sidebar.md文件
@@ -51,25 +51,25 @@
             auto2top: true,
             // 显示流程图插件
             mermaidConfig: {
-                querySelector: ".mermaid"
+                querySelector: ".mermaid",
             },
             // 流程图缩放
             mermaidZoom: {
                 minimumScale: 1,
                 maximumScale: 5,
-                zoomPannel: true
+                zoomPannel: true,
             },
 
             // 代码块折叠
             hideCode: {
                 scroll: true, // Enable scrolling
-                height: 500 // Max height
+                height: 500, // Max height
             },
 
             // 分页插件
             pagination: {
-                previousText: 'Pre',
-                nextText: 'Next',
+                previousText: "Pre",
+                nextText: "Next",
                 crossChapter: true,
                 crossChapterText: true,
             },
@@ -77,7 +77,7 @@
             // 主题样式
             themeable: {
                 readyTransition: true, // default
-                responsiveTables: true // default
+                responsiveTables: true, // default
             },
 
             plugins: [
@@ -90,58 +90,115 @@
             ],
 
             // 启用的 Prism 插件列表（对应文件名）
-            prismPlugins: ['abap', 'line-numbers'],
+            prismPlugins: {
+                enabled: ["abap", 'autoloader', "line-numbers", 'match-braces', "normalize-whitespace"],
+                pluginFiles: {
+
+                    "abap": {
+                        js: "components/prism-abap.min.js",
+                    },
+
+                    "autoloader": {
+                        js: "plugins/autoloader/prism-autoloader.min.js"
+                    },
+
+                    "match-braces": {
+                        js: "plugins/match-braces/prism-match-braces.min.js",
+                        css: "plugins/match-braces/prism-match-braces.min.css",
+                        class_name: ['match-braces'],
+                    },
+
+                    "inline-color": {
+                        js: "plugins/inline-color/prism-inline-color.min.js",
+                        css: "plugins/inline-color/prism-inline-color.min.css"
+                    },
+
+                    "normalize-whitespace": {
+                        js: "plugins/normalize-whitespace/prism-normalize-whitespace.min.js"
+                    },
+
+                    "line-numbers": {
+                        js: "plugins/line-numbers/prism-line-numbers.min.js",
+                        css: "plugins/line-numbers/prism-line-numbers.min.css",
+                        class_name: ['line-numbers'],
+                        attribute: [
+                            {
+                                key: 'data-start',
+                                value: '1',
+                            },
+                            {
+                                key: 'style',
+                                value: 'white-space:pre-wrap;',
+                            }
+                        ]
+
+                    },
+                    toolbar: {
+                        js: "plugins/toolbar/prism-toolbar.min.js",
+                        css: "plugins/toolbar/prism-toolbar.css",
+                    },
+                    "copy-to-clipboard": {
+                        js: "plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js",
+                        css: null,
+                    },
+                },
+            },
+
             // 插件功能配置
             prism: {
-                copySuccessText: '复制成功',    // 自定义复制成功提示
+                copySuccessText: "复制成功", // 自定义复制成功提示
                 showLanguage: {
-                    useDataAttribute: true,     // 是否使用 data-language 属性显示语言标签
-                    mapping: {                  // 语言标签映射（可选）
-                        'js': 'JavaScript',
-                        'py': 'Python',
-                        'sh': 'Shell'
-                    }
-                }
+                    useDataAttribute: true, // 是否使用 data-language 属性显示语言标签
+                    mapping: {
+                        // 语言标签映射（可选）
+                        js: "JavaScript",
+                        py: "Python",
+                        sh: "Shell",
+                    },
+                },
             },
 
             // 添加tab标签
             dashboard: {
                 numTabContent: 3, //幻灯片中显示的卡片数量
-                metadataUrl: 'metadata/posts',
+                metadataUrl: "metadata/posts",
                 sort: false, // sort the posts by time
-                theme: 'default', // (1) default, (2) cards, (3) list
-                tagboardTheme: 'default' // options are same as above
+                theme: "default", // (1) default, (2) cards, (3) list
+                tagboardTheme: "default", // options are same as above
             },
 
             tabs: {
                 persist: false, // default 确定页面刷新/重新访问后是否恢复选项卡选择
                 sync: false, // default 确定选项卡选择是否将在具有匹配标签的选项卡之间同步。
-                theme: 'classic', // default 设置标签页主题。值为false表示不应用任何主题，该值应在创建自定义标签页主题时使用。
+                theme: "classic", // default 设置标签页主题。值为false表示不应用任何主题，该值应在创建自定义标签页主题时使用。
                 tabComments: true, // default 确定是否可以使用选项卡注释来定义选项卡集中的选项卡。
-                tabHeadings: true // default 确定是否可以使用标题 + 粗体标记来定义选项卡集中的选项卡。
+                tabHeadings: true, // default 确定是否可以使用标题 + 粗体标记来定义选项卡集中的选项卡。
             },
 
             // 设置请求资源的请求头。
             requestHeaders: {
-                'cache-control': 'max-age=600',
+                "cache-control": "max-age=600",
             },
 
             // 设置全局搜索
             search: {
                 maxAge: 86400000, // 过期时间，单位毫秒，默认一天
-                paths: 'auto', // 注意：仅适用于 paths: 'auto' 模式
-                placeholder: '搜索',
-                noData: 'No Results',
+                paths: "auto", // 注意：仅适用于 paths: 'auto' 模式
+                placeholder: "搜索",
+                noData: "No Results",
                 depth: 4,
                 hideOtherSidebarContent: false,
-                namespace: 'Docsify-Guide',
-            }
-
-        }
+                namespace: "Docsify-Guide",
+            },
+        };
     </script>
 
-    <!--  Docsify 核心：它会把 Markdown 渲染成 HTML -->
+    <!--  Docsify 核心 -->
     <script src="//cdn.jsdelivr.net/npm/docsify@latest/lib/docsify.min.js"></script>
+
+    <!-- Docsify 主题 -->
+    <script src="//cdn.jsdelivr.net/npm/docsify-themeable/dist/js/docsify-themeable.min.js"></script>
+    <script src="./plugins/docsify/lib/plugins/setting-button-no-level.min.js"></script>
 
     <!-- 2. Prism 语言组件 -->
     <script src="./plugins/docsify/lib/plugins/prism-enhancer.min.js"></script>
@@ -191,17 +248,13 @@
     <!-- 分页插件 -->
     <script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
 
-    <!-- Docsify 主题 -->
-    <script src="//cdn.jsdelivr.net/npm/docsify-themeable/dist/js/docsify-themeable.min.js"></script>
-    <script src="./plugins/docsify/lib/plugins/setting-button-no-level.min.js"></script>
-
     <!-- 中英文添加空格 -->
     <script src="//cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js"></script>
 
     <!-- 注册 离线模式 SSR -->
     <script>
-        if (typeof navigator.serviceWorker !== 'undefined') {
-            navigator.serviceWorker.register('sw.js')
+        if (typeof navigator.serviceWorker !== "undefined") {
+            navigator.serviceWorker.register("sw.js");
         }
     </script>
 </body>

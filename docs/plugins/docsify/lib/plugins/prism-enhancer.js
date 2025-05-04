@@ -1,22 +1,4 @@
 ; (function () {
-  // Prism 插件名称到文件名的映射
-  const pluginFiles = {
-    'abap': {
-      js: 'components/prism-abap.min.js'
-    },
-    'line-numbers': {
-      js: 'plugins/line-numbers/prism-line-numbers.min.js',
-      css: 'plugins/line-numbers/prism-line-numbers.min.css'
-    },
-    'toolbar': {
-      js: 'plugins/toolbar/prism-toolbar.min.js',
-      css: 'plugins/toolbar/prism-toolbar.css'
-    },
-    'copy-to-clipboard': {
-      js: 'plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js',
-      css: null
-    },
-  };
 
   function loadCSS(href) {
     const link = document.createElement('link');
@@ -39,13 +21,15 @@
   function prismEnhancer(hook, vm) {
     // 默认配置
     const cfg = window.$docsify || {};
-    const enabled = cfg.prismPlugins || [];
+    const prismPlugins = cfg.prismPlugins || {};
+    const enabled = prismPlugins.enabled || [];
+    const pluginFiles = prismPlugins.pluginFiles || {};
     const opts = cfg.prism || {};
     const showLangCfg = opts.showLanguage || {};
 
     // CDN 基础路径（可根据需要调整版本号）
-    const PRISM_BASE_CSS = '//cdn.jsdelivr.net/npm/prismjs/themes/prism.css';
-    const PRISM_BASE_JS = '//cdn.jsdelivr.net/npm/prismjs/prism.min.js';
+    const PRISM_BASE_CSS = '//cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css';
+    const PRISM_BASE_JS = '//cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js';
 
     // 首先加载 Prism 核心（CSS & JS）
     loadCSS(PRISM_BASE_CSS);
@@ -55,10 +39,10 @@
         const file = pluginFiles[name];
         if (!file) return;
         if (file.css) {
-          loadCSS(`//cdn.jsdelivr.net/npm/prismjs/${file.css}`);
+          loadCSS(`//cdn.jsdelivr.net/npm/prismjs@1.29.0/${file.css}`);
         }
         if (file.js) {
-          loadJS(`//cdn.jsdelivr.net/npm/prismjs/${file.js}`);
+          loadJS(`//cdn.jsdelivr.net/npm/prismjs@1.29.0/${file.js}`);
         }
       });
     });
@@ -70,23 +54,49 @@
         const preEl = codeEl.parentNode;
         const langClass = Array.from(codeEl.classList).find(cls => cls.startsWith('language-'));
         const lang = langClass ? langClass.replace('language-', '') : '';
-        // 添加行号插件需要的类
-        if (enabled.includes('line-numbers')) {
-          preEl.classList.add('line-numbers');
-        }
-        // 设置语言标签（Show Language）
-        if (enabled.includes('show-language')) {
-          const useData = showLangCfg.useDataAttribute === true;
-          if (useData && lang) {
-            const label = (showLangCfg.mapping && showLangCfg.mapping[lang]) || lang;
-            preEl.setAttribute('data-language', label);
+
+        enabled.forEach(name => {
+          const pluginLine = pluginFiles[name];
+          if (!pluginLine) return;
+
+          // 添加类名
+          const classList = pluginLine.class_name || [];
+          classList.forEach(class_name => {
+            codeEl.classList.add(class_name);
+            preEl.classList.add(class_name);
+          })
+
+          // 添加属性
+          const attrList = pluginLine.attribute || [];
+          attrList.forEach(attr_line => {
+            if (attr_line.key) {
+              if (attr_line.value) {
+                // 如果 key 和 value 都不为空，添加属性 key 和 value
+                preEl.setAttribute(attr_line.key, attr_line.value);
+              } else {
+                // 如果只有 key 不为空，添加属性 key（值设为空字符串）
+                preEl.setAttribute(attr_line.key, '');
+              }
+            }
+          });
+
+          // 设置语言标签（Show Language）
+          if (name === 'show-language') {
+            const useData = showLangCfg.useDataAttribute === true;
+            if (useData && lang) {
+              const label = (showLangCfg.mapping && showLangCfg.mapping[lang]) || lang;
+              preEl.setAttribute('data-language', label);
+            }
           }
-        }
-        // 自定义复制按钮提示
-        if (enabled.includes('copy-to-clipboard') && opts.copySuccessText) {
-          // 使用 Prism Copy 插件的 data 属性
-          codeEl.setAttribute('data-prismjs-copy-success', opts.copySuccessText);
-        }
+          // 自定义复制按钮提示
+          if (name === 'copy-to-clipboard' && opts.copySuccessText) {
+            // 使用 Prism Copy 插件的 data 属性
+            codeEl.setAttribute('data-prismjs-copy-success', opts.copySuccessText);
+          }
+        });
+
+
+
       });
       // 调用 Prism 进行高亮
       if (window.Prism) {
