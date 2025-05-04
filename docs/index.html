@@ -91,7 +91,7 @@
 
             // 启用的 Prism 插件列表（对应文件名）
             prismPlugins: {
-                enabled: ["abap", 'autoloader', "line-numbers", 'match-braces', "normalize-whitespace"],
+                enabled: ["abap", 'autoloader', 'match-braces', "normalize-whitespace"],
                 pluginFiles: {
 
                     "abap": {
@@ -116,7 +116,6 @@
                     "normalize-whitespace": {
                         js: "plugins/normalize-whitespace/prism-normalize-whitespace.min.js"
                     },
-
                     "line-numbers": {
                         js: "plugins/line-numbers/prism-line-numbers.min.js",
                         css: "plugins/line-numbers/prism-line-numbers.min.css",
@@ -193,15 +192,18 @@
         };
     </script>
 
-    <!--  Docsify 核心 -->
+    <!-- Docsify 核心 -->
     <script src="//cdn.jsdelivr.net/npm/docsify@latest/lib/docsify.min.js"></script>
 
     <!-- Docsify 主题 -->
     <script src="//cdn.jsdelivr.net/npm/docsify-themeable/dist/js/docsify-themeable.min.js"></script>
     <script src="./plugins/docsify/lib/plugins/setting-button-no-level.min.js"></script>
 
-    <!-- 2. Prism 语言组件 -->
+    <!-- Prism 语言组件 -->
     <script src="./plugins/docsify/lib/plugins/prism-enhancer.min.js"></script>
+
+    <!-- 样式修改 -->
+     <!-- <script src="./plugins/docsify/lib/plugins/themeable-setting.js"></script> -->
 
     <!-- 插入pdf插件 -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js"></script>
