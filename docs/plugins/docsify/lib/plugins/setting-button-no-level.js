@@ -1,5 +1,30 @@
+; (function () {
+  // 页面加载时立即执行，读取本地存储或系统偏好确定主题
+  var theme = localStorage.getItem('docsifyTheme');
+  if (!theme && window.matchMedia) {
+    theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  if (theme) {
+    var lightLink = document.querySelector('link[title="light"]');
+    var darkLink = document.querySelector('link[title="dark"]');
+    // 启用/禁用对应的样式表
+    if (lightLink && darkLink) {
+      if (theme === 'dark') {
+        lightLink.disabled = true;
+        darkLink.disabled = false;
+      } else {
+        lightLink.disabled = false;
+        darkLink.disabled = true;
+      }
+    }
+    // 存储当前主题，保证下次加载时也能直接应用
+    localStorage.setItem('docsifyTheme', theme);
+  }
+})();
+
 window.$docsify = window.$docsify || {};
 window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook, vm) {
+
   hook.mounted(function () {
     // 加载FontAwesome（保持不变）
     if (!document.querySelector('#font-awesome-css')) {
@@ -39,98 +64,147 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
 
     ]
 
-    const themeManager = (function () {
-      // 创建主题控制器对象（使用构造函数模式）
-      function ThemeSwitcher() {
-        this.isDark = false;
-        this.lightTheme = null;
-        this.darkTheme = null;
-        this.themeButtons = new Set();
+    const themeManager = (() => {
+      // 读取本地存储的主题设置（'light' 或 'dark'），如无则使用系统首选项
+      let currentTheme;
+      try {
+        currentTheme = localStorage.getItem('docsifyTheme');
+      } catch (e) {
+        currentTheme = null;
+      }
+      if (!currentTheme) {
+        // 如果 localStorage 没有，则根据 prefers-color-scheme 判断
+        currentTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       }
 
-      ThemeSwitcher.prototype = {
-        init() {
-          this.lightTheme = document.querySelector('link[title="light"]');
-          this.darkTheme = document.querySelector('link[title="dark"]');
-          this.isDark = localStorage.getItem("docsifyTheme") === "dark";
+      // 将 <html> 的 data-theme 属性设置为当前主题，便于 CSS 根据其应用样式:contentReference[oaicite:4]{index=4}
+      document.documentElement.setAttribute('data-theme', currentTheme);
 
-          // 增强的系统主题检测逻辑
-          const systemIsDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-          if (!localStorage.getItem("docsifyTheme")) {
-            this.isDark = systemIsDark;
+      // 获取主题样式表的链接元素（假设在 <head> 中已有 light 和 dark 两个 <link>）
+      const lightLink = document.getElementById('docsify-theme-light')
+        || document.querySelector('link[data-theme="light"][rel="stylesheet"]');
+      const darkLink = document.getElementById('docsify-theme-dark')
+        || document.querySelector('link[data-theme="dark"][rel="stylesheet"]');
+
+      // 根据当前主题立即启用对应样式表，禁用另一种，以避免闪烁:contentReference[oaicite:5]{index=5}
+      if (lightLink) lightLink.disabled = (currentTheme !== 'light');
+      if (darkLink) darkLink.disabled = (currentTheme !== 'dark');
+
+      // 保存所有通过 registerThemeButton 注册的按钮引用，用于更新图标和文本
+      const themeButtons =  new Set();
+
+      // 切换主题：启用/禁用样式表，更新属性、存储和事件
+      function toggle() {
+        // 切换主题名称
+        currentTheme = (currentTheme === 'dark' ? 'light' : 'dark');
+
+        // 启用新主题的样式表，禁用旧主题的样式表
+        if (lightLink) lightLink.disabled = (currentTheme !== 'light');
+        if (darkLink) darkLink.disabled = (currentTheme !== 'dark');
+
+        // 更新 <html> 的 data-theme 属性
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        // 存储新的主题值到 localStorage
+        try {
+          localStorage.setItem('docsifyTheme', currentTheme);
+        } catch (e) {
+          // 忽略不可用 localStorage 的错误
+        }
+
+        // 更新所有已注册按钮的图标和文本
+        updateThemeElements();
+
+        // 派发主题变化事件，detail 可携带主题名
+        const event = new CustomEvent('theme-change', { detail: currentTheme });
+        document.dispatchEvent(event);
+      }
+
+      // 注册一个主题切换按钮：绑定点击事件，并添加到按钮列表中
+      // 新增注册按钮方法
+      function registerThemeButton(buttonElement) {
+        themeButtons.add(buttonElement);
+        // 初始化按钮状态
+        updateThemeElements();
+      }
+
+      // function registerThemeButton(button) {
+      //   if (!button) return;
+      //   // 避免重复注册
+      //   if (!themeButtons.includes(button)) {
+      //     themeButtons.push(button);
+      //     // 点击时触发主题切换
+      //     button.addEventListener('click', toggle);
+      //   }
+      //   // 注册时立即更新按钮状态
+      //   updateThemeElements();
+      // }
+
+      // 更新所有已注册按钮的显示（图标和文本）以匹配当前主题
+      // 更新所有主题相关元素
+      function updateThemeElements() {
+        const iconClass = currentTheme === 'dark' ? 'fa-sun' : 'fa-moon';
+        const labelText = currentTheme === 'dark' ? '亮色主题' : '暗色主题';
+
+        themeButtons.forEach(button => {
+          // 更新图标
+          const icon = button.querySelector('i');
+          if (icon) {
+            icon.className = `fas ${iconClass}`;
           }
 
-          this.applyTheme();
-          this.updateThemeElements(); // 重命名方法
-          return this;
-        },
-
-        toggle() {
-          this.isDark = !this.isDark;
-          this.applyTheme();
-          this.updateThemeElements(); // 重命名方法
-          // 触发自定义事件
-          const event = new CustomEvent('theme-change', {
-            detail: { isDark: this.isDark }
-          });
-          document.dispatchEvent(event);
-        },
-
-        // 更新所有主题相关元素
-        updateThemeElements() {
-          const iconClass = this.isDark ? 'fa-sun' : 'fa-moon';
-          const labelText = this.isDark ? '亮色主题' : '暗色主题';
-
-          this.themeButtons.forEach(button => {
-            // 更新图标
-            const icon = button.querySelector('i');
-            if (icon) {
-              icon.className = `fas ${iconClass}`;
-            }
-
-            // 更新标签
-            const label = button.querySelector('.button-label');
-            if (label) {
-              label.textContent = labelText;
-            }
-          });
-        },
-
-        // 新增注册按钮方法
-        registerThemeButton(buttonElement) {
-          this.themeButtons.add(buttonElement);
-          // 初始化按钮状态
-          this.updateThemeElements();
-        },
-
-        applyTheme() {
-          if (!this.lightTheme || !this.darkTheme) {
-            console.error('Theme stylesheets not found');
-            return;
+          // 更新标签
+          const label = button.querySelector('.button-label');
+          if (label) {
+            label.textContent = labelText;
           }
+        });
+      }
 
-          this.darkTheme.disabled = !this.isDark;
-          this.lightTheme.disabled = this.isDark;
-          localStorage.setItem("docsifyTheme", this.isDark ? "dark" : "light");
 
-          // 更新文档属性
-          document.documentElement.setAttribute(
-            'data-theme',
-            this.isDark ? 'dark' : 'light'
-          );
+      // function updateThemeElements() {
+      //   themeButtons.forEach(button => {
+      //     const lightIcon = button.getAttribute('data-theme-light-icon') || '';
+      //     const darkIcon = button.getAttribute('data-theme-dark-icon') || '';
+      //     const lightText = button.getAttribute('data-theme-light-text') || '';
+      //     const darkText = button.getAttribute('data-theme-dark-text') || '';
+
+      //     // 试图查找定义好的图标和文本元素
+      //     const iconElem = button.querySelector('.theme-icon');
+      //     const textElem = button.querySelector('.theme-text');
+
+      //     if (iconElem && textElem) {
+      //       // 如果按钮内有相应元素，就分别更新它们
+      //       if (currentTheme === 'dark') {
+      //         iconElem.innerHTML = darkIcon;
+      //         textElem.textContent = darkText;
+      //       } else {
+      //         iconElem.innerHTML = lightIcon;
+      //         textElem.textContent = lightText;
+      //       }
+      //     } else {
+      //       // 否则直接设置按钮的内容为“图标 + 文本”
+      //       if (currentTheme === 'dark') {
+      //         button.innerHTML = `${darkIcon}${darkText}`;
+      //       } else {
+      //         button.innerHTML = `${lightIcon}${lightText}`;
+      //       }
+      //     }
+      //   });
+      // }
+
+      // 对外公开的方法和属性
+      return {
+        toggle,
+        registerThemeButton,
+        updateThemeElements,
+        // isDark 为只读属性：当前主题是否为暗色
+        get isDark() {
+          return currentTheme === 'dark';
         }
       };
-
-      // 创建单例实例
-      const instance = new ThemeSwitcher().init();
-
-      return {
-        get isDark() { return instance.isDark; },
-        toggle: () => instance.toggle(),
-        applyTheme: (isDark) => instance.applyTheme(),
-        registerThemeButton: (element) => instance.registerThemeButton(element),
-      };
     })();
+
+
 
     const prismThemeManager = (function () {
       const themes = [

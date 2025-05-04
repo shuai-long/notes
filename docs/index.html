@@ -12,14 +12,13 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- 添加tab标签 -->
-    <link rel="stylesheet" href="./plugins/docsify-dashboard/dist/dashboard.min.css">
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.css">
+    <link rel="stylesheet" href="./_css/dashboard.min.css">
 
     <!-- 主题 -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple.css" title="light">
-    <link rel="stylesheet alternative" href="//cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple-dark.css"
-        title="dark">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple.css"
+        id="docsify-theme-light">
+    <link rel=" stylesheet" href="//cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple-dark.css"
+        id="docsify-theme-dark">
     <link rel="stylesheet" href="./_css/theme-custom.css">
 </head>
 
@@ -82,15 +81,6 @@
             },
 
             plugins: [
-                function (hook) {
-                    hook.doneEach(function () {
-                        // 为所有pre元素添加line-numbers类
-                        document.querySelectorAll('pre').forEach(pre => {
-                            pre.classList.add('line-numbers');
-                            pre.style.backgroundColor = 'transparent'; // 修复背景色问题
-                        });
-                    });
-                },
                 // parse twemoji
                 function (hook, vm) {
                     hook.doneEach(function () {
@@ -99,12 +89,18 @@
                 },
             ],
 
-            //语法高亮
-            Prism: {
-                plugins: {
-                    autoloader: {
-                        languages_path: 'https://cdn.jsdelivr.net/npm/prismjs/components/'
-                    },
+            // 启用的 Prism 插件列表（对应文件名）
+            prismPlugins: ['abap', 'line-numbers'],
+            // 插件功能配置
+            prism: {
+                copySuccessText: '复制成功',    // 自定义复制成功提示
+                showLanguage: {
+                    useDataAttribute: true,     // 是否使用 data-language 属性显示语言标签
+                    mapping: {                  // 语言标签映射（可选）
+                        'js': 'JavaScript',
+                        'py': 'Python',
+                        'sh': 'Shell'
+                    }
                 }
             },
 
@@ -147,15 +143,12 @@
     <!--  Docsify 核心：它会把 Markdown 渲染成 HTML -->
     <script src="//cdn.jsdelivr.net/npm/docsify@latest/lib/docsify.min.js"></script>
 
-    <!-- 2. Prism 语言组件：在核心之后加载，你也可以用 Autoloader 按需加载 -->
-    <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-abap.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-core.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/prismjs/plugins/autoloader/prism-autoloader.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    <!-- 2. Prism 语言组件 -->
+    <script src="./plugins/docsify/lib/plugins/prism-enhancer.min.js"></script>
 
     <!-- 插入pdf插件 -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js"></script>
-    <script src="./plugins/docsify-pdf-embed-plugin/src/docsify-pdf-embed.min.js"></script>
+    <script src="./plugins/docsify/lib/plugins/docsify-pdf-embed.min.js"></script>
 
     <!-- 显示流程图插件+流程图缩放插件 -->
     <script src="//cdn.jsdelivr.net/npm/d3@7"></script>
@@ -182,25 +175,25 @@
     <!-- 搜索功能支持 -->
     <script src="./plugins/docsify/lib/plugins/search.min.js"></script>
 
-    <!--复制代码-->
+    <!-- 代码块按钮 -->
     <script src="./plugins/docsify/lib/plugins/code-button.min.js"></script>
 
     <!-- 添加tab标签 -->
-    <script src="./plugins/docsify-dashboard/dist/docsify-dashboard.min.js"></script>
-    <script src="./plugins/docsify-tabs/dist/docsify-tabs.min.js"></script>
+    <script src="./plugins/docsify/lib/plugins/docsify-dashboard.min.js"></script>
+    <script src="./plugins/docsify/lib/plugins/docsify-tabs.min.js"></script>
 
     <!-- 代码块折叠 -->
-    <script src="./plugins/docsify-high-code/dist/docsify-hide-code.min.js"></script>
+    <script src="./plugins/docsify/lib/plugins/docsify-hide-code.min.js"></script>
 
     <!-- 行内代码高亮 -->
-    <script src="./plugins/docsify-inline-code-highling/dist/docsify-inline-code-highing.min.js"></script>
+    <script src="./plugins/docsify/lib/plugins/docsify-inline-code-highing.min.js"></script>
 
     <!-- 分页插件 -->
     <script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
 
     <!-- Docsify 主题 -->
     <script src="//cdn.jsdelivr.net/npm/docsify-themeable/dist/js/docsify-themeable.min.js"></script>
-    <script src="./plugins/docsify/lib/plugins/setting-button-no-level.js"></script>
+    <script src="./plugins/docsify/lib/plugins/setting-button-no-level.min.js"></script>
 
     <!-- 中英文添加空格 -->
     <script src="//cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js"></script>
