@@ -34,7 +34,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
       {
         icon: 'fas fa-home',
         text: '首页',
-        action: () => window.location.href = '/'
+        action: () => window.location.href = '/notes/#/'
       },
 
     ]
@@ -161,8 +161,6 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
       function applyTheme(index) {
         currentIndex = (index + themes.length) % themes.length;
         const themeUrl = `//cdn.jsdelivr.net/npm/prismjs/themes/${themes[currentIndex]}`;
-
-        https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.css
 
         if (!styleElement) {
           styleElement = document.createElement('link');
