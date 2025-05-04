@@ -14,9 +14,12 @@
     <!-- 添加tab标签 -->
     <link rel="stylesheet" href="./plugins/docsify-dashboard/dist/dashboard.min.css">
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.css">
+
     <!-- 主题 -->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple.css" title="light">
-    <link rel="stylesheet alternative" href="//cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple-dark.css" title="dark">
+    <link rel="stylesheet alternative" href="//cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple-dark.css"
+        title="dark">
     <link rel="stylesheet" href="./_css/theme-custom.css">
 </head>
 
@@ -45,6 +48,8 @@
             autoHeader: false,
             // 只在访问主页时加载封面。
             onlyCover: false,
+            // 换页自动回顶
+            auto2top: true,
             // 显示流程图插件
             mermaidConfig: {
                 querySelector: ".mermaid"
@@ -55,12 +60,7 @@
                 maximumScale: 5,
                 zoomPannel: true
             },
-            // code Copy
-            copyCode: {
-                buttonText: 'Copy',
-                errorText: 'Error',
-                successText: 'Copied',
-            },
+
             // 代码块折叠
             hideCode: {
                 scroll: true, // Enable scrolling
@@ -82,6 +82,15 @@
             },
 
             plugins: [
+                function (hook) {
+                    hook.doneEach(function () {
+                        // 为所有pre元素添加line-numbers类
+                        document.querySelectorAll('pre').forEach(pre => {
+                            pre.classList.add('line-numbers');
+                            pre.style.backgroundColor = 'transparent'; // 修复背景色问题
+                        });
+                    });
+                },
                 // parse twemoji
                 function (hook, vm) {
                     hook.doneEach(function () {
@@ -140,9 +149,9 @@
 
     <!-- 2. Prism 语言组件：在核心之后加载，你也可以用 Autoloader 按需加载 -->
     <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-abap.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/prismjs@v1.x/plugins/autoloader/prism-autoloader.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/prismjs@v1.x/components/prism-core.min.js"></script>
-    <script src="./plugins/docsify/lib/plugins/code-style-switch.min.js"> </script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-core.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js"></script>
 
     <!-- 插入pdf插件 -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js"></script>
@@ -174,7 +183,7 @@
     <script src="./plugins/docsify/lib/plugins/search.min.js"></script>
 
     <!--复制代码-->
-    <script src="./plugins/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
+    <script src="./plugins/docsify/lib/plugins/code-button.min.js"></script>
 
     <!-- 添加tab标签 -->
     <script src="./plugins/docsify-dashboard/dist/docsify-dashboard.min.js"></script>
@@ -191,8 +200,8 @@
 
     <!-- Docsify 主题 -->
     <script src="//cdn.jsdelivr.net/npm/docsify-themeable/dist/js/docsify-themeable.min.js"></script>
-    <script src="./plugins/docsify/lib/plugins/themeable-switch.min.js"></script>
- 
+    <script src="./plugins/docsify/lib/plugins/setting-button-no-level.js"></script>
+
     <!-- 中英文添加空格 -->
     <script src="//cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js"></script>
 
