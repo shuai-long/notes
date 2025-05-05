@@ -1150,21 +1150,59 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
               
         /* 响应式处理 */
         @media (max-width: 768px) {
-          #css-var-control-panel {
-            width: 95%;
-            padding: 15px;
-          }
-          
           #css-var-control-panel .table-wrapper {
-            max-height: 60vh;
+            overflow-x: auto;
           }
-          
+
+          #css-var-control-panel table {
+            min-width: unset;
+            display: block;
+          }
+
+          #css-var-control-panel thead {
+            display: none;
+          }
+
+          #css-var-control-panel tbody tr {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #eee;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+          }
+
+          #css-var-control-panel tbody td {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #f5f5f5;
+          }
+
+          #css-var-control-panel tbody td::before {
+            content: attr(data-label);
+            font-weight: 600;
+            margin-right: 15px;
+            flex: 0 0 90px;
+            color: #666;
+          }
+
+          #css-var-control-panel tbody td:last-child {
+            border-bottom: none;
+          }
+
+          #css-var-control-panel .color-input-group {
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-end;
+          }
+
           #css-var-control-panel button {
-            padding: 4px 8px;
-            font-size: 0.9em;
+            padding: 8px 12px;
           }
         }
-
+              
         `;
         document.head.appendChild(style);
 
@@ -1650,11 +1688,11 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
           return themeManager.isDark ? "亮色主题" : "暗色主题";
         },
         action: () => themeManager.toggle(),
+        isThemeButton: true,
       },
       {
         icon: "fas fa-palette",
         text: "代码主题",
-        isThemeButton: true,
         action: () => prismThemeManager.nextTheme(),
       },
       {
