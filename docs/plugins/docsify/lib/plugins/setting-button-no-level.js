@@ -823,19 +823,6 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
         // 在样式部分添加以下优化代码
         const style = document.createElement("style");
         style.textContent = `
-        .control-btn {
-          position: fixed;
-          bottom: 20px;
-          right: 20px;
-          padding: 10px 20px;
-          background: var(--theme-color);
-          color: white;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
-          z-index: 9999;
-        }
-
         /* 使用固定单位避免受CSS变量影响 */
         #css-var-control-panel {
           font-size: 14px !important; /* 固定字体大小 */
@@ -1202,8 +1189,8 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
             padding: 8px 12px;
           }
         }
-              
-        `;
+
+  `;
         document.head.appendChild(style);
 
         const panel = document.createElement("div");
@@ -1387,9 +1374,9 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
                 const normalizedSaved = ColorUtils.normalize(savedValue);
 
                 // 判断是否为颜色值
-                const isColorCurrent = isColor(normalizedCurrent);
-                const isColorDefault = isColor(normalizedDefault);
-                const isColorSaved = isColor(normalizedSaved);
+                const isColorCurrent = isColor(currentValue);
+                const isColorDefault = isColor(defaultValue);
+                const isColorSaved = isColor(currentValue);
 
                 // 对比度警告
                 const showWarning =
