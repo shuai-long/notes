@@ -30,15 +30,6 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
   vm
 ) {
   hook.mounted(function () {
-    // 加载FontAwesome（保持不变）
-    if (!document.querySelector("#font-awesome-css")) {
-      const link = document.createElement("link");
-      link.rel = "stylesheet";
-      link.href =
-        "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css";
-      link.id = "font-awesome-css";
-      document.head.appendChild(link);
-    }
 
     // 主题对象
     const themeManager = (() => {
@@ -660,6 +651,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
       };
 
       const STYLE_ID = "themeable-setting";
+      const LOCAL_STORAGE = "docsify-css-vars";
 
       // 新增安全解析函数
       function safeJsonParse(str, defaultValue = {}) {
@@ -685,21 +677,30 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
 
       // 应用CSS变量
       function applyStyles() {
-        const style =
+        // 先获取存储的值（提前到最前面）
+        const savedStyles = safeJsonParse(localStorage.getItem(LOCAL_STORAGE), {});
+      
+        // 新增逻辑：当本地存储为空时
+        if (Object.keys(savedStyles).length === 0) {
+          const existingStyle = document.getElementById(STYLE_ID);
+          // 如果 style 标签已存在则删除
+          if (existingStyle) {
+            existingStyle.remove();
+          }
+          return; // 直接返回，不创建新样式
+        }
+      
+        // 以下是原有逻辑（仅当有存储值时执行）
+        const style = 
           document.getElementById(STYLE_ID) || document.createElement("style");
         style.id = STYLE_ID;
-
-        const savedStyles = safeJsonParse(
-          localStorage.getItem("docsify-css-vars"),
-          {}
-        );
-
+      
         const mergedStyles = { ...defaultValues, ...savedStyles };
-
+      
         style.textContent = `:root {${Object.entries(mergedStyles)
           .map(([key, value]) => `${key}: ${value};`)
           .join("")}}`;
-
+      
         if (!document.getElementById(STYLE_ID)) {
           document.head.appendChild(style);
         }
@@ -826,301 +827,283 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
         // 在样式部分添加以下优化代码
         const style = document.createElement("style");
         style.textContent = `
-          /* 使用固定单位避免受CSS变量影响 */
-          #css-var-control-panel {
-            --local-font-size: 14px;    /* 定义局部变量 */
-            font-size: 14px !important; /* 固定字体大小 */
-          }
+        /* 使用固定单位避免受CSS变量影响 */
+        #css-var-control-panel {
+          --local-font-size: 14px;
+          font-size: 14px !important;
+        }
 
-          /* 尺寸单位全部使用px */
-          .modal-container {
-            width: 100%;
-            min-width: 800px !important;
-            max-width: 90vw !important;
-            max-height: 90vh;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
-            display: flex;
-            flex-direction: column;
-          }
+        .modal-container {
+          width: 100%;
+          min-width: 800px !important;
+          max-width: 90vw !important;
+          max-height: 90vh;
+          background: #fff;
+          border-radius: 8px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+          display: flex;
+          flex-direction: column;
+        }
 
-          .modal-header h3 {
-            margin: 0;
-            font-size: 18px !important;
-          }
+        .modal-header h3 {
+          margin: 0;
+          font-size: 18px !important;
+        }
 
-          /* 表格单元格使用固定单位 */
-          #css-var-control-panel td {
-            padding: 10px 15px !important;
-            background: #fff;
-            vertical-align: middle;
-            border-bottom: 1px solid #e9ecef;
-            font-size: var(--local-font-size);
-          }
+        #css-var-control-panel td {
+          padding: 10px 15px !important;
+          background: #fff;
+          vertical-align: middle;
+          border-bottom: 1px solid #e9ecef;
+          font-size: var(--local-font-size);
+        }
 
-          /* 输入框固定尺寸 */
-          #css-var-control-panel input {
-            height: 32px !important;
-            padding: 6px 8px;
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-            font-size: 14px !important;
-            transition: border 0.2s;
-          }
+        #css-var-control-panel input {
+          height: 32px !important;
+          padding: 6px 8px;
+          border: 1px solid #ced4da;
+          border-radius: 4px;
+          font-size: 14px !important;
+          transition: border 0.2s;
+        }
 
-          /* 新增遮罩层 */
-          .modal-mask {
-            position: fixed;
-            z-index: 9998;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: none;
-            justify-content: center;
-            align-items: center;
-          }
+        .modal-mask {
+          position: fixed;
+          z-index: 9998;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.5);
+          display: none;
+          justify-content: center;
+          align-items: center;
+        }
 
-          /* 模态框容器 */
-          .modal-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100%;
-            padding: 20px;
-          }
+        .modal-wrapper {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 100%;
+          padding: 20px;
+        }
 
-          /* 头部样式 */
-          .modal-header {
-            padding: 20px;
-            border-bottom: 1px solid #e8e8e8;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-          }
+        .modal-header {
+          padding: 20px;
+          border-bottom: 1px solid #e8e8e8;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
 
-          /* 内容区域 */
-          .modal-body {
-            padding: 20px;
-            overflow: auto;
-            flex: 1;
-          }
+        .modal-body {
+          padding: 20px;
+          overflow: auto;
+          flex: 1;
+        }
 
-          /* 底部区域 */
-          .modal-footer {
-            padding: 15px 20px;
-            border-top: 1px solid #e8e8e8;
-            text-align: right;
-          }
+        .modal-footer {
+          padding: 15px 20px;
+          border-top: 1px solid #e8e8e8;
+          text-align: right;
+        }
 
-          /* 关闭按钮样式 */
-          .close-btn {
-            font-size: 14px;
-            line-height: 1;
-            margin-left: 15px;
-          }
+        .close-btn {
+          font-size: 14px;
+          line-height: 1;
+          margin-left: 15px;
+        }
 
-          /* 表格容器 */
-          #css-var-control-panel .table-wrapper {
-            overflow: auto;
-            max-height: 50vh;
-            border: 1px solid #e8e8e8;
-            border-radius: 4px;
-            margin: 12px 0;
-          }
+        #css-var-control-panel .table-wrapper {
+          overflow: auto;
+          max-height: 50vh;
+          border: 1px solid #e8e8e8;
+          border-radius: 4px;
+          margin: 12px 0;
+        }
 
-          /* 表格主体 */
-          #css-var-control-panel table {
-            width: 100%;
-            min-width: 600px;
-            border-collapse: separate;
-            border-spacing: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-          }
+        #css-var-control-panel table {
+          width: 100%;
+          min-width: 600px;
+          border-collapse: separate;
+          border-spacing: 0;
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
 
-          /* 表头样式 */
-          #css-var-control-panel thead th {
-            position: sticky;
-            top: 0;
-            background: #f8f9fa;
-            color: #495057;
-            font-weight: 600;
-            padding: 12px 15px;
-            border-bottom: 2px solid #dee2e6;
-            z-index: 1;
-          }
+        #css-var-control-panel thead th {
+          position: sticky;
+          top: 0;
+          background: #f8f9fa;
+          color: #495057;
+          font-weight: 600;
+          padding: 12px 15px;
+          border-bottom: 2px solid #dee2e6;
+          z-index: 1;
+        }
 
-          /* 斑马纹效果 */
-          #css-var-control-panel tbody tr:nth-child(even) td {
-            background-color: #f8f9fa;
-          }
+        #css-var-control-panel tbody tr:nth-child(even) td {
+          background-color: #f8f9fa;
+        }
 
-          /* 悬停效果 */
-          #css-var-control-panel tbody tr:hover td {
-            background-color: #e9f5ff;
-            transition: background 0.2s ease;
-          }
+        #css-var-control-panel tbody tr:hover td {
+          background-color: #e9f5ff;
+          transition: background 0.2s ease;
+        }
 
-          /* 操作按钮容器 */
-          #css-var-control-panel td:last-child {
-            white-space: nowrap;
-          }
+        #css-var-control-panel td:last-child {
+          white-space: nowrap;
+        }
 
-          /* 按钮样式 */
-          #css-var-control-panel button {
-            padding: 5px 12px;
-            margin: 2px;
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-            background: #fff;
-            cursor: pointer;
-            transition: all 0.2s;
-          }
+        #css-var-control-panel button {
+          padding: 5px 12px;
+          margin: 2px;
+          border: 1px solid #ced4da;
+          border-radius: 4px;
+          background: #fff;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
 
-          #css-var-control-panel button:hover {
-            background: #4dabf7;
-            border-color: #4dabf7;
-            color: white;
-            transform: translateY(-1px);
-          }
+        #css-var-control-panel button:hover {
+          background: #4dabf7;
+          border-color: #4dabf7;
+          color: white;
+          transform: translateY(-1px);
+        }
 
-          #css-var-control-panel input:focus {
-            border-color: #4dabf7;
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(77, 171, 247, 0.2);
-          }
+        #css-var-control-panel input:focus {
+          border-color: #4dabf7;
+          outline: none;
+          box-shadow: 0 0 0 2px rgba(77, 171, 247, 0.2);
+        }
 
-          /* 颜色选择器特殊样式 */
-          #css-var-control-panel input[type="color"] {
-            height: 34px;
-            padding: 3px;
-            cursor: pointer;
-          }
+        #css-var-control-panel input[type="color"] {
+          height: 34px;
+          padding: 3px;
+          cursor: pointer;
+        }
 
-          #css-var-control-panel .search-box {
-            position: relative;
-            margin-left: 20px;
-            flex: 1;
-            max-width: 300px;
-          }
+        #css-var-control-panel .search-box {
+          position: relative;
+          margin-left: 20px;
+          flex: 1;
+          max-width: 300px;
+        }
 
-          #css-var-control-panel .search-input {
-            width: 100%;
-            padding: 8px 30px 8px 12px !important;
-            border: 1px solid #ddd !important;
-            border-radius: 20px !important;
-            font-size: 14px !important;
-            background: #f5f5f5 !important;
-            transition: all 0.3s !important;
-          }
+        #css-var-control-panel .search-input {
+          width: 100%;
+          padding: 8px 30px 8px 12px !important;
+          border: 1px solid #ddd !important;
+          border-radius: 20px !important;
+          font-size: 14px !important;
+          background: #f5f5f5 !important;
+          transition: all 0.3s !important;
+        }
 
-          #css-var-control-panel .search-input:focus {
-            background: #fff !important;
-            box-shadow: 0 0 0 2px rgba(77, 171, 247, 0.2) !important;
-          }
+        #css-var-control-panel .search-input:focus {
+          background: #fff !important;
+          box-shadow: 0 0 0 2px rgba(77, 171, 247, 0.2) !important;
+        }
 
-          #css-var-control-panel .search-icon {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            fill: #666;
-          }
+        #css-var-control-panel .search-icon {
+          position: absolute;
+          right: 12px;
+          top: 50%;
+          transform: translateY(-50%);
+          fill: #666;
+        }
 
-          #css-var-control-panel .header-left {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            flex: 1;
-          }
+        #css-var-control-panel .header-left {
+          display: flex;
+          align-items: center;
+          gap: 20px;
+          flex: 1;
+        }
 
-          #css-var-control-panel .search-history {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-top: 5px;
-            max-height: 200px;
-            overflow-y: auto;
-            z-index: 10000;
-            display: none;
-          }
+        #css-var-control-panel .search-history {
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          background: #fff;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+          margin-top: 5px;
+          max-height: 200px;
+          overflow-y: auto;
+          z-index: 10000;
+          display: none;
+        }
 
-          #css-var-control-panel .history-item {
-            padding: 8px 12px;
-            cursor: pointer;
-            transition: background 0.2s;
-          }
+        #css-var-control-panel .history-item {
+          padding: 8px 12px;
+          cursor: pointer;
+          transition: background 0.2s;
+        }
 
-          #css-var-control-panel .history-item:hover {
-            background: #f5f5f5;
-          }
+        #css-var-control-panel .history-item:hover {
+          background: #f5f5f5;
+        }
 
-          #css-var-control-panel .color-preview {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            margin-left: 8px;
-            vertical-align: middle;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-          }
+        #css-var-control-panel .color-preview {
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          margin-left: 8px;
+          vertical-align: middle;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
 
-          #css-var-control-panel .color-input-group {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-          }
+        #css-var-control-panel .color-input-group {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
 
-          #css-var-control-panel .color-input {
-            width: 100% !important;
-            min-width: 10em !important;
-          }
+        #css-var-control-panel .color-input {
+          width: 100% !important;
+          min-width: 10em !important;
+        }
 
-          #css-var-control-panel .contrast-warning {
-            color: #ff4444;
-            cursor: help;
-            position: relative;
-          }
+        #css-var-control-panel .contrast-warning {
+          color: #ff4444;
+          cursor: help;
+          position: relative;
+        }
 
-          #css-var-control-panel .contrast-warning:hover::after {
-            content: "对比度不足（最小建议4.5）";
-            position: absolute;
-            background: #fff;
-            border: 1px solid #ddd;
-            padding: 4px;
-            border-radius: 4px;
-            top: 100%;
-            left: 0;
-            white-space: nowrap;
-          }
+        #css-var-control-panel .contrast-warning:hover::after {
+          content: "对比度不足（最小建议4.5）";
+          position: absolute;
+          background: #fff;
+          border: 1px solid #ddd;
+          padding: 4px;
+          border-radius: 4px;
+          top: 100%;
+          left: 0;
+          white-space: nowrap;
+        }
 
-          #css-var-control-panel .color-display {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-          }
+        #css-var-control-panel .color-display {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+        }
 
-          #css-var-control-panel .color-value {
-            font-family: monospace;
-            font-size: 0.9em;
-          }
+        #css-var-control-panel .color-value {
+          font-family: monospace;
+          font-size: 0.9em;
+        }
 
-        /* 在原有样式基础上添加以下移动端适配代码 */
         @media screen and (max-width: 768px) {
           #css-var-control-panel {
-            --local-font-size: 12px; /* 移动端减小字号 */
+            --local-font-size: 12px;
           }
 
           .modal-container {
-            min-width: 100% !important; /* 移除固定最小宽度 */
+            min-width: 100% !important;
             max-width: 100vw !important;
             border-radius: 0;
             max-height: 100vh;
@@ -1128,13 +1111,13 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
           }
 
           .modal-wrapper {
-            padding: 0; /* 移除外层内边距 */
-            align-items: flex-end; /* 底部对齐 */
+            padding: 0;
+            align-items: flex-end;
           }
 
           .modal-header {
             padding: 12px !important;
-            flex-wrap: wrap; /* 允许头部换行 */
+            flex-wrap: wrap;
           }
 
           .modal-header h3 {
@@ -1149,45 +1132,42 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
           }
 
           #css-var-control-panel td {
-            padding: 8px 10px !important; /* 减小单元格内边距 */
-            min-width: 80px; /* 保证最小宽度 */
+            padding: 8px 10px !important;
+            min-width: 80px;
           }
 
           #css-var-control-panel input {
-            height: 36px !important; /* 增大触控区域 */
+            height: 36px !important;
             padding: 8px !important;
           }
 
           .table-wrapper {
-            height: 60vh !important; /* 增大可视区域 */
+            height: 60vh !important;
             margin: 8px 0 !important;
           }
 
           #css-var-control-panel table {
-            min-width: 100%; /* 允许表格横向滚动 */
+            min-width: 100%;
           }
 
-          /* 按钮组适配 */
           #css-var-control-panel td:last-child {
-            white-space: normal; /* 允许按钮换行 */
+            white-space: normal;
           }
 
           #css-var-control-panel button {
             padding: 8px 12px !important;
             margin: 4px !important;
-            width: 100%; /* 全宽按钮 */
+            width: 100%;
           }
 
-          /* 颜色选择器适配 */
           .color-input-group {
-            flex-direction: column; /* 垂直排列 */
+            flex-direction: column;
           }
 
           .color-input {
-            width: 100% !important; /* 全宽输入框 */
+            width: 100% !important;
           }
 
-          /* 隐藏不必要元素 */
           .contrast-warning {
             display: none;
           }
@@ -1200,34 +1180,29 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
             padding: 12px !important;
           }
 
-          /* 移动端优化输入体验 */
           input[type="color"] {
             height: 40px !important;
             width: 40px !important;
           }
-        }
 
-        @media screen and (max-width: 768px) {
-          /* 移除传统表格布局 */
-          #css-var-control-panel table, 
-          #css-var-control-panel thead, 
-          #css-var-control-panel tbody, 
-          #css-var-control-panel th, 
-          #css-var-control-panel td, 
-          #css-var-control-panel tr { 
+          /* 表格移动端适配 */
+          #css-var-control-panel table,
+          #css-var-control-panel thead,
+          #css-var-control-panel tbody,
+          #css-var-control-panel th,
+          #css-var-control-panel td,
+          #css-var-control-panel tr {
             display: block;
             width: 100% !important;
             min-width: 0 !important;
           }
 
-          /* 隐藏表头 */
           #css-var-control-panel thead {
             position: absolute;
             opacity: 0;
             pointer-events: none;
           }
 
-          /* 将每行转换为卡片式布局 */
           #css-var-control-panel tbody tr {
             display: flex;
             flex-direction: column;
@@ -1239,7 +1214,6 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
             background: #fff;
           }
 
-          /* 通过伪元素添加字段标签 */
           #css-var-control-panel td {
             position: relative;
             padding: 12px 8px 8px 25% !important;
@@ -1260,7 +1234,6 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
             font-size: 0.9em;
           }
 
-          /* 特殊处理操作列 */
           #css-var-control-panel td:last-child {
             border-top: 1px solid #eee !important;
             padding-top: 16px !important;
@@ -1277,23 +1250,16 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
             margin-bottom: 8px;
           }
 
-          /* 调整颜色选择器布局 */
           .color-input-group {
             flex-direction: row !important;
           }
 
-          .color-input {
-            flex: 1;
-          }
-
-          /* 按钮样式优化 */
           #css-var-control-panel button {
             width: auto !important;
             flex: 1;
             min-width: 80px;
           }
 
-          /* 操作按钮组优化 */
           #css-var-control-panel td:last-child {
             flex-direction: row !important;
             gap: 8px;
@@ -1306,24 +1272,18 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
             min-width: 70px;
             padding: 8px 12px !important;
           }
-        }
 
-        /* 横屏优化 */
-        @media screen and (max-width: 768px) and (orientation: landscape) {
-          .table-wrapper {
-            max-height: 50vh !important;
+          /* 横屏优化 */
+          @media (orientation: landscape) {
+            .table-wrapper {
+              max-height: 50vh !important;
+            }
           }
-        }
-  `;
+        }`;
         document.head.appendChild(style);
 
         const panel = document.createElement("div");
         panel.innerHTML = panelHTML;
-
-        // 输入类型检测函数
-        function detectInputType(value) {
-          return "text";
-        }
 
         // 搜索功能实现
         let searchTimer;
@@ -1466,7 +1426,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
 
         function renderTable() {
           const savedVars = safeJsonParse(
-            localStorage.getItem("docsify-css-vars"),
+            localStorage.getItem(LOCAL_STORAGE),
             {}
           );
           // 新增排序逻辑
@@ -1626,7 +1586,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
 
         // 事件绑定
         panel.querySelector(".clear-all").addEventListener("click", () => {
-          localStorage.removeItem("docsify-css-vars");
+          localStorage.removeItem(LOCAL_STORAGE);
           applyStyles();
           renderTable();
         });
@@ -1705,10 +1665,10 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
               .closest("tr")
               .querySelector("input").value;
             const saved = JSON.parse(
-              localStorage.getItem("docsify-css-vars") || "{}"
+              localStorage.getItem(LOCAL_STORAGE) || "{}"
             );
             saved[varName] = newValue;
-            localStorage.setItem("docsify-css-vars", JSON.stringify(saved));
+            localStorage.setItem(LOCAL_STORAGE, JSON.stringify(saved));
             applyStyles();
             renderTable();
           }
@@ -1716,10 +1676,10 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
           if (e.target.dataset.action === "reset") {
             const varName = e.target.dataset.var;
             const saved = JSON.parse(
-              localStorage.getItem("docsify-css-vars") || "{}"
+              localStorage.getItem(LOCAL_STORAGE) || "{}"
             );
             delete saved[varName];
-            localStorage.setItem("docsify-css-vars", JSON.stringify(saved));
+            localStorage.setItem(LOCAL_STORAGE, JSON.stringify(saved));
             applyStyles();
             renderTable();
           }
