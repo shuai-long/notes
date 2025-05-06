@@ -1,0 +1,372 @@
+<head>
+  <style>
+    /* 使用固定单位避免受CSS变量影响 */
+    #css-var-control-panel {
+      --local-font-size: 14px;
+      /* 定义局部变量 */
+      font-size: 14px !important;
+      /* 固定字体大小 */
+    }
+
+    /* 尺寸单位全部使用px */
+    .modal-container {
+      width: 100%;
+      min-width: 800px !important;
+      max-width: 90vw !important;
+      max-height: 90vh;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-header h3 {
+      margin: 0;
+      font-size: 18px !important;
+    }
+
+    /* 表格单元格使用固定单位 */
+    #css-var-control-panel td {
+      padding: 10px 15px !important;
+      background: #fff;
+      vertical-align: middle;
+      border-bottom: 1px solid #e9ecef;
+      font-size: var(--local-font-size);
+    }
+
+    /* 输入框固定尺寸 */
+    #css-var-control-panel input {
+      height: 32px !important;
+      padding: 6px 8px;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      font-size: 14px !important;
+      transition: border 0.2s;
+    }
+
+    /* 新增遮罩层 */
+    .modal-mask {
+      position: fixed;
+      z-index: 9998;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* 模态框容器 */
+    .modal-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100%;
+      padding: 20px;
+    }
+
+    /* 头部样式 */
+    .modal-header {
+      padding: 20px;
+      border-bottom: 1px solid #e8e8e8;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* 内容区域 */
+    .modal-body {
+      padding: 20px;
+      overflow: auto;
+      flex: 1;
+    }
+
+    /* 底部区域 */
+    .modal-footer {
+      padding: 15px 20px;
+      border-top: 1px solid #e8e8e8;
+      text-align: right;
+    }
+
+    /* 关闭按钮样式 */
+    .close-btn {
+      font-size: 14px;
+      line-height: 1;
+      margin-left: 15px;
+    }
+
+    /* 表格容器 */
+    #css-var-control-panel .table-wrapper {
+      overflow: auto;
+      max-height: 50vh;
+      border: 1px solid #e8e8e8;
+      border-radius: 4px;
+      margin: 12px 0;
+    }
+
+    /* 表格主体 */
+    #css-var-control-panel table {
+      width: 100%;
+      min-width: 600px;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    /* 表头样式 */
+    #css-var-control-panel thead th {
+      position: sticky;
+      top: 0;
+      background: #f8f9fa;
+      color: #495057;
+      font-weight: 600;
+      padding: 12px 15px;
+      border-bottom: 2px solid #dee2e6;
+      z-index: 1;
+    }
+
+    /* 斑马纹效果 */
+    #css-var-control-panel tbody tr:nth-child(even) td {
+      background-color: #f8f9fa;
+    }
+
+    /* 悬停效果 */
+    #css-var-control-panel tbody tr:hover td {
+      background-color: #e9f5ff;
+      transition: background 0.2s ease;
+    }
+
+    /* 操作按钮容器 */
+    #css-var-control-panel td:last-child {
+      white-space: nowrap;
+    }
+
+    /* 按钮样式 */
+    #css-var-control-panel button {
+      padding: 5px 12px;
+      margin: 2px;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      background: #fff;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    #css-var-control-panel button:hover {
+      background: #4dabf7;
+      border-color: #4dabf7;
+      color: white;
+      transform: translateY(-1px);
+    }
+
+    #css-var-control-panel input:focus {
+      border-color: #4dabf7;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(77, 171, 247, 0.2);
+    }
+
+    /* 颜色选择器特殊样式 */
+    #css-var-control-panel input[type="color"] {
+      height: 34px;
+      padding: 3px;
+      cursor: pointer;
+    }
+
+    #css-var-control-panel .search-box {
+      position: relative;
+      margin-left: 20px;
+      flex: 1;
+      max-width: 300px;
+    }
+
+    #css-var-control-panel .search-input {
+      width: 100%;
+      padding: 8px 30px 8px 12px !important;
+      border: 1px solid #ddd !important;
+      border-radius: 20px !important;
+      font-size: 14px !important;
+      background: #f5f5f5 !important;
+      transition: all 0.3s !important;
+    }
+
+    #css-var-control-panel .search-input:focus {
+      background: #fff !important;
+      box-shadow: 0 0 0 2px rgba(77, 171, 247, 0.2) !important;
+    }
+
+    #css-var-control-panel .search-icon {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      fill: #666;
+    }
+
+    #css-var-control-panel .header-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex: 1;
+    }
+
+    #css-var-control-panel .search-history {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-top: 5px;
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 10000;
+      display: none;
+    }
+
+    #css-var-control-panel .history-item {
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    #css-var-control-panel .history-item:hover {
+      background: #f5f5f5;
+    }
+
+    #css-var-control-panel .color-preview {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin-left: 8px;
+      vertical-align: middle;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    #css-var-control-panel .color-input-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #css-var-control-panel .color-input {
+      width: 120px !important;
+    }
+
+    #css-var-control-panel .contrast-warning {
+      color: #ff4444;
+      cursor: help;
+      position: relative;
+    }
+
+    #css-var-control-panel .contrast-warning:hover::after {
+      content: "对比度不足（最小建议4.5）";
+      position: absolute;
+      background: #fff;
+      border: 1px solid #ddd;
+      padding: 4px;
+      border-radius: 4px;
+      top: 100%;
+      left: 0;
+      white-space: nowrap;
+    }
+
+    #css-var-control-panel .color-display {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #css-var-control-panel .color-value {
+      font-family: monospace;
+      font-size: 0.9em;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="modal-mask" style="display: flex;">
+    <div id="css-var-control-panel" class="modal-wrapper">
+      <div class="modal-container">
+        <div class="modal-header">
+          <div class="header-left">
+            <h3>CSS变量配置</h3>
+            <div class="search-box">
+              <input type="text" placeholder="搜索变量..." class="search-input">
+              <div class="search-history" style="display: none;"></div>
+              <svg class="search-icon" viewBox="0 0 24 24" width="18">
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z">
+                </path>
+              </svg>
+            </div>
+          </div>
+          <div>
+            <button class="fa fa-trash-can clear-all"> 清除所有</button>
+            <button class="fa fa-circle-xmark close-btn"></button>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>变量名</th>
+                  <th>当前值</th>
+                  <th>默认值</th>
+                  <th>新值</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+
+                <tr
+                  data-original="{&quot;name&quot;:&quot;--base-color&quot;,&quot;current&quot;:&quot;#d3d3d3&quot;,&quot;default&quot;:&quot;#d3d3d3&quot;,&quot;new&quot;:&quot;&quot;}">
+                  <td>--base-color</td>
+                  <td>
+                    <span style="display:inline-flex;align-items:center;gap:4px">
+                      rgb(211, 211, 211)
+                      <span class="color-preview" style="background:rgb(211, 211, 211)"></span>
+                    </span>
+
+                  </td>
+                  <td>
+                    <span style="display:inline-flex;align-items:center;gap:4px">
+                      rgb(211, 211, 211)
+                      <span class="color-preview" style="background:rgb(211, 211, 211)"></span>
+                    </span>
+
+                  </td>
+                  <td>
+                    <div class="color-input-group">
+
+                      <input type="color" value="" data-var="--base-color" title="点击选择颜色">
+                      <input type="text" class="color-input" value="" data-var="--base-color">
+
+                      <span class="contrast-warning">⚠</span>
+                    </div>
+                  </td>
+                  <td>
+                    <button class="fa fa-floppy-disk" data-action="save" data-var="--base-color"> 保存</button>
+                    <button class="fa fa-repeat" data-action="reset" data-var="--base-color"> 重置</button>
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="fa fa-plus add-row"> 新增变量</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

@@ -794,26 +794,29 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
             <div id="css-var-control-panel" class="modal-wrapper">
               <div class="modal-container">
                 <div class="modal-header">
-                    <div class="header-left">
-                      <h3>CSS变量配置</h3>
+                  <h3>CSS变量配置</h3>   
+                  <div class="header-left">
+                    <div class="clear-all-wrapper">
                       <div class="search-box">
                         <input type="text" placeholder="搜索变量..." class="search-input">
                         <div class="search-history"></div>
-                        <svg class="search-icon" viewBox="0 0 24 24" width="18">
-                          <path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-                        </svg>
+                          <svg class="search-icon" viewBox="0 0 24 24" width="18">
+                            <path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                          </svg>
+                        </div>
                       </div>
                     </div>
-                  <div>
-                    <button class="fa fa-trash-can clear-all"> 清除所有</button>
-                    <button class="fa fa-circle-xmark close-btn"></button>
+                    <div>
+                      <button class="fa fa-trash-can clear-all"> 删除</button>
+                      <button class="fa fa-circle-xmark close-btn"></button>
+                    </div>
                   </div>
-                </div>
-                <div class="modal-body">
-                  <div class="table-wrapper"></div>
-                </div>
-                <div class="modal-footer">
-                  <button class="fa fa-plus add-row">  新增变量</button>
+                  <div class="modal-body">
+                    <div class="table-wrapper"></div>
+                  </div>
+                  <div class="modal-footer">
+                    <button class="fa fa-plus add-row">  新增变量</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -823,373 +826,492 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
         // 在样式部分添加以下优化代码
         const style = document.createElement("style");
         style.textContent = `
-        /* 使用固定单位避免受CSS变量影响 */
-        #css-var-control-panel {
-          font-size: 14px !important; /* 固定字体大小 */
-          --local-font-size: 14px;    /* 定义局部变量 */
-        }
-
-        /* 尺寸单位全部使用px */
-        .modal-container {
-          min-width: 800px !important;
-          max-width: 90vw !important;
-        }
-
-        .modal-header h3 {
-          font-size: 18px !important;
-          margin: 0;
-        }
-
-        /* 表格单元格使用固定单位 */
-        #css-var-control-panel td {
-          padding: 10px 15px !important;
-          font-size: var(--local-font-size);
-        }
-
-        /* 输入框固定尺寸 */
-        #css-var-control-panel input {
-          font-size: 14px !important;
-          height: 32px !important;
-        }
-
-        /* 新增遮罩层 */
-        .modal-mask {
-          position: fixed;
-          z-index: 9998;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background-color: rgba(0, 0, 0, 0.5);
-          display: none;
-          justify-content: center;
-          align-items: center;
-        }
-
-        /* 模态框容器 */
-        .modal-wrapper {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          min-height: 100%;
-          padding: 20px;
-        }
-
-        /* 模态框主体 */
-        .modal-container {
-          background: #fff;
-          border-radius: 8px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
-          width: 100%;
-          max-width: 1600px;
-          max-height: 90vh;
-          display: flex;
-          flex-direction: column;
-        }
-
-        /* 头部样式 */
-        .modal-header {
-          padding: 20px;
-          border-bottom: 1px solid #e8e8e8;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-
-        /* 内容区域 */
-        .modal-body {
-          padding: 20px;
-          overflow: auto;
-          flex: 1;
-        }
-
-        /* 底部区域 */
-        .modal-footer {
-          padding: 15px 20px;
-          border-top: 1px solid #e8e8e8;
-          text-align: right;
-        }
-
-        /* 关闭按钮样式 */
-        .close-btn {
-          font-size: 14px;
-          line-height: 1;
-          margin-left: 15px;
-        }          
-
-        /* 表格容器 */
-        #css-var-control-panel .table-wrapper {
-          overflow: auto;
-          max-height: 50vh;
-          border: 1px solid #e8e8e8;
-          border-radius: 4px;
-          margin: 12px 0;
-        }
-
-        /* 表格主体 */
-        #css-var-control-panel table {
-          width: 100%;
-          min-width: 600px;
-          border-collapse: separate;
-          border-spacing: 0;
-          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        }
-
-        /* 表头样式 */
-        #css-var-control-panel thead th {
-          position: sticky;
-          top: 0;
-          background: #f8f9fa;
-          color: #495057;
-          font-weight: 600;
-          padding: 12px 15px;
-          border-bottom: 2px solid #dee2e6;
-          z-index: 1;
-        }
-
-        /* 表格单元格 */
-        #css-var-control-panel td {
-          padding: 10px 15px;
-          border-bottom: 1px solid #e9ecef;
-          background: #fff;
-          vertical-align: middle;
-        }
-
-        /* 斑马纹效果 */
-        #css-var-control-panel tbody tr:nth-child(even) td {
-          background-color: #f8f9fa;
-        }
-
-        /* 悬停效果 */
-        #css-var-control-panel tbody tr:hover td {
-          background-color: #e9f5ff;
-          transition: background 0.2s ease;
-        }
-
-        /* 操作按钮容器 */
-        #css-var-control-panel td:last-child {
-          white-space: nowrap;
-        }
-
-        /* 按钮样式 */
-        #css-var-control-panel button {
-          padding: 5px 12px;
-          margin: 2px;
-          border: 1px solid #ced4da;
-          border-radius: 4px;
-          background: #fff;
-          cursor: pointer;
-          transition: all 0.2s;
-        }
-
-        #css-var-control-panel button:hover {
-          background: #4dabf7;
-          border-color: #4dabf7;
-          color: white;
-          transform: translateY(-1px);
-        }
-
-        /* 输入框增强样式 */
-        #css-var-control-panel input {
-          border: 1px solid #ced4da;
-          border-radius: 4px;
-          padding: 6px 8px;
-          transition: border 0.2s;
-        }
-
-        #css-var-control-panel input:focus {
-          border-color: #4dabf7;
-          outline: none;
-          box-shadow: 0 0 0 2px rgba(77, 171, 247, 0.2);
-        }
-
-        /* 颜色选择器特殊样式 */
-        #css-var-control-panel input[type="color"] {
-          height: 34px;
-          padding: 3px;
-          cursor: pointer;
-        }
-        #css-var-control-panel .search-box {
-          position: relative;
-          margin-left: 20px;
-          flex: 1;
-          max-width: 300px;
-        }
-        
-        #css-var-control-panel .search-input {
-          width: 100%;
-          padding: 8px 30px 8px 12px !important;
-          border: 1px solid #ddd !important;
-          border-radius: 20px !important;
-          font-size: 14px !important;
-          background: #f5f5f5 !important;
-          transition: all 0.3s !important;
-        }
-        
-        #css-var-control-panel .search-input:focus {
-          background: #fff !important;
-          box-shadow: 0 0 0 2px rgba(77, 171, 247, 0.2) !important;
-        }
-        
-        #css-var-control-panel .search-icon {
-          position: absolute;
-          right: 12px;
-          top: 50%;
-          transform: translateY(-50%);
-          fill: #666;
-        }
-        
-        #css-var-control-panel .header-left {
-          display: flex;
-          align-items: center;
-          gap: 20px;
-          flex: 1;
-        }
-        #css-var-control-panel .search-history {
-          position: absolute;
-          top: 100%;
-          left: 0;
-          right: 0;
-          background: #fff;
-          border: 1px solid #ddd;
-          border-radius: 4px;
-          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-          margin-top: 5px;
-          max-height: 200px;
-          overflow-y: auto;
-          z-index: 10000;
-          display: none;
-        }
-        
-        #css-var-control-panel .history-item {
-          padding: 8px 12px;
-          cursor: pointer;
-          transition: background 0.2s;
-        }
-        
-        #css-var-control-panel .history-item:hover {
-          background: #f5f5f5;
-        }
-        #css-var-control-panel   .color-preview {
-          display: inline-block;
-          width: 20px;
-          height: 20px;
-          border: 1px solid #ddd;
-          border-radius: 4px;
-          margin-left: 8px;
-          vertical-align: middle;
-          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        #css-var-control-panel  .color-input-group {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-        }
-        
-        #css-var-control-panel  .color-input {
-          width: 120px !important;
-        }
-        
-        #css-var-control-panel  .contrast-warning {
-          color: #ff4444;
-          cursor: help;
-          position: relative;
-        }
-        
-        #css-var-control-panel  .contrast-warning:hover::after {
-          content: "对比度不足（最小建议4.5）";
-          position: absolute;
-          background: #fff;
-          border: 1px solid #ddd;
-          padding: 4px;
-          border-radius: 4px;
-          top: 100%;
-          left: 0;
-          white-space: nowrap;
-        }
-
-        #css-var-control-panel  .color-display {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-        }
-        
-        #css-var-control-panel  .color-value {
-          font-family: monospace;
-          font-size: 0.9em;
-        }
-        
-        #css-var-control-panel  .color-preview {
-          width: 20px;
-          height: 20px;
-          border: 1px solid #ddd;
-          border-radius: 4px;
-          flex-shrink: 0;
-        }
-        
-        /* 保持输入组件样式一致 */
-        #css-var-control-panel  .color-input-group {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-        }
-              
-        /* 响应式处理 */
-        @media (max-width: 768px) {
-          #css-var-control-panel .table-wrapper {
-            overflow-x: auto;
+          /* 使用固定单位避免受CSS变量影响 */
+          #css-var-control-panel {
+            --local-font-size: 14px;    /* 定义局部变量 */
+            font-size: 14px !important; /* 固定字体大小 */
           }
 
-          #css-var-control-panel table {
-            min-width: unset;
-            display: block;
-          }
-
-          #css-var-control-panel thead {
-            display: none;
-          }
-
-          #css-var-control-panel tbody tr {
+          /* 尺寸单位全部使用px */
+          .modal-container {
+            width: 100%;
+            min-width: 800px !important;
+            max-width: 90vw !important;
+            max-height: 90vh;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
             display: flex;
             flex-direction: column;
-            border: 1px solid #eee;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
           }
 
-          #css-var-control-panel tbody td {
+          .modal-header h3 {
+            margin: 0;
+            font-size: 18px !important;
+          }
+
+          /* 表格单元格使用固定单位 */
+          #css-var-control-panel td {
+            padding: 10px 15px !important;
+            background: #fff;
+            vertical-align: middle;
+            border-bottom: 1px solid #e9ecef;
+            font-size: var(--local-font-size);
+          }
+
+          /* 输入框固定尺寸 */
+          #css-var-control-panel input {
+            height: 32px !important;
+            padding: 6px 8px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 14px !important;
+            transition: border 0.2s;
+          }
+
+          /* 新增遮罩层 */
+          .modal-mask {
+            position: fixed;
+            z-index: 9998;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+          }
+
+          /* 模态框容器 */
+          .modal-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100%;
+            padding: 20px;
+          }
+
+          /* 头部样式 */
+          .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #e8e8e8;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px;
-            border-bottom: 1px solid #f5f5f5;
           }
 
-          #css-var-control-panel tbody td::before {
-            content: attr(data-label);
+          /* 内容区域 */
+          .modal-body {
+            padding: 20px;
+            overflow: auto;
+            flex: 1;
+          }
+
+          /* 底部区域 */
+          .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid #e8e8e8;
+            text-align: right;
+          }
+
+          /* 关闭按钮样式 */
+          .close-btn {
+            font-size: 14px;
+            line-height: 1;
+            margin-left: 15px;
+          }
+
+          /* 表格容器 */
+          #css-var-control-panel .table-wrapper {
+            overflow: auto;
+            max-height: 50vh;
+            border: 1px solid #e8e8e8;
+            border-radius: 4px;
+            margin: 12px 0;
+          }
+
+          /* 表格主体 */
+          #css-var-control-panel table {
+            width: 100%;
+            min-width: 600px;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+          }
+
+          /* 表头样式 */
+          #css-var-control-panel thead th {
+            position: sticky;
+            top: 0;
+            background: #f8f9fa;
+            color: #495057;
             font-weight: 600;
-            margin-right: 15px;
-            flex: 0 0 90px;
-            color: #666;
+            padding: 12px 15px;
+            border-bottom: 2px solid #dee2e6;
+            z-index: 1;
           }
 
-          #css-var-control-panel tbody td:last-child {
-            border-bottom: none;
+          /* 斑马纹效果 */
+          #css-var-control-panel tbody tr:nth-child(even) td {
+            background-color: #f8f9fa;
+          }
+
+          /* 悬停效果 */
+          #css-var-control-panel tbody tr:hover td {
+            background-color: #e9f5ff;
+            transition: background 0.2s ease;
+          }
+
+          /* 操作按钮容器 */
+          #css-var-control-panel td:last-child {
+            white-space: nowrap;
+          }
+
+          /* 按钮样式 */
+          #css-var-control-panel button {
+            padding: 5px 12px;
+            margin: 2px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            background: #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+          }
+
+          #css-var-control-panel button:hover {
+            background: #4dabf7;
+            border-color: #4dabf7;
+            color: white;
+            transform: translateY(-1px);
+          }
+
+          #css-var-control-panel input:focus {
+            border-color: #4dabf7;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(77, 171, 247, 0.2);
+          }
+
+          /* 颜色选择器特殊样式 */
+          #css-var-control-panel input[type="color"] {
+            height: 34px;
+            padding: 3px;
+            cursor: pointer;
+          }
+
+          #css-var-control-panel .search-box {
+            position: relative;
+            margin-left: 20px;
+            flex: 1;
+            max-width: 300px;
+          }
+
+          #css-var-control-panel .search-input {
+            width: 100%;
+            padding: 8px 30px 8px 12px !important;
+            border: 1px solid #ddd !important;
+            border-radius: 20px !important;
+            font-size: 14px !important;
+            background: #f5f5f5 !important;
+            transition: all 0.3s !important;
+          }
+
+          #css-var-control-panel .search-input:focus {
+            background: #fff !important;
+            box-shadow: 0 0 0 2px rgba(77, 171, 247, 0.2) !important;
+          }
+
+          #css-var-control-panel .search-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            fill: #666;
+          }
+
+          #css-var-control-panel .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex: 1;
+          }
+
+          #css-var-control-panel .search-history {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-top: 5px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 10000;
+            display: none;
+          }
+
+          #css-var-control-panel .history-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+          }
+
+          #css-var-control-panel .history-item:hover {
+            background: #f5f5f5;
+          }
+
+          #css-var-control-panel .color-preview {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-left: 8px;
+            vertical-align: middle;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
           }
 
           #css-var-control-panel .color-input-group {
-            flex-direction: column;
-            gap: 10px;
-            align-items: flex-end;
+            display: flex;
+            align-items: center;
+            gap: 8px;
           }
 
-          #css-var-control-panel button {
-            padding: 8px 12px;
+          #css-var-control-panel .color-input {
+            width: 100% !important;
           }
-        }
 
+          #css-var-control-panel .contrast-warning {
+            color: #ff4444;
+            cursor: help;
+            position: relative;
+          }
+
+          #css-var-control-panel .contrast-warning:hover::after {
+            content: "对比度不足（最小建议4.5）";
+            position: absolute;
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 4px;
+            border-radius: 4px;
+            top: 100%;
+            left: 0;
+            white-space: nowrap;
+          }
+
+          #css-var-control-panel .color-display {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+          }
+
+          #css-var-control-panel .color-value {
+            font-family: monospace;
+            font-size: 0.9em;
+          }
+ /* 在原有样式基础上添加以下移动端适配代码 */
+@media screen and (max-width: 768px) {
+  #css-var-control-panel {
+    --local-font-size: 12px; /* 移动端减小字号 */
+  }
+
+  .modal-container {
+    min-width: 100% !important; /* 移除固定最小宽度 */
+    max-width: 100vw !important;
+    border-radius: 0;
+    max-height: 100vh;
+    margin: 0;
+  }
+
+  .modal-wrapper {
+    padding: 0; /* 移除外层内边距 */
+    align-items: flex-end; /* 底部对齐 */
+  }
+
+  .modal-header {
+    padding: 12px !important;
+    flex-wrap: wrap; /* 允许头部换行 */
+  }
+
+  .modal-header h3 {
+    font-size: 16px !important;
+    width: 100%;
+    margin-bottom: 8px !important;
+  }
+
+  .search-box {
+    margin-left: 0 !important;
+    max-width: 100% !important;
+  }
+
+  #css-var-control-panel td {
+    padding: 8px 10px !important; /* 减小单元格内边距 */
+    min-width: 80px; /* 保证最小宽度 */
+  }
+
+  #css-var-control-panel input {
+    height: 36px !important; /* 增大触控区域 */
+    padding: 8px !important;
+  }
+
+  .table-wrapper {
+    height: 60vh !important; /* 增大可视区域 */
+    margin: 8px 0 !important;
+  }
+
+  #css-var-control-panel table {
+    min-width: 100%; /* 允许表格横向滚动 */
+  }
+
+  /* 按钮组适配 */
+  #css-var-control-panel td:last-child {
+    white-space: normal; /* 允许按钮换行 */
+  }
+
+  #css-var-control-panel button {
+    padding: 8px 12px !important;
+    margin: 4px !important;
+    width: 100%; /* 全宽按钮 */
+  }
+
+  /* 颜色选择器适配 */
+  .color-input-group {
+    flex-direction: column; /* 垂直排列 */
+  }
+
+  .color-input {
+    width: 100% !important; /* 全宽输入框 */
+  }
+
+  /* 隐藏不必要元素 */
+  .contrast-warning {
+    display: none;
+  }
+
+  .modal-footer {
+    padding: 12px !important;
+  }
+
+  .modal-body {
+    padding: 12px !important;
+  }
+
+  /* 移动端优化输入体验 */
+  input[type="color"] {
+    height: 40px !important;
+    width: 40px !important;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  /* 移除传统表格布局 */
+  #css-var-control-panel table, 
+  #css-var-control-panel thead, 
+  #css-var-control-panel tbody, 
+  #css-var-control-panel th, 
+  #css-var-control-panel td, 
+  #css-var-control-panel tr { 
+    display: block;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  /* 隐藏表头 */
+  #css-var-control-panel thead {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* 将每行转换为卡片式布局 */
+  #css-var-control-panel tbody tr {
+    display: flex;
+    flex-direction: column;
+    margin: 12px 0;
+    padding: 16px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    background: #fff;
+  }
+
+  /* 通过伪元素添加字段标签 */
+  #css-var-control-panel td {
+    position: relative;
+    padding: 12px 8px 8px 25% !important;
+    border: none !important;
+    min-height: 48px;
+  }
+
+  #css-var-control-panel td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20%;
+    padding-right: 10px;
+    font-weight: 500;
+    color: #666;
+    font-size: 0.9em;
+  }
+
+  /* 特殊处理操作列 */
+  #css-var-control-panel td:last-child {
+    border-top: 1px solid #eee !important;
+    padding-top: 16px !important;
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  #css-var-control-panel td:last-child::before {
+    content: "操作";
+    width: 100%;
+    transform: translateY(-50%);
+    margin-bottom: 8px;
+  }
+
+  /* 调整颜色选择器布局 */
+  .color-input-group {
+    flex-direction: row !important;
+  }
+
+  .color-input {
+    flex: 1;
+  }
+
+  /* 按钮样式优化 */
+  #css-var-control-panel button {
+    width: auto !important;
+    flex: 1;
+    min-width: 80px;
+  }
+
+  /* 操作按钮组优化 */
+  #css-var-control-panel td:last-child {
+    flex-direction: row !important;
+    gap: 8px;
+    padding-top: 12px !important;
+  }
+
+  #css-var-control-panel button[data-action] {
+    flex: none !important;
+    width: auto !important;
+    min-width: 70px;
+    padding: 8px 12px !important;
+  }
+}
+
+/* 横屏优化 */
+@media screen and (max-width: 768px) and (orientation: landscape) {
+  .table-wrapper {
+    max-height: 50vh !important;
+  }
+}
   `;
         document.head.appendChild(style);
 
@@ -1384,20 +1506,20 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
 
                 return `
                       <tr>
-                        <td>${varName}</td>
-                        <td>
+                        <td data-label="变量名">${varName}</td>
+                        <td data-label="当前值">
                           ${isColorCurrent
                     ? colorPreview(normalizedCurrent)
                     : currentValue
                   }
                         </td>
-                        <td>
+                        <td td data-label="默认值">
                           ${isColorDefault
                     ? colorPreview(normalizedDefault)
                     : defaultValue
                   }
                         </td>
-                        <td>
+                        <td data-label="新值">
                           <div class="color-input-group">
                             ${isColorSaved
                     ? `
@@ -1417,6 +1539,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
                     : `
                               <input
                                 type="text"
+                                class="color-input"
                                 value="${savedValue}"
                                 data-var="${varName}"
                               >
@@ -1428,9 +1551,11 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
                   }
                           </div>
                         </td>
-                        <td>
-                          <button class = "fa fa-floppy-disk" data-action="save" data-var="${varName}"> 保存</button>
-                          <button class = "fa fa-repeat" data-action="reset" data-var="${varName}"> 重置</button>
+                        <td data-label="操作">
+                          <div class="button-group">
+                            <button class = "fa fa-floppy-disk" data-action="save" data-var="${varName}"> 保存</button>
+                            <button class = "fa fa-repeat" data-action="reset" data-var="${varName}"> 重置</button>
+                          <div class="button-group">
                         </td>
                       </tr>
                     `;
@@ -1599,10 +1724,13 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
         });
 
         document.body.appendChild(panel);
-        document.getElementById('createControlPanel').addEventListener("click", () => {
-          displayTable();
-        });
 
+        const btnCreateControlPanel = document.getElementById('createControlPanel');
+        if (btnCreateControlPanel) {
+          btnCreateControlPanel.addEventListener("click", () => {
+            displayTable();
+          });
+        }
       }
 
       return {
@@ -1610,6 +1738,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
       }
     })();
 
+    // 亮暗主题
     const prismThemeManager = (function () {
       const themes = [
         "prism.min.css",
@@ -1665,13 +1794,14 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
         icon: "fas fa-gears",
         text: "设置",
         id: 'createControlPanel',
+        // 在移动端隐藏这个按钮
+        hideOnTouch: false,
       },
       {
         get icon() {
           return `fas ${themeManager.isDark ? "fa-sun" : "fa-moon"}`;
         },
         get text() {
-          // 新增动态文本
           return themeManager.isDark ? "亮色主题" : "暗色主题";
         },
         action: () => themeManager.toggle(),
@@ -1694,130 +1824,179 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
       },
     ];
 
-    // 创建容器（保持不变）
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+    // 创建按钮容器
     const container = document.createElement("div");
     container.className = "flat-button-container";
     document.body.appendChild(container);
 
-    // 创建按钮（简化逻辑）
-    buttons.forEach((btn, index) => {
-      const btnElement = document.createElement("button");
-      btnElement.className = "flat-button";
-      if (btn.id) {
-        btnElement.id = btn.id;
-      }
-      // 动态获取图标
-      btnElement.innerHTML = `<i class="${typeof btn.icon === "function" ? btn.icon() : btn.icon
-        }"></i>`;
+    // 创建触发区域
+    const trigger = document.createElement("div");
+    trigger.className = "button-trigger";
+    document.body.appendChild(trigger);
 
-      if (btn.action) {
-        btnElement.addEventListener("click", btn.action);
-      }
+    // 创建按钮
+    buttons.filter(btn => !(isTouchDevice && btn.hideOnTouch)).
+      forEach((btn, index) => {
+        const btnElement = document.createElement("button");
+        btnElement.className = "flat-button";
+        if (btn.id) btnElement.id = btn.id;
 
-      // 添加文字标签（支持动态文本）
-      const label = document.createElement("span");
-      label.className = "button-label";
-      label.textContent =
-        typeof btn.text === "function" ? btn.text() : btn.text;
-      btnElement.appendChild(label);
+        btnElement.innerHTML = `<i class="${typeof btn.icon === "function" ? btn.icon() : btn.icon}"></i>`;
 
-      // 注册主题按钮
-      if (btn.isThemeButton) {
-        themeManager.registerThemeButton(btnElement);
-      }
+        if (btn.action) btnElement.addEventListener("click", btn.action);
 
-      container.appendChild(btnElement);
-    });
+        const label = document.createElement("span");
+        label.className = "button-label";
+        label.textContent = typeof btn.text === "function" ? btn.text() : btn.text;
+        btnElement.appendChild(label);
 
-    // 修改后的样式
+        if (btn.isThemeButton) themeManager.registerThemeButton(btnElement);
+        container.appendChild(btnElement);
+      });
+
+    // 样式修改
     const style = document.createElement("style");
     style.textContent = `
-    .flat-button-container {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      display: flex;
-      gap: 15px;
-      z-index: 999;
-      flex-direction: column-reverse;
-      align-items: flex-end;
-    }
+      .button-trigger {
+        position: fixed;
+        bottom: 0px;
+        right: 0px;
+        width: 40px;
+        height: 200px;
+        background: transparent;
+        z-index: 1000;
+        cursor: pointer;
+        transition: opacity 0.3s;
+      }
 
-    .flat-button {
-      width: 40px;
-      height: 40px;
-      border-radius: 20px;
-      background: #42b983;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      color: white;
-    }
+      .flat-button-container {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        display: flex;
+        gap: 15px;
+        z-index: 999;
+        flex-direction: column-reverse;
+        align-items: flex-end;
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
 
-    .flat-button:hover {
-      width: auto;
-      padding: 0 15px;
-      border-radius: 20px;
-      transform: scale(1.05) translateX(-5px); /* 添加向左微移 */
-    }
+      .flat-button-container.visible {
+        opacity: 1;
+        pointer-events: auto;
+      }
 
-    .flat-button:hover .button-label {
-      max-width: 200px;
-      opacity: 1;
-      margin-left: 10px;
-    }
+      .flat-button {
+        width: 40px;
+        height: 40px;
+        border-radius: 20px;
+        background: #42b983;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        color: white;
+      }
 
-    .button-label {
-      max-width: 0;
-      overflow: hidden;
-      opacity: 0;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      white-space: nowrap;
-      pointer-events: none;
-      position: absolute;
-      right: calc(100% + 10px); /* 初始位置在按钮左侧外 */
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(0, 0, 0, 0.6); /* 提高透明度 */
-      padding: 5px 12px;
-      border-radius: 4px;
-      color: white;
-      font-size: 14px;
-      backdrop-filter: blur(8px); /* 增强模糊效果 */
-      border: 1px solid rgba(255,255,255,0.15);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-    }
+      /* 保持原有悬停效果 */
+      .flat-button:hover {
+        width: auto;
+        padding: 0 15px;
+        border-radius: 20px;
+        transform: translateX(-8px);
+        background: #42b983dd;
+      }
 
-    .flat-button:hover .button-label {
-      max-width: 200px;
-      opacity: 0.9; /* 悬停时稍提高可见性 */
-      right: calc(100% + 10px); /* 最终停留在按钮左侧 */
-    }
+      .button-label {
+        max-width: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        white-space: nowrap;
+        pointer-events: none;
+        position: absolute;
+        right: calc(100% + 10px); /* 初始位置在按钮左侧外 */
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.6); /* 提高透明度 */
+        padding: 5px 12px;
+        border-radius: 4px;
+        color: white;
+        font-size: 14px;
+        backdrop-filter: blur(8px); /* 增强模糊效果 */
+        border: 1px solid rgba(255,255,255,0.15);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
 
-    /* 箭头调整到右侧 */
-    .button-label::after {
-      content: '';
-      position: absolute;
-      left: 100%;
-      top: 50%;
-      transform: translateY(-50%);
-      border-width: 5px;
-      border-style: solid;
-      border-color: transparent transparent transparent rgba(0, 0, 0, 0.6);
-    }
+     }
+      .flat-button:hover .button-label {
+        max-width: 200px;
+        opacity: 0.9; /* 悬停时稍提高可见性 */
+        right: calc(100% + 10px); /* 最终停留在按钮左侧 */
+      }
 
-    /* 按钮悬停动画优化 */
-    .flat-button:hover {
-      transform: translateX(-8px); /* 向左移动留出标签空间 */
-      background: #42b983dd; /* 带透明度的背景色 */
-    }
-    `;
+      /* 箭头调整到右侧 */
+      .button-label::after {
+        content: '';
+        position: absolute;
+        left: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent transparent transparent rgba(0, 0, 0, 0.6);
+      }
+
+      /* 按钮悬停动画优化 */
+      .flat-button:hover {
+        transform: translateX(-8px); /* 向左移动留出标签空间 */
+        background: #42b983dd; /* 带透明度的背景色 */
+      }
+`;
     document.head.appendChild(style);
+
+    // 事件处理
+    trigger.addEventListener('mouseenter', () => {
+      container.classList.add('visible');
+      trigger.style.display = 'none';
+    });
+
+    container.addEventListener('mouseleave', () => {
+      container.classList.remove('visible');
+      trigger.style.display = 'block';
+    });
+
+    // 2. 如果是触摸设备，则用 tap 事件代替 hover
+    if (isTouchDevice) {
+      // 点击 trigger 显示按钮
+      trigger.addEventListener('touchstart', (e) => {
+        e.stopPropagation();
+        container.classList.add('visible');
+        trigger.style.display = 'none';
+      });
+
+      // 点击任何其他地方收起按钮
+      document.addEventListener('touchstart', (e) => {
+        // 如果点击目标在 container 内就忽略
+        if (!container.contains(e.target)) {
+          container.classList.remove('visible');
+          trigger.style.display = 'block';
+        }
+      });
+
+      // 阻止 container 内部 touch 事件冒泡到 document
+      container.addEventListener('touchstart', (e) => {
+        e.stopPropagation();
+      });
+    }
+
     themeAbleManager.init();
   });
 });
