@@ -1112,207 +1112,208 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
             font-family: monospace;
             font-size: 0.9em;
           }
- /* 在原有样式基础上添加以下移动端适配代码 */
-@media screen and (max-width: 768px) {
-  #css-var-control-panel {
-    --local-font-size: 12px; /* 移动端减小字号 */
-  }
 
-  .modal-container {
-    min-width: 100% !important; /* 移除固定最小宽度 */
-    max-width: 100vw !important;
-    border-radius: 0;
-    max-height: 100vh;
-    margin: 0;
-  }
+        /* 在原有样式基础上添加以下移动端适配代码 */
+        // @media screen and (max-width: 768px) {
+          #css-var-control-panel {
+            --local-font-size: 12px; /* 移动端减小字号 */
+          }
 
-  .modal-wrapper {
-    padding: 0; /* 移除外层内边距 */
-    align-items: flex-end; /* 底部对齐 */
-  }
+          .modal-container {
+            min-width: 100% !important; /* 移除固定最小宽度 */
+            max-width: 100vw !important;
+            border-radius: 0;
+            max-height: 100vh;
+            margin: 0;
+          }
 
-  .modal-header {
-    padding: 12px !important;
-    flex-wrap: wrap; /* 允许头部换行 */
-  }
+          .modal-wrapper {
+            padding: 0; /* 移除外层内边距 */
+            align-items: flex-end; /* 底部对齐 */
+          }
 
-  .modal-header h3 {
-    font-size: 16px !important;
-    width: 100%;
-    margin-bottom: 8px !important;
-  }
+          .modal-header {
+            padding: 12px !important;
+            flex-wrap: wrap; /* 允许头部换行 */
+          }
 
-  .search-box {
-    margin-left: 0 !important;
-    max-width: 100% !important;
-  }
+          .modal-header h3 {
+            font-size: 16px !important;
+            width: 100%;
+            margin-bottom: 8px !important;
+          }
 
-  #css-var-control-panel td {
-    padding: 8px 10px !important; /* 减小单元格内边距 */
-    min-width: 80px; /* 保证最小宽度 */
-  }
+          .search-box {
+            margin-left: 0 !important;
+            max-width: 100% !important;
+          }
 
-  #css-var-control-panel input {
-    height: 36px !important; /* 增大触控区域 */
-    padding: 8px !important;
-  }
+          #css-var-control-panel td {
+            padding: 8px 10px !important; /* 减小单元格内边距 */
+            min-width: 80px; /* 保证最小宽度 */
+          }
 
-  .table-wrapper {
-    height: 60vh !important; /* 增大可视区域 */
-    margin: 8px 0 !important;
-  }
+          #css-var-control-panel input {
+            height: 36px !important; /* 增大触控区域 */
+            padding: 8px !important;
+          }
 
-  #css-var-control-panel table {
-    min-width: 100%; /* 允许表格横向滚动 */
-  }
+          .table-wrapper {
+            height: 60vh !important; /* 增大可视区域 */
+            margin: 8px 0 !important;
+          }
 
-  /* 按钮组适配 */
-  #css-var-control-panel td:last-child {
-    white-space: normal; /* 允许按钮换行 */
-  }
+          #css-var-control-panel table {
+            min-width: 100%; /* 允许表格横向滚动 */
+          }
 
-  #css-var-control-panel button {
-    padding: 8px 12px !important;
-    margin: 4px !important;
-    width: 100%; /* 全宽按钮 */
-  }
+          /* 按钮组适配 */
+          #css-var-control-panel td:last-child {
+            white-space: normal; /* 允许按钮换行 */
+          }
 
-  /* 颜色选择器适配 */
-  .color-input-group {
-    flex-direction: column; /* 垂直排列 */
-  }
+          #css-var-control-panel button {
+            padding: 8px 12px !important;
+            margin: 4px !important;
+            width: 100%; /* 全宽按钮 */
+          }
 
-  .color-input {
-    width: 100% !important; /* 全宽输入框 */
-  }
+          /* 颜色选择器适配 */
+          .color-input-group {
+            flex-direction: column; /* 垂直排列 */
+          }
 
-  /* 隐藏不必要元素 */
-  .contrast-warning {
-    display: none;
-  }
+          .color-input {
+            width: 100% !important; /* 全宽输入框 */
+          }
 
-  .modal-footer {
-    padding: 12px !important;
-  }
+          /* 隐藏不必要元素 */
+          .contrast-warning {
+            display: none;
+          }
 
-  .modal-body {
-    padding: 12px !important;
-  }
+          .modal-footer {
+            padding: 12px !important;
+          }
 
-  /* 移动端优化输入体验 */
-  input[type="color"] {
-    height: 40px !important;
-    width: 40px !important;
-  }
-}
+          .modal-body {
+            padding: 12px !important;
+          }
 
-@media screen and (max-width: 768px) {
-  /* 移除传统表格布局 */
-  #css-var-control-panel table, 
-  #css-var-control-panel thead, 
-  #css-var-control-panel tbody, 
-  #css-var-control-panel th, 
-  #css-var-control-panel td, 
-  #css-var-control-panel tr { 
-    display: block;
-    width: 100% !important;
-    min-width: 0 !important;
-  }
+          /* 移动端优化输入体验 */
+          input[type="color"] {
+            height: 40px !important;
+            width: 40px !important;
+          }
+        }
 
-  /* 隐藏表头 */
-  #css-var-control-panel thead {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-  }
+        @media screen and (max-width: 768px) {
+          /* 移除传统表格布局 */
+          #css-var-control-panel table, 
+          #css-var-control-panel thead, 
+          #css-var-control-panel tbody, 
+          #css-var-control-panel th, 
+          #css-var-control-panel td, 
+          #css-var-control-panel tr { 
+            display: block;
+            width: 100% !important;
+            min-width: 0 !important;
+          }
 
-  /* 将每行转换为卡片式布局 */
-  #css-var-control-panel tbody tr {
-    display: flex;
-    flex-direction: column;
-    margin: 12px 0;
-    padding: 16px;
-    border: 1px solid #eee;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    background: #fff;
-  }
+          /* 隐藏表头 */
+          #css-var-control-panel thead {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+          }
 
-  /* 通过伪元素添加字段标签 */
-  #css-var-control-panel td {
-    position: relative;
-    padding: 12px 8px 8px 25% !important;
-    border: none !important;
-    min-height: 48px;
-  }
+          /* 将每行转换为卡片式布局 */
+          #css-var-control-panel tbody tr {
+            display: flex;
+            flex-direction: column;
+            margin: 12px 0;
+            padding: 16px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            background: #fff;
+          }
 
-  #css-var-control-panel td::before {
-    content: attr(data-label);
-    position: absolute;
-    left: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 20%;
-    padding-right: 10px;
-    font-weight: 500;
-    color: #666;
-    font-size: 0.9em;
-  }
+          /* 通过伪元素添加字段标签 */
+          #css-var-control-panel td {
+            position: relative;
+            padding: 12px 8px 8px 25% !important;
+            border: none !important;
+            min-height: 48px;
+          }
 
-  /* 特殊处理操作列 */
-  #css-var-control-panel td:last-child {
-    border-top: 1px solid #eee !important;
-    padding-top: 16px !important;
-    margin-top: 8px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
+          #css-var-control-panel td::before {
+            content: attr(data-label);
+            position: absolute;
+            left: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20%;
+            padding-right: 10px;
+            font-weight: 500;
+            color: #666;
+            font-size: 0.9em;
+          }
 
-  #css-var-control-panel td:last-child::before {
-    content: "操作";
-    width: 100%;
-    transform: translateY(-50%);
-    margin-bottom: 8px;
-  }
+          /* 特殊处理操作列 */
+          #css-var-control-panel td:last-child {
+            border-top: 1px solid #eee !important;
+            padding-top: 16px !important;
+            margin-top: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+          }
 
-  /* 调整颜色选择器布局 */
-  .color-input-group {
-    flex-direction: row !important;
-  }
+          #css-var-control-panel td:last-child::before {
+            content: "操作";
+            width: 100%;
+            transform: translateY(-50%);
+            margin-bottom: 8px;
+          }
 
-  .color-input {
-    flex: 1;
-  }
+          /* 调整颜色选择器布局 */
+          .color-input-group {
+            flex-direction: row !important;
+          }
 
-  /* 按钮样式优化 */
-  #css-var-control-panel button {
-    width: auto !important;
-    flex: 1;
-    min-width: 80px;
-  }
+          .color-input {
+            flex: 1;
+          }
 
-  /* 操作按钮组优化 */
-  #css-var-control-panel td:last-child {
-    flex-direction: row !important;
-    gap: 8px;
-    padding-top: 12px !important;
-  }
+          /* 按钮样式优化 */
+          #css-var-control-panel button {
+            width: auto !important;
+            flex: 1;
+            min-width: 80px;
+          }
 
-  #css-var-control-panel button[data-action] {
-    flex: none !important;
-    width: auto !important;
-    min-width: 70px;
-    padding: 8px 12px !important;
-  }
-}
+          /* 操作按钮组优化 */
+          #css-var-control-panel td:last-child {
+            flex-direction: row !important;
+            gap: 8px;
+            padding-top: 12px !important;
+          }
 
-/* 横屏优化 */
-@media screen and (max-width: 768px) and (orientation: landscape) {
-  .table-wrapper {
-    max-height: 50vh !important;
-  }
-}
+          #css-var-control-panel button[data-action] {
+            flex: none !important;
+            width: auto !important;
+            min-width: 70px;
+            padding: 8px 12px !important;
+          }
+        // }
+
+        /* 横屏优化 */
+        // @media screen and (max-width: 768px) and (orientation: landscape) {
+          .table-wrapper {
+            max-height: 50vh !important;
+          }
+        // }
   `;
         document.head.appendChild(style);
 
