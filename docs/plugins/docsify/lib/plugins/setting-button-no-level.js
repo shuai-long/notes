@@ -1081,6 +1081,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
 
           #css-var-control-panel .color-input {
             width: 100% !important;
+            min-width: 10em !important;
           }
 
           #css-var-control-panel .contrast-warning {
