@@ -1114,7 +1114,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
           }
 
         /* 在原有样式基础上添加以下移动端适配代码 */
-        // @media screen and (max-width: 768px) {
+        @media screen and (max-width: 768px) {
           #css-var-control-panel {
             --local-font-size: 12px; /* 移动端减小字号 */
           }
@@ -1306,14 +1306,14 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
             min-width: 70px;
             padding: 8px 12px !important;
           }
-        // }
+        }
 
         /* 横屏优化 */
-        // @media screen and (max-width: 768px) and (orientation: landscape) {
+        @media screen and (max-width: 768px) and (orientation: landscape) {
           .table-wrapper {
             max-height: 50vh !important;
           }
-        // }
+        }
   `;
         document.head.appendChild(style);
 
