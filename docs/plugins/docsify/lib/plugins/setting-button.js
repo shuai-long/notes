@@ -1670,6 +1670,9 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
           const newVarName = prompt(
             "请输入新的CSS变量名（例如：--new-variable）"
           );
+
+          if(config.customVars.includes(newVarName)) return
+
           if (newVarName && newVarName.startsWith("--")) {
             config.customVars.push(newVarName);
             defaultValues[newVarName] = getComputedStyle(
