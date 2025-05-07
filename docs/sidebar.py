@@ -74,13 +74,13 @@ def process_directory(root_dir, current_dir, exclude_lower, level, md_lines):
     for file_name in files:
         rel_dir = os.path.relpath(current_dir, root_dir)
         rel_dir = '' if rel_dir == '.' else rel_dir
-        
-        # 生成编码后的链接路径
+
         raw_link = os.path.join('/', rel_dir, file_name).replace('\\', '/')
         parts = raw_link.split('/')
+        # 生成编码后的链接路径
         encoded_parts = [quote(part) for part in parts if part]  # 跳过空部分
         encoded_link = '/' + '/'.join(encoded_parts)
-        
+
         indent = '  ' * (level - 1)
         display_name = os.path.splitext(file_name)[0]
         md_lines.append(f"{indent}- [{display_name}]({encoded_link})")
@@ -96,7 +96,6 @@ if __name__ == '__main__':
         print(f"Error: {target_dir} is not a valid directory")
         sys.exit(1)
 
-    # 生成并写入README
     readme_content = generate_readme(target_dir, EXCLUDE)
     readme_path = os.path.join(target_dir, '_sidebar.md')
     

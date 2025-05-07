@@ -91,46 +91,49 @@
 
             // 启用的 Prism 插件列表（对应文件名）
             prismPlugins: {
-                enabled: ["abap", 'autoloader', 'match-braces', "normalize-whitespace"],
+                enabled: [
+                    "abap",
+                    "autoloader",
+                    "match-braces",
+                    "normalize-whitespace",
+                ],
                 pluginFiles: {
-
-                    "abap": {
+                    abap: {
                         js: "components/prism-abap.min.js",
                     },
 
-                    "autoloader": {
-                        js: "plugins/autoloader/prism-autoloader.min.js"
+                    autoloader: {
+                        js: "plugins/autoloader/prism-autoloader.min.js",
                     },
 
                     "match-braces": {
                         js: "plugins/match-braces/prism-match-braces.min.js",
                         css: "plugins/match-braces/prism-match-braces.min.css",
-                        class_name: ['match-braces'],
+                        class_name: ["match-braces"],
                     },
 
                     "inline-color": {
                         js: "plugins/inline-color/prism-inline-color.min.js",
-                        css: "plugins/inline-color/prism-inline-color.min.css"
+                        css: "plugins/inline-color/prism-inline-color.min.css",
                     },
 
                     "normalize-whitespace": {
-                        js: "plugins/normalize-whitespace/prism-normalize-whitespace.min.js"
+                        js: "plugins/normalize-whitespace/prism-normalize-whitespace.min.js",
                     },
                     "line-numbers": {
                         js: "plugins/line-numbers/prism-line-numbers.min.js",
                         css: "plugins/line-numbers/prism-line-numbers.min.css",
-                        class_name: ['line-numbers'],
+                        class_name: ["line-numbers"],
                         attribute: [
                             {
-                                key: 'data-start',
-                                value: '1',
+                                key: "data-start",
+                                value: "1",
                             },
                             {
-                                key: 'style',
-                                value: 'white-space:pre-wrap;',
-                            }
-                        ]
-
+                                key: "style",
+                                value: "white-space:pre-wrap;",
+                            },
+                        ],
                     },
                     toolbar: {
                         js: "plugins/toolbar/prism-toolbar.min.js",
@@ -197,10 +200,10 @@
 
     <!-- Docsify 主题 -->
     <script src="//cdn.jsdelivr.net/npm/docsify-themeable/dist/js/docsify-themeable.min.js"></script>
-    
+
     <!-- Prism 语言组件 -->
     <script src="./plugins/docsify/lib/plugins/prism-enhancer.min.js"></script>
-    
+
     <!-- 样式修改 -->
     <script src="./plugins/docsify/lib/plugins/setting-button.min.js"></script>
 
@@ -250,7 +253,13 @@
     <script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
 
     <!-- 中英文添加空格 -->
-    <!-- <script src="//cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js"></script> -->
+    <script src="//cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js"></script>
+    <script>
+        pangu.spacingElementByTagName('main');
+        document.addEventListener('DOMContentLoaded', () => {
+            pangu.autoSpacingPage();
+        });
+    </script>
 
     <!-- 注册 离线模式 SSR -->
     <script>
