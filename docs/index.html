@@ -14,6 +14,10 @@
     <!-- 添加tab标签 -->
     <link rel="stylesheet" href="./_css/dashboard.min.css" />
 
+    <!-- 代码插件样式 -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/match-braces/prism-match-braces.min.css">
+
     <!-- 主题 -->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple.css"
         id="docsify-theme-light" />
@@ -80,72 +84,6 @@
                 responsiveTables: true, // default
             },
 
-            plugins: [
-                // parse twemoji
-                function (hook, vm) {
-                    hook.doneEach(function () {
-                        twemoji.parse(document);
-                    });
-                },
-            ],
-
-            // 启用的 Prism 插件列表（对应文件名）
-            prismPlugins: {
-                enabled: [
-                    "abap",
-                    "autoloader",
-                    "match-braces",
-                    "normalize-whitespace",
-                ],
-                pluginFiles: {
-                    abap: {
-                        js: "components/prism-abap.min.js",
-                    },
-
-                    autoloader: {
-                        js: "plugins/autoloader/prism-autoloader.min.js",
-                    },
-
-                    "match-braces": {
-                        js: "plugins/match-braces/prism-match-braces.min.js",
-                        css: "plugins/match-braces/prism-match-braces.min.css",
-                        class_name: ["match-braces"],
-                    },
-
-                    "inline-color": {
-                        js: "plugins/inline-color/prism-inline-color.min.js",
-                        css: "plugins/inline-color/prism-inline-color.min.css",
-                    },
-
-                    "normalize-whitespace": {
-                        js: "plugins/normalize-whitespace/prism-normalize-whitespace.min.js",
-                    },
-                    "line-numbers": {
-                        js: "plugins/line-numbers/prism-line-numbers.min.js",
-                        css: "plugins/line-numbers/prism-line-numbers.min.css",
-                        class_name: ["line-numbers"],
-                        attribute: [
-                            {
-                                key: "data-start",
-                                value: "1",
-                            },
-                            {
-                                key: "style",
-                                value: "white-space:pre-wrap;",
-                            },
-                        ],
-                    },
-                    toolbar: {
-                        js: "plugins/toolbar/prism-toolbar.min.js",
-                        css: "plugins/toolbar/prism-toolbar.css",
-                    },
-                    "copy-to-clipboard": {
-                        js: "plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js",
-                        css: null,
-                    },
-                },
-            },
-
             // 插件功能配置
             prism: {
                 copySuccessText: "复制成功", // 自定义复制成功提示
@@ -202,7 +140,12 @@
     <script src="//cdn.jsdelivr.net/npm/docsify-themeable/dist/js/docsify-themeable.min.js"></script>
 
     <!-- Prism 语言组件 -->
-    <script src="./plugins/docsify/lib/plugins/prism-enhancer.min.js"></script>
+    <script src="./plugins/docsify/lib/plugins/prismjs-class.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-abap.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/match-braces/prism-match-braces.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/normalize-whitespace/prism-normalize-whitespace.min.js"></script>
 
     <!-- 样式修改 -->
     <script src="./plugins/docsify/lib/plugins/setting-button.min.js"></script>
@@ -226,9 +169,6 @@
 
     <!-- 警告块 -->
     <script src="//unpkg.com/docsify-plugin-flexible-alerts@1.1.1/dist/docsify-plugin-flexible-alerts.min.js"></script>
-
-    <!-- twemoji -->
-    <script src="//cdn.jsdelivr.net/gh/TaQini/docsify-twemoji@master/twemoji.min.js"></script>
 
     <!-- 图片放大缩小支持 -->
     <script src="./plugins/docsify/lib/plugins/zoom-image.min.js"></script>

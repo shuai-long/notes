@@ -1,32 +1,33 @@
 const LS_THEME_MANAGER_DOCSIFY_THEME = 'docsifyTheme';
 const LS_PRISM_THEME_MANAGER_PRISM_THEME = "prism-theme";
 const LS_THEME_ABLE_MANAGER_DOCSIFY_CSS_VARS = "docsify-css-vars";
+const LS_THEME_ABLE_MANAGER_DOCSIFY_CUSTOM_CSS = 'docsify-custom-css';
 
-(function () {
-  // 页面加载时立即执行，读取本地存储或系统偏好确定主题
-  var theme = localStorage.getItem(LS_THEME_MANAGER_DOCSIFY_THEME);
-  if (!theme && window.matchMedia) {
-    theme = window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
-  }
-  if (theme) {
-    var lightLink = document.querySelector('link[title="light"]');
-    var darkLink = document.querySelector('link[title="dark"]');
-    // 启用/禁用对应的样式表
-    if (lightLink && darkLink) {
-      if (theme === "dark") {
-        lightLink.disabled = true;
-        darkLink.disabled = false;
-      } else {
-        lightLink.disabled = false;
-        darkLink.disabled = true;
-      }
+  (function () {
+    // 页面加载时立即执行，读取本地存储或系统偏好确定主题
+    var theme = localStorage.getItem(LS_THEME_MANAGER_DOCSIFY_THEME);
+    if (!theme && window.matchMedia) {
+      theme = window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
     }
-    // 存储当前主题，保证下次加载时也能直接应用
-    localStorage.setItem(LS_THEME_MANAGER_DOCSIFY_THEME, theme);
-  }
-})();
+    if (theme) {
+      var lightLink = document.querySelector('link[title="light"]');
+      var darkLink = document.querySelector('link[title="dark"]');
+      // 启用/禁用对应的样式表
+      if (lightLink && darkLink) {
+        if (theme === "dark") {
+          lightLink.disabled = true;
+          darkLink.disabled = false;
+        } else {
+          lightLink.disabled = false;
+          darkLink.disabled = true;
+        }
+      }
+      // 存储当前主题，保证下次加载时也能直接应用
+      localStorage.setItem(LS_THEME_MANAGER_DOCSIFY_THEME, theme);
+    }
+  })();
 
 window.$docsify = window.$docsify || {};
 window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
@@ -142,8 +143,218 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
       };
     })();
 
-    // css修改对象
+    // 主题自定义属性修改
     const themeAbleManager = (function () {
+
+      // css 样式切换
+      const cssChange = (function () {
+
+        // 创建样式隔离的模态框
+        function createModal() {
+          const modal = document.createElement('div');
+          const shadow = modal.attachShadow({ mode: 'open' });
+
+          // Shadow DOM内部样式
+          const style = document.createElement('style');
+          style.textContent = `
+            :host {
+              display: none;
+              position: fixed;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background: rgba(0,0,0,0.5);
+              z-index: 10000;
+            }
+      
+            :host(.active) {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
+            .container {
+              position: relative;  /* 新增定位上下文 */
+              background: white;
+              padding: 30px 20px 20px; /* 调整顶部内边距 */
+              border-radius: 8px;
+              width: 60%;
+              max-width: 600px;
+            }
+            .close-btn {
+              position: absolute;
+              top: 10px;
+              right: 10px;
+              background: none;
+              border: none;
+              font-size: 1.2em;
+              cursor: pointer;
+              color: #666;
+            }
+            .close-btn:hover {
+              color: #333;
+            }
+            textarea {
+              width: 100%;
+              height: 300px;
+              margin: 10px 0;
+              font-family: monospace;
+            }
+            .button-group {
+              text-align: right;
+            }
+            button {
+              padding: 6px 12px;
+              margin-left: 8px;
+            }
+          `;
+
+          // 模态框内容
+          const container = document.createElement('div');
+          container.className = 'container';
+          container.innerHTML = `
+            <button class="close-btn">×</button>
+            <h3>自定义CSS</h3>
+            <textarea placeholder="输入CSS样式..."></textarea>
+            <div class="button-group">
+              <button class="reset">重置</button>
+              <button class="save">保存</button>
+            </div>
+          `;
+
+          shadow.appendChild(style);
+          shadow.appendChild(container);
+          document.body.appendChild(modal);
+          return modal;
+        }
+
+        // 应用保存的样式
+        function applySavedStyles() {
+          const savedCss = localStorage.getItem(LS_THEME_ABLE_MANAGER_DOCSIFY_CUSTOM_CSS);
+          if (savedCss) {
+            // 移除旧样式
+            const oldStyle = document.getElementById(LS_THEME_ABLE_MANAGER_DOCSIFY_CUSTOM_CSS);
+            if (oldStyle) oldStyle.remove();
+
+            // 添加新样式
+            const style = document.createElement('style');
+            style.id = LS_THEME_ABLE_MANAGER_DOCSIFY_CUSTOM_CSS;
+            style.textContent = savedCss;
+            document.head.appendChild(style);
+          }
+        }
+
+        function show() {
+          modal.classList.add('active')
+        }
+
+        function init() {
+          addEvents();
+          applySavedStyles();
+        }
+
+        // 初始化操作
+        let modal, textarea;
+        function addEvents() {
+          // 创建界面元素
+          modal = createModal();
+          textarea = modal.shadowRoot.querySelector('textarea');
+
+          // 加载已保存的CSS
+          textarea.value = localStorage.getItem(LS_THEME_ABLE_MANAGER_DOCSIFY_CUSTOM_CSS) || '';
+
+          // 更新后的Tab键处理逻辑
+          textarea.addEventListener('keydown', function (e) {
+            if (e.key === 'Tab' || e.keyCode === 9) {
+              e.preventDefault();
+              const start = this.selectionStart;
+              const end = this.selectionEnd;
+              const value = this.value;
+
+              if (e.shiftKey) {
+                // Shift+Tab 删除缩进
+                const linesBefore = value.substring(0, start).split('\n');
+                const linesAfter = value.substring(end).split('\n');
+                const selection = value.substring(start, end);
+
+                // 删除每行开头的两个空格
+                const modified = selection.replace(/^ /gm, '');
+                this.value = [
+                  ...linesBefore.slice(0, -1),
+                  linesBefore[linesBefore.length - 1] + modified + linesAfter[0],
+                  ...linesAfter.slice(1)
+                ].join('\n');
+
+                // 调整光标位置
+                const diff = selection.length - modified.length;
+                this.selectionStart = Math.max(start - diff, 0);
+                this.selectionEnd = end - diff;
+              } else {
+                // 普通Tab 插入两个空格
+                const linesBefore = value.substring(0, start).split('\n');
+                const linesAfter = value.substring(end).split('\n');
+                const selection = value.substring(start, end);
+
+                // 添加两个空格缩进
+                const modified = selection.replace(/^/gm, '  '); // 改为两个空格
+                this.value = [
+                  ...linesBefore.slice(0, -1),
+                  linesBefore[linesBefore.length - 1] + modified + linesAfter[0],
+                  ...linesAfter.slice(1)
+                ].join('\n');
+
+                // 调整光标位置
+                const addedSpace = modified.split('\n').length * 2;
+                this.selectionStart = start + (start === end ? 2 : 0);
+                this.selectionEnd = end + modified.length - selection.length;
+              }
+            }
+          });
+
+          // 关闭按钮事件
+          modal.shadowRoot.querySelector('.close-btn').addEventListener('click', () => {
+            modal.classList.remove('active');
+          });
+
+          // 新增重置按钮事件
+          modal.shadowRoot.querySelector('.reset').addEventListener('click', () => {
+            if (confirm('确定要重置所有自定义样式吗？')) {
+              // 清除本地存储
+              localStorage.removeItem(LS_THEME_ABLE_MANAGER_DOCSIFY_CUSTOM_CSS);
+              // 移除页面样式
+              const oldStyle = document.getElementById(LS_THEME_ABLE_MANAGER_DOCSIFY_CUSTOM_CSS);
+              if (oldStyle) oldStyle.remove();
+              // 清空编辑器内容
+              textarea.value = '';
+              // 关闭模态框
+              modal.classList.remove('active');
+            }
+          });
+
+          modal.shadowRoot.querySelector('.save').addEventListener('click', () => {
+            try {
+              // 验证CSS有效性
+              const css = textarea.value;
+              const style = document.createElement('style');
+              style.textContent = css;
+              document.head.appendChild(style);
+              style.remove();
+
+              // 保存到localStorage
+              localStorage.setItem(LS_THEME_ABLE_MANAGER_DOCSIFY_CUSTOM_CSS, css);
+              modal.classList.remove('active');
+              applySavedStyles();
+            } catch (e) {
+              alert('CSS语法错误,请检查后重试');
+            }
+          });
+        };
+
+        return {
+          init,
+          show,
+        }
+      })();
 
       // 配置参数（只需维护变量名列表）
       const config = {
@@ -668,6 +879,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
       function init() {
         applyStyles();
         createControlPanel();
+        cssChange.init();
       }
 
       // 获取初始默认值
@@ -839,7 +1051,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
                     <div class="table-wrapper"></div>
                   </div>
                   <div class="modal-footer">
-                    <button class="fa fa-plus add-row">  新增变量</button>
+                    <button class="fa fa-plus add-row">  修改CSS</button>
                   </div>
                 </div>
               </div>
@@ -1667,21 +1879,22 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
         }, 100); // 等待DOM渲染完成
 
         panel.querySelector(".add-row").addEventListener("click", () => {
-          const newVarName = prompt(
-            "请输入新的CSS变量名（例如：--new-variable）"
-          );
+          cssChange.show();
+          // const newVarName = prompt(
+          //   "请输入新的CSS变量名（例如：--new-variable）"
+          // );
 
-          if(config.customVars.includes(newVarName)) return
+          // if (config.customVars.includes(newVarName)) return
 
-          if (newVarName && newVarName.startsWith("--")) {
-            config.customVars.push(newVarName);
-            defaultValues[newVarName] = getComputedStyle(
-              document.documentElement
-            )
-              .getPropertyValue(newVarName)
-              .trim();
-            renderTable();
-          }
+          // if (newVarName && newVarName.startsWith("--")) {
+          //   config.customVars.push(newVarName);
+          //   defaultValues[newVarName] = getComputedStyle(
+          //     document.documentElement
+          //   )
+          //     .getPropertyValue(newVarName)
+          //     .trim();
+          //   renderTable();
+          // }
         });
 
         panel.addEventListener("click", (e) => {
@@ -1984,7 +2197,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
         e.stopPropagation();
       });
     }
-
-    themeAbleManager.init();
+    prismThemeManager.init(); //代码样式
+    themeAbleManager.init(); //自定义CSS样式
   });
 });
