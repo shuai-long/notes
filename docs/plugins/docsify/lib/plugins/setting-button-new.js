@@ -572,7 +572,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
       function initSearch() {
         // const searchBtn = modal.shadowRoot.querySelector('.search-btn');
         const searchInput = modal.shadowRoot.querySelector('.search-input');
-        const term = searchInput.value.toLowerCase();
+        const term = searchInput.value.trim().toLowerCase();
         const handleSearch = () => {
           renderVariables(term);
         };
@@ -585,10 +585,11 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
         // searchBtn.addEventListener('click', handleSearch);
         searchInput.addEventListener('input', handleSearch); // 改为实时搜索
         searchInput.addEventListener('keypress', e => {
-          if (e.key === 'Enter') handleSearch();
+          if (e.key === 'Enter') e.preventDefault();
+          handleSearch();
         });
         searchInput.addEventListener('blur', function () {
-          const term_input = searchInput.value.toLowerCase();
+          const term_input = searchInput.value.trim().toLowerCase();
           updateSearchHistory(term_input);
         });
       }
