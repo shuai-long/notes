@@ -337,7 +337,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
 
         /* 搜索输入框 */
         .search-input {
-          width: 50%;
+          width: 30%;
           padding: 5px 20px;
           font-size: 15px;
           border: 2px solid #e2e8f0;
@@ -472,8 +472,8 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
         container.innerHTML = `
         <div class="header">
           <div class="search-box">
-            <input type="text" placeholder="搜索变量..." class="search-input">
             <h3 style="display:inline-block;margin-bottom: 0;">CSS样式修改</h3>
+            <input type="text" placeholder="搜索变量..." class="search-input">
           </div>
           <button class="close-btn">×</button>
           <div class="search-history"></div>
