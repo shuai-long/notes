@@ -204,7 +204,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
           background: #f8f9fa;
           border-radius: 12px;
           box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-          max-width: 75%
+          max-width: 75%;
           min-height: 60vh;
           max-height: 90vh;
           transform: translateY(-20px);
@@ -491,7 +491,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
           <div class="right-panel">
             <textarea class="csstextarea" placeholder="输入CSS样式..."></textarea>
             <div class="button-group">
-              <span style="color:red!!!">操作有风险, 修改需谨慎!!!</span>
+              <span style="color:red;">操作有风险, 修改需谨慎!!!</span>
               <button class="reset">重置</button>
               <button class="save">保存</button>
             </div>
