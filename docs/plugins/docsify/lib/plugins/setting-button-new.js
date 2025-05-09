@@ -204,8 +204,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
           background: #f8f9fa;
           border-radius: 12px;
           box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-          width: 90%;
-          max-width: 90%
+          max-width: 75%
           min-height: 60vh;
           max-height: 90vh;
           transform: translateY(-20px);
@@ -231,7 +230,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
           flex: 0 0 40%;
           display: flex;
           flex-direction: column;
-          padding-top: 25px;
+          padding-top: 5px;
         }
       
         /* 右侧面板 */
@@ -239,7 +238,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
           flex: 1;
           display: flex;
           flex-direction: column;
-          padding-top: 25px;
+          padding-left: 10px;
           position: relative;
           min-width: 0;
         }
@@ -250,58 +249,58 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
         }
 
         .vars-container {
-          max-height: 70%;
+          height: 67vh;
           overflow-y: auto;
           overflow-x: hidden; /* 新增：隐藏横向溢出 */
           border-radius: 8px;
           border: 1px solid #e0e3e7;
           background: #fff;
-          margin: 10px auto;
+          margin: 10px;
           width: 100%;
-          max-width: 800px;
+          max-width: 80vw;
           box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
         }
 
         .vertical-pro-table {
-            width: 100%;
-            border-collapse: collapse;
-            table-layout: fixed; /* 新增：固定表格布局 */
+          width: 100%;
+          border-collapse: collapse;
+          table-layout: fixed; /* 新增：固定表格布局 */
         }
 
         /* 核心布局 */
         .vertical-pro-table tr {
-            display: flex;
-            align-items: center;
-            padding: 12px 20px;
-            min-height: 52px;
-            box-sizing: border-box;
-            width: 100%; /* 新增：确保宽度不溢出 */
+          display: flex;
+          align-items: center;
+          padding: 12px 20px;
+          min-height: 52px;
+          box-sizing: border-box;
+          width: 100%; /* 新增：确保宽度不溢出 */
         }
 
         .vertical-pro-table th {
-            flex: 0 0 18%; /* 固定30%宽度 */
-            color: #1a365d;
-            font-weight: 600;
-            font-size: 14px;
-            padding-right: 15px;
-            border-right: 2px solid #edf2f7;
-            box-sizing: border-box; /* 新增：盒模型计算 */
-            min-width: 0; /* 新增：允许收缩 */
-            text-align: left;
+          flex: 0 0 18%; /* 固定30%宽度 */
+          color: #1a365d;
+          font-weight: 600;
+          font-size: 14px;
+          padding-right: 15px;
+          border-right: 2px solid #edf2f7;
+          box-sizing: border-box; /* 新增：盒模型计算 */
+          min-width: 0; /* 新增：允许收缩 */
+          text-align: left;
         }
 
         .vertical-pro-table td {
-            flex: 1; /* 自动填充剩余70% */
-            display: flex;
-            align-items:center;
-            position: relative;
-            color: #4a5568;
-            font-size: 14px;
-            padding-left: 10px;
-            line-height: 1.5;
-            box-sizing: border-box; /* 新增：盒模型计算 */
-            min-width: 0; /* 新增：允许收缩 */
-            overflow-wrap: break-word; /* 新增：强制换行 */
+          flex: 1; /* 自动填充剩余70% */
+          display: flex;
+          align-items:center;
+          position: relative;
+          color: #4a5568;
+          font-size: 14px;
+          padding-left: 10px;
+          line-height: 1.5;
+          box-sizing: border-box; /* 新增：盒模型计算 */
+          min-width: 0; /* 新增：允许收缩 */
+          overflow-wrap: break-word; /* 新增：强制换行 */
         }
 
         /* 双行斑马纹 */
@@ -317,18 +316,18 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
 
         /* 滚动条美化 */
         .vars-container::-webkit-scrollbar {
-            width: 8px;
-            background: #f1f5f9;
+          width: 8px;
+          background: #f1f5f9;
         }
 
         .vars-container::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
+          background: #cbd5e1;
+          border-radius: 4px;
         }
 
         /* 分隔线优化 */
         .vertical-pro-table tr:not(:last-child) {
-            border-bottom: 1px solid #e2e8f0;
+          border-bottom: 1px solid #e2e8f0;
         }
 
         /* 搜索容器 */
@@ -411,11 +410,10 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
 
         .close-btn:hover {
           background: #e0e0e0;
-          transform: rotate(90deg);
         }
 
         .button-group {
-          margin: -12px 15px 15px 0px;
+          margin: -12px 15px 0px 0px;
           display: flex;
           gap: 12px;
           justify-content: flex-end;
@@ -428,9 +426,9 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
           font-weight: 500;
           cursor: pointer;
           transition: 
-            transform 0.1s ease,
-            box-shadow 0.2s ease,
-            background 0.2s ease;
+          transform 0.1s ease,
+          box-shadow 0.2s ease,
+          background 0.2s ease;
         }
 
         button:active {
@@ -438,8 +436,8 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
         }
 
         .reset {
-          background: #f5f5f5;
-          color: #666;
+          background: #898181;
+          color: black;
         }
 
         .reset:hover {
@@ -457,10 +455,10 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
           box-shadow: 0 2px 8px rgba(33,150,243,0.3);
         }
 
-        textarea {
-          min-height: 400px;
-          max-height: 645px;
-          margin: 15px 15px 15px 0px;
+        .csstextarea {
+          min-height: 40vh;
+          max-height: 60vh;
+          margin: 15px;
           padding: 12px;
           border: 1px solid #ddd;
           border-radius: 4px;
@@ -474,8 +472,8 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
         container.innerHTML = `
         <div class="header">
           <div class="search-box">
-            <h3 style="display:inline-block;margin-bottom: 0;">CSS变量列表</h3>
             <input type="text" placeholder="搜索变量..." class="search-input">
+            <h3 style="display:inline-block;margin-bottom: 0;">CSS样式修改</h3>
           </div>
           <button class="close-btn">×</button>
           <div class="search-history"></div>
@@ -491,8 +489,9 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
           </div>
 
           <div class="right-panel">
-            <textarea placeholder="输入CSS样式..."></textarea>
+            <textarea class="csstextarea" placeholder="输入CSS样式..."></textarea>
             <div class="button-group">
+              <span style="color:red!!!">操作有风险, 修改需谨慎!!!</span>
               <button class="reset">重置</button>
               <button class="save">保存</button>
             </div>
