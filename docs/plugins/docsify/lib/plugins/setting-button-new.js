@@ -200,7 +200,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
       
         .container {
           display: flex;
-          flex-direction: row;
+          flex-direction: column;
           background: #f8f9fa;
           border-radius: 12px;
           box-shadow: 0 10px 30px rgba(0,0,0,0.15);
@@ -215,6 +215,15 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
       
         :host(.active) .container {
           transform: translateY(0);
+        }
+        
+        .header{
+          padding-left: 2em;
+        }
+
+        .content {
+          flex: 1;
+          display: flex;
         }
       
         /* 左侧面板 */
@@ -473,19 +482,21 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
           <div class="search-history"></div>
         </div>
 
-        <div class="left-panel">
-          <div class="vars-container"> <!-- 新增滚动容器 -->
-            <table class="vertical-pro-table">
-              <tbody class="vars-body"></tbody>
-            </table>
+        <div class="content">
+          <div class="left-panel">
+            <div class="vars-container"> <!-- 新增滚动容器 -->
+              <table class="vertical-pro-table">
+                <tbody class="vars-body"></tbody>
+              </table>
+            </div>
           </div>
-        </div>
 
-        <div class="right-panel">
-          <textarea placeholder="输入CSS样式..."></textarea>
-          <div class="button-group">
-            <button class="reset">重置</button>
-            <button class="save">保存</button>
+          <div class="right-panel">
+            <textarea placeholder="输入CSS样式..."></textarea>
+            <div class="button-group">
+              <button class="reset">重置</button>
+              <button class="save">保存</button>
+            </div>
           </div>
         </div>
       `;
