@@ -465,14 +465,14 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
         container.className = 'container';
         container.innerHTML = `
         <div class="header">
-          <h3 style="display:inline-block;margin-bottom: 0;">CSS变量列表</h3>
-          <button class="close-btn">×</button>
           <div class="search-box">
+            <h3 style="display:inline-block;margin-bottom: 0;">CSS变量列表</h3>
             <input type="text" placeholder="搜索变量..." class="search-input">
           </div>
+          <button class="close-btn">×</button>
           <div class="search-history"></div>
         </div>
-        
+
         <div class="left-panel">
           <div class="vars-container"> <!-- 新增滚动容器 -->
             <table class="vertical-pro-table">
