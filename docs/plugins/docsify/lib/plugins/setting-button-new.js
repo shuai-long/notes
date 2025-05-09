@@ -152,7 +152,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
       // 新增配置文件加载方法
       async function loadConfig() {
         try {
-          const response = await fetch('/metadata/css-vars-config.json'); // 配置文件路径
+          const response = await fetch('/notes/metadata/css-vars-config.json'); // 配置文件路径
           config = await response.json();
           if (!Array.isArray(config.cssVariables)) {
             console.error('配置文件格式错误，应为 { "cssVariables": [...] }');
@@ -237,129 +237,243 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
           position: relative;
           min-width: 0; /* 修复内容溢出 */
         }
-      
-        /* 表格容器 */
+        .color-block{
+          width: 1em;
+          height: 1em;
+          margin-left: .5em;
+        }
+
         .vars-container {
-          flex: 1;
-          overflow: hidden;
-          margin-top: 20px;
-          background: white;
+            min-height: 71%;
+            max-height: 100%;
+            overflow-y: auto;
+            overflow-x: hidden; /* 新增：隐藏横向溢出 */
+            border-radius: 8px;
+            border: 1px solid #e0e3e7;
+            background: #fff;
+            margin: 10px auto;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+
+        .vertical-pro-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed; /* 新增：固定表格布局 */
+        }
+
+        /* 核心布局 */
+        .vertical-pro-table tr {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            min-height: 52px;
+            box-sizing: border-box;
+            width: 100%; /* 新增：确保宽度不溢出 */
+        }
+
+        .vertical-pro-table th {
+            flex: 0 0 18%; /* 固定30%宽度 */
+            color: #1a365d;
+            font-weight: 600;
+            font-size: 14px;
+            padding-right: 15px;
+            border-right: 2px solid #edf2f7;
+            box-sizing: border-box; /* 新增：盒模型计算 */
+            min-width: 0; /* 新增：允许收缩 */
+            text-align: left;
+        }
+
+        .vertical-pro-table td {
+            flex: 1; /* 自动填充剩余70% */
+            display: flex;
+            align-items:center;
+            position: relative;
+            color: #4a5568;
+            font-size: 14px;
+            padding-left: 10px;
+            line-height: 1.5;
+            box-sizing: border-box; /* 新增：盒模型计算 */
+            min-width: 0; /* 新增：允许收缩 */
+            overflow-wrap: break-word; /* 新增：强制换行 */
+        }
+
+        /* 双行斑马纹 */
+        .vertical-pro-table tr:nth-child(4n+1),
+        .vertical-pro-table tr:nth-child(4n+2) {
+            background: #d2dbe5;
+        }
+
+        .vertical-pro-table tr:nth-child(4n+3),
+        .vertical-pro-table tr:nth-child(4n+4) {
+            background: #fff;
+        }
+
+        /* 滚动条美化 */
+        .vars-container::-webkit-scrollbar {
+            width: 8px;
+            background: #f1f5f9;
+        }
+
+        .vars-container::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        /* 分隔线优化 */
+        .vertical-pro-table tr:not(:last-child) {
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        /* 搜索容器 */
+        .search-box{
+          padding-top: .1em;
+        }
+
+        /* 搜索输入框 */
+        .search-input {
+          width: 70%;
+          padding: 5px 20px;
+          font-size: 15px;
+          border: 2px solid #e2e8f0;
           border-radius: 8px;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+          background: white;
+          box-shadow: 0 2px 4px rgba(160,174,192,0.1);
+          transition: all 0.3s ease;
+          box-sizing: border-box;
         }
-      
-        table {
-          width: 100%;
-          border-collapse: collapse;
-          table-layout: fixed;
+
+        .search-input:focus {
+          outline: none;
+          border-color: #4299e1;
+          box-shadow: 0 2px 8px rgba(66,153,225,0.2);
         }
-      
-        thead {
-          background: linear-gradient(135deg, #3498db, #2980b9);
+
+        /* 搜索历史容器 */
+        .search-history {
+          margin-top: 12px;
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 8px;
+          color: #718096;
+          font-size: 13px;
+          display: none;
         }
-      
-        tbody {
-          display: block;
-          height: calc(60vh - 200px);
-          overflow-y: auto;
+
+        /* 历史记录项 */
+        .history-item {
+          display: inline-flex;
+          align-items: center;
+          padding: 6px 12px;
+          background: #f7fafc;
+          border-radius: 6px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          border: 1px solid #e2e8f0;
+          color: #4a5568;
         }
-      
-        thead tr {
-          display: table;
-          width: 100%;
+
+        .history-item:hover {
+          background: #ebf8ff;
+          border-color: #bee3f8;
+          transform: translateY(-1px);
         }
-      
-        tr {
-          display: table;
-          width: 100%;
-          table-layout: fixed;
+
+        .history-item::before {
+          content: "#";
+          margin-right: 4px;
+          color: #a0aec0;
         }
-      
-        th, td {
-          padding: 14px 16px;
-          text-align: left;
-          word-break: break-word;
-        }
-      
-        th {
-          color: white;
-          font-weight: 500;
-        }
-      
-        td {
-          border-bottom: 1px solid #f0f0f0;
-          background: rgba(255,255,255,0.95);
-          transition: background 0.2s ease;
-        }
-      
-        tr:hover td {
-          background: #f5f9fd;
-        }
-      
-        /* 其他美化样式保持原样 */
+
         .close-btn {
           position: absolute;
-          top: 15px;
-          right: 15px;
-          background: none;
+          top: 10px;
+          right: 10px;
+          width: 32px;
+          height: 32px;
           border: none;
-          font-size: 1.5em;
+          border-radius: 50%;
+          background: #f0f0f0;
           cursor: pointer;
-          color: #666;
-          transition: all 0.3s ease;
+          font-size: 24px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.2s ease;
         }
-      
+
         .close-btn:hover {
-          color: #333;
+          background: #e0e0e0;
           transform: rotate(90deg);
         }
-      
-        /* 确保编辑器区域高度正确 */
+
+        .button-group {
+          margin-top: 15px;
+          display: flex;
+          gap: 12px;
+          justify-content: flex-end;
+        }
+
+        button {
+          padding: 10px 24px;
+          border: none;
+          border-radius: 6px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: 
+            transform 0.1s ease,
+            box-shadow 0.2s ease,
+            background 0.2s ease;
+        }
+
+        button:active {
+          transform: translateY(1px);
+        }
+
+        .reset {
+          background: #f5f5f5;
+          color: #666;
+        }
+
+        .reset:hover {
+          background: #eee;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .save {
+          background: #2196F3;
+          color: white;
+        }
+
+        .save:hover {
+          background: #1976D2;
+          box-shadow: 0 2px 8px rgba(33,150,243,0.3);
+        }
+
         textarea {
-          flex: 1;
+          min-height: 60%;
           margin: 15px 0;
-          resize: none;
-        }
-      
-        /* 响应式调整 */
-        @media (max-width: 768px) {
-          .container {
-            flex-direction: column;
-            max-height: 90vh;
-          }
-      
-          .left-panel, .right-panel {
-            flex: none;
-            width: 100% !important;
-            min-width: auto;
-          }
-      
-          .left-panel {
-            border-right: none;
-            border-bottom: 1px solid rgba(0,0,0,0.08);
-          }
-      
-          tbody {
-            height: calc(40vh - 120px);
-          }
-        }
+          padding: 12px;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          resize: vertical;
+          font-family: monospace;
+        }            
       `;
         // 模态框内容
         const container = document.createElement('div');
         container.className = 'container';
         container.innerHTML = `
         <div class="left-panel">
-          <h3>CSS变量列表</h3>
           <div class="search-box">
+            <h3 style="display:inline-block">CSS变量列表</h3>
             <input type="text" placeholder="搜索变量..." class="search-input">
-            <button class="search-btn">搜索</button>
-            <div class="search-history"></div>
           </div>
+          <div class="search-history"></div>
           <div class="vars-container"> <!-- 新增滚动容器 -->
-            <table>
-              <thead>
-                <tr><th>变量名</th><th>值</th></tr>
-              </thead>
+            <table class="vertical-pro-table">
               <tbody class="vars-body"></tbody>
             </table>
           </div>
@@ -409,7 +523,10 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
         const tbody = modal.shadowRoot.querySelector('.vars-body');
         tbody.innerHTML = filtered.map(v => `
           <tr>
+            <th>变量名</th>
             <td>${v.name}</td>
+          <tr>
+            <th>变量值</th>
             <td>
               ${v.value}
               ${v.isColor ? `<div class="color-block" style="background:${v.value}"></div>` : ''}
@@ -455,7 +572,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
 
       // 初始化搜索功能
       function initSearch() {
-        const searchBtn = modal.shadowRoot.querySelector('.search-btn');
+        // const searchBtn = modal.shadowRoot.querySelector('.search-btn');
         const searchInput = modal.shadowRoot.querySelector('.search-input');
 
         const handleSearch = () => {
@@ -467,7 +584,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
         // 初始化时显示所有变量
         renderVariables();
 
-        searchBtn.addEventListener('click', handleSearch);
+        // searchBtn.addEventListener('click', handleSearch);
         searchInput.addEventListener('input', handleSearch); // 改为实时搜索
         searchInput.addEventListener('keypress', e => {
           if (e.key === 'Enter') handleSearch();
@@ -492,6 +609,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
 
       function show() {
         modal.classList.add('active')
+        document.body.style.overflow = 'hidden';
       }
 
       function init() {
@@ -499,7 +617,6 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
         addEvents();
         applySavedStyles();
         initSearch();
-        renderVariables();
       }
 
       // 初始化操作
@@ -576,12 +693,13 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
             textarea.value = '';
             // 关闭模态框
             modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
           }
         });
 
+        // 验证CSS有效性
         modal.shadowRoot.querySelector('.save').addEventListener('click', () => {
           try {
-            // 验证CSS有效性
             const css = textarea.value;
             const style = document.createElement('style');
             style.textContent = css;
@@ -596,6 +714,8 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
             alert('CSS语法错误,请检查后重试');
           }
         });
+
+
       };
 
       return {
@@ -661,7 +781,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
         text: "设置",
         id: 'createControlPanel',
         // 在移动端隐藏这个按钮
-        hideOnTouch: false,
+        hideOnTouch: true,
         action: () => cssChange.show(),
       },
       {
