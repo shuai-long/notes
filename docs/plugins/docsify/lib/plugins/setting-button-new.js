@@ -585,7 +585,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
         searchInput.addEventListener('input', handleSearch); // 改为实时搜索
         searchInput.addEventListener('keypress', e => {
           if (e.key === 'Enter')
-          handleSearch();
+            handleSearch();
         });
         searchInput.addEventListener('blur', function () {
           const term_input = searchInput.value.toLowerCase();
@@ -719,7 +719,61 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
           }
         });
 
+        // 鼠标事件监听
+        modal.querySelector(".left-panel").addEventListener("mousedown", dragStart);
+        document.addEventListener("mousemove", drag);
+        document.addEventListener("mouseup", dragEnd);
+
+        // 触摸事件监听（移动端支持）
+        modal.querySelector(".left-panel").addEventListener("touchstart", dragStart);
+        document.addEventListener("touchmove", drag);
+        document.addEventListener("touchend", dragEnd);
+
+        function dragStart(e) {
+          if (e.type === "touchstart") {
+            initialX = e.touches[0].clientX - xOffset;
+            initialY = e.touches[0].clientY - yOffset;
+          } else {
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+          }
+
+          isDragging = true;
+        }
+
+        function drag(e) {
+          if (isDragging) {
+            e.preventDefault();
+
+            if (e.type === "touchmove") {
+              currentX = e.touches[0].clientX - initialX;
+              currentY = e.touches[0].clientY - initialY;
+            } else {
+              currentX = e.clientX - initialX;
+              currentY = e.clientY - initialY;
+            }
+
+            xOffset = currentX;
+            yOffset = currentY;
+
+            setTranslate(currentX, currentY, modal);
+          }
+        }
+
+        function setTranslate(xPos, yPos, el) {
+          el.style.transform = `translate(${xPos}px, ${yPos}px)`;
+        }
+
+        function dragEnd() {
+          initialX = currentX;
+          initialY = currentY;
+          isDragging = false;
+        }
+
       };
+
+
+
 
       return {
         init,
