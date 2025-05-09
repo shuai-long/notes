@@ -547,11 +547,11 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
       // 处理搜索历史
       function updateSearchHistory(term) {
         const history = JSON.parse(localStorage.getItem(LS_CSS_CHANGE_DOCSIFY_CSS_VAR_SEARCH_HISTORY) || '[]');
-        // if (!term || history.includes(term)) return;
-
-        history.unshift(term);
-        if (history.length > 5) history.pop();
-        localStorage.setItem(LS_CSS_CHANGE_DOCSIFY_CSS_VAR_SEARCH_HISTORY, JSON.stringify(history));
+        if (!term || history.includes(term)) {
+          history.unshift(term);
+          if (history.length > 5) history.pop();
+          localStorage.setItem(LS_CSS_CHANGE_DOCSIFY_CSS_VAR_SEARCH_HISTORY, JSON.stringify(history));
+        };
 
         const historyEl = modal.shadowRoot.querySelector('.search-history');
         historyEl.innerHTML = '最近搜索: ' + history.map(item =>
@@ -579,6 +579,8 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
 
         // 初始化时显示所有变量
         renderVariables();
+        // 初始化历史记录
+        updateSearchHistory('');
 
         // searchBtn.addEventListener('click', handleSearch);
         searchInput.addEventListener('input', handleSearch); // 改为实时搜索
