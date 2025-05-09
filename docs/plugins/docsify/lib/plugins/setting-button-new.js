@@ -678,6 +678,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
         // 关闭按钮事件
         modal.shadowRoot.querySelector('.close-btn').addEventListener('click', () => {
           modal.classList.remove('active');
+          document.body.style.overflow = 'auto';
         });
 
         // 新增重置按钮事件
@@ -691,8 +692,8 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
             // 清空编辑器内容
             textarea.value = '';
             // 关闭模态框
-            modal.classList.remove('active');
-            document.body.style.overflow = 'auto';
+            // modal.classList.remove('active');
+            // document.body.style.overflow = 'auto';
           }
         });
 
@@ -707,7 +708,8 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
 
             // 保存到localStorage
             localStorage.setItem(LS_CSS_CHANGE_DOCSIFY_CUSTOM_CSS, css);
-            modal.classList.remove('active');
+            // modal.classList.remove('active');
+            // document.body.style.overflow = 'auto';
             applySavedStyles();
           } catch (e) {
             alert('CSS语法错误,请检查后重试');
