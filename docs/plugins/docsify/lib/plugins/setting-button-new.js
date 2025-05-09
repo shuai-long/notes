@@ -231,9 +231,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
           flex: 0 0 40%;
           display: flex;
           flex-direction: column;
-          border-right: 1px solid rgba(0,0,0,0.08);
-          background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
-          padding: 25px;
+          padding-top: 25px;
         }
       
         /* 右侧面板 */
@@ -241,9 +239,9 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
           flex: 1;
           display: flex;
           flex-direction: column;
-          padding: 25px;
+          padding-top: 25px;
           position: relative;
-          min-width: 0; /* 修复内容溢出 */
+          min-width: 0;
         }
         .color-block{
           width: 1em;
@@ -252,16 +250,16 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
         }
 
         .vars-container {
-            height: 78%;
-            overflow-y: auto;
-            overflow-x: hidden; /* 新增：隐藏横向溢出 */
-            border-radius: 8px;
-            border: 1px solid #e0e3e7;
-            background: #fff;
-            margin: 10px auto;
-            width: 100%;
-            max-width: 800px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+          max-height: 70%;
+          overflow-y: auto;
+          overflow-x: hidden; /* 新增：隐藏横向溢出 */
+          border-radius: 8px;
+          border: 1px solid #e0e3e7;
+          background: #fff;
+          margin: 10px auto;
+          width: 100%;
+          max-width: 800px;
+          box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
         }
 
         .vertical-pro-table {
@@ -417,7 +415,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
         }
 
         .button-group {
-          margin-top: 15px;
+          margin: -12px 15px 15px 0px;
           display: flex;
           gap: 12px;
           justify-content: flex-end;
@@ -461,7 +459,8 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
 
         textarea {
           min-height: 400px;
-          margin: 15px 0;
+          max-height: 645px;
+          margin: 15px 15px 15px 0px;
           padding: 12px;
           border: 1px solid #ddd;
           border-radius: 4px;
