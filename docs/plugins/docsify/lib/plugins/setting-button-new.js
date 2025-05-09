@@ -585,7 +585,8 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
           if (e.key === 'Enter') handleSearch();
         });
         searchInput.addEventListener('blur', function () {
-          updateSearchHistory(term);
+          const term_input = searchInput.value.toLowerCase();
+          updateSearchHistory(term_input);
         });
       }
 
