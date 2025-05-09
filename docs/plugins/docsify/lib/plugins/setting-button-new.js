@@ -331,7 +331,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
 
         /* 搜索输入框 */
         .search-input {
-          width: 70%;
+          width: 50%;
           padding: 5px 20px;
           font-size: 15px;
           border: 2px solid #e2e8f0;
@@ -340,7 +340,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
           box-shadow: 0 2px 4px rgba(160,174,192,0.1);
           transition: all 0.3s ease;
           box-sizing: border-box;
-          margin-left: 1em;
+          margin-left: 2em;
         }
 
         .search-input:focus {
@@ -370,6 +370,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
           transition: all 0.2s ease;
           border: 1px solid #e2e8f0;
           color: #4a5568;
+          padding: 0 .5em;
         }
 
         .history-item:hover {
@@ -546,7 +547,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
       // 处理搜索历史
       function updateSearchHistory(term) {
         const history = JSON.parse(localStorage.getItem(LS_CSS_CHANGE_DOCSIFY_CSS_VAR_SEARCH_HISTORY) || '[]');
-        if (!term || history.includes(term)) return;
+        // if (!term || history.includes(term)) return;
 
         history.unshift(term);
         if (history.length > 5) history.pop();
