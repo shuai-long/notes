@@ -451,7 +451,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
         }
 
         textarea {
-          min-height: 60%;
+          min-height: 400px;
           margin: 15px 0;
           padding: 12px;
           border: 1px solid #ddd;
