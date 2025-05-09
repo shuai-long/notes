@@ -340,6 +340,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
           box-shadow: 0 2px 4px rgba(160,174,192,0.1);
           transition: all 0.3s ease;
           box-sizing: border-box;
+          margin-left: 1em;
         }
 
         .search-input:focus {
@@ -357,7 +358,6 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
           gap: 8px;
           color: #718096;
           font-size: 13px;
-          display: none;
         }
 
         /* 历史记录项 */
