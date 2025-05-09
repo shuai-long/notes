@@ -464,21 +464,24 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
         const container = document.createElement('div');
         container.className = 'container';
         container.innerHTML = `
-        <div class="left-panel">
+        <div class="header">
+          <h3 style="display:inline-block;margin-bottom: 0;">CSS变量列表</h3>
+          <button class="close-btn">×</button>
           <div class="search-box">
-            <h3 class="drag-el" style="display:inline-block;margin-bottom: 0;">CSS变量列表</h3>
             <input type="text" placeholder="搜索变量..." class="search-input">
           </div>
           <div class="search-history"></div>
+        </div>
+        
+        <div class="left-panel">
           <div class="vars-container"> <!-- 新增滚动容器 -->
             <table class="vertical-pro-table">
               <tbody class="vars-body"></tbody>
             </table>
           </div>
         </div>
+
         <div class="right-panel">
-          <button class="close-btn">×</button>
-          <h3>自定义CSS</h3>
           <textarea placeholder="输入CSS样式..."></textarea>
           <div class="button-group">
             <button class="reset">重置</button>
@@ -718,65 +721,6 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
             alert('CSS语法错误,请检查后重试');
           }
         });
-
-        addEventDrag(modal)
-      };
-
-      function addEventDrag(modal) {
-
-        let isDragging = false;
-        let currentX;
-        let currentY;
-        let initialX;
-        let initialY;
-        let xOffset = 0;
-        let yOffset = 0;
-        // 鼠标事件监听
-        modal.querySelector(".drag-el").addEventListener("mousedown", dragStart);
-        document.addEventListener("mousemove", drag);
-        document.addEventListener("mouseup", dragEnd);
-
-        function dragStart(e) {
-          if (e.type === "touchstart") {
-            initialX = e.touches[0].clientX - xOffset;
-            initialY = e.touches[0].clientY - yOffset;
-          } else {
-            initialX = e.clientX - xOffset;
-            initialY = e.clientY - yOffset;
-          }
-
-          isDragging = true;
-        }
-
-        function drag(e) {
-          if (isDragging) {
-            e.preventDefault();
-
-            if (e.type === "touchmove") {
-              currentX = e.touches[0].clientX - initialX;
-              currentY = e.touches[0].clientY - initialY;
-            } else {
-              currentX = e.clientX - initialX;
-              currentY = e.clientY - initialY;
-            }
-
-            xOffset = currentX;
-            yOffset = currentY;
-
-            setTranslate(currentX, currentY, modal);
-          }
-        }
-
-        function setTranslate(xPos, yPos, el) {
-          el.style.transform = `translate(${xPos}px, ${yPos}px)`;
-        }
-
-        function dragEnd() {
-          initialX = currentX;
-          initialY = currentY;
-          isDragging = false;
-        }
-
 
       };
 
