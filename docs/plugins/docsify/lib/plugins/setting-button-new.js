@@ -547,7 +547,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
       // 处理搜索历史
       function updateSearchHistory(term) {
         const history = JSON.parse(localStorage.getItem(LS_CSS_CHANGE_DOCSIFY_CSS_VAR_SEARCH_HISTORY) || '[]');
-        if (!term || history.includes(term)) {
+        if (term.trim() !== "" && !history.includes(term)) {
           history.unshift(term);
           if (history.length > 5) history.pop();
           localStorage.setItem(LS_CSS_CHANGE_DOCSIFY_CSS_VAR_SEARCH_HISTORY, JSON.stringify(history));
