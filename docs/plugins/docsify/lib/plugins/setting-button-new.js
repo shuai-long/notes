@@ -570,26 +570,25 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
 
       // 初始化搜索功能
       function initSearch() {
-        // const searchBtn = modal.shadowRoot.querySelector('.search-btn');
         const searchInput = modal.shadowRoot.querySelector('.search-input');
-        const term = searchInput.value.trim().toLowerCase();
         const handleSearch = () => {
+          const term = searchInput.value.toLowerCase();
           renderVariables(term);
         };
 
         // 初始化时显示所有变量
         renderVariables();
+
         // 初始化历史记录
         updateSearchHistory('');
 
-        // searchBtn.addEventListener('click', handleSearch);
         searchInput.addEventListener('input', handleSearch); // 改为实时搜索
         searchInput.addEventListener('keypress', e => {
-          if (e.key === 'Enter') e.preventDefault();
+          if (e.key === 'Enter')
           handleSearch();
         });
         searchInput.addEventListener('blur', function () {
-          const term_input = searchInput.value.trim().toLowerCase();
+          const term_input = searchInput.value.toLowerCase();
           updateSearchHistory(term_input);
         });
       }
