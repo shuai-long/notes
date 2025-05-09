@@ -243,7 +243,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
         }
 
         .vars-container {
-            height: 81%;
+            height: 78%;
             overflow-y: auto;
             overflow-x: hidden; /* 新增：隐藏横向溢出 */
             border-radius: 8px;
@@ -364,7 +364,6 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
         .history-item {
           display: inline-flex;
           align-items: center;
-          padding: 6px 12px;
           background: #f7fafc;
           border-radius: 6px;
           cursor: pointer;
@@ -466,7 +465,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
         container.innerHTML = `
         <div class="left-panel">
           <div class="search-box">
-            <h3 style="display:inline-block">CSS变量列表</h3>
+            <h3 style="display:inline-block;margin-bottom: 0;">CSS变量列表</h3>
             <input type="text" placeholder="搜索变量..." class="search-input">
           </div>
           <div class="search-history"></div>
@@ -572,11 +571,9 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
       function initSearch() {
         // const searchBtn = modal.shadowRoot.querySelector('.search-btn');
         const searchInput = modal.shadowRoot.querySelector('.search-input');
-
+        const term = searchInput.value.toLowerCase();
         const handleSearch = () => {
-          const term = searchInput.value.toLowerCase();
           renderVariables(term);
-          updateSearchHistory(term);
         };
 
         // 初始化时显示所有变量
@@ -586,6 +583,11 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
         searchInput.addEventListener('input', handleSearch); // 改为实时搜索
         searchInput.addEventListener('keypress', e => {
           if (e.key === 'Enter') handleSearch();
+        });
+        searchInput.addEventListener('blur', function () {
+          if (!value === '') {
+            updateSearchHistory(term);
+          }
         });
       }
 
@@ -714,7 +716,6 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
             alert('CSS语法错误,请检查后重试');
           }
         });
-
 
       };
 
