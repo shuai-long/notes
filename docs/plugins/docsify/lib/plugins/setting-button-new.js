@@ -577,7 +577,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
         };
 
         // 初始化时显示所有变量
-        renderVariables();
+        // renderVariables();
 
         // searchBtn.addEventListener('click', handleSearch);
         searchInput.addEventListener('input', handleSearch); // 改为实时搜索
