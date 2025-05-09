@@ -719,15 +719,22 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
           }
         });
 
+        addEventDrag(modal)
+      };
+
+      function addEventDrag(modal) {
+
+        let isDragging = false;
+        let currentX;
+        let currentY;
+        let initialX;
+        let initialY;
+        let xOffset = 0;
+        let yOffset = 0;
         // 鼠标事件监听
         modal.querySelector(".drag-el").addEventListener("mousedown", dragStart);
         document.addEventListener("mousemove", drag);
         document.addEventListener("mouseup", dragEnd);
-
-        // 触摸事件监听（移动端支持）
-        modal.querySelector(".drag-el").addEventListener("touchstart", dragStart);
-        document.addEventListener("touchmove", drag);
-        document.addEventListener("touchend", dragEnd);
 
         function dragStart(e) {
           if (e.type === "touchstart") {
@@ -770,10 +777,8 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
           isDragging = false;
         }
 
+
       };
-
-
-
 
       return {
         init,
