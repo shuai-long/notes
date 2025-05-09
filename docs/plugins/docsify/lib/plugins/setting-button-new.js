@@ -205,7 +205,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
           border-radius: 12px;
           box-shadow: 0 10px 30px rgba(0,0,0,0.15);
           width: 90%;
-          max-width: 1200px;
+          max-width: 90%
           min-height: 60vh;
           max-height: 90vh;
           transform: translateY(-20px);
@@ -225,7 +225,6 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
           border-right: 1px solid rgba(0,0,0,0.08);
           background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
           padding: 25px;
-          min-width: 400px;
         }
       
         /* 右侧面板 */
