@@ -244,8 +244,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
         }
 
         .vars-container {
-            min-height: 71%;
-            max-height: 100%;
+            height: 100%;
             overflow-y: auto;
             overflow-x: hidden; /* 新增：隐藏横向溢出 */
             border-radius: 8px;
