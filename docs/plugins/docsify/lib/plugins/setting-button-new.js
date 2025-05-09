@@ -466,7 +466,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
         container.innerHTML = `
         <div class="left-panel">
           <div class="search-box">
-            <h3 style="display:inline-block;margin-bottom: 0;">CSS变量列表</h3>
+            <h3 class="drag-el" style="display:inline-block;margin-bottom: 0;">CSS变量列表</h3>
             <input type="text" placeholder="搜索变量..." class="search-input">
           </div>
           <div class="search-history"></div>
@@ -720,12 +720,12 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
         });
 
         // 鼠标事件监听
-        modal.querySelector(".left-panel").addEventListener("mousedown", dragStart);
+        modal.querySelector(".drag-el").addEventListener("mousedown", dragStart);
         document.addEventListener("mousemove", drag);
         document.addEventListener("mouseup", dragEnd);
 
         // 触摸事件监听（移动端支持）
-        modal.querySelector(".left-panel").addEventListener("touchstart", dragStart);
+        modal.querySelector(".drag-el").addEventListener("touchstart", dragStart);
         document.addEventListener("touchmove", drag);
         document.addEventListener("touchend", dragEnd);
 
