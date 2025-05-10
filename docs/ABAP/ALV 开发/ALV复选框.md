@@ -16,7 +16,7 @@ ALV 复选框
       e_grid = lo_alv_grid.
   ```
 
-<!-- tab: ALV自带复选框 -->
+<!-- tab:ALV自带复选框 -->
 
 - 获取选择行
 
@@ -27,7 +27,7 @@ ALV 复选框
       et_index_rows = lt_rows ).
   ```
 
-<!-- tab: 内表定义字段 -->
+<!-- tab:内表定义字段 -->
 
 - 检查数据更改
 
