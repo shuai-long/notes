@@ -42,8 +42,8 @@
           // 插入到折叠按钮之后或标题开头
           header.insertBefore(numberSpan, header.children[1] || header.firstChild)
         }
-        numberSpan.textContent = `${numberText}. `
-        
+        numberSpan.textContent = `${numberText} `
+
         if (header.classList.contains('collapsible')) return
 
         // 创建折叠按钮
