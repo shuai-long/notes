@@ -44,6 +44,9 @@
         }
         numberSpan.textContent = `${numberText} `
 
+        let headerId = header.id;
+        header.id = `${numberText} ${headerId}`
+
         if (header.classList.contains('collapsible')) return
 
         // 创建折叠按钮
