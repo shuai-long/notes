@@ -140,3 +140,86 @@
    输入字段名称（此处可以是表字段，也可以是程序变量）![输入字段名称](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20250507201049354.png)
 
 <!-- tabs:end -->
+
+## ALV颜色设置
+
+![alv常用颜色](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20220901165722040.png)
+
+<!-- tabs:start -->
+
+<!-- tab:行颜色 -->
+
+1. 在构成ALV数据的内表中，添加一个CHAR4类型的字段
+
+   ```abap
+   types: begin of ty_alv,
+            row_color type char4, 
+          end of ty_alv.
+   data: gt_alv type table of ty_alv.
+   ```
+
+2. 在layout中指定颜色字段: 
+
+   `slis_layout_alv`结构字段为`info_fieldname`
+
+   `lvc_s_layo`结构字段为`info_fname`
+
+   ```abap
+   gs_layo-info_fname = 'ROW_COLOR'.
+   ```
+
+3. 在内表中为颜色赋值即可
+
+   ```abap
+   loop at gt_alv assigning field-symbol(<fs_alv>).
+   	<fs_alv>-row_color = 'C610'
+   endloop.
+   ```
+
+<!-- tab:列颜色 -->
+
+在构成ALV字段的FIELDCAT内表字段`emphasize`赋值即可.
+
+```abap
+ls_fcat-emphasize = 'C610'.
+```
+
+<!-- tab:单元格颜色 -->
+
+1. 在构成ALV数据的内表中，添加一个`lvc_t_scol`类型的字段，结构如下：
+
+   - `fname`: 内表字段名称
+
+   - `color`: 颜色代码，包含以下字段
+     - `col`: 颜色
+     - `int`: 强化 
+     - `inv`: 相反，值范围：1/0 设置前景或者背景
+
+   - `nokeycol`: 覆盖码颜色
+
+   ```abap
+   types: begin of ty_alv,
+            cell_color type lvc_t_scol, 
+          end of ty_alv.
+   data: gt_alv type table of ty_alv.
+   ```
+
+2. 在layout中指定颜色字段: 
+
+   `slis_layout_alv`结构字段为`coltab_fieldname`
+
+   `lvc_s_layo`结构字段为`ctab_fname`
+
+   ```abap
+   gs_layo-ctab_fname = 'CELL_COLOR'.
+   ```
+
+3. 在内表中设置字段颜色。
+
+   ```abap
+   loop at gt_alv assigning field-symbol(<fs_alv>).
+   	<fs_alv>-cell_color = value #( ( fname = 'BUKRS' color = value #( col = '6' int = '1' inv = '0' ) ) ).
+   endloop.
+   ```
+
+<!-- tabs:end -->
