@@ -38,6 +38,13 @@ ALV 复选框
 - 获取过滤掉的行
 
   ```abap
+  lo_alv_grid->get_filtered_entries(
+    importing
+      et_filtered_entries = data(lt_entries)
+  ).
+  ```
+
+  ```abap
   call function 'REUSE_ALV_GRID_LAYOUT_INFO_GET'
     importing
       et_filtered_entries = lt_rows
