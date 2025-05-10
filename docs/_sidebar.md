@@ -9,9 +9,6 @@
     - [Tree ALV](/ABAP/ALV%20%E5%BC%80%E5%8F%91/Tree%20ALV.md)
     - [其他 ALV](/ABAP/ALV%20%E5%BC%80%E5%8F%91/%E5%85%B6%E4%BB%96%20ALV.md)
     - [复合ALV](/ABAP/ALV%20%E5%BC%80%E5%8F%91/%E5%A4%8D%E5%90%88ALV.md)
-  - CDS
-    - [CDS 注解](/ABAP/CDS/CDS%20%E6%B3%A8%E8%A7%A3.md)
-    - [CDS](/ABAP/CDS/CDS.md)
   - CPI
     - [ABAP 调用 CPI 接口](/ABAP/CPI/ABAP%20%E8%B0%83%E7%94%A8%20CPI%20%E6%8E%A5%E5%8F%A3.md)
     - [CPI 基础配置](/ABAP/CPI/CPI%20%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE.md)
@@ -114,6 +111,7 @@
     - [更改 Smartform 编辑器](/ABAP/%E8%A1%A8%E5%8D%95%E6%89%93%E5%8D%B0/%E6%9B%B4%E6%94%B9%20Smartform%20%E7%BC%96%E8%BE%91%E5%99%A8.md)
     - [未命名](/ABAP/%E8%A1%A8%E5%8D%95%E6%89%93%E5%8D%B0/%E6%9C%AA%E5%91%BD%E5%90%8D.md)
     - [自定义页格式](/ABAP/%E8%A1%A8%E5%8D%95%E6%89%93%E5%8D%B0/%E8%87%AA%E5%AE%9A%E4%B9%89%E9%A1%B5%E6%A0%BC%E5%BC%8F.md)
+  - [CDS基础](/ABAP/CDS%E5%9F%BA%E7%A1%80.md)
 - 常用配置
   - [docsify插件](/%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE/docsify%E6%8F%92%E4%BB%B6.md)
   - [Mac实用技巧](/%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE/Mac%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7.md)

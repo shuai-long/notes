@@ -223,3 +223,31 @@ ls_fcat-emphasize = 'C610'.
    ```
 
 <!-- tabs:end -->
+
+## 禁止删除新增行
+
+```abap
+gs_layo-no_rowins = 'X'. "禁止新增行
+gs_layo-no_rowmove = 'X' "禁止删除行
+```
+
+## EDIT_MASK
+
+<!-- tabs:start -->
+
+<!-- tab:convexit -->
+
+使用时直接给fieldcat的 `convexit`赋值即可：
+
+- 物料：`MATN1`
+- 前导零：`ALPHA`
+- WBS元素：`ABPSP`
+- 项目：`ABPRJ`
+- 单位：`CUNIT`
+
+<!-- tab:edit_mask -->
+
+使用时给fieldcat的
+
+<!-- tabs:end -->
+
