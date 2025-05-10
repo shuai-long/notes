@@ -6,10 +6,15 @@
     // 初始化计数器数组
     let counters = [0, 0, 0, 0, 0]
 
+    const getPageKey = () => {
+      return decodeURIComponent(window.location.hash.replace(/^#!?/, '')).split('?')[0]
+    }
+
     hook.doneEach(function () {
 
       // 重置计数器
       counters = [0, 0, 0, 0, 0]
+      const pageKey = getPageKey()
 
       document.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(header => {
         const tagLevel = parseInt(header.tagName.substring(1))
@@ -31,8 +36,8 @@
         for (let i = level + 1; i < 5; i++) counters[i] = 0
 
         // 生成序号（从h2开始）
-        const validCounters = counters.slice(0, level + 1)
-        const numberText = validCounters.join('.')
+        const sectionNumber = counters.slice(0, level + 1).join('.')
+        header.dataset.sectionKey = `${pageKey}|${sectionNumber}`
 
         // 创建/更新序号元素
         let numberSpan = header.querySelector('.header-number')
@@ -42,19 +47,15 @@
           // 插入到折叠按钮之后或标题开头
           header.insertBefore(numberSpan, header.children[1] || header.firstChild)
         }
-        numberSpan.textContent = `${numberText} `
+        numberSpan.textContent = `${sectionNumber} `
 
         if (header.classList.contains('collapsible')) return
 
         // 创建折叠按钮
         const toggle = document.createElement('span')
         toggle.className = 'collapse-toggle'
-        toggle.innerHTML = '▼'
         header.insertBefore(toggle, header.firstChild)
 
-        header.classList.add('collapsible')
-
-        // 创建内容容器
         const content = document.createElement('div')
         content.className = 'collapsible-content'
 
@@ -70,12 +71,26 @@
         header.parentNode.insertBefore(content, header.nextSibling)
         nodesToMove.forEach(node => content.appendChild(node))
 
+        // 恢复保存状态
+        const storageKey = header.dataset.sectionKey
+        const savedState = localStorage.getItem(storageKey)
+        if (savedState === 'collapsed') {
+          content.style.display = 'none'
+          toggle.innerHTML = '▶'
+        } else {
+          content.style.display = 'block'
+          toggle.innerHTML = '▼'
+        }
+
         // 绑定点击事件
         toggle.addEventListener('click', function () {
           const isCollapsed = content.style.display === 'none'
           content.style.display = isCollapsed ? 'block' : 'none'
           toggle.innerHTML = isCollapsed ? '▼' : '▶'
+          localStorage.setItem(storageKey, isCollapsed ? 'expanded' : 'collapsed')
         })
+
+        header.classList.add('collapsible')
       })
     })
   })
