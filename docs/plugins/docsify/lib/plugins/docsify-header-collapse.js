@@ -56,31 +56,31 @@
         // toggle.className = 'collapse-toggle'
         // header.insertBefore(toggle, header.firstChild)
 
-        // const content = document.createElement('div')
-        // content.className = 'collapsible-content'
+        const content = document.createElement('div')
+        content.className = 'collapsible-content'
 
         // // 先收集需要移动的节点
-        // const nodesToMove = []
-        // let nextElem = header.nextElementSibling
-        // while (nextElem && !nextElem.matches('h1, h2, h3, h4, h5, h6')) {
-        //   nodesToMove.push(nextElem)
-        //   nextElem = nextElem.nextElementSibling
-        // }
+        const nodesToMove = []
+        let nextElem = header.nextElementSibling
+        while (nextElem && !nextElem.matches('h1, h2, h3, h4, h5, h6')) {
+          nodesToMove.push(nextElem)
+          nextElem = nextElem.nextElementSibling
+        }
 
         // // 插入容器并移动节点
-        // header.parentNode.insertBefore(content, header.nextSibling)
-        // nodesToMove.forEach(node => content.appendChild(node))
+        header.parentNode.insertBefore(content, header.nextSibling)
+        nodesToMove.forEach(node => content.appendChild(node))
 
         // // 恢复保存状态
-        // const storageKey = header.dataset.sectionKey
-        // const savedState = localStorage.getItem(storageKey)
-        // if (savedState === 'collapsed') {
-        //   content.style.display = 'none'
-        //   toggle.innerHTML = '▶'
-        // } else {
-        //   content.style.display = 'block'
-        //   toggle.innerHTML = '▼'
-        // }
+        const storageKey = header.dataset.sectionKey
+        const savedState = localStorage.getItem(storageKey)
+        if (savedState === 'collapsed') {
+          content.style.display = 'none'
+          // toggle.innerHTML = '▶'
+        } else {
+          content.style.display = 'block'
+          // toggle.innerHTML = '▼'
+        }
 
         // 绑定点击事件
         numberSpan.addEventListener('click', function () {
