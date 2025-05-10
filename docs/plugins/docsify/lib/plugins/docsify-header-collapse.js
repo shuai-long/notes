@@ -49,44 +49,44 @@
         }
         numberSpan.textContent = `${sectionNumber} `
 
-        if (header.classList.contains('collapsible')) return
+        // if (header.classList.contains('collapsible')) return
 
-        // 创建折叠按钮
-        const toggle = document.createElement('span')
-        toggle.className = 'collapse-toggle'
-        header.insertBefore(toggle, header.firstChild)
+        // // 创建折叠按钮
+        // const toggle = document.createElement('span')
+        // toggle.className = 'collapse-toggle'
+        // header.insertBefore(toggle, header.firstChild)
 
-        const content = document.createElement('div')
-        content.className = 'collapsible-content'
+        // const content = document.createElement('div')
+        // content.className = 'collapsible-content'
 
-        // 先收集需要移动的节点
-        const nodesToMove = []
-        let nextElem = header.nextElementSibling
-        while (nextElem && !nextElem.matches('h1, h2, h3, h4, h5, h6')) {
-          nodesToMove.push(nextElem)
-          nextElem = nextElem.nextElementSibling
-        }
+        // // 先收集需要移动的节点
+        // const nodesToMove = []
+        // let nextElem = header.nextElementSibling
+        // while (nextElem && !nextElem.matches('h1, h2, h3, h4, h5, h6')) {
+        //   nodesToMove.push(nextElem)
+        //   nextElem = nextElem.nextElementSibling
+        // }
 
-        // 插入容器并移动节点
-        header.parentNode.insertBefore(content, header.nextSibling)
-        nodesToMove.forEach(node => content.appendChild(node))
+        // // 插入容器并移动节点
+        // header.parentNode.insertBefore(content, header.nextSibling)
+        // nodesToMove.forEach(node => content.appendChild(node))
 
-        // 恢复保存状态
-        const storageKey = header.dataset.sectionKey
-        const savedState = localStorage.getItem(storageKey)
-        if (savedState === 'collapsed') {
-          content.style.display = 'none'
-          toggle.innerHTML = '▶'
-        } else {
-          content.style.display = 'block'
-          toggle.innerHTML = '▼'
-        }
+        // // 恢复保存状态
+        // const storageKey = header.dataset.sectionKey
+        // const savedState = localStorage.getItem(storageKey)
+        // if (savedState === 'collapsed') {
+        //   content.style.display = 'none'
+        //   toggle.innerHTML = '▶'
+        // } else {
+        //   content.style.display = 'block'
+        //   toggle.innerHTML = '▼'
+        // }
 
         // 绑定点击事件
-        toggle.addEventListener('click', function () {
+        numberSpan.addEventListener('click', function () {
           const isCollapsed = content.style.display === 'none'
           content.style.display = isCollapsed ? 'block' : 'none'
-          toggle.innerHTML = isCollapsed ? '▼' : '▶'
+          // toggle.innerHTML = isCollapsed ? '▼' : '▶'
           localStorage.setItem(storageKey, isCollapsed ? 'expanded' : 'collapsed')
         })
 
