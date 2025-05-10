@@ -4,34 +4,46 @@
   window.$docsify.plugins.push(function (hook) {
 
     // 初始化计数器数组
-    let counters = [0, 0, 0, 0, 0, 0]
+    let counters = [0, 0, 0, 0, 0]
 
     hook.doneEach(function () {
 
       // 重置计数器
-      counters = [0, 0, 0, 0, 0, 0]
+      counters = [0, 0, 0, 0, 0]
 
       document.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(header => {
-        // 获取标题层级（h1=0, h2=1...）
-        const level = parseInt(header.tagName.substring(1)) - 1
+        const tagLevel = parseInt(header.tagName.substring(1))
 
-        // 更新计数器
-        counters[level]++
-        // 重置子级计数器
-        for (let i = level + 1; i < 6; i++) counters[i] = 0
-
-        // 生成序号
-        const currentCounters = counters.slice(0, level + 1)
-        const numberSpan = document.createElement('span')
-        numberSpan.className = 'header-number'
-        numberSpan.textContent = currentCounters.join('.') + '. '
-
-        // 如果尚未添加序号
-        if (!header.querySelector('.header-number')) {
-          // 插入到折叠按钮之后
-          header.insertBefore(numberSpan, header.children[1] || header.firstChild)
+        // 仅处理h2-h6
+        if (tagLevel < 2) {
+          // 移除h1可能存在的序号
+          const existingNumber = header.querySelector('.header-number')
+          if (existingNumber) existingNumber.remove()
+          return
         }
 
+        // 转换为数组索引（h2=0, h3=1...）
+        const level = tagLevel - 2
+
+        // 更新计数器逻辑
+        counters[level]++
+        // 重置子级计数器
+        for (let i = level + 1; i < 5; i++) counters[i] = 0
+
+        // 生成序号（从h2开始）
+        const validCounters = counters.slice(0, level + 1)
+        const numberText = validCounters.join('.')
+
+        // 创建/更新序号元素
+        let numberSpan = header.querySelector('.header-number')
+        if (!numberSpan) {
+          numberSpan = document.createElement('span')
+          numberSpan.className = 'header-number'
+          // 插入到折叠按钮之后或标题开头
+          header.insertBefore(numberSpan, header.children[1] || header.firstChild)
+        }
+        numberSpan.textContent = `${numberText}. `
+        
         if (header.classList.contains('collapsible')) return
 
         // 创建折叠按钮
@@ -71,9 +83,9 @@
   // 优化后的样式
   const style = document.createElement('style')
   style.textContent = `
-  
+
     .header-number {
-      color: #666;
+      color: #b0abab;
       margin-right: 8px;
       font-family: monospace;
     }
