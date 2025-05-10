@@ -36,12 +36,18 @@
 
 - 获取过滤掉的行
 
+  <!-- tabs:start -->
+
+  #### **方法一**
+
   ```abap
   lo_alv_grid->get_filtered_entries(
     importing
       et_filtered_entries = data(lt_filtered_entries)
   ).
   ```
+
+  #### **方法二**
 
   ```abap
   data: lt_filtered_entries type slis_t_filtered_entries. 
@@ -54,7 +60,13 @@
       others              = 3.
   ```
 
+  <!-- tabs:end -->
+
 - 全选与取消全选
+
+  <!-- tabs:start -->
+
+  #### **全选**
 
   ```abap
   "--------------------> 全选
@@ -69,6 +81,8 @@
   endloop.
   ```
 
+  #### **取消全选**
+
   ```abap
   "--------------------> 取消全选
   sort lt_rows.
@@ -81,6 +95,8 @@
     endif.
   endloop.
   ```
+
+  <!-- tabs:end -->
 
 - 刷新alv数据
 
