@@ -47,19 +47,12 @@
           // 插入到折叠按钮之后或标题开头
           header.insertBefore(numberSpan, header.children[1] || header.firstChild)
         }
-        numberSpan.textContent = `${sectionNumber} `
-
-        // if (header.classList.contains('collapsible')) return
-
-        // // 创建折叠按钮
-        // const toggle = document.createElement('span')
-        // toggle.className = 'collapse-toggle'
-        // header.insertBefore(toggle, header.firstChild)
+        numberSpan.textContent = `${sectionNumber}`
 
         const content = document.createElement('div')
         content.className = 'collapsible-content'
 
-        // // 先收集需要移动的节点
+        // 先收集需要移动的节点
         const nodesToMove = []
         let nextElem = header.nextElementSibling
         while (nextElem && !nextElem.matches('h1, h2, h3, h4, h5, h6')) {
@@ -67,19 +60,17 @@
           nextElem = nextElem.nextElementSibling
         }
 
-        // // 插入容器并移动节点
+        // 插入容器并移动节点
         header.parentNode.insertBefore(content, header.nextSibling)
         nodesToMove.forEach(node => content.appendChild(node))
 
-        // // 恢复保存状态
+        // 恢复保存状态
         const storageKey = header.dataset.sectionKey
         const savedState = localStorage.getItem(storageKey)
         if (savedState === 'collapsed') {
           content.style.display = 'none'
-          // toggle.innerHTML = '▶'
         } else {
           content.style.display = 'block'
-          // toggle.innerHTML = '▼'
         }
 
         // 绑定点击事件
@@ -98,26 +89,10 @@
   // 优化后的样式
   const style = document.createElement('style')
   style.textContent = `
-
     .header-number {
       color: #b0abab;
       margin-right: 8px;
       font-family: monospace;
-    }
-
-    .collapse-toggle {
-      cursor: pointer;
-      margin-right: 8px;
-      transition: transform 0.2s;
-      display: inline-block;
-    }
-    .collapsible-content {
-      overflow: hidden;
-      transition: height 0.3s ease-out;
-    }
-    .collapsible-content[style*="none"] {
-      height: 0 !important;
-      display: block !important;
     }
   `
   document.head.appendChild(style)
