@@ -14,18 +14,21 @@
         
         header.classList.add('collapsible')
 
-        // 初始化内容容器
+        // 创建内容容器
         const content = document.createElement('div')
         content.className = 'collapsible-content'
-        header.parentNode.insertBefore(content, header.nextSibling)
-
-        // 自动收集内容节点
+        
+        // 先收集需要移动的节点
+        const nodesToMove = []
         let nextElem = header.nextElementSibling
         while (nextElem && !nextElem.matches('h1, h2, h3, h4, h5, h6')) {
-          const current = nextElem
+          nodesToMove.push(nextElem)
           nextElem = nextElem.nextElementSibling
-          content.appendChild(current)
         }
+
+        // 插入容器并移动节点
+        header.parentNode.insertBefore(content, header.nextSibling)
+        nodesToMove.forEach(node => content.appendChild(node))
 
         // 绑定点击事件
         toggle.addEventListener('click', function () {
@@ -37,7 +40,7 @@
     })
   })
 
-  // 添加优化后的样式
+  // 优化后的样式
   const style = document.createElement('style')
   style.textContent = `
     .collapse-toggle {
@@ -49,6 +52,10 @@
     .collapsible-content {
       overflow: hidden;
       transition: height 0.3s ease-out;
+    }
+    .collapsible-content[style*="none"] {
+      height: 0 !important;
+      display: block !important;
     }
   `
   document.head.appendChild(style)
