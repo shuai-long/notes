@@ -1,7 +1,4 @@
 # ALV复选框
-
-<!-- tabs:start -->
-
 - 定义 grid 对象
 
   ```abap
@@ -15,6 +12,8 @@
     importing
       e_grid = lo_alv_grid.
   ```
+
+<!-- tabs:start -->
 
 #### **ALV自带复选框**
 
@@ -40,14 +39,15 @@
   ```abap
   lo_alv_grid->get_filtered_entries(
     importing
-      et_filtered_entries = data(lt_entries)
+      et_filtered_entries = data(lt_filtered_entries)
   ).
   ```
 
   ```abap
+  data: lt_filtered_entries type slis_t_filtered_entries. 
   call function 'REUSE_ALV_GRID_LAYOUT_INFO_GET'
     importing
-      et_filtered_entries = lt_rows
+      et_filtered_entries = lt_filtered_entries
     exceptions
       no_infos            = 1
       program_error       = 2
@@ -60,7 +60,7 @@
   "--------------------> 全选
   sort lt_rows.
   loop at gt_alv assigning field-symbol(<fs_alv>).
-    read table lt_rows transporting no fields with key table_line = sy-tabix binary search.
+    read table lt_filtered_entries transporting no fields with key table_line = sy-tabix binary search.
     if sy-subrc ne 0.
       <fs_alv>-checkbox = 'X'.
      else.
@@ -73,7 +73,7 @@
   "--------------------> 取消全选
   sort lt_rows.
   loop at gt_alv assigning field-symbol(<fs_alv>).
-    read table lt_rows transporting no fields with key table_line = sy-tabix binary search.
+    read table lt_filtered_entries transporting no fields with key table_line = sy-tabix binary search.
     if sy-subrc ne 0.
       <fs_alv>-checkbox = ' '.
      else.
