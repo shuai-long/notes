@@ -1,108 +1,120 @@
 # ALV复选框
-- 定义 grid 对象
+
+- 获取对象定义
+
+  <!-- tabs:start -->
+
+  <!-- tab:OO ALV -->
 
   ```abap
   data lo_alv_grid type ref to cl_gui_alv_grid.
   ```
 
-- function alv 需要获取grid对象
+  <!-- tab:Function ALV -->
 
   ```abap
+  data lo_alv_grid type ref to cl_gui_alv_grid.
   call function 'GET_GLOBALS_FROM_SLVC_FULLSCR'
     importing
       e_grid = lo_alv_grid.
   ```
 
-<!-- tabs:start -->
-
-#### **ALV自带复选框**
-
-- 获取选择行
-
-  ```abap
-  data lt_rows type lvc_t_row.
-  lo_alv_grid->get_selected_rows(
-    importing
-      et_index_rows = lt_rows ).
-  ```
-
-#### **内表定义字段**
-
-- 检查数据更改
-
-  ```abap
-  lo_alv_grid->check_changed_data( ).
-  ```
-
-- 获取过滤掉的行
-
-  <!-- tabs:start -->
-
-  #### **方法一**
-
-  ```abap
-  lo_alv_grid->get_filtered_entries(
-    importing
-      et_filtered_entries = data(lt_filtered_entries)
-  ).
-  ```
-
-  #### **方法二**
-
-  ```abap
-  data: lt_filtered_entries type slis_t_filtered_entries. 
-  call function 'REUSE_ALV_GRID_LAYOUT_INFO_GET'
-    importing
-      et_filtered_entries = lt_filtered_entries
-    exceptions
-      no_infos            = 1
-      program_error       = 2
-      others              = 3.
-  ```
+  
 
   <!-- tabs:end -->
 
-- 全选与取消全选
+- 实现
 
   <!-- tabs:start -->
 
-  #### **全选**
+  #### **ALV自带复选框**
 
-  ```abap
-  "--------------------> 全选
-  sort lt_rows.
-  loop at gt_alv assigning field-symbol(<fs_alv>).
-    read table lt_filtered_entries transporting no fields with key table_line = sy-tabix binary search.
-    if sy-subrc ne 0.
-      <fs_alv>-checkbox = 'X'.
-     else.
-     	<fs_alv>-checkbox = ' '.
-    endif.
-  endloop.
-  ```
+  - 获取选择行
 
-  #### **取消全选**
+    ```abap
+    data lt_rows type lvc_t_row.
+    lo_alv_grid->get_selected_rows(
+      importing
+        et_index_rows = lt_rows ).
+    ```
 
-  ```abap
-  "--------------------> 取消全选
-  sort lt_rows.
-  loop at gt_alv assigning field-symbol(<fs_alv>).
-    read table lt_filtered_entries transporting no fields with key table_line = sy-tabix binary search.
-    if sy-subrc ne 0.
-      <fs_alv>-checkbox = ' '.
-     else.
-     	<fs_alv>-checkbox = 'X'.
-    endif.
-  endloop.
-  ```
+  #### **内表定义字段**
+
+  - 检查数据更改
+
+    ```abap
+    lo_alv_grid->check_changed_data( ).
+    ```
+
+  - 获取过滤掉的行
+
+    <!-- tabs:start -->
+
+    #### **方法一**
+
+    ```abap
+    lo_alv_grid->get_filtered_entries(
+      importing
+        et_filtered_entries = data(lt_filtered_entries)
+    ).
+    ```
+
+    #### **方法二**
+
+    ```abap
+    data: lt_filtered_entries type slis_t_filtered_entries. 
+    call function 'REUSE_ALV_GRID_LAYOUT_INFO_GET'
+      importing
+        et_filtered_entries = lt_filtered_entries
+      exceptions
+        no_infos            = 1
+        program_error       = 2
+        others              = 3.
+    ```
+
+    <!-- tabs:end -->
+
+  - 全选与取消全选
+
+    <!-- tabs:start -->
+
+    #### **全选**
+
+    ```abap
+    "--------------------> 全选
+    sort lt_rows.
+    loop at gt_alv assigning field-symbol(<fs_alv>).
+      read table lt_filtered_entries transporting no fields with key table_line = sy-tabix binary search.
+      if sy-subrc ne 0.
+        <fs_alv>-checkbox = 'X'.
+       else.
+        <fs_alv>-checkbox = ' '.
+      endif.
+    endloop.
+    ```
+
+    #### **取消全选**
+
+    ```abap
+    "--------------------> 取消全选
+    sort lt_rows.
+    loop at gt_alv assigning field-symbol(<fs_alv>).
+      read table lt_filtered_entries transporting no fields with key table_line = sy-tabix binary search.
+      if sy-subrc ne 0.
+        <fs_alv>-checkbox = ' '.
+       else.
+        <fs_alv>-checkbox = 'X'.
+      endif.
+    endloop.
+    ```
+
+    <!-- tabs:end -->
+
+  - 刷新alv数据
+
+    ```abap
+    data ls_stable type lvc_s_stbl value 'XX'.
+    lo_alv_grid->refresh_table_display( is_stable = ls_stable ).
+    ```
 
   <!-- tabs:end -->
-
-- 刷新alv数据
-
-  ```abap
-  data ls_stable type lvc_s_stbl value 'XX'.
-  lo_alv_grid->refresh_table_display( is_stable = ls_stable ).
-  ```
-
-<!-- tabs:end -->
