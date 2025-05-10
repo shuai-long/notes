@@ -19,8 +19,6 @@
       e_grid = lo_alv_grid.
   ```
 
-  
-
   <!-- tabs:end -->
 
 - 实现
