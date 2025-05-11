@@ -136,8 +136,15 @@
     <!-- Docsify 核心 -->
     <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
 
-    <!-- docsify-plugin-runkit 暂不引入 -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/docsify-plugin-runkit@1"></script> -->
+    <!-- 中英文添加空格 -->
+    <script src="./plugins/docsify/lib/plugins/pangu.min.js"></script>
+    <script>
+        // 中英文添加空格
+        pangu.spacingElementByTagName('main');
+        document.addEventListener('DOMContentLoaded', () => {
+            pangu.autoSpacingPage();
+        });
+    </script>
 
     <!-- Docsify 主题 -->
     <script src="//cdn.jsdelivr.net/npm/docsify-themeable/dist/js/docsify-themeable.min.js"></script>
@@ -201,19 +208,9 @@
     <!-- 分页插件 -->
     <script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
 
-    <!-- 中英文添加空格 -->
-    <script src="./plugins/docsify/lib/plugins/pangu.min.js"></script>
-
     <script>
-        // 中英文添加空格
-        pangu.spacingElementByTagName('main');
-        document.addEventListener('DOMContentLoaded', () => {
-            pangu.autoSpacingPage();
-        });
-        //注册 离线模式 SSR
-        if (typeof navigator.serviceWorker !== "undefined") {
-            navigator.serviceWorker.register("sw.js");
-        }
+        //注册 离线模式
+        if (typeof navigator.serviceWorker !== "undefined") { navigator.serviceWorker.register("sw.js"); }
     </script>
 </body>
 
