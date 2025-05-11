@@ -202,17 +202,19 @@
     <script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
 
     <!-- 中英文添加空格 -->
-    <script src="./plugins/docsify/lib/plugins/pangu.min.js"></script>
+    <!-- <script src="./plugins/docsify/lib/plugins/pangu.min.js"></script> -->
+    <script src="./plugins/docsify/lib/plugins/pangu-spacing.js"></script>
+
     <script>
+        // // 中英文添加空格
+        // pangu.spacingElementByTagName('main');
+        // document.addEventListener('DOMContentLoaded', () => {
+        //     pangu.autoSpacingPage();
+        // });
         //注册 离线模式 SSR
         if (typeof navigator.serviceWorker !== "undefined") {
             navigator.serviceWorker.register("sw.js");
         }
-        // 中英文添加空格
-        pangu.spacingElementByTagName('main');
-        document.addEventListener('DOMContentLoaded', () => {
-            pangu.autoSpacingPage();
-        });
     </script>
 </body>
 
