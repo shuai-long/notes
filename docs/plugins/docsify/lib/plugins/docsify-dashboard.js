@@ -256,19 +256,14 @@ function dashboardPlugin(t, e) {
     h = u.theme || "default",
     m = u.tagboardTheme || "default",
     f = {},
-
-    b = async (t) => {
+    b = (t) => {
       if (f[t]) return f[t];
-
-      const response = await fetch('/notes/metadata/css-vars-config.json'); // 配置文件路径
-      const config_json = await response.json();
-      return (f[t] = config_json);
-
-      // let e = new XMLHttpRequest();
-      // e.open("GET", `${t}.json`, !1), e.send(null);
-      // const n = JSON.parse(e.response);
-      // return (f[t] = n);
+      let e = new XMLHttpRequest();
+      e.open("GET", `${t}.json`, !1), e.send(null);
+      const n = JSON.parse(e.response);
+      return (f[t] = n);
     };
+
   t.init(() => {
     try {
       (g = b(p)), v && (g = n(g));
