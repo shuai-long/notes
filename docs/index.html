@@ -209,8 +209,8 @@
             navigator.serviceWorker.register("sw.js");
         }
         // 中英文添加空格
+        pangu.spacingElementByTagName('main');
         document.addEventListener('DOMContentLoaded', () => {
-            pangu.spacingElementByTagName('main');
             pangu.autoSpacingPage();
         });
     </script>
