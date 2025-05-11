@@ -85,22 +85,35 @@
       })
 
       document.querySelectorAll('.sidebar-nav li').forEach(li => {
-        // 增加校验条件：只有当li包含子菜单 且 不包含直接子级a标签时才处理
-        const childUl = li.querySelector(':scope > ul'); // 只查找直接子元素
-        const hasDirectLink = li.querySelector(':scope > a'); // 检查直接子级a标签
+        const childUl = li.querySelector(':scope > ul');
+        const hasDirectLink = li.querySelector(':scope > a');
 
         if (childUl && !hasDirectLink) {
           childUl.classList.add('app-sub-sidebar');
-          li.classList.add('active');
 
-          // 点击切换
+          // 初始状态不要默认激活，改为按需激活
           li.addEventListener('click', function (e) {
+            // 新增：阻止默认行为（如果是按钮等元素）
+            e.preventDefault();
             e.stopPropagation();
-            li.classList.toggle('collapse');
+
+            // 新增：检查点击目标是否是链接
+            if (e.target.closest('a')) return;
+
+            // 只切换当前菜单项的状态
+            this.classList.toggle('collapse');
+
+            // 新增：关闭同级菜单
+            const parentUl = this.closest('ul');
+            if (parentUl) {
+              Array.from(parentUl.children).forEach(sibling => {
+                if (sibling !== this) {
+                  sibling.classList.remove('collapse');
+                }
+              });
+            }
           });
-
         }
-
       });
     })
   })
