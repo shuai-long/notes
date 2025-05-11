@@ -83,24 +83,6 @@
 
         header.classList.add('collapsible')
       })
-
-      // document.querySelectorAll('.sidebar-nav li').forEach(li => {
-      //   // 增加校验条件：只有当li包含子菜单 且 不包含直接子级a标签时才处理
-      //   const childUl = li.querySelector(':scope > ul'); // 只查找直接子元素
-      //   const hasDirectLink = li.querySelector(':scope > a'); // 检查直接子级a标签
-
-      //   if (childUl && !hasDirectLink) {
-      //     childUl.classList.add('app-sub-sidebar');
-      //     li.classList.add('active');
-
-      //     // 点击切换
-      //     li.addEventListener('click', function (e) {
-      //       e.stopPropagation();
-      //       li.classList.toggle('collapse');
-      //     });
-
-      //   }
-      // });
     })
   })
 

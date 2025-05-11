@@ -78,10 +78,6 @@
 
 1. 进入 云链接器并登陆：[Basel 云链接器地址开发](https://vhbexdclcc01.sap.baesl.com:8443)、[Baesl 云链接器地址生产](https://vhbexpclcc01.sap.baesl.com:8443)
 
-   账号：CLOUDCONN
-
-   密码：KGveqjsm?TNx<bPBo1MS
-
    ![image-20240617094427330](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240617094427330.png)
 
 2. 填写云链接器信息，相当于 BTP 中的子账户，Subaccount 需要输入对应子账户的标识![image-20240617094619121](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240617094619121.png)![image-20240617094036495](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240617094036495.png)
