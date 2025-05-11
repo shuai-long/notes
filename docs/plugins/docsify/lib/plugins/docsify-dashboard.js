@@ -259,9 +259,10 @@ function dashboardPlugin(t, e) {
 
     b = async (t) => {
       if (f[t]) return f[t];
-      let e = await fetch(`${t}.json`);
-      const n = await e.json()
-      return (f[t] = n);
+
+      const response = await fetch('/notes/metadata/css-vars-config.json'); // 配置文件路径
+      const config_json = await response.json();
+      return (f[t] = config_json);
 
       // let e = new XMLHttpRequest();
       // e.open("GET", `${t}.json`, !1), e.send(null);
