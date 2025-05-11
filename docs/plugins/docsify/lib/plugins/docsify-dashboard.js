@@ -234,24 +234,9 @@ function dashboardPlugin(t, e) {
       location.reload();
     });
   }
-  // function l() {
-  //   let t = document.querySelector(".sidebar-nav");
-  //   if (t.innerHTML.includes("<!-- tag-list -->")) {
-  //     let e = '<div class="tag-container"><div class="tag-list">';
-  //     (e += `${tagList
-  //       .map(
-  //         (t) =>
-  //           `<a class="tag-element" href="#/tags?tag=${t}" target="_blank">${t}</a>`
-  //       )
-  //       .join("\n")}`),
-  //       (e += "</div></div>"),
-  //       (t.innerHTML = t.innerHTML.replace("<!-- tag-list -->", e));
-  //   }
-  // }
   let g,
     d = !1;
   const u = e.config.dashboard || {},
-    p = (u.numTabContent, u.metadataUrl || "metadata/posts"),
     v = u.sort || !1,
     h = u.theme || "default",
     m = u.tagboardTheme || "default",
@@ -263,15 +248,6 @@ function dashboardPlugin(t, e) {
       const n = JSON.parse(e.response);
       return (f[t] = n);
     };
-
-  // t.init(() => {
-  //   try {
-  //     (g = b(p)), v && (g = n(g));
-  //   } catch (t) {
-  //     onsole.error(`Failed to fetch ${p}.json.`, t);
-  //   }
-  //   tagList = r();
-  // }),
     t.beforeEach((t) => {
       const e = [],
         a = "___CODE_BLOCK_";
@@ -310,7 +286,7 @@ function dashboardPlugin(t, e) {
       );
     }),
     t.doneEach(() => {
-      c(); // l();
+      c();
     });
 }
 window.$docsify.plugins = [].concat(
