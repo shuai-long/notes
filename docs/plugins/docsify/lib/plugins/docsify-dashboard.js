@@ -260,7 +260,7 @@ function dashboardPlugin(t, e) {
     b = async (t) => {
       if (f[t]) return f[t];
       let e = await fetch(`${t}.json`);
-      const n = await JSON.parse(e.json())
+      const n = await e.json()
       return (f[t] = n);
 
       // let e = new XMLHttpRequest();
