@@ -92,7 +92,6 @@
         if (childUl && !hasDirectLink) {
           childUl.classList.add('app-sub-sidebar');
           li.classList.add('active');
-          li.classList.add('collapse');
 
           // 点击切换
           li.addEventListener('click', function (e) {
