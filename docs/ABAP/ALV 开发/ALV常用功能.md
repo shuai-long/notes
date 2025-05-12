@@ -337,9 +337,9 @@ endfunction.
    1. 在构成alv的内表中添加一个`int4`类型的字段，用以存储下拉框的分组（若一行存在多个下拉框，则定义多个字段即可）：
 
       ```abap
-      type: begin of ty_alv,
-      				drop_handle type int4,
-      			end of ty_alv.
+      types: begin of ty_alv,
+               drop_handle type int4,
+             end of ty_alv.
       ```
 
    2. 通过fieldcat的`drdn_field`设置内表的下拉组字段
