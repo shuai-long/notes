@@ -386,3 +386,94 @@ endfunction.
 
 ## ALV搜索帮助
 
+1. fieldcat为字段设置搜索帮助
+
+   ```abap
+   gs_fcat-f4availabl = 'X'.
+   ```
+
+2. 添加搜索帮助字段并注册
+
+   ```abap
+   data: gt_f4 type lvc_t_f4.
+   
+   gt_f4 = value #(register = 'X' chngeafter = 'X' ( fieldname = to_upper( fieldname1 ) )
+   
+   go_alv_grid->register_f4_for_fields( gt_f4 ).
+   ```
+
+3. 定义方法并注册
+
+   - 定义
+
+     ```abap
+     methods handle_onf4 for event onf4 of cl_gui_alv_grid
+       importing
+         e_fieldname
+         es_row_no
+         er_event_data
+         et_bad_cells
+         e_display.
+     ```
+
+   - 实现
+
+     ```abap
+     method handle_onf4.
+     	data: lt_return type table of ddshretval.
+     
+       field-symbols: <fs_value_list> type table,
+                      <fs_modi>       type lvc_t_modi.
+     
+       read table gt_alv into data(ls_alv) index es_row_no-row_id.
+     	
+     	"--------------------> 搜索帮助取数逻辑
+       case e_fieldname.
+         when ''.
+           select v~matnr as value, maktx, maktg from mara as v left outer join makt as t
+             on v~matnr eq t~matnr and spras eq @sy-langu
+             into table @data(lt_makt) order by v~matnr.
+           assign lt_makt to <fs_value_list>.
+       endcase.
+       
+       check <fs_value_list> is assigned.
+       call function 'F4IF_INT_TABLE_VALUE_REQUEST'
+         exporting
+           retfield        = 'VALUE'
+           value_org       = 'S'
+         tables
+           value_tab       = <fs_value_list> "lt_vrm_values
+           return_tab      = lt_return
+         exceptions
+           parameter_error = 1
+           no_values_found = 2
+           others          = 3.
+     
+       if sy-subrc eq 0 and e_display is initial.
+         read table lt_return into data(ls_return) index 1.
+         if sy-subrc eq 0.
+     
+           data(ls_value) = value lvc_s_modi(
+               row_id    = es_row_no-row_id
+               fieldname = e_fieldname
+               value     = ls_return-fieldval
+           ).
+     
+           assign er_event_data->m_data->* to <fs_modi>.
+           append ls_value to <fs_modi>.
+         endif.
+       endif.
+     
+       er_event_data->m_event_handled = 'X'.
+     endmethod.
+     ```
+
+   - 注册
+
+     ```abap
+     set handler handle_onf4 for go_alv_grid.
+     ```
+
+     
+
+   
