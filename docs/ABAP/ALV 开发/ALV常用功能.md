@@ -294,23 +294,11 @@ endfunction.
 
 ## ALV下拉框
 
-1. 在构成alv的内表中添加一个`int4`类型的字段，用以存储下拉框的分组（若一行存在多个下拉框，则定义多个字段即可）：
-
-   ```abap
-   type: begin of ty_alv,
-   				drop_handle type int4,
-   			end of ty_alv.
-   ```
-
-2. 设置fieldcat字段，设置下拉列表并激活
+1. 设置下拉列表并进行注册。
 
    <!-- tabs:start -->
 
    <!-- tab:一 -->
-
-   ```abap
-   gs_fcat-drdn_field = 'DROP_HANDLE';
-   ```
 
    ```abap
    data gt_drop type lvc_t_drop.
@@ -327,10 +315,6 @@ endfunction.
    <!-- tab:二 -->
 
    ```abap
-   gs_fcat-drdn_field = 'DROP_HANDLE';
-   ```
-
-   ```abap
    data gt_dral type lvc_t_dral.
    
    gt_dral = value #( handle = '1' ( value = '1-企业' int_value = '1' )
@@ -344,4 +328,58 @@ endfunction.
 
    <!-- tabs:end -->
 
-   
+2. 关联下拉字段和下拉列表
+
+   <!-- tabs:start -->
+
+   <!-- tab:单元格下拉框 -->
+
+   1. 在构成alv的内表中添加一个`int4`类型的字段，用以存储下拉框的分组（若一行存在多个下拉框，则定义多个字段即可）：
+
+      ```abap
+      type: begin of ty_alv,
+      				drop_handle type int4,
+      			end of ty_alv.
+      ```
+
+   2. 通过fieldcat的`drdn_field`设置内表的下拉组字段
+
+      <!-- tabs:start -->
+
+      <!-- tab:一 -->
+
+      ```abap
+      gs_fcat-drdn_field = 'DROP_HANDLE'.
+      ```
+
+      <!-- tab:二 -->
+
+      ```abap
+      gs_fcat-drdn_field = 'DROP_HANDLE'.
+      gs_fcat-drdn_alias = 'X'.
+      ```
+
+      <!-- tabs:end -->
+
+   <!-- tab:列下拉框-->
+
+   1. 通过fieldcat的`drdn_hndl`设置该列取下拉列表的第几组
+
+      <!-- tabs:start -->
+
+      <!-- tab:一 -->
+
+      ```abap
+      gs_fcat-drdn_hndl = '1'.
+      ```
+
+      <!-- tab:二 -->
+
+      ```abap
+      gs_fcat-drdn_hndl = '1'.
+      gs_fcat-drdn_alias = 'X'.
+      ```
+
+      <!-- tabs:end -->
+
+   <!-- tabs:end -->
