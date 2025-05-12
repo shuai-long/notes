@@ -85,13 +85,4 @@
       })
     })
   })
-
-  // 优化后的样式
-  const style = document.createElement('style')
-  style.textContent = `
-    .header-number {
-      color: #b0abab;
-    }
-  `
-  document.head.appendChild(style)
 })()
