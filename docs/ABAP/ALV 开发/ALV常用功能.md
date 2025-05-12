@@ -139,6 +139,46 @@
 
    输入字段名称（此处可以是表字段，也可以是程序变量）![输入字段名称](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20250507201049354.png)
 
+<!-- tab:ALV下拉按钮 -->
+
+- 定义方法
+
+  ```abap
+  "--------------------> 初始化ALV工具栏对象事件，如增加按钮并设定属性
+  methods handle_toolbar for event toolbar of cl_gui_alv_grid
+    importing
+      e_object
+      e_interactive.
+      
+  "--------------------> 该事件用于在下ALV工具栏的下拉菜单按钮中增加选项
+  methods handle_menu_button for event menu_button of cl_gui_alv_grid
+    importing
+      e_object
+      e_ucomm.
+  ```
+
+- 实现方法
+
+  ```abap
+  method handle_toolbar.
+  
+    e_object->mt_toolbar = value #( base mt_toolbar
+                                    ( function = 'BTN_LIST'  quickinfo = '下拉按钮,按钮类型为1' butn_type = '1' )
+                                    ( function = 'BTN_STAND' quickinfo = '标准按钮,按钮类型为0' butn_type = '0' ) ).
+  endmethod.
+  
+  method handle_menu_button.
+  
+    case e_ucomm.
+      when 'BTN_LIST'.
+      "--------------------> 为下拉按钮添加子按钮
+      e_object->add_function( fcode = 'BTN_SON1' text = '子按钮1' ).
+  
+    endcase.
+    
+  endmethod.
+  ```
+
 <!-- tabs:end -->
 
 ## ALV颜色设置
