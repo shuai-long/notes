@@ -361,7 +361,7 @@ endfunction.
 
       <!-- tabs:end -->
 
-   <!-- tab:列下拉框-->
+   <!-- tab:列下拉框 -->
 
    1. 通过fieldcat的`drdn_hndl`设置该列取下拉列表的第几组
 
