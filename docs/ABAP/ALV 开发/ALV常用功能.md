@@ -298,7 +298,7 @@ endfunction.
 
    <!-- tabs:start -->
 
-   <!-- tab:一 -->
+   <!-- tab:无值转换 -->
 
    ```abap
    data gt_drop type lvc_t_drop.
@@ -312,7 +312,7 @@ endfunction.
    go_alv_grid->set_drop_down_table( it_drop_down = gt_drop ).
    ```
 
-   <!-- tab:二 -->
+   <!-- tab:值转换 -->
 
    ```abap
    data gt_dral type lvc_t_dral.
@@ -346,13 +346,13 @@ endfunction.
 
       <!-- tabs:start -->
 
-      <!-- tab:一 -->
+      <!-- tab:无值转换 -->
 
       ```abap
       gs_fcat-drdn_field = 'DROP_HANDLE'.
       ```
 
-      <!-- tab:二 -->
+      <!-- tab:值转换 -->
 
       ```abap
       gs_fcat-drdn_field = 'DROP_HANDLE'.
@@ -367,13 +367,13 @@ endfunction.
 
       <!-- tabs:start -->
 
-      <!-- tab:一 -->
+      <!-- tab:无值转换 -->
 
       ```abap
       gs_fcat-drdn_hndl = '1'.
       ```
 
-      <!-- tab:二 -->
+      <!-- tab:值转换 -->
 
       ```abap
       gs_fcat-drdn_hndl = '1'.
