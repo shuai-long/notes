@@ -90,7 +90,6 @@
   style.textContent = `
     .header-number {
       color: #b0abab;
-      font-family: monospace;
     }
   `
   document.head.appendChild(style)
