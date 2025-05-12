@@ -44,6 +44,7 @@
         if (!numberSpan) {
           numberSpan = document.createElement('span')
           numberSpan.className = 'header-number'
+          numberSpan.style.color ='#b0abab'
           // 插入到折叠按钮之后或标题开头
           header.insertBefore(numberSpan, header.children[1] || header.firstChild)
         }
