@@ -165,17 +165,18 @@
     e_object->mt_toolbar = value #( base mt_toolbar
                                     ( function = 'BTN_LIST'  quickinfo = '下拉按钮,按钮类型为1' butn_type = '1' )
                                     ( function = 'BTN_STAND' quickinfo = '标准按钮,按钮类型为0' butn_type = '0' ) ).
+  
   endmethod.
   
   method handle_menu_button.
   
     case e_ucomm.
       when 'BTN_LIST'.
-      "--------------------> 为下拉按钮添加子按钮
-      e_object->add_function( fcode = 'BTN_SON1' text = '子按钮1' ).
+        "--------------------> 为下拉按钮添加子按钮
+        e_object->add_function( fcode = 'BTN_SON1' text = '子按钮1' ).
   
     endcase.
-    
+  
   endmethod.
   ```
 
