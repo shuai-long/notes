@@ -47,7 +47,7 @@
           // 插入到折叠按钮之后或标题开头
           header.insertBefore(numberSpan, header.children[1] || header.firstChild)
         }
-        numberSpan.textContent = `${sectionNumber}`
+        numberSpan.textContent = `${sectionNumber} `
 
         const content = document.createElement('div')
         content.className = 'collapsible-content'
@@ -74,10 +74,9 @@
         }
 
         // 绑定点击事件
-        numberSpan.addEventListener('click', function () {
+        header.addEventListener('click', function () {
           const isCollapsed = content.style.display === 'none'
           content.style.display = isCollapsed ? 'block' : 'none'
-          // toggle.innerHTML = isCollapsed ? '▼' : '▶'
           localStorage.setItem(storageKey, isCollapsed ? 'expanded' : 'collapsed')
         })
 
@@ -91,7 +90,6 @@
   style.textContent = `
     .header-number {
       color: #b0abab;
-      margin-right: 8px;
       font-family: monospace;
     }
   `
