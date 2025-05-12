@@ -237,7 +237,7 @@ gs_layo-no_rowmove = 'X' "禁止删除行
 
 <!-- tab:convexit -->
 
-使用时直接给fieldcat的 `convexit`赋值即可：
+使用时直接给fieldcat的`convexit`赋值即可：
 
 - 物料：`MATN1`
 - 前导零：`ALPHA`
@@ -247,7 +247,101 @@ gs_layo-no_rowmove = 'X' "禁止删除行
 
 <!-- tab:edit_mask -->
 
-使用时给fieldcat的
+使用时给fieldcat的`edit_mask`赋值即可，例如：`edit_mask='==ZSIGN'`，常用列表如下：
+
+<!-- tabs:start -->
+
+<!-- tab:负号前置 -->
+
+创建`conversion_exit_zsign_output`函数
+
+```abap
+function conversion_exit_zsign_output.
+*"----------------------------------------------------------------------
+*"*"本地接口：
+*"  IMPORTING
+*"     REFERENCE(INPUT)
+*"  EXPORTING
+*"     REFERENCE(OUTPUT)
+*"----------------------------------------------------------------------
+  data: lv_output1 type char20,
+        lv_output2 type char20,
+        lv_outnum  type p length 16 decimals 2.
+
+  if input is not initial.
+    lv_outnum = input.
+    if input >= 0.
+      write lv_outnum to lv_output1.
+    else.
+      lv_outnum = lv_outnum * ( -1 ).
+      write lv_outnum to lv_output1.
+      concatenate '-' lv_output1 into lv_output1.
+    endif.
+  elseif input = '0.00'.
+    write lv_outnum to lv_output1.
+  endif.
+
+  condense lv_output1 no-gaps.
+  write lv_output1 to lv_output2 right-justified.
+  output = lv_output2.
+
+endfunction.
+```
 
 <!-- tabs:end -->
 
+<!-- tabs:end -->
+
+## ALV下拉框
+
+1. 在构成alv的内表中添加一个`int4`类型的字段，用以存储下拉框的分组（若一行存在多个下拉框，则定义多个字段即可）：
+
+   ```abap
+   type: begin of ty_alv,
+   				drop_handle type int4,
+   			end of ty_alv.
+   ```
+
+2. 设置fieldcat字段，设置下拉列表并激活
+
+   <!-- tabs:start -->
+
+   <!-- tab:一 -->
+
+   ```abap
+   gs_fcat-drdn_field = 'DROP_HANDLE';
+   ```
+
+   ```abap
+   data gt_drop type lvc_t_drop.
+   
+   gt_drop = value #( handle = '1' ( value = '1-企业' )
+                                   ( value = '2-事业' )
+                      handle = '2' ( value = '1-是' )
+                                   ( value = '2-否' )
+   ).
+   
+   go_alv_grid->set_drop_down_table( it_drop_down = gt_drop ).
+   ```
+
+   <!-- tab:二 -->
+
+   ```abap
+   gs_fcat-drdn_field = 'DROP_HANDLE';
+   ```
+
+   ```abap
+   data gt_dral type lvc_t_dral.
+   
+   gt_dral = value #( handle = '1' ( value = '1-企业' int_value = '1' )
+                                   ( value = '2-事业' int_value = '2' )
+                      handle = '2' ( value = '1-是'  int_value = '1' )
+                                   ( value = '2-否'  int_value = '2' )
+   ).
+   
+   go_alv_grid->set_drop_down_table( it_drop_down_alias = gt_dral ).
+   ```
+
+   <!-- tabs:end -->
+
+   
