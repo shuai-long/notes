@@ -484,7 +484,7 @@
 
 - 设置其他属性
 
-  <!-- tabs:strat -->
+  <!-- tabs:start -->
 
   <!-- tab:设置fieldcat -->
 
