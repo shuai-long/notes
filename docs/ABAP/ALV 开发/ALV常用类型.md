@@ -457,7 +457,7 @@
 
 ## 弹出式ALV
 
-<!-- tabs:strat -->
+<!-- tabs:start -->
 
 <!-- tab:cl_salv_table -->
 
