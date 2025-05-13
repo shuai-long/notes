@@ -40,7 +40,9 @@
 
 5. 维护 登陆&安全性 信息，维护信息如图所示，其他不变。![image-20240702172334775](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240702172334775.png)
 
-   > **注：** 如果配置登陆用户的账号密码， 每次保存时都要重新输入密码，否则密码会清空。
+   > [!WARNING]
+   >
+   > 如果配置登陆用户的账号密码，每次保存时都要重新输入密码，否则密码会清空。
 
 6. 点击保存![image-20240702172505040](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240702172505040.png)
 
