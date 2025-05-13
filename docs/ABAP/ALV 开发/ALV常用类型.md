@@ -508,6 +508,8 @@
 
 <!-- tab:带选择框的ALV -->
 
+常用于数据选择
+
 ```abap
 data: lt_objid    like table of hrp1000 with header line,
       ls_selfield type slis_selfield,
@@ -519,7 +521,7 @@ call function 'REUSE_ALV_POPUP_TO_SELECT'
     i_zebra              = 'X'
     i_checkbox_fieldname = 'CHECKBOX'
     i_tabname            = space
-    i_structure_name     = 'ZHRS_051'
+    i_structure_name     = 'HRP1000'
   importing
     es_selfield          = ls_selfield
     e_exit               = lv_exit
