@@ -20,7 +20,9 @@
 
 - 点击创建空间![image-20240611110122945](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240611110122945.png)
 
-- 维护空间信息![image-20240611110726090](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240611110726090.png)
+- 维护空间信息
+
+  ![image-20240611110726090](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240611110726090.png)
 
 ## 订阅服务
 
