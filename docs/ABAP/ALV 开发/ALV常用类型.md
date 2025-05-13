@@ -282,3 +282,173 @@
   ```
 
 ## Tree ALV
+
+<!-- tabs:start -->
+<!-- tab:list tree -->
+
+- 定义变量
+
+  ```abap
+  types: begin of ty_tree.
+           include type treev_node.
+  types:   no_display type char1,
+           items      type hashed table of mtreeitm with unique key node_key,
+         end of ty_tree.
+         
+  data: go_dock_container type ref to cl_gui_docking_container,
+  			go_list_tree      type ref to cl_gui_list_tree,
+  			gt_tree      			type hashed table of ty_tree with unique key node_key,
+  			gv_node_key       type tv_nodekey value '10',
+        gv_item_name 			type tv_itmname.
+  ```
+
+- 定义添加节点方法并实现
+
+  ```abap
+  methods add_nodes_to_tree
+    importing
+      iv_nodekey type any optional.
+  ```
+
+  ```abap
+  method add_nodes_to_tree.
+  
+    data: lt_nodes type treev_ntab,
+          lt_items type table of mtreeitm.
+  
+    loop at gt_tree into data(ls_tree) where relatkey = iv_nodekey and no_display is initial.
+      append initial line to lt_nodes assigning field-symbol(<fs_node>).
+      move-corresponding ls_tree to <fs_node>.
+      loop at ls_tree-items into data(ls_item).
+        append initial line to lt_items assigning field-symbol(<fs_item>).
+        move-corresponding ls_item to <fs_item>.
+      endloop.
+    endloop.
+  
+    go_list_tree->add_nodes_and_items(
+      exporting
+        node_table                     = lt_nodes
+        item_table                     = lt_items
+        item_table_structure_name      = 'MTREEITM'
+      exceptions
+        failed                         = 1
+        cntl_system_error              = 3
+        error_in_tables                = 4
+        dp_error                       = 5
+        table_structure_name_not_found = 6 ).
+  
+    if iv_nodekey is initial.
+      go_list_tree->expand_root_nodes(
+        exporting
+          level_count         = 1
+          expand_subtree      = 'X'
+        exceptions
+          failed              = 1
+          illegal_level_count = 2
+          cntl_system_error   = 3
+          others              = 4 ).
+    endif.
+  
+  endmethod.
+  ```
+
+- 定义事件并实现
+
+  <!-- tabs:start -->
+
+  <!-- tab:展开节点 -->
+
+  ```abap
+  methods handle_expand_no_children
+    for event expand_no_children of cl_gui_list_tree
+    importing
+      node_key.
+  ```
+
+  ```abap
+  method handle_expand_no_children.
+  
+    gv_node_key = node_key.
+    add_nodes_to_tree( gv_node_key ).
+  
+  endmethod.
+  ```
+
+  <!-- tab:node双击事件 -->
+
+  ```abap
+  methods
+    handle_node_double_click
+      for event node_double_click of cl_gui_list_tree
+      importing
+        node_key.
+  ```
+
+  ```abap
+  method handle_node_double_click.
+  
+    gv_node_key = node_key.
+  
+  endmethod.
+  ```
+
+  <!-- tab:item双击事件 -->
+
+  ```abap
+  methods
+    handle_item_double_click
+      for event item_double_click  of cl_gui_list_tree
+      importing
+        node_key
+        item_name.
+  ```
+
+  ```abap
+    method handle_item_double_click.
+  
+      gv_node_key = node_key.
+  
+    endmethod.
+  ```
+
+  <!-- tabs:end -->
+
+- 实例化对象并注册事件
+
+  ```abap
+  if go_dock_container is initial.
+    go_dock_container = new #(
+      repid     = sy-repid
+      dynnr     = sy-dynnr
+      extension = 200
+      side      = cl_gui_docking_container=>dock_at_left ).
+  
+    go_list_tree = new cl_gui_list_tree(
+      parent              = go_dock_container
+      node_selection_mode = cl_gui_simple_tree=>node_sel_mode_single
+      item_selection      = 'X'
+      with_headers        = ' ' ).
+  
+    data: lt_events type cntl_simple_events.
+    lt_events = value #( appl_event = 'X' ( eventid = cl_gui_list_tree=>eventid_node_double_click )
+                                          ( eventid = cl_gui_list_tree=>eventid_item_double_click )
+                                          ( eventid = cl_gui_list_tree=>eventid_expand_no_children )
+                                          ( eventid = cl_gui_list_tree=>eventid_link_click )
+                                          ( eventid = cl_gui_list_tree=>eventid_button_click )
+                                          ( eventid = cl_gui_list_tree=>eventid_checkbox_change )
+                                          ( eventid = cl_gui_list_tree=>eventid_node_context_menu_req )
+                                          ( eventid = cl_gui_list_tree=>eventid_item_context_menu_req ) ).
+  	
+  	go_list_tree->set_registered_events( lt_events ).
+    set handler handle_node_double_click for go_list_tree.
+    set handler handle_item_double_click for go_list_tree.
+    set handler handle_expand_no_children for go_list_tree.
+  
+    add_nodes_to_tree( ).
+    
+  else.
+    cl_gui_cfw=>flush( ).
+  endif.
+  ```
+
+<!-- tabs:end -->
