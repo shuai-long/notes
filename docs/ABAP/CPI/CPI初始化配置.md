@@ -1,8 +1,6 @@
-# CPI 初始化配置
-
 **登陆 [CPIBTP](https://cockpit.cn40.platform.sapcloud.cn/cockpit)**
 
-## 1. 创建子账户
+## 创建子账户
 
 1. **创建-->子账户**![创建子账户-1](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240611103249041.png)
 
@@ -10,14 +8,14 @@
 
    
 
-## 2. 启用 Cloud Foundry
+## 启用 Cloud Foundry
 
 - **点击进入子账户**![image-20240611105605591](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240611105605591.png)
 
 - **点击启用 Cloud Foundry**![image-20240611105850979](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240611105850979.png)
 - **保持默认值即可，点击创建**![image-20240611105959108](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240611105959108.png)
 
-## 3. 创建空间
+## 创建空间
 
 1. **点击创建空间**![image-20240611110122945](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240611110122945.png)
 
@@ -25,7 +23,7 @@
 
    ![image-20240611110726090](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240611110726090.png)
 
-## 4. 订阅服务
+## 订阅服务
 
 1. **左侧菜单中找到 授权 并点击**![image-20240613143527159](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240613143527159.png)
 2. **点击编辑按钮**![image-20240613143820295](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240613143820295.png)
@@ -36,14 +34,14 @@
 6. 搜素并添加服务计划：Credential Store![image-20240613150039922](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240613150039922.png)
 7. 保存并退出浏览器![image-20240613145401999](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240613145401999.png)
 
-## 5. 创建实例和租用
+## 创建实例和租用
 
 1. 选择服务 -> Service Marketplace，搜索 Integration Suite 并选择创建![image-20240613150942744](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240613150942744.png)
 2. 选择创建之后默认下一步
 3. 选择服务 -> 实例和租用![image-20240613152235304](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240613152235304.png)
 4. 点击后会弹出一个错误的提示，原因是权限不足。![image-20240613152606406](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240613152606406.png)
 
-## 6. 创建角色并添加权限
+## 创建角色并添加权限
 
 1. 选择 安全 --> 角色集合![image-20240613152825983](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240613152825983.png)
 2. 点击创建![image-20240613152916972](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240613152916972.png)
@@ -55,7 +53,7 @@
 8. 在账号中查看用户的标识和电子邮件，在该角色集合中添加用户![image-20240614160538191](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240614160538191.png)
 9. 完成后点击保存即可。为避免未刷新配置，可关闭 BTP 重新登陆。![image-20240614160757719](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240614160757719.png)
 
-## 7. 调配租户
+## 调配租户
 
 1. 重新进入租用和实例，此时会出现如下界面，创建 Capabilities , 点击 Add![image-20240614162423155](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240614162423155.png)
 2. **两种界面，按需匹配**
@@ -74,7 +72,7 @@
 5. 再次检查用户权限，会发现系统新增了 PI_* 的角色集合![image-20240614164346529](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240614164346529.png)
 6. 重复第六步（创建角色并添加权限），将新增的权限集合添加至自定义的集合中![image-20240614164448001](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240614164448001.png)
 
-## 8. 创建云链接器
+## 创建云链接器
 
 1. 进入 云链接器并登陆：[Basel 云链接器地址开发](https://vhbexdclcc01.sap.baesl.com:8443)、[Baesl 云链接器地址生产](https://vhbexpclcc01.sap.baesl.com:8443)
 
