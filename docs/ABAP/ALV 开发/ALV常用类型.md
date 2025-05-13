@@ -506,9 +506,7 @@
   lo_alv->display( ).
   ```
 
-<!-- tab:带选择框的ALV -->
-
-常用于数据选择
+<!-- tab:弹框选择 -->
 
 ```abap
 data: lt_objid    like table of hrp1000 with header line,
