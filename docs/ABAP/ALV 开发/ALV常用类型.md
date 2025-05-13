@@ -297,9 +297,9 @@
          
   data: go_dock_container type ref to cl_gui_docking_container,
         go_list_tree      type ref to cl_gui_list_tree,
-        gt_tree      			type hashed table of ty_tree with unique key node_key,
+        gt_tree           type hashed table of ty_tree with unique key node_key,
         gv_node_key       type tv_nodekey value '10',
-        gv_item_name 			type tv_itmname.
+        gv_item_name      type tv_itmname.
   ```
 
 - 定义添加节点方法并实现
