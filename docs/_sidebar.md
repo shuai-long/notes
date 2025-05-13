@@ -1,6 +1,6 @@
 <!-- _sidebar.md -->
 - ABAP
-  - [ALV开发](/#)
+  - [ALV开发](/)
     - [ALV常用功能](/ABAP/ALV%E5%BC%80%E5%8F%91/ALV%E5%B8%B8%E7%94%A8%E5%8A%9F%E8%83%BD.md)
     - [ALV常用类型](/ABAP/ALV%E5%BC%80%E5%8F%91/ALV%E5%B8%B8%E7%94%A8%E7%B1%BB%E5%9E%8B.md)
   - CDS相关
