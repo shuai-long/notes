@@ -21,7 +21,7 @@
   3. 点击三个点，并选择下载。另外两个同理![image-20240702165404612](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240702165404612.png)
 <!-- tabs:end -->
 
-<!-- tab:SAP证书导出 -->
+<!-- tab:SAP证书导入 -->
 
 - 进入 T-code：STRUST![image-20240702165711363](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240702165711363.png)
 - 选择： SSL 客户端 SSL 客户端（匿名）![image-20240702165829831](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240702165829831.png)

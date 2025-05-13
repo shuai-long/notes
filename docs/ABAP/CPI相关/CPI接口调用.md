@@ -1,5 +1,6 @@
-## 创建代理
-
+## SAP调用CPI接口
+<!-- tabs:start -->
+<!-- tab:代理配置 -->
 1. 进入 T-code： SM59![image-20240702170727816](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240702170727816.png)
 
 2. 点击创建，输入目标信息![image-20240702170944685](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240702170944685.png)
@@ -16,7 +17,7 @@
 
 6. 点击保存![image-20240702172505040](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240702172505040.png)
 
-## 代码调用
+<!-- tab:代码调用 -->
 
 ```abap
 ********************************************************************** 创建连接
@@ -124,4 +125,4 @@ data(lv_resjson) = lo_http_client->response->get_cdata( ).  "字符串返回报�
 ********************************************************************** 关闭链接
 lo_http_client->close( ).
 ```
-
+<!-- tabs:end -->
