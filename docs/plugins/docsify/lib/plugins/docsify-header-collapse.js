@@ -16,7 +16,7 @@
       counters = [0, 0, 0, 0, 0]
       const pageKey = getPageKey()
 
-      document.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(header => {
+      document.querySelector('.content').querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(header => {
         const tagLevel = parseInt(header.tagName.substring(1))
 
         // 仅处理h2-h6
