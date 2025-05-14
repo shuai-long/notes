@@ -36,13 +36,15 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
       li.classList.toggle('folder-expanded', false);
 
       li.addEventListener('click', function (e) {
-
-        li.classList.toggle('folder-expanded');
+        // 判断是否为直接点击 li 元素（而非子元素冒泡）
+        if (e.target === this) {
+          li.classList.toggle('folder-expanded');
+        }
+        // li.classList.toggle('folder-expanded');
 
         e.stopPropagation();
         e.preventDefault();
       });
-
 
     });
   });
