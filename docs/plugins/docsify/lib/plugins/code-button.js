@@ -139,7 +139,7 @@
         }
 
         if (t.querySelector(".code-buttons")) return;
-        const n = (e.className.match(/language-(\w+)/) || [])[1],
+        const n = (e.className.match(/language-(\w+)/) || e.className.match(/lang-(\w+)/) || [])[1],
           o = e.textContent,
           s = document.createElement("div");
         (s.className = "code-buttons"),
