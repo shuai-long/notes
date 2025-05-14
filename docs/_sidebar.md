@@ -1,16 +1,16 @@
 <!-- _sidebar.md -->
-- ABAP
-  - ALV开发
+-  ABAP
+  -  ALV开发
     - [ALV常用功能](/ABAP/ALV%E5%BC%80%E5%8F%91/ALV%E5%B8%B8%E7%94%A8%E5%8A%9F%E8%83%BD.md)
     - [ALV常用类型](/ABAP/ALV%E5%BC%80%E5%8F%91/ALV%E5%B8%B8%E7%94%A8%E7%B1%BB%E5%9E%8B.md)
-  - CDS相关
+  -  CDS相关
     - [CDS基础](/ABAP/CDS%E7%9B%B8%E5%85%B3/CDS%E5%9F%BA%E7%A1%80.md)
-  - CPI相关
+  -  CPI相关
     - [CPI初始化配置](/ABAP/CPI%E7%9B%B8%E5%85%B3/CPI%E5%88%9D%E5%A7%8B%E5%8C%96%E9%85%8D%E7%BD%AE.md)
     - [CPI接口调用](/ABAP/CPI%E7%9B%B8%E5%85%B3/CPI%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8.md)
     - [CPI添加接口](/ABAP/CPI%E7%9B%B8%E5%85%B3/CPI%E6%B7%BB%E5%8A%A0%E6%8E%A5%E5%8F%A3.md)
     - [CPI证书导入导出](/ABAP/CPI%E7%9B%B8%E5%85%B3/CPI%E8%AF%81%E4%B9%A6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA.md)
-  - HR模块相关
+  -  HR模块相关
     - [HR 员工照片操作](/ABAP/HR%E6%A8%A1%E5%9D%97%E7%9B%B8%E5%85%B3/HR%20%E5%91%98%E5%B7%A5%E7%85%A7%E7%89%87%E6%93%8D%E4%BD%9C.md)
     - [HR 常用表](/ABAP/HR%E6%A8%A1%E5%9D%97%E7%9B%B8%E5%85%B3/HR%20%E5%B8%B8%E7%94%A8%E8%A1%A8.md)
     - [HR 考勤表](/ABAP/HR%E6%A8%A1%E5%9D%97%E7%9B%B8%E5%85%B3/HR%20%E8%80%83%E5%8B%A4%E8%A1%A8.md)
@@ -28,7 +28,7 @@
     - [SAP T-CODE](/ABAP/T-code/SAP%20T-CODE.md)
   - UI5
     - [UI5](/ABAP/UI5/UI5.md)
-  - 动态编程
+  -  动态编程
     - [动态函数](/ABAP/%E5%8A%A8%E6%80%81%E7%BC%96%E7%A8%8B/%E5%8A%A8%E6%80%81%E5%87%BD%E6%95%B0.md)
     - [反射](/ABAP/%E5%8A%A8%E6%80%81%E7%BC%96%E7%A8%8B/%E5%8F%8D%E5%B0%84.md)
   - 实用函数
