@@ -65,6 +65,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
           // 切换展开状态
           const isExpanded = this.classList.toggle('folder-expanded');
           let updState = localStorage.getItem('sidebarExpandedState') || {};
+          let elId = elementId;
           
           // 更新存储状态
           const updatedState = {
