@@ -9,14 +9,14 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
         content: '\\f07b';
         display: inline-block;
       }
-      .sidebar-nav li.arrow.expanded::before {
+      .sidebar-nav li.arrow.folder-expanded::before {
         content: '\\f07c';
       }
       .sidebar-nav li.arrow > ul {
         display: none;
         margin-left: 10px;
       }
-      .sidebar-nav li.arrow.expanded > ul {
+      .sidebar-nav li.arrow.folder-expanded > ul {
         display: block;
       }
     `;
@@ -33,11 +33,11 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
 
       li.classList.add('arrow', 'has-arrow');
 
-      li.classList.toggle('expanded', false);
+      li.classList.toggle('folder-expanded', false);
 
       li.addEventListener('click', function (e) {
 
-        li.classList.toggle('expanded');
+        li.classList.toggle('folder-expanded');
 
         e.stopPropagation();
         e.preventDefault();
