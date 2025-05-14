@@ -4,12 +4,12 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
     // 添加样式
     const style = document.createElement('style');
     style.textContent = `
-      .sidebar-nav li.arrow-folder::before {
+      .sidebar-nav li.arrow::before {
         font-family: 'FontAwesome';
         content: '\\f07b';
         display: inline-block;
       }
-      .sidebar-nav li.arrow-folder.expanded::before {
+      .sidebar-nav li.arrow.expanded::before {
         content: '\\f07c';
       }
       .sidebar-nav li.arrow > ul {
@@ -30,8 +30,6 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
       );
 
       if (hasDirectLink) return;
-        
-      li.classList.add('arrow-folder');
 
       li.classList.add('arrow', 'has-arrow');
 
