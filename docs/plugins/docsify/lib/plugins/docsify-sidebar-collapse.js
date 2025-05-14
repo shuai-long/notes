@@ -22,6 +22,24 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
     `;
     document.head.appendChild(style);
 
+    const sidebarState = JSON.parse(localStorage.getItem('sidebarExpandedState')) || {};
+
+    // 替代方案：使用相对位置路径作为唯一标识
+    function generateElementPath(element) {
+      const path = [];
+      let currentElement = element;
+
+      while (currentElement.parentNode) {
+        const parent = currentElement.parentNode;
+        const index = Array.prototype.indexOf.call(parent.children, currentElement);
+        path.unshift(index);
+        currentElement = parent;
+      }
+
+      return path.join('-');
+    }
+
+
     document.querySelectorAll('.sidebar-nav li').forEach(li => {
       if (li.classList.contains('has-arrow')) return;
 
@@ -32,17 +50,32 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
       if (hasDirectLink) return;
 
       li.classList.add('arrow', 'has-arrow');
+      // 使用方式：替换原来的elementId生成方式
+      const elementId = `sidebar-path-${generateElementPath(li)}`;
+      li.dataset.sidebarId = elementId; // 存储标识符到DOM
 
-      li.classList.toggle('folder-expanded', false);
+      // 应用存储状态或默认值
+      const storedState = sidebarState[elementId];
+      li.classList.toggle('folder-expanded', storedState || false);
 
       li.addEventListener('click', function (e) {
         // 判断是否为直接点击 li 元素（而非子元素冒泡）
         if (e.target === this) {
+
+          // 切换展开状态
+          const isExpanded = this.classList.toggle('folder-expanded');
+          // 更新存储状态
+          const updatedState = {
+            ...JSON.parse(localStorage.getItem('sidebarState') || {}),
+            [elementId]: isExpanded
+          };
+          localStorage.setItem('sidebarState', JSON.stringify(updatedState));
+
           li.classList.toggle('folder-expanded');
           e.stopPropagation();
           e.preventDefault();
         }
-        
+
       });
 
     });
