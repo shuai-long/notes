@@ -140,6 +140,10 @@
     <!-- Docsify 核心 -->
     <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
 
+    <!-- 中英文添加空格 -->
+    <script src="./plugins/docsify/lib/plugins/pangu.min.js"></script>
+    <script src="./plugins/docsify/lib/plugins/pangu-spacing.js"></script>
+
     <!-- Docsify 主题 -->
     <script src="//cdn.jsdelivr.net/npm/docsify-themeable/dist/js/docsify-themeable.min.js"></script>
 
@@ -204,27 +208,6 @@
 
     <!-- 分页插件 -->
     <script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
-
-    <!-- 中英文添加空格 -->
-    <script src="./plugins/docsify/lib/plugins/pangu.min.js"></script>
-    <script>
-        // 中英文添加空格
-        // pangu.spacingElementById('main');
-        // pangu.spacingElementByClassName('comment');
-        // pangu.spacingElementByTagName('p');
-
-        document.addEventListener('DOMContentLoaded', () => {
-            // pangu.spacingElementByTagName('aside');
-            // pangu.spacingElementByTagName('h2');
-            // pangu.spacingElementByTagName('h3');
-            // pangu.spacingElementByTagName('h4');
-            // pangu.spacingElementByTagName('h5');
-            // pangu.spacingElementByTagName('h6');
-            // pangu.spacingElementByTagName('p');
-            // pangu.spacingElementByTagName('button');
-            pangu.autoSpacingPage();
-        });
-    </script>
 
     <script>
         //注册 离线模式
