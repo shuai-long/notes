@@ -5,6 +5,13 @@
   - [Docsify-en](https://docsify.js.org/#/)
   - [Docsify-使用指南](https://ysgstudyhards.github.io/Docsify-Guide/#/ProjectDocs/Docsify使用指南)
 
+- 生成侧边栏程序指令
+
+  ```shell
+  cd /Users/zhangshuailong/Desktop/notes/notes/docs
+  python3 sidebarn.py .  
+  ```
+
 <!-- tabs:start -->
 
 #### **dashbord**
