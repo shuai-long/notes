@@ -72,7 +72,7 @@ def process_directory(root_dir, current_dir, exclude_lower, level, md_lines, enc
         encoded_link = '/'.join(encoded_parts)
         indent = '  ' * (level - 1)
         display_name = os.path.splitext(file_name)[0]
-        md_lines.append(f"{indent}- \u00A0[{display_name}\u00A0]({encoded_link})")
+        md_lines.append(f"{indent}- \u00A0[\u00A0{display_name}\u00A0]({encoded_link})")
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
