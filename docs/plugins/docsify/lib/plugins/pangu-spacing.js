@@ -38,6 +38,7 @@
   (window.$docsify.plugins = [].concat(function (hook, vm) {
     let is_spacing = false;
 
+    //break
     hook.doneEach(function () {
       if (!is_spacing) {
         is_spacing = true;
