@@ -66,10 +66,10 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
           const isExpanded = this.classList.toggle('folder-expanded');
           // 更新存储状态
           const updatedState = {
-            ...JSON.parse(localStorage.getItem('sidebarState') || {}),
+            ...JSON.parse(localStorage.getItem('sidebarExpandedState') || {}),
             [elementId]: isExpanded
           };
-          localStorage.setItem('sidebarState', JSON.stringify(updatedState));
+          localStorage.setItem('sidebarExpandedState', JSON.stringify(updatedState));
 
           li.classList.toggle('folder-expanded');
           e.stopPropagation();
