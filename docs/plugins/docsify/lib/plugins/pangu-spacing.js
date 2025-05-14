@@ -22,13 +22,13 @@
       pangu.spacingPage();
       is_spacing = false;
 
-      document.addEventListener('DOMNodeInserted', function (e) {
+      document.addEventListener('DOMContentLoaded', () => {
         if (!is_spacing) {
           is_spacing = true;
           pangu.spacingNode(e.target);
           is_spacing = false;
         }
-      }, false);
-
+      });
+      
     });
   }, window.$docsify.plugins));
