@@ -14,7 +14,6 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
       }
       .sidebar-nav li.arrow > ul {
         display: none;
-        margin-left: 10px;
       }
       .sidebar-nav li.arrow.folder-expanded > ul {
         display: block;
@@ -71,7 +70,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
             [elementId]: isExpanded
           };
           localStorage.setItem('sidebarExpandedState', JSON.stringify(updatedState));
-          
+
           e.stopPropagation();
           e.preventDefault();
         }
