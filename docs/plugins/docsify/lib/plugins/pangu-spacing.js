@@ -1,6 +1,6 @@
 (window.$docsify = window.$docsify || {}),
   (window.$docsify.plugins = [].concat(function (hook, vm) {
-    hook.doneEach(function () {
+    hook.ready(function () {
       // 中英文添加空格
       // pangu.spacingElementById('main');
       // pangu.spacingElementByClassName('comment');
@@ -14,7 +14,21 @@
       // pangu.spacingElementByTagName('h6');
       // pangu.spacingElementByTagName('p');
       // pangu.spacingElementByTagName('button');
-      pangu.autoSpacingPage();
+      // pangu.autoSpacingPage();
+
+      let is_spacing = false;
+
+      is_spacing = true;
+      pangu.spacingPage();
+      is_spacing = false;
+
+      document.addEventListener('DOMNodeInserted', function (e) {
+        if (!is_spacing) {
+          is_spacing = true;
+          pangu.spacingNode(e.target);
+          is_spacing = false;
+        }
+      }, false);
 
     });
   }, window.$docsify.plugins));
