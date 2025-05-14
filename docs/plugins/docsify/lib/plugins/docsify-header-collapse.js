@@ -16,69 +16,70 @@
       counters = [0, 0, 0, 0, 0]
       const pageKey = getPageKey()
 
+      // 初始化折叠状态存储对象
+      let collapsibleStates = JSON.parse(localStorage.getItem('collapsibleStates') || '{}');
+
       document.querySelector('.content').querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(header => {
         const tagLevel = parseInt(header.tagName.substring(1))
 
-        // 仅处理h2-h6
+        // 保持原有过滤逻辑
         if (tagLevel < 2) {
-          // 移除h1可能存在的序号
           const existingNumber = header.querySelector('.header-number')
           if (existingNumber) existingNumber.remove()
           return
         }
 
-        // 转换为数组索引（h2=0, h3=1...）
+        // 保持原有计数器逻辑
         const level = tagLevel - 2
-
-        // 更新计数器逻辑
         counters[level]++
-        // 重置子级计数器
         for (let i = level + 1; i < 5; i++) counters[i] = 0
 
-        // 生成序号（从h2开始）
+        // 生成唯一存储键
         const sectionNumber = counters.slice(0, level + 1).join('.')
-        header.dataset.sectionKey = `${pageKey}|${sectionNumber}`
+        const storageKey = `${pageKey}|${sectionNumber}`
+        header.dataset.sectionKey = storageKey
 
-        // 创建/更新序号元素
+        // 创建序号元素（保持原有逻辑）
         let numberSpan = header.querySelector('.header-number')
         if (!numberSpan) {
           numberSpan = document.createElement('span')
           numberSpan.className = 'header-number'
-          numberSpan.style.color ='#b0abab'
-          // 插入到折叠按钮之后或标题开头
+          numberSpan.style.color = '#b0abab'
           header.insertBefore(numberSpan, header.children[1] || header.firstChild)
         }
         numberSpan.textContent = `${sectionNumber} `
 
+        // 创建内容容器（保持原有逻辑）
         const content = document.createElement('div')
         content.className = 'collapsible-content'
 
-        // 先收集需要移动的节点
+        // 节点移动逻辑保持不变
         const nodesToMove = []
         let nextElem = header.nextElementSibling
         while (nextElem && !nextElem.matches('h1, h2, h3, h4, h5, h6')) {
           nodesToMove.push(nextElem)
           nextElem = nextElem.nextElementSibling
         }
-
-        // 插入容器并移动节点
         header.parentNode.insertBefore(content, header.nextSibling)
         nodesToMove.forEach(node => content.appendChild(node))
 
-        // 恢复保存状态
-        const storageKey = header.dataset.sectionKey
-        const savedState = localStorage.getItem(storageKey)
-        if (savedState === 'collapsed') {
-          content.style.display = 'none'
-        } else {
-          content.style.display = 'block'
-        }
+        // 从JSON存储恢复状态
+        const savedState = collapsibleStates[storageKey]
+        content.style.display = (savedState === 'collapsed') ? 'none' : 'block'
 
-        // 绑定点击事件
+        // 修改后的点击事件处理
         header.addEventListener('click', function () {
           const isCollapsed = content.style.display === 'none'
+
+          // 更新显示状态
           content.style.display = isCollapsed ? 'block' : 'none'
-          localStorage.setItem(storageKey, isCollapsed ? 'expanded' : 'collapsed')
+
+          // 更新JSON存储对象
+          collapsibleStates = JSON.parse(localStorage.getItem('collapsibleStates') || '{}')
+          collapsibleStates[storageKey] = isCollapsed ? 'expanded' : 'collapsed'
+
+          // 保存整个JSON对象
+          localStorage.setItem('collapsibleStates', JSON.stringify(collapsibleStates))
         })
 
         header.classList.add('collapsible')
