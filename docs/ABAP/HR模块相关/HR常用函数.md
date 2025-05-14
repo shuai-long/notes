@@ -2219,7 +2219,7 @@ CALL FUNCTION 'RH_TYPE_STRUC_HELP'
   1.  [Update long text in infotypes | SAP Blogs](https://blogs.sap.com/2013/04/30/update-long-text-in-infotypes/)
 2. [长文本值未显示在 pa30 屏幕中 |SAP 社区](https://answers.sap.com/questions/7159166/long-text-value-not-displaying-in-pa30-screen.html)
 
-## 读取 0041 时间数据
+## 读取0041时间数据
 
 ```ABAP
 DATA: MESSAGE_HANDLER TYPE REF TO IF_HRPA_MESSAGE_HANDLER,
