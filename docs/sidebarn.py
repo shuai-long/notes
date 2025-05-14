@@ -46,7 +46,7 @@ def process_directory(root_dir, current_dir, exclude_lower, level, md_lines, enc
         dir_path = os.path.join(current_dir, dir_name)
         indent = '  ' * (level - 1)
         start_len = len(md_lines)
-        md_lines.append(f"{indent}-  {dir_name}")  # 添加空格前缀
+        md_lines.append(f"{indent}- &nbsp{dir_name}")  # 添加空格前缀
         process_directory(root_dir, dir_path, exclude_lower, level + 1, md_lines, encode_flag)
         if len(md_lines) == start_len + 1:  # 空目录处理
             del md_lines[-1]
@@ -72,8 +72,7 @@ def process_directory(root_dir, current_dir, exclude_lower, level, md_lines, enc
         encoded_link = '/'.join(encoded_parts)
         indent = '  ' * (level - 1)
         display_name = os.path.splitext(file_name)[0]
-        display_name = display_name.replace(' ', '\u00A0')
-        md_lines.append(f"{indent}- [{display_name}]({encoded_link})")
+        md_lines.append(f"{indent}- &nbsp[{display_name}]({encoded_link})")
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
