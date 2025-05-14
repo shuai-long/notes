@@ -1,24 +1,23 @@
 window.$docsify = window.$docsify || {};
-window.$docsify.plugins = (window.$docsify.plugins || []).concat(function(hook, vm) {
-  hook.doneEach(function() {
+window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook, vm) {
+  hook.doneEach(function () {
     // 添加样式
     const style = document.createElement('style');
     style.textContent = `
       .sidebar-nav li.arrow::before {
-        content: '▶';
+        font-family: 'FontAwesome';
+        content: '\f07b';
         display: inline-block;
         margin-right: 6px;
-        font-size: 10px;
-        transition: transform 0.2s;
       }
       .sidebar-nav li.arrow.expanded::before {
-        transform: rotate(90deg);
+        content: '\f07c';
       }
-      .sidebar-nav li.arrow ul {
+      .sidebar-nav li.arrow > ul {
         display: none;
         margin-left: 10px;
       }
-      .sidebar-nav li.arrow.expanded ul {
+      .sidebar-nav li.arrow.expanded > ul {
         display: block;
       }
     `;
@@ -26,31 +25,31 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function(hook, 
 
     // 处理符合条件的li元素
     document.querySelectorAll('.sidebar-nav li').forEach(li => {
-       // 修改点：使用 > 选择器判断直接子元素是否包含a标签
-      const hasDirectLink = li.querySelector(':scope > a'); // 关键修改
-      
-      // 跳过已有直接子元素a标签或已处理的元素
+    // 改进点：使用children遍历代替:scope选择器
+      const hasDirectLink = Array.from(li.children).some(
+        child => child.tagName === 'A'
+      );
+
       if (hasDirectLink || li.classList.contains('has-arrow')) return;
-      
-      // 添加标记类名和箭头
+
+      // 添加功能标记
       li.classList.add('arrow', 'has-arrow');
       
-      // 初始化折叠状态
-      if (li.querySelector('ul')) {
-        li.classList.add('expanded'); // 默认展开，改为remove('expanded')则默认折叠
-      }
+      // 初始化展开状态
+      const hasNestedList = li.querySelector(':scope > ul'); // 关键修改点
+      li.classList.toggle('expanded', hasNestedList);
 
-      // 添加点击事件
+      // 绑定点击事件（改进冒泡处理）
       li.addEventListener('click', function(e) {
-        // 跳过包含a标签的点击
-        if (e.target.tagName === 'A') return;
+        // 排除点击子元素的情况
+        if (e.target !== li && e.target.closest('a')) return;
         
-        // 切换展开状态
+        // 仅切换当前列表项
         this.classList.toggle('expanded');
         
-        // 阻止事件冒泡到父li
-        e.stopPropagation();
-      });
+        // 强制阻止所有冒泡
+        e.stopImmediatePropagation();
+      }, true); // 使用捕获阶段确保执行顺序
     });
   });
 });

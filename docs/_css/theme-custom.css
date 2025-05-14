@@ -19,13 +19,13 @@
 }
 
 .sidebar-nav > ul > li a::before {
-  font-family: "Font Awesome 5 Free";
+  font-family: "FontAwesome";
   font-style: normal;
   font-weight: 900;
 }
 
 .sidebar-nav > ul > li.active a::before {
-  font-family: "Font Awesome 5 Free";
+  font-family: "FontAwesome";
   font-style: normal;
   font-weight: 900;
 }
