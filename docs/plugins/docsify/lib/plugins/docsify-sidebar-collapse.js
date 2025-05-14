@@ -40,7 +40,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
 
         li.classList.toggle('expanded');
 
-        e.stopPropagation();
+        if(!hasDirectLink) e.stopPropagation();
         e.preventDefault();
       });
 
