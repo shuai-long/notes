@@ -6,11 +6,11 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
     style.textContent = `
       .sidebar-nav li.arrow-folder::before {
         font-family: 'FontAwesome';
-        content: '\\f07b ';
+        content: '\\f07b';
         display: inline-block;
       }
       .sidebar-nav li.arrow-folder.expanded::before {
-        content: '\\f07c ';
+        content: '\\f07c';
       }
       .sidebar-nav li.arrow > ul {
         display: none;
