@@ -38,6 +38,33 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
       return path.join('-');
     }
 
+    // 展开当前地址对应的目录
+    function expandCurrentPath() {
+      const currentHash = window.location.hash;
+      if (!currentHash) return;
+
+      const sidebarState = JSON.parse(localStorage.getItem('sidebarExpandedState')) || {};
+
+      document.querySelectorAll('.sidebar-nav a[href]').forEach(a => {
+        const aUrl = new URL(a.href, window.location.href);
+        if (aUrl.hash === currentHash) {
+          let parentLi = a.closest('li');
+
+          // 展开所有上级目录
+          while (parentLi) {
+            const elementId = parentLi.dataset.sidebarId;
+            if (elementId) {
+              parentLi.classList.add('folder-expanded');
+              sidebarState[elementId] = true;
+            }
+            parentLi = parentLi.parentElement.closest('li');
+          }
+        }
+      });
+
+      localStorage.setItem('sidebarExpandedState', JSON.stringify(sidebarState));
+    }
+
 
     document.querySelectorAll('.sidebar-nav li').forEach(li => {
       if (li.classList.contains('has-arrow')) return;
@@ -74,9 +101,12 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
           e.stopPropagation();
           e.preventDefault();
         }
-
       });
-
     });
+
+    // 监听地址变化
+  window.addEventListener('hashchange', expandCurrentPath);
+  window.addEventListener('popstate', expandCurrentPath);
+
   });
 });
