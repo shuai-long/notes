@@ -27,18 +27,18 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
     document.querySelectorAll('.sidebar-nav li').forEach(li => {
       if (li.classList.contains('has-arrow')) return;
 
-      // 改进点：使用children遍历代替:scope选择器
-      const hasDirectLink = Array.from(li.children).some(
-        child => child.tagName === 'A'
-      );
+      // // 改进点：使用children遍历代替:scope选择器
+      // const hasDirectLink = Array.from(li.children).some(
+      //   child => child.tagName === 'A'
+      // );
 
-      if (hasDirectLink) return;
+      // if (hasDirectLink) return;
 
       // 添加功能标记
       li.classList.add('arrow', 'has-arrow');
 
       // 初始化展开状态
-      const hasNestedList = li.querySelector(':scope > ul'); // 关键修改点
+      // const hasNestedList = li.querySelector(':scope > ul'); // 关键修改点
       li.classList.toggle('expanded', false);
 
       // 绑定点击事件（改进冒泡处理）
