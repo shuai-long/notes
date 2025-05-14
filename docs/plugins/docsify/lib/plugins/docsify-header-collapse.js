@@ -17,7 +17,7 @@
       const pageKey = getPageKey()
 
       // 初始化折叠状态存储对象
-      let collapsibleStates = JSON.parse(localStorage.getItem('collapsibleStates') || '{}');
+      let collapsibleStates = JSON.parse(localStorage.getItem('headingExpandedState') || '{}');
 
       document.querySelector('.content').querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(header => {
         const tagLevel = parseInt(header.tagName.substring(1))
@@ -75,11 +75,11 @@
           content.style.display = isCollapsed ? 'block' : 'none'
 
           // 更新JSON存储对象
-          collapsibleStates = JSON.parse(localStorage.getItem('collapsibleStates') || '{}')
+          collapsibleStates = JSON.parse(localStorage.getItem('headingExpandedState') || '{}')
           collapsibleStates[storageKey] = isCollapsed ? 'expanded' : 'collapsed'
 
           // 保存整个JSON对象
-          localStorage.setItem('collapsibleStates', JSON.stringify(collapsibleStates))
+          localStorage.setItem('headingExpandedState', JSON.stringify(collapsibleStates))
         })
 
         header.classList.add('collapsible')
