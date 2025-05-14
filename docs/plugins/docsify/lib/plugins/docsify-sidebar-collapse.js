@@ -71,8 +71,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
             [elementId]: isExpanded
           };
           localStorage.setItem('sidebarExpandedState', JSON.stringify(updatedState));
-
-          li.classList.toggle('folder-expanded');
+          
           e.stopPropagation();
           e.preventDefault();
         }
