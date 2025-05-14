@@ -1,8 +1,8 @@
 window.$docsify = window.$docsify || {};
 window.$docsify.plugins = (window.$docsify.plugins || []).concat(function(hook, vm) {
   hook.doneEach(function() {
-    const storageKey = 'docsify-collapse-state';
-    const stateStorage = JSON.parse(localStorage.getItem(storageKey) || '{}');
+    const storageKey = 'docsify-collapse-state-v2';
+    let stateStorage = JSON.parse(localStorage.getItem(storageKey) || '{}');
 
     const processLiElements = () => {
       document.querySelectorAll('.sidebar-nav li:not(.has-link)').forEach(li => {
@@ -13,40 +13,48 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function(hook, 
           li.style.cursor = 'pointer';
           li.classList.add('collapsible');
 
-          // 添加独立操作的开关按钮
+          // 创建独立开关控件
           const toggle = document.createElement('span');
           toggle.className = 'collapse-toggle';
           toggle.innerHTML = '▶';
           li.insertBefore(toggle, li.firstChild);
 
-          // 从存储恢复状态
+          // 初始化状态
           const path = getItemPath(li);
-          const isCollapsed = stateStorage[path] || false;
+          const storedState = stateStorage[path];
+          const isCollapsed = storedState !== undefined ? storedState : false;
+          
+          // 设置初始状态
           childList.style.display = isCollapsed ? 'none' : 'block';
           toggle.style.transform = isCollapsed ? 'rotate(0deg)' : 'rotate(90deg)';
 
-          // 独立点击区域处理
-          const handler = (e) => {
-            // 仅响应按钮或整个LI的点击
-            if (e.target.closest('a')) return;
+          // 点击处理函数
+          const toggleState = (targetState) => {
+            const newState = targetState !== undefined ? targetState : !isCollapsed;
             
-            // 阻止事件冒泡
-            e.stopPropagation();
-            
-            const newState = !isCollapsed;
+            // 更新DOM状态
             childList.style.display = newState ? 'none' : 'block';
             toggle.style.transform = newState ? 'rotate(0deg)' : 'rotate(90deg)';
             
             // 更新存储状态
             stateStorage[path] = newState;
             localStorage.setItem(storageKey, JSON.stringify(stateStorage));
+            
+            // 更新内存状态
+            isCollapsed = newState;
           };
 
-          // 单独给开关按钮绑定事件
-          toggle.addEventListener('click', handler);
-          // 给LI绑定需要排除子列表区域的点击
+          // 箭头点击事件
+          toggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleState();
+          });
+
+          // LI主体点击事件
           li.addEventListener('click', (e) => {
-            if (!e.target.closest('ul, ol')) handler(e);
+            if (!e.target.closest('ul, ol') && !e.target.closest('a')) {
+              toggleState();
+            }
           });
 
           li.dataset.processed = true;
@@ -54,18 +62,21 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function(hook, 
       });
     };
 
-    // 生成唯一路径标识
+    // 生成唯一路径（改进版）
     const getItemPath = (element) => {
       const path = [];
       let el = element;
       while (el && !el.matches('.sidebar-nav')) {
-        const parent = el.parentNode;
-        const index = Array.from(parent.children).indexOf(el);
-        path.unshift(index);
-        el = parent.closest('li');
+        const parent = el.parentElement.closest('li, ul, ol');
+        if (parent) {
+          const index = Array.from(parent.children).indexOf(el.closest('li, ul, ol'));
+          path.unshift(`${parent.tagName}-${index}`);
+        }
+        el = parent;
       }
-      return path.join('-');
+      return path.join('|');
     };
+
 
 
     // 初始处理
