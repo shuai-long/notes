@@ -26,8 +26,11 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function(hook, 
 
     // 处理符合条件的li元素
     document.querySelectorAll('.sidebar-nav li').forEach(li => {
-      // 跳过已有a标签或已处理的元素
-      if (li.querySelector('a') || li.classList.contains('has-arrow')) return;
+       // 修改点：使用 > 选择器判断直接子元素是否包含a标签
+      const hasDirectLink = li.querySelector(':scope > a'); // 关键修改
+      
+      // 跳过已有直接子元素a标签或已处理的元素
+      if (hasDirectLink || li.classList.contains('has-arrow')) return;
       
       // 添加标记类名和箭头
       li.classList.add('arrow', 'has-arrow');
