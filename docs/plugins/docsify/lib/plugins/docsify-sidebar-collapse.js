@@ -29,34 +29,22 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
         child => child.tagName === 'A'
       );
 
-      if (!hasDirectLink) li.classList.add('arrow-folder');
+      if (hasDirectLink) return;
+        
+      li.classList.add('arrow-folder');
 
       li.classList.add('arrow', 'has-arrow');
 
       li.classList.toggle('expanded', false);
 
-      // li.addEventListener('click', function (e) {
-
-      //   li.classList.toggle('expanded');
-
-      //   e.stopPropagation();
-      //   e.preventDefault();
-      // });
-      
       li.addEventListener('click', function (e) {
-        // 检查点击目标是否是a标签或a标签的子元素
-        const isAnchorClick = e.target.closest('a');
-        
-        // 如果是a标签点击，则保持默认行为
-        if (isAnchorClick) return;
 
-        // 仅当点击非a标签区域时触发折叠
         li.classList.toggle('expanded');
-        
-        // 阻止事件冒泡和默认行为
+
         e.stopPropagation();
         e.preventDefault();
       });
+
 
     });
   });
