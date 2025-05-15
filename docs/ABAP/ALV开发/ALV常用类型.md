@@ -1283,11 +1283,10 @@ endmodule.                 " USER_COMMAND_0100  INPUT
 
   ```abap
   data: go_html_viewer type ref to cl_gui_html_viewer,
-        gt_html_table  type swww_t_html_table,
         gt_merge_table type swww_t_merge_table,
         gv_template    type swww_t_template_name value 'ZHRR013_01'.
   ```
-
+  
 - 填充替换的变量表: `gt_merge_table`
 
   以下是一个json填充的demo：
@@ -1321,6 +1320,30 @@ endmodule.                 " USER_COMMAND_0100  INPUT
   >   - 'a' - insert after placeholder line
   >   - 'r' - replace placeholder only
   > - `html`: HTML code to be inserted.(html like w3html occurs 100)
+  >
+  > 可以使用函数`www_html_merger`转换模版页面
+  >
+  > ```abap
+  > data: lv_template    type swww_t_template_name, "SMW0上传的模版名称
+  >       lt_html_table  type swww_t_html_table,  "输出修改后的页面
+  >       lt_merge_table type swww_t_merge_table. "需要替换的内容
+  > 
+  > call function 'WWW_HTML_MERGER'
+  >   exporting
+  >     template           = lv_template
+  >   importing
+  >     html_table         = lt_html_table
+  >   changing
+  >     merge_table        = lt_merge_table
+  >   exceptions
+  >     template_not_found = 1
+  >     others             = 2.
+  > 
+  > if sy-subrc <> 0.
+  >   message id sy-msgid type sy-msgty number sy-msgno
+  >     with sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
+  > endif.
+  > ```
 
 - 实例化对象（可按需注册事件）
 
