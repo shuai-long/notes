@@ -15,6 +15,7 @@
     - [HR 常用表](ABAP/HR模块相关/HR%20常用表.md)
     - [HR 考勤表](ABAP/HR模块相关/HR%20考勤表.md)
     - [HR 考核文档下载](ABAP/HR模块相关/HR%20考核文档下载.md)
+    - [HR基础知识](ABAP/HR模块相关/HR基础知识.md)
     - [HR常用事务码](ABAP/HR模块相关/HR常用事务码.md)
     - [HR常用函数](ABAP/HR模块相关/HR常用函数.md)
     - [HR开发相关知识点](ABAP/HR模块相关/HR开发相关知识点.md)

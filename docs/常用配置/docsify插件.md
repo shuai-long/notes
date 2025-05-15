@@ -34,5 +34,37 @@
 <!-- tag-list -->
 ```
 
+#### **Flexible Alerts**
+
+[GitHub地址](https://github.com/fzankl/docsify-plugin-flexible-alerts)
+
+- Note
+
+  ```markdown
+  > [!NOTE]
+  > An alert of type 'note' using global style 'callout'.
+  ```
+
+- Tip
+
+  ```markdown
+  > [!TIP]
+  > An alert of type 'tip' using global style 'callout'.
+  ```
+
+- Warning
+
+  ```markdown
+  > [!WARNING]
+  > An alert of type 'warning' using global style 'callout'.
+  ```
+
+- Attention
+
+  ```markdown
+  > [!ATTENTION]
+  > An alert of type 'attention' using global style 'callout'.
+  ```
+
 <!-- tabs:end -->
 

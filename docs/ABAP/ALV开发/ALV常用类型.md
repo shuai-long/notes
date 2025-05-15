@@ -535,6 +535,13 @@ if lv_exit eq 'X'.
 endif.
 ```
 
+<!-- tab:DEMO展示 -->
+
+```abap
+select * into table @data(lt_acdoca) from acdoca up to 10 rows.
+cl_demo_output=>display_data( lt_acdoca ).
+```
+
 <!-- tabs:end -->
 
 ## 复合ALV
@@ -1195,3 +1202,154 @@ endmodule.                 " USER_COMMAND_0100  INPUT
 ```
 
 <!-- tabs:end -->
+
+## HTML展示
+
+<!-- tabs:start -->
+
+<!-- tab:URL展示 -->
+
+- 变量定义
+
+  ```abap
+  data: go_html_viewer type ref to cl_gui_html_viewer,
+        gv_url.        type char1024.
+  ```
+
+- 定义事件并实现
+
+  ```abap
+  methods handle_sapevent 
+  	for event sapevent of cl_gui_html_viewer
+      importing
+        action
+        frame
+        getdata
+        postdata
+        query_table.
+  ```
+
+  ```abap
+  method handle_sapevent.
+  
+    data:lv_str type string.
+    data:lt_postdata type cnht_post_data_tab.
+    data:lt_edquery type cnht_query_table.
+    lv_str = 'action:' && action
+      && ';frame' && frame
+      && ';getdata' && getdata.
+    lt_postdata = postdata.
+    lt_edquery = query_table.
+  
+    if lt_postdata is not initial.
+      read table lt_postdata into data(ls_postdata) index 1.
+    endif.
+  
+    lv_str = lv_str && ';' && ls_postdata.
+  
+    loop at lt_edquery into data(ls_edquery).
+      lv_str = lv_str && ';name='
+        && ls_edquery-name
+        && '-'
+        && ls_edquery-value.
+    endloop.
+  
+    message lv_str type 'I'.
+  
+  endmethod.
+  ```
+
+- 实例化对象并注册事件
+
+  ```abap
+  if go_html_viewer is initial.
+  
+    go_html_viewer = new cl_gui_html_viewer( parent = cl_gui_container=>default_screen ).
+  
+    data:lt_events type cntl_simple_events.
+    lt_events = value #( appl_event = 'X' ( eventid = cl_gui_html_viewer=>m_id_sapevent ) ).
+    go_html_viewer->set_registered_events( events = lt_events ).
+  
+    set handler handle_sapevent for go_html_viewer.
+  
+    go_html_viewer->show_url( gv_url ).
+  
+  endif.
+  ```
+
+<!-- tab:模版展示 -->
+
+- 变量定义
+
+  ```abap
+  data: go_html_viewer type ref to cl_gui_html_viewer,
+        gt_html_table  type swww_t_html_table,
+        gt_merge_table type swww_t_merge_table,
+        gv_template    type swww_t_template_name value 'ZHRR013_01'.
+  ```
+
+- 填充替换的变量表: `gt_merge_table`
+
+  以下是一个json填充的demo：
+
+  ```abap
+  replace all occurrences of 'null' in gv_json with space.
+  append initial line to gt_merge_table assigning field-symbol(<fs_merge_line>).
+  <fs_merge_line>-name = '!TREEDATA!'.
+  <fs_merge_line>-command = 'A'.
+  split gv_json at ',' into table <fs_merge_line>-html.
+  loop at <fs_merge_line>-html assigning field-symbol(<fs_html>).
+    if sy-tabix eq lines( <fs_merge_line>-html ).
+      continue.
+    endif.
+    <fs_html>-line = <fs_html>-line && ','.
+  endloop.
+  
+  append initial line to gt_merge_table assigning <fs_merge_line>.
+  <fs_merge_line>-name = '!TREEDATA!'.
+  <fs_merge_line>-command = 'R'.
+  ```
+
+  > [!Note] 
+  >
+  > `swww_t_merge_table`结构如下：
+  >
+  > - `name`: placeholder: '<!list!>'
+  > - `command`: 
+  >   - ' ' - replace placeholder line(default)
+  >   - 'b' - insert before placeholder line
+  >   - 'a' - insert after placeholder line
+  >   - 'r' - replace placeholder only
+  > - `html`: HTML code to be inserted.(html like w3html occurs 100)
+
+- 实例化对象（可按需注册事件）
+
+  ```abap
+  data: lv_url type char1024.
+  
+  if go_html_viewer is initial.
+    go_html_viewer = new #( parent = cl_gui_container=>default_screen ).
+  	
+    go_html_viewer->load_html_document(
+      exporting
+        document_id            = gv_template
+        language               = '1'
+      importing
+        assigned_url           = lv_url
+      changing
+        merge_table            = gt_merge_table
+      exceptions
+        document_not_found     = 1
+        dp_error_general       = 2
+        dp_invalid_parameter   = 3
+        html_syntax_notcorrect = 4
+        others                 = 5
+    ).
+  
+    go_html_viewer->show_data( lv_url ).
+  
+  endif.
+  ```
+
+<!-- tabs:end -->
+
