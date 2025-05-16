@@ -183,7 +183,7 @@ function dashboardPlugin(t, e) {
     }
     return (
       Array.isArray(r) && (r = r.join(" ⋅ ")),
-      (n += `<a class="toc-page-display-a" id="${e}" href="${l}" target="_blank">\n            <div class="toc-page-display-div" id="${e}">\n                <div class="toc-page-display-title-img" id="${e}">\n                    <center>\n                        <img class="ignore-view-full-image-img" src="${c}">\n                    </center>\n                </div>\n                <div class="toc-page-display-title-div" id="${e}">\n                    ${o}\n                </div>`),
+      (n += `<a class="toc-page-display-a" id="${e}" href="${l}">\n            <div class="toc-page-display-div" id="${e}">\n                <div class="toc-page-display-title-img" id="${e}">\n                    <center>\n                        <img class="ignore-view-full-image-img" src="${c}">\n                    </center>\n                </div>\n                <div class="toc-page-display-title-div" id="${e}">\n                    ${o}\n                </div>`),
       d &&
         (n += `\n                <div class="toc-page-display-subtitle-div" id="${e}">\n                    ${s}\n                </div>`),
       (n += `\n                <div class="toc-page-display-date-div" id="${e}">\n                    ${i} &nbsp;&nbsp; ${r}\n                </div>\n            </div>\n        </a>`),
