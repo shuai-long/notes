@@ -1,7 +1,7 @@
 
 ## 权限检查
 
-区别于常用的 PFCG 权限控制模式，结构化权限控制以组织结构对象为控制对象，并可以控制评估路径（根据评估路径，可获取不同的结构化数据）。然后再分配给特定的人员。权限控制更精准的方便。[官方帮助文档](https://help.sap.com/docs/SAP_S4HANA_ON-PREMISE/c6c3ffd90792427a9fee1a19df5b0925/6903dd5321e8424de10000000a174cb4.html),[参考文档1](https://blog.csdn.net/ROYHAO/article/details/132556810)
+区别于常用的 PFCG 权限控制模式，结构化权限控制以组织结构对象为控制对象，并可以控制评估路径（根据评估路径，可获取不同的结构化数据）。然后再分配给特定的人员。权限控制更精准的方便。[官方帮助文档](https://help.sap.com/docs/SAP_S4HANA_ON-PREMISE/c6c3ffd90792427a9fee1a19df5b0925/6903dd5321e8424de10000000a174cb4.html),[参考链接1](https://blog.csdn.net/ROYHAO/article/details/132556810)[参考链接二](https://blog.sina.com.cn/s/blog_6fe5fac90102ys87.html)
 
 <!-- tabs:start -->
 
@@ -28,7 +28,6 @@
   | `P`    | 过期     | 1900.01.01 - 系统当前日期                     |
   | `F`    | 未来     | 系统当前日期 - 9999.12.31                     |
 
-  
 
 ### 分配权限参数文件，
 
@@ -79,13 +78,64 @@ call function 'RH_STRU_AUTHORITY_CHECK'
   | `P_PCR`   | 校验工资核算范围的权限                   | ABRKS：MS<br/>ACTVT：*                                       |
   | `P_PERNR` | 校验人员编号权限                         | AUTHC：\*<br/>PSIGN：\*<br/>INFTY：\* <br/>SUBTY：\*         |
 
-  
 
 <!-- tab:PFCG权限函数 -->
 
-```abap
+- 基本权限检查
 
-```
+  ```abap
+  data: lv_fcode type string,
+        lv_plvar type string,
+        lv_otype type string,
+        lv_infty type string,
+        lv_subty type string,
+        lv_istat type string.
+  
+  call function 'RH_BASE_AUTHORITY_CHECK'
+    exporting
+      fcode             = lv_fcode  "默认DISP: DISP(显示) CUTI(定界) INSE(创建) DELO(删除) 具体值可查看T77FC
+      plvar             = lv_plvar  "计划版本: 默认 01
+      otype             = lv_otype  "对象类型: O/S/P
+      infty             = lv_infty  "信息类型:
+      subty             = lv_subty  "子类型:
+      istat             = lv_istat  "
+    exceptions
+      no_base_authority = 1
+      others            = 2.
+  
+  ```
+
+- PA权限检查
+
+  ```abap
+  DATA: lv_tclas TYPE pspar-tclas,
+        lt_i0001 TYPE STANDARD TABLE OF p0001,
+        lv_pernr TYPE prelp-pernr,
+        lv_infty TYPE prelp-infty,
+        lv_subty TYPE prelp-subty,
+        lv_begda TYPE prelp-begda,
+        lv_endda TYPE prelp-endda,
+        lv_level TYPE authc_d,
+        lv_uname TYPE syuname.
+  
+  CALL FUNCTION 'HR_CHECK_AUTHORITY_INFTY'
+    EXPORTING
+      tclas            = lv_tclas  "默认A
+      pernr            = lv_pernr
+      infty            = lv_infty
+      subty            = lv_subty
+      begda            = lv_begda
+      endda            = lv_endda
+      level            = lv_level  "默认R
+      uname            = lv_uname 
+    TABLES
+      i0001            = lt_i0001
+    EXCEPTIONS
+      no_authorization = 1
+      internal_error   = 2
+      OTHERS           = 3.
+  
+  ```
 
 <!-- tabs:end -->
 
