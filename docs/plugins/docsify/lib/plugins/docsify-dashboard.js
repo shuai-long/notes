@@ -239,7 +239,7 @@ function dashboardPlugin(t, e) {
     let tagsHtml = '';
     if (r) {
       const tags = Array.isArray(r) ? r : typeof r === 'string' ? r.split(' ⋅ ') : [];
-      tagsHtml = `<div class="toc-tags-container"><ul style="list-style: none;padding: 0;margin: 0;display: flex;gap: 8px;flex-wrap: wrap;">${tags.map(tag => `<li style="background: #f0f0f0;padding: 4px 8px;border-radius: 4px;font-size: 0.9em;">${tag}</li>`).join('')}</ul></div>`;
+      tagsHtml = `<div class="toc-tags-container"><ul style="list-style: none;padding: 0;margin: 0;display: flex;gap: 8px;flex-wrap: wrap;">${tags.map(tag => `<li style="background: #f0f0f0;padding: 4px 8px;border-radius: 4px;font-size: calc(1rem * 0.9);margin-right: .5em;">${tag}</li>`).join('')}</ul></div>`;
     }
 
     // 修改后的HTML结构
