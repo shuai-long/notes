@@ -20,6 +20,7 @@
     - [HR常用函数](ABAP/HR模块相关/HR常用函数.md)
     - [HR开发相关知识点](ABAP/HR模块相关/HR开发相关知识点.md)
     - [HR开发相关知识点.pdf](ABAP/HR模块相关/HR开发相关知识点.pdf.md)
+    - [HR权限检查](ABAP/HR模块相关/HR权限检查.md)
     - [HR逻辑数据库](ABAP/HR模块相关/HR逻辑数据库.md)
     - [薪资模拟运行获取结果](ABAP/HR模块相关/薪资模拟运行获取结果.md)
   -  OO开发 

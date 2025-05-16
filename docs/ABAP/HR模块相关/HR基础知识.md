@@ -11,43 +11,9 @@
 
   
 
-## 开发使用函数
-
-### 读取组织架构
+## 读取组织架构
 
 <!-- tabs:start -->
-
-<!-- tab:参数解释 -->
-
-<!-- tabs:start -->
-
-<!-- tab:Exporting -->
-
-| 参数             | 描述                                                         |
-| ---------------- | ------------------------------------------------------------ |
-| act_otype        | 对象类型 O/S/P                                               |
-| act_objid        | 对象编号                                                     |
-| act_wegid        | 评估路径                                                     |
-| act_int_flag     | ???未知                                                      |
-| act_plvar        | 活动版本: 01                                                 |
-| act_begda        | 开始日期                                                     |
-| act_endda        | 结束日期                                                     |
-| act_tdepth       | 取数层级,默认为0取全部层级,(一般自身算一层,若只读下一层则填2) |
-| act_tflag        | 提供文本,默认 'X'                                            |
-| act_vflag        | 提供关系信息,默认'X'                                         |
-| authority_check  | 权限检查,默认'X'                                             |
-| text_buffer_fill | ????未知                                                     |
-| buffer_mode      | ????未知                                                     |
-
-<!-- tab:Tables -->
-
-| 参数         | 描述                                     |
-| ------------ | ---------------------------------------- |
-| result_tab   | 结果表:所有对象                          |
-| result_objec | 结果表:所有对象的基础信息(例如:文本信息) |
-| result_struc | 结果表:所有对象的层次架构关系            |
-
-<!-- tabs:end -->
 
 <!-- tab:代码示例 -->
 
@@ -71,23 +37,23 @@ data:lv_act_plvar        type objec-plvar,
 
 call function 'RH_STRUC_GET'
   exporting
-    act_otype        = lv_act_otype        
-    act_objid        = lv_act_objid        
-    act_wegid        = lv_act_wegid         
-    act_int_flag     = lv_act_int_flag      
-    act_plvar        = lv_act_plvar        
-    act_begda        = lv_act_begda        
-    act_endda        = lv_act_endda        
-    act_tdepth       = lv_act_tdepth        
-    act_tflag        = lv_act_tflag        
-    act_vflag        = lv_act_vflag        
-    authority_check  = lv_authority_check   
-    text_buffer_fill = lv_text_buffer_fill  
-    buffer_mode      = lv_buffer_mode       
+    act_otype        = lv_act_otype        "对象类型 O/S/P
+    act_objid        = lv_act_objid        "对象编号
+    act_wegid        = lv_act_wegid        "评估路径
+    act_int_flag     = lv_act_int_flag     "???未知
+    act_plvar        = lv_act_plvar        "活动版本: 01
+    act_begda        = lv_act_begda        "开始日期
+    act_endda        = lv_act_endda        "结束日期
+    act_tdepth       = lv_act_tdepth       "取数层级,默认为0取全部层级,(一般自身算一层,若只读下一层则填2)
+    act_tflag        = lv_act_tflag        "提供文本,默认 'X'
+    act_vflag        = lv_act_vflag        "提供关系信息,默认'X'
+    authority_check  = lv_authority_check  "权限检查,默认'X'
+    text_buffer_fill = lv_text_buffer_fill "????未知
+    buffer_mode      = lv_buffer_mode      "????未知
   tables
-    result_tab       = lt_result_tab       
-    result_objec     = lt_result_objec     
-    result_struc     = lt_result_struc     
+    result_tab       = lt_result_tab        "结果表:所有对象
+    result_objec     = lt_result_objec      "结果表:所有对象的基础信息(例如:文本信息)
+    result_struc     = lt_result_struc      "结果表:所有对象的层次架构关系
   exceptions
     no_plvar_found   = 1
     no_entry_found   = 2
