@@ -56,9 +56,17 @@
         // 节点移动逻辑保持不变
         const nodesToMove = []
         let nextElem = header.nextElementSibling
-        while (nextElem && !nextElem.matches('h1, h2, h3, h4, h5, h6')) {
-          nodesToMove.push(nextElem)
-          nextElem = nextElem.nextElementSibling
+        // while (nextElem && !nextElem.matches('h1, h2, h3, h4, h5, h6')) {
+        //   nodesToMove.push(nextElem)
+        //   nextElem = nextElem.nextElementSibling
+        // }
+        while (nextElem) {
+          if (nextElem.matches('h1, h2, h3, h4, h5, h6') ||
+            nextElem.classList.contains('docsify-pagination-container')) {
+            break;
+          }
+          nodesToMove.push(nextElem);
+          nextElem = nextElem.nextElementSibling;
         }
         header.parentNode.insertBefore(content, header.nextSibling)
         nodesToMove.forEach(node => content.appendChild(node))
