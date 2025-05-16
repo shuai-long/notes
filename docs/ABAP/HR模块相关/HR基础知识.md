@@ -23,21 +23,21 @@
 
 <!-- tab:Exporting -->
 
-| 参数             | 描述                                                      |
-| ---------------- | --------------------------------------------------------- |
-| act_otype        | 对象类型 O/S/P                                            |
-| act_objid        | 对象编号                                                  |
-| act_wegid        | 评估路径                                                  |
-| act_int_flag     | ???未知                                                   |
-| act_plvar        | 活动版本: 01                                              |
-| act_begda        | 开始日期                                                  |
-| act_endda        | 结束日期                                                  |
-| act_tdepth       | 层级,默认为0(取全部层级,一般自身算一层,若只读下一层则填2) |
-| act_tflag        | 提供文本,默认 'X'                                         |
-| act_vflag        | 提供关系信息,默认'X'                                      |
-| authority_check  | 权限检查,默认'X'                                          |
-| text_buffer_fill | ????未知                                                  |
-| buffer_mode      | ????未知                                                  |
+| 参数             | 描述                                                         |
+| ---------------- | ------------------------------------------------------------ |
+| act_otype        | 对象类型 O/S/P                                               |
+| act_objid        | 对象编号                                                     |
+| act_wegid        | 评估路径                                                     |
+| act_int_flag     | ???未知                                                      |
+| act_plvar        | 活动版本: 01                                                 |
+| act_begda        | 开始日期                                                     |
+| act_endda        | 结束日期                                                     |
+| act_tdepth       | 取数层级,默认为0取全部层级,(一般自身算一层,若只读下一层则填2) |
+| act_tflag        | 提供文本,默认 'X'                                            |
+| act_vflag        | 提供关系信息,默认'X'                                         |
+| authority_check  | 权限检查,默认'X'                                             |
+| text_buffer_fill | ????未知                                                     |
+| buffer_mode      | ????未知                                                     |
 
 <!-- tab:Tables -->
 
