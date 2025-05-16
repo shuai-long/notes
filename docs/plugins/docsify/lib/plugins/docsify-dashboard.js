@@ -3,8 +3,8 @@ function plugin(t, e) {
     return Number.isNaN(t - "0")
       ? "&nbsp"
       : 8 !== t.length
-      ? "&nbsp"
-      : t.substring(0, 4) + "-" + t.substring(4, 6) + "-" + t.substring(6, 8);
+        ? "&nbsp"
+        : t.substring(0, 4) + "-" + t.substring(4, 6) + "-" + t.substring(6, 8);
   }
   function a() {
     p
@@ -77,9 +77,9 @@ function plugin(t, e) {
         "toc-paginator-input"
       )),
       tocPaginatorInputDiv.length > 0 &&
-        ((tocPaginatorInputDiv = tocPaginatorInputDiv[0]),
+      ((tocPaginatorInputDiv = tocPaginatorInputDiv[0]),
         tocPaginatorInputDiv.hasChildNodes() &&
-          (tocPaginatorInputDiv.childNodes[0].value = h)),
+        (tocPaginatorInputDiv.childNodes[0].value = h)),
       (document.scrollingElement.scrollTop = 0);
   }
   function c() {
@@ -137,10 +137,60 @@ function plugin(t, e) {
             e.href.split("#")[1] === t &&
             (document.title != e.textContent &&
               (document.title = e.textContent),
-            !0)
+              !0)
         );
     });
 }
+// function dashboardPlugin(t, e) {
+//   function n(t) {
+//     return (
+//       t.sort((t, e) => {
+//         let n = t.time.replace(/\./g, "/"),
+//           a = e.time.replace(/\./g, "/"),
+//           i = new Date(n),
+//           o = new Date(a);
+//         return o - i;
+//       }),
+//       t
+//     );
+//   }
+//   function a(t, e) {
+//     return Object.keys(t).indexOf(e) > -1;
+//   }
+//   function i(t, e, n) {
+//     let a = "",
+//       i = 1;
+//     Math.ceil(t.length / e);
+//     for (let s = 0; s < t.length; s += e) {
+//       const r = t.slice(s, s + e);
+//       (a += `\n\n#### **${i}**\n\n<div class="toc-page-div">\n`),
+//         r.forEach((t) => {
+//           a += o(t, n);
+//         }),
+//         (a += "</div>\n\n"),
+//         i++;
+//     }
+//     return a;
+//   }
+// function o(t, e) {
+//   d = a(t, "subtitle");
+//   let n = "";
+//   if (d)
+//     var { time: i, title: o, subtitle: s, tag: r, image: c, href: l } = t;
+//   else {
+//     var { time: i, title: o, tag: r, image: c, href: l } = t;
+//     "list" === e && ((s = "&nbsp;"), (d = !0));
+//   }
+//   return (
+//     Array.isArray(r) && (r = r.join(" ⋅ ")),
+//     (n += `<a class="toc-page-display-a" id="${e}" href="${l}">\n            <div class="toc-page-display-div" id="${e}">\n                <div class="toc-page-display-title-img" id="${e}">\n                    <center>\n                        <img class="ignore-view-full-image-img" src="${c}">\n                    </center>\n                </div>\n                <div class="toc-page-display-title-div" id="${e}">\n                    ${o}\n                </div>`),
+//     d &&
+//       (n += `\n                <div class="toc-page-display-subtitle-div" id="${e}">\n                    ${s}\n                </div>`),
+//     (n += `\n                <div class="toc-page-display-date-div" id="${e}">\n                    ${i} &nbsp;&nbsp; ${r}\n                </div>\n            </div>\n        </a>`),
+//     n
+//   );
+// }
+
 function dashboardPlugin(t, e) {
   function n(t) {
     return (
@@ -154,9 +204,11 @@ function dashboardPlugin(t, e) {
       t
     );
   }
+
   function a(t, e) {
     return Object.keys(t).indexOf(e) > -1;
   }
+
   function i(t, e, n) {
     let a = "",
       i = 1;
@@ -172,6 +224,7 @@ function dashboardPlugin(t, e) {
     }
     return a;
   }
+
   function o(t, e) {
     d = a(t, "subtitle");
     let n = "";
@@ -181,15 +234,35 @@ function dashboardPlugin(t, e) {
       var { time: i, title: o, tag: r, image: c, href: l } = t;
       "list" === e && ((s = "&nbsp;"), (d = !0));
     }
-    return (
-      Array.isArray(r) && (r = r.join(" ⋅ ")),
-      (n += `<a class="toc-page-display-a" id="${e}" href="${l}">\n            <div class="toc-page-display-div" id="${e}">\n                <div class="toc-page-display-title-img" id="${e}">\n                    <center>\n                        <img class="ignore-view-full-image-img" src="${c}">\n                    </center>\n                </div>\n                <div class="toc-page-display-title-div" id="${e}">\n                    ${o}\n                </div>`),
-      d &&
-        (n += `\n                <div class="toc-page-display-subtitle-div" id="${e}">\n                    ${s}\n                </div>`),
-      (n += `\n                <div class="toc-page-display-date-div" id="${e}">\n                    ${i} &nbsp;&nbsp; ${r}\n                </div>\n            </div>\n        </a>`),
-      n
-    );
+
+    // 处理标签为列表
+    let tagsHtml = '';
+    if (r) {
+      const tags = Array.isArray(r) ? r : typeof r === 'string' ? r.split(' ⋅ ') : [];
+      tagsHtml = `<div class="toc-tags-container"><ul>${tags.map(tag => `<li>${tag}</li>`).join('')}</ul></div>`;
+    }
+
+    // 修改后的HTML结构
+    n += `<a class="toc-page-display-a" id="${e}" href="${l}">
+            <div class="toc-page-display-div" id="${e}">
+                <div class="toc-page-display-title-img" id="${e}">
+                    <center>
+                        <img class="ignore-view-full-image-img" src="${c}">
+                    </center>
+                </div>
+                <div class="toc-content-wrapper">
+                    <div class="toc-title-time">
+                        <div class="toc-page-title">${o}</div>
+                        <div class="toc-page-time">${i}</div>
+                    </div>
+                    ${d ? `<div class="toc-page-subtitle">${s}</div>` : ''}
+                    ${tagsHtml}
+                </div>
+            </div>
+        </a>`;
+    return n;
   }
+
   function s(t) {
     return g.filter((e) => !(!e || !e.tag) && e.tag.includes(t));
   }
@@ -199,11 +272,11 @@ function dashboardPlugin(t, e) {
       g.forEach((e) => {
         "object" == typeof e.tag && e.tag.length > 0
           ? e.tag.forEach((e) => {
-              t.includes(e) || t.push(e);
-            })
+            t.includes(e) || t.push(e);
+          })
           : "string" == typeof e.tag &&
-            e.tag.length > 0 &&
-            (t.includes(e.tag) || t.push(e.tag));
+          e.tag.length > 0 &&
+          (t.includes(e.tag) || t.push(e.tag));
       }),
       t
     );
@@ -212,8 +285,8 @@ function dashboardPlugin(t, e) {
     const t = window.location.href;
     if (
       ((hasTags = t.includes("tags")),
-      (tagPageDiv = document.getElementsByClassName("markdown-section")[0]),
-      !hasTags)
+        (tagPageDiv = document.getElementsByClassName("markdown-section")[0]),
+        !hasTags)
     )
       return;
     var e = t.split("?tag=")[1];
@@ -248,43 +321,43 @@ function dashboardPlugin(t, e) {
       const n = JSON.parse(e.response);
       return (f[t] = n);
     };
-    t.beforeEach((t) => {
-      const e = [],
-        a = "___CODE_BLOCK_";
-      t = t.replace(
-        /```[\s\S]*?```/g,
-        (t) => (e.push(t), `${a}${e.length - 1}___`)
-      );
-      const o = /<!--\s*dashboard:\s*([^\s]+)(?:\s+(.+?))?\s*-->/g;
-      return (
-        (t = t.replace(o, (t, e, a) => {
-          try {
-            const t = {};
-            a &&
-              a.split(/\s+/).forEach((e) => {
-                const [n, a] = e.split("=");
-                n && void 0 !== a && (t[n] = a);
-              });
-            const o = t.numTabContent
-                ? parseInt(t.numTabContent, 10)
-                : u.numTabContent || 3,
-              s = t.theme || h;
-            let r = b(e);
-            return v && (r = n(r)), i(r, o, s);
-          } catch (t) {
-            return (
-              console.error(`Failed to process ${e}:`, t),
-              "<!-- Dashboard load failed -->"
-            );
-          }
-        })),
-        (t = t.replace(
-          new RegExp(`${a}(\\d+)___`, "g"),
-          (t, n) => e[parseInt(n, 10)]
-        )),
-        t
-      );
-    }),
+  t.beforeEach((t) => {
+    const e = [],
+      a = "___CODE_BLOCK_";
+    t = t.replace(
+      /```[\s\S]*?```/g,
+      (t) => (e.push(t), `${a}${e.length - 1}___`)
+    );
+    const o = /<!--\s*dashboard:\s*([^\s]+)(?:\s+(.+?))?\s*-->/g;
+    return (
+      (t = t.replace(o, (t, e, a) => {
+        try {
+          const t = {};
+          a &&
+            a.split(/\s+/).forEach((e) => {
+              const [n, a] = e.split("=");
+              n && void 0 !== a && (t[n] = a);
+            });
+          const o = t.numTabContent
+            ? parseInt(t.numTabContent, 10)
+            : u.numTabContent || 3,
+            s = t.theme || h;
+          let r = b(e);
+          return v && (r = n(r)), i(r, o, s);
+        } catch (t) {
+          return (
+            console.error(`Failed to process ${e}:`, t),
+            "<!-- Dashboard load failed -->"
+          );
+        }
+      })),
+      (t = t.replace(
+        new RegExp(`${a}(\\d+)___`, "g"),
+        (t, n) => e[parseInt(n, 10)]
+      )),
+      t
+    );
+  }),
     t.doneEach(() => {
       c();
     });
