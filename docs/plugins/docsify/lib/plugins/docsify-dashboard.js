@@ -141,55 +141,6 @@ function plugin(t, e) {
         );
     });
 }
-// function dashboardPlugin(t, e) {
-//   function n(t) {
-//     return (
-//       t.sort((t, e) => {
-//         let n = t.time.replace(/\./g, "/"),
-//           a = e.time.replace(/\./g, "/"),
-//           i = new Date(n),
-//           o = new Date(a);
-//         return o - i;
-//       }),
-//       t
-//     );
-//   }
-//   function a(t, e) {
-//     return Object.keys(t).indexOf(e) > -1;
-//   }
-//   function i(t, e, n) {
-//     let a = "",
-//       i = 1;
-//     Math.ceil(t.length / e);
-//     for (let s = 0; s < t.length; s += e) {
-//       const r = t.slice(s, s + e);
-//       (a += `\n\n#### **${i}**\n\n<div class="toc-page-div">\n`),
-//         r.forEach((t) => {
-//           a += o(t, n);
-//         }),
-//         (a += "</div>\n\n"),
-//         i++;
-//     }
-//     return a;
-//   }
-// function o(t, e) {
-//   d = a(t, "subtitle");
-//   let n = "";
-//   if (d)
-//     var { time: i, title: o, subtitle: s, tag: r, image: c, href: l } = t;
-//   else {
-//     var { time: i, title: o, tag: r, image: c, href: l } = t;
-//     "list" === e && ((s = "&nbsp;"), (d = !0));
-//   }
-//   return (
-//     Array.isArray(r) && (r = r.join(" ⋅ ")),
-//     (n += `<a class="toc-page-display-a" id="${e}" href="${l}">\n            <div class="toc-page-display-div" id="${e}">\n                <div class="toc-page-display-title-img" id="${e}">\n                    <center>\n                        <img class="ignore-view-full-image-img" src="${c}">\n                    </center>\n                </div>\n                <div class="toc-page-display-title-div" id="${e}">\n                    ${o}\n                </div>`),
-//     d &&
-//       (n += `\n                <div class="toc-page-display-subtitle-div" id="${e}">\n                    ${s}\n                </div>`),
-//     (n += `\n                <div class="toc-page-display-date-div" id="${e}">\n                    ${i} &nbsp;&nbsp; ${r}\n                </div>\n            </div>\n        </a>`),
-//     n
-//   );
-// }
 
 function dashboardPlugin(t, e) {
   function n(t) {
@@ -239,7 +190,7 @@ function dashboardPlugin(t, e) {
     let tagsHtml = '';
     if (r) {
       const tags = Array.isArray(r) ? r : typeof r === 'string' ? r.split(' ⋅ ') : [];
-      tagsHtml = `<div class="toc-tags-container"><ul style="list-style: none;padding: 0;margin: 0;display: flex;gap: 8px;flex-wrap: wrap;">${tags.map(tag => `<li style="background: #f0f0f0;padding: 4px 8px;border-radius: 4px;font-size: calc(1rem * 0.9);margin-right: .5em;">${tag}</li>`).join('')}</ul></div>`;
+      tagsHtml = `<div class="toc-tags-container"><ul style="list-style: none;padding: 0;margin-bottom: 0.5em;display: flex;gap: 8px;flex-wrap: wrap;">${tags.map(tag => `<li style="background: #f0f0f0;padding: 4px 8px;border-radius: 4px;font-size: calc(1rem * 0.9);margin-right: .5em;">${tag}</li>`).join('')}</ul></div>`;
     }
 
     // 修改后的HTML结构
