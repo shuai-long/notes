@@ -367,6 +367,99 @@
 
   <!-- tab:成本分配 -->
 
+  0014和0015中成本分配存储的表是:`ASSOB`和`ASSHR`. 其数据库视图是`ASSOB_HR`
+
+  - 新增时获取成本分配号码
+
+    ```abap
+    data: lv_range    like inri-nrrangenr value '01',
+          lv_object   like inri-object    value 'PD_SEQ_NR',
+          lv_quantity like inri-quantity  value 1,
+          lv_retcode  like inri-returncode,
+          lv_number   like pdsnr-pdsnr.
+    
+    call function 'NUMBER_GET_NEXT'
+      exporting
+        object                  = lv_object
+        nr_range_nr             = lv_range
+        quantity                = lv_quantity
+      importing
+        number                  = lv_number
+        returncode              = lv_retcode
+      exceptions
+        object_not_found        = 1
+        interval_not_found      = 2
+        number_range_not_intern = 3.
+    ```
+
+  - 更新成本分配
+
+    ```abap
+    data: lv_opera type syst_msgty value 'U', "U: 更改 I:插入 D:删除
+          lv_pdsnr type pdsnr-pdsnr, "要操作的编号
+          ls_pref  type pref. "操作的数据
+    
+    ls_pref = value #( pernr = '70023000'
+                       infty = '0015'
+                       subty = '3007'
+                       begda = '20220124'
+                       endda = '20220124'
+                       bukrs = '1100'
+                       kokrs = 'CCTC'
+                       posnr = '00014503'
+                       kostl = '' ).
+    
+    call function 'RP_PLANT_DATA_UPDATE_TABLES'
+      exporting
+        ipdsnr                         = lv_pdsnr
+        ipref                          = ls_pref
+        iopera                         = lv_opera
+      exceptions
+        insert_asshr_not_possible      = 1
+        insert_coift_not_possible      = 2
+        insert_assob_not_possible      = 3
+        delete_asshr_not_possible      = 4
+        delete_assob_not_possible      = 5
+        delete_coift_not_possible      = 6
+        update_assob_not_possible      = 7
+        nearly_last_entry_out_of_range = 8
+        last_entry_out_of_number_range = 9
+        no_more_numbers_available      = 10
+        interval_not_found             = 11
+        number_range_not_found         = 12
+        object_not_found               = 13
+        quantity_is_0                  = 14
+        unknown_error                  = 15
+        delete_pdsnr_not_possible      = 16
+        insert_pdsnr_not_possible      = 17
+        insert_teven_more_not_possible = 18
+        delete_teven_more_not_possible = 19
+        others                         = 20.
+    ```
+
+  <!-- tab:信息类型长文本 -->
+
+  - 读取长文本（还可以使用函数：`HR_READ_INFTY_NOTE`）
+
+    ```abap
+    data: lv_tclas    type tclas value 'A',
+          ls_pskey    type pskey,
+          lt_text_tab type hrpad_text_tab.
+    
+    move-corresponding p0552 to ls_pskey.
+    ls_pskey-infty = '0552'.
+    
+    call method cl_hrpa_text_cluster=>read(
+      exporting
+        tclas         = lv_tclas
+        pskey         = ls_pskey
+        no_auth_check = 'X'
+      importing
+        text_tab      = lt_text_tab ).
+    ```
+
+  - 写入长文本（暂未研究），可参考 [Update long text in infotypes](https://blogs.sap.com/2013/04/30/update-long-text-in-infotypes/)、[长文本值未显示在 pa30 屏幕中 |SAP 社区](https://answers.sap.com/questions/7159166/long-text-value-not-displaying-in-pa30-screen.html)
+
   <!-- tab:其他常用函数 -->
 
   | 函数                             | 描述                                                         |
@@ -381,6 +474,145 @@
   |                                  |                                                              |
 
   <!-- tabs:end -->
+
+## PT-时间管理
+
+- **基本概念**
+
+  时间管理模块主要用来管理员工的时间信息、考勤、缺勤、出差、加班等等信息。从SAP HR的角度上看分为正向考勤和逆向考勤。
+
+  - 正向考勤：正向考勤及记录员工所有和时间相关的记录，如上下班打卡记录、缺勤记录、加班记录、出差记录。
+
+  - 逆向考勤：逆向考勤，即不考虑员工的员工的上下班时间，只记录与员工计划工作时间相违背的时间数据。例如加班、缺勤、替班等等。
+
+  在每月计算工资前，需先运行考勤评估（事物码`PT60`），考勤评估过程中，也是用schema来运行计算的。通常情况下正向考勤可参考`TM00`，逆向考勤可参考`TM04`进行调整和修改。
+
+- **常用表**
+
+  - `T552A` : 考勤记录表, 该表按月记录了考勤记录，且每日的考勤记录分别对应`TPR`和`FTK`的字段。类似于0041的日期记录。
+  - `T550A` : 员工每日工作计划表
+
+- **常用函数**
+
+  <!-- tabs:start -->
+
+  <!-- tab:获取日工作计划 -->
+
+  <!-- tabs:start -->
+
+  <!-- tab:获取单人工作计划 -->
+
+  ```abap
+  data: lt_psp           type table of ptpsp,
+        lv_rdclust       type rdclst value 'X',
+        lv_switch_active type c value '0'.
+  call function 'HR_PERSONAL_WORK_SCHEDULE'
+    exporting
+      pernr             = pernr-pernr
+      begda             = pn-begda
+      endda             = pn-endda
+      switch_activ      = lv_switch_active
+      i0001_i0007_error = '0'
+      read_cluster      = lv_rdclust
+    tables
+      i0000             = p0000
+      i0001             = p0001
+      i0002             = p0002
+      i0007             = p0007
+      i2001             = p2001
+      i2002             = p2002
+      i2003             = p2003
+      perws             = lt_psp
+    exceptions
+      error_occured     = 1
+      abort_occured     = 2
+      others            = 3.
+  ```
+
+  <!-- tab:批量获取日工作计划 -->
+
+  ```abap
+  data: lt_pernr  type table of pdpnr ,   "功能模块调用的含人员编号的结构
+        lt_psp    type table of pdpsp,    "包括缺勤/出勤/待命责任等的人员轮班日程表
+        lt_daypsp type table of pdsppsp . " 缺勤/出勤少于一天的人员
+  
+  lt_pernr = value #( ( pernr = '' ) ).
+  call function 'HR_PERSON_READ_WORK_SCHEDULE'
+    exporting
+      begin_date         = pn-begda
+      end_date           = pn-endda
+  *   grouping_dws       =
+  *   grouping_attendence       =
+  *   grouping_substitute       =
+  *   read_from_database = space
+  *   im_read_no_locked_records =
+    tables
+      pernr_tab          = lt_pernr
+      psp                = lt_psp
+      day_psp            = lt_daypsp
+  *  changing
+  *   ch_auth_infty_tab  =
+    exceptions
+      error_in_build_psp = 1
+      others             = 2.
+  ```
+
+  <!-- tabs:end -->
+
+  <!-- tab:读取个人考勤记录 -->
+
+  ```abap
+  data: ls_time_b2 type hrf_tim_b2.
+  call function 'HR_FORMS_TIM_GET_B2_RESULTS'
+    exporting
+      pernr  = pernr-pernr
+      begda  = pn-begda
+      endda  = pn-endda
+    importing
+      tim_b2 = ls_time_b2.
+  ```
+
+  <!-- tab:其他常用函数 -->
+
+  | 函数                          | 描述                     |
+  | ----------------------------- | ------------------------ |
+  | `HR_TIME_RESULTS_IN_INTERVAL` | 读取考勤评估记录(常用)   |
+  | `HR_READ_TIMEDATA_PSP`        | 读取员工每日计划工作时间 |
+  | `HR_HK_DIFF_BT_2_DATES`       | 计算两个日期的差别       |
+  | `MONTH_NAMES_GET`             | 月份名称获取             |
+  | `HOLIDAY_CALENDAR_GET`        | 读取公共假日列表         |
+  | `LAST_DAY_OF_MONTHS`          | 计算指定月份的最后一天   |
+
+  <!-- tabs:end -->
+
+## PY-薪酬管理
+
+- **薪资过账（中国）一般流程**
+
+  ```flow
+  start=>start: 开始
+  step1=>operation: 执行事物代码PC00_M99_PA03_RELEA发布工资。发布成功后，人员基本信息中和工资发放相关的信息类型将不能更改。
+  step2=>operation: 执行事物代码PC00_M28_CALC_SIMU模拟计算工资
+  step3=>operation: 执行事物代码PCOO_M28_CALC，计算工资
+  step4=>operation: 执行事物代码PC0O_M99_PA03_CHECK，检查结果
+  branch1=>condition: 是否需要更正
+  step5=>operation: 调用事物码PC00_M99_PA03_END，退出工资核算
+  step6=>operation: 调用事务码PC00_M99_CIPE，过账
+  step7=>operation: 调用事务码PC00_M99_PA03_CORR-将工资状态改为“更正”
+  step8=>operation: 根据实际情况修改员工信息或者其它配置
+  end=>end: 结束
+  
+  start->step1->step2->step3->step4->branch1
+  branch1(yes)->step7->step8->step2->step3
+  branch1(no)->step5->step6->end
+  
+  ```
+
+  
+
+  
+
+  
 
 ## 读取组织架构
 
@@ -458,14 +690,63 @@ call function 'RH_STRUC_GET'
 
 HR模块常用事物码如下：
 
-| 事物码          | 描述                       | 事物码        | 描述                                               |
-| --------------- | -------------------------- | ------------- | -------------------------------------------------- |
-| `PP01`          | 对象信息维护               | `PP02`        | 对象信息维护（专家模式），每次仅能维护一个信息类型 |
-| `PPOME`/`PPOSE` | 更改/查看组织架构          | `PO10`        | 组织单位维护                                       |
-| `PO13`          | 职位维护                   | `PA20`/`PA30` | 员工个人信息查询/维护                              |
-| `PA40`          | 员工事件维护               | `PU00`        | 删除员工信息                                       |
-| `OOSP`          | 创建结构化权限参数文件     | `OOSB`        | 分配结构化权限参数文件                             |
-| `OOAC`          | 授权权限对象主开关配置使用 | `PU22`        | HR数据归档                                         |
+<!-- tabs:start -->
+
+<!-- tab:OM模块 -->
+
+| 事物码          | 描述                                               |
+| --------------- | -------------------------------------------------- |
+| `PP01`          | 对象信息维护                                       |
+| `PP02`          | 对象信息维护（专家模式），每次仅能维护一个信息类型 |
+| `PPOME`/`PPOSE` | 更改/查看组织架构                                  |
+| `PO10`          | 组织单位维护                                       |
+| `PO13`          | 职位维护                                           |
+|                 |                                                    |
+
+<!-- tab:PA模块 -->
+
+| 事物码        | 描述                  |
+| ------------- | --------------------- |
+| `PA20`/`PA30` | 员工个人信息查询/维护 |
+| `PA40`        | 员工事件维护          |
+| `PU22`        | HR数据归档            |
+| `PU00`        | 删除员工信息          |
+|               |                       |
+
+<!-- tab:PT模块 -->
+
+| 事物码      | 描述             |
+| ----------- | ---------------- |
+| `PT60`      | 时间评估         |
+| `PT61`      | 事件报表         |
+| `PT62`      | 出勤列表         |
+| `PT63`      | 个人工作计划查询 |
+| `PT64`      | 缺勤列表         |
+| `PA51`      | 显示员工时间记录 |
+| `PA61`      | 显示员工日历     |
+| `PT_CLSTB2` | 时间评估结果查询 |
+|             |                  |
+
+<!-- tab:PY模块 -->
+
+| 事物码 | 描述                                                         |
+| ------ | ------------------------------------------------------------ |
+| `PE01` | 模式创建和维护                                               |
+| `PE02` | 计算规则创建和维护                                           |
+| `PE04` | 薪酬函数创建和维护，一般新建的需要放在 include rpcburz0中，可新建一个Z的include，然后form放于其中 |
+| `PDSY` | 说明文档查询和维护                                           |
+|        |                                                              |
+
+<!-- tab:权限 -->
+
+| 事物码 | 描述                       |
+| ------ | -------------------------- |
+| `OOSP` | 创建结构化权限参数文件     |
+| `OOSB` | 分配结构化权限参数文件     |
+| `OOAC` | 授权权限对象主开关配置使用 |
+|        |                            |
+
+<!-- tabs:end -->
 
 <!-- tab:常用表 -->
 
