@@ -587,32 +587,68 @@
 
 ## PY-薪酬管理
 
-- **薪资过账（中国）一般流程**
+- **薪资核算状态**
 
-  ```flow
-  start=>start: 开始
-  step1=>operation: 执行事物代码PC00_M99_PA03_RELEA发布工资。发布成功后，人员基本信息中和工资发放相关的信息类型将不能更改。
-  step2=>operation: 执行事物代码PC00_M28_CALC_SIMU模拟计算工资
-  step3=>operation: 执行事物代码PCOO_M28_CALC，计算工资
-  step4=>operation: 执行事物代码PC0O_M99_PA03_CHECK，检查结果
-  branch1=>condition: 是否需要更正
-  step5=>operation: 调用事物码PC00_M99_PA03_END，退出工资核算
-  step6=>operation: 调用事务码PC00_M99_CIPE，过账
-  step7=>operation: 调用事务码PC00_M99_PA03_CORR-将工资状态改为“更正”
-  step8=>operation: 根据实际情况修改员工信息或者其它配置
-  end=>end: 结束
-  
-  start->step1->step2->step3->step4->branch1
-  branch1(yes)->step7->step8->step2->step3
-  branch1(no)->step5->step6->end
-  
-  ```
+  - 薪资核算状态，`PA03`可查询每个工资范围的核算状态及期间
 
-  
+    | 状态 | 描述                                          |
+    | ---- | --------------------------------------------- |
+    | 1    | 为薪资发放而释放,会锁定相关人员的薪资相关信息 |
+    | 2    | 工资发放改正                                  |
+    | 3    | 退出工资发放                                  |
+    | 4    | 检查发放结果,会锁定相关人员的薪资相关信息     |
 
-  
+  - 存储表
 
-  
+    - `T569U`  工资范围当前状态和核算期间 
+
+    - `T569V`  工资范围工资核算日志 
+
+  - 查询当前工资范围的核算状态
+
+    ```abap
+    select state into @data(lv_state) from t569v where abkrs eq @lv_abkrs and pabrj eq @lv_pabrj and pabrp eq @lv_pabrp.
+    ```
+
+- **获取薪资核算结果**
+
+  1. 调用工资核算程序
+
+     ```abap
+     submit hcncalc0
+      with pnpxabkr = p_xabkr
+      with pnptimra = 'X'
+      with pnptimr9 = ' '
+      with pnppabrp = p_abrp0
+      with pnppabrj = p_abrj0
+      with pnppernr in pnppernr
+      with pnpabkrs in pnpabkrs
+      with schema   = 'ZN28'
+      with tst_on   = 'X'
+      with test     = 'NOUPD/RT/OFF' "程序中有判断 test 中包含 RT 会抛内存出来
+      with ecalled  = 'X'  "保存缓冲区到内存中
+      with sw_spool = ' '  "使用提交启动的计算
+      with prt_prot = ' '  "不打印日志
+      and return.
+     ```
+
+  2. 获取内存拿值
+
+     ```abap
+     data rt type table of pc207 with header line.
+     import rt = rt from memory id 'RT'.
+     free memory id 'RT'.
+     ```
+
+- **获取薪资结果**
+
+  <!-- tabs:start -->
+
+  <!-- tab:调用函数 -->
+
+  <!-- tab:import -->
+
+  <!-- tabs:end -->
 
 ## 读取组织架构
 
@@ -735,7 +771,7 @@ HR模块常用事物码如下：
 | `PE02` | 计算规则创建和维护                                           |
 | `PE04` | 薪酬函数创建和维护，一般新建的需要放在 include rpcburz0中，可新建一个Z的include，然后form放于其中 |
 | `PDSY` | 说明文档查询和维护                                           |
-|        |                                                              |
+| `PA03` | 查询每个工资范围的核算状态及期间                             |
 
 <!-- tab:权限 -->
 
