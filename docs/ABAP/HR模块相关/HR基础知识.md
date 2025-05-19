@@ -610,7 +610,7 @@
     select state into @data(lv_state) from t569v where abkrs eq @lv_abkrs and pabrj eq @lv_pabrj and pabrp eq @lv_pabrp.
     ```
 
-- **获取薪资核算结果**
+- **获取薪资模拟核算结果**
 
   1. 调用工资核算程序
 
@@ -623,6 +623,12 @@
       with pnppabrj = p_abrj0
       with pnppernr in pnppernr
       with pnpabkrs in pnpabkrs
+      
+      "with ocrsn    = p_ocrsn "非周期工资核算的原因
+      "with payty    = p_payty "非周期的工资核算
+      "with payid    = p_payid "非周期的工资核算
+      "with bondt    = p_bondt "非周期的工资核算--非周期工资发放付款日期
+      
       with schema   = 'ZN28'
       with tst_on   = 'X'
       with test     = 'NOUPD/RT/OFF' "程序中有判断 test 中包含 RT 会抛内存出来
@@ -642,11 +648,115 @@
 
 - **获取薪资结果**
 
+  薪资结果的数据类型为`PAY99_RESULT`(国际通用)、`PAYCN_RESULT`(中国),该类型为一个多层次嵌套类型:
+
+  - `PAY99_RESULT-INTER-RT`: 工资核算结果明细表,存储了员工的所有应发,实发,税额等等明细.一般薪酬报表开发中,都从该字表中读取对应的工资明细信息.
+  - `PAY99_RESULT-INTER-BT`:  实际支付金额,银行基本信息
+  - `PAYCN_RESULT-NAT-TCRT`:  税收累计（累计类型：CUMTY，（Y 为按年累计））
+
+  > [!Warning]
+  >
+  > 读取员工某个期间的工资发放明细,类型 PAY99_RESULT / PAYCN_RESULT.一定要设置参数`READ_ONLY_INTERNATIONAL`,才能使用PAY99_RESULT.
+
+  读取员工所有的薪资发放结果`PC261` 
+
+  - `BONDT`:  非周期性发放日期
+
+  - `PAYTY`:  支付类型:  A奖金
+
+  - `FPBEG`:  工资发放期间的开始(历经期)
+
+  - `FPEND`:  工资发放期间的结束 (历经期间)
+
   <!-- tabs:start -->
 
   <!-- tab:调用函数 -->
 
+  ```abap
+  data: lt_rgdir     type table of pc261,
+        lt_payresult type paycn_result,
+        ls_rt        type pc207,
+        lv_nr        type pc261-seqnr.
+  ```
+
+  ```abap
+  call function 'CU_READ_RGDIR'
+    exporting
+      persnr          = ls_data_in-pernr
+    tables
+      in_rgdir        = lt_rgdir
+    exceptions
+      no_record_found = 1
+      others          = 2.
+  ```
+
+  ```abap
+  read table lt_rgdir into gs_rgdir with key fpper = ls_data_in-fpper.
+  if sy-subrc = 0.
+    lv_nr = sy-tabix.
+  
+    call function 'PYXX_READ_PAYROLL_RESULT'
+      exporting
+        clusterid                    = 'CN'
+        employeenumber               = ls_data_in-pernr
+        sequencenumber               = lv_nr
+      changing
+        payroll_result               = lt_payresult
+      exceptions
+        illegal_isocode_or_clusterid = 1
+        error_generating_import      = 2
+        import_mismatch_error        = 3
+        subpool_dir_full             = 4
+        no_read_authority            = 5
+        no_record_found              = 6
+        versions_do_not_match        = 7
+        error_reading_archive        = 8
+        error_reading_relid          = 9
+        others                       = 10.
+  endif.
+  ```
+
   <!-- tab:import -->
+
+  ```abap
+  data: lv_key   type pcl2-srtfd,
+        lv_pernr type pernr_d,
+        lt_rgdir type standard table of pc261,
+        lt_rt    type standard table of pc207,
+        lt_tcrt  type standard table of pc2g5.
+  ```
+
+  ```abap
+   lv_key = |{ ls_alv-pernr alpha = in }|.
+   import rgdir = lt_rgdir from database pcl2(cu) id lv_key.
+  ```
+
+  ```abap
+  loop at lt_rgdir into data(ls_rgdir).
+  	"---------------------> 过滤条件
+  	
+  	"---------------------> 取数
+  	lv_key = |{ lv_pernr }{ ls_rgdir-seqnr }|.
+    import rt = lt_rt from database pcl2(cn) id lv_key.
+    import tcrt = lt_tcrt from database pcl2(cn) id lv_key.	
+  
+  endloop.
+  ```
+
+  > [!Note]
+  >
+  > - `PCL1`  主要存储一些信息类型的文本信息
+  >
+  > - `PCL2`  主要存储员工工资核算结果,时间评估数据
+  > - `PCL3`  待补充
+  > - `PCL4`  待补充
+
+  <!-- tab:其他常用函数 -->
+
+  | 函数                        | 描述                       |
+  | --------------------------- | -------------------------- |
+  | `PYXX_GET_RELID_FROM_PERNR` | 读取员工区域标示和国家分组 |
+  |                             |                            |
 
   <!-- tabs:end -->
 

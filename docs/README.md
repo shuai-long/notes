@@ -1,5 +1,5 @@
 <!-- tabs:start -->
 
-<!-- dashboard: metadata/posts numTabContent=5 -->
+<!-- dashboard: metadata/posts numTabContent=3 -->
 
 <!-- tabs:end -->
