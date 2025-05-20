@@ -917,6 +917,53 @@ HR模块常用事物码如下：
 
 <!-- tabs:start -->
 
+<!-- tab:Others -->
+
+- 信息类型相关: `lv_infty`
+
+  - 可用工资项 `T512Z`
+
+    ```abap
+    select * into table @data(lt_t512z) from t512z where infty eq lv_infty and molga eq '28'.
+    ```
+
+  - 可用子类型 `T591A`
+
+    ```abap
+    select * into table @data(lt_t591a) from t591a where infty eq lv_infty.
+    ```
+
+- 工资项相关
+
+  - 判断工资项是否累加项 `T512W`。*(T54C3是做什么的？)*
+
+    ```abap
+    select single kumul into @data(lv_kumul_raw) from t512w
+      where molga eq '28' and lgart eq @lv_lgart and begda le @sy-datum and endda ge @sy-datum.
+    
+    write lv_kumul_raw to lv_kumul.
+    if lv_kumul+22(1) eq '4'.
+      "第23位为4则为累计项
+    endif.
+    ```
+
+  - 判断工资项是否扣减项 `T511`
+
+    `T511-OPKEN=' '` 付款
+
+    `T511-OPKEN='A'` 扣减
+
+    ```abap
+    select count(*) from t511 where molag = '28' and lgart eq lv_lgart and endda = '99991231'.
+    ```
+
+  - 工资项对于员工子组和人事范围的有效性 `T511`
+
+    - `T511-ABTYZ` 对应员工子组分组 (`V_503_ALL` 查看员工组子组分组)
+    - `T511-WKTYZ` 对应人事子范围分组 (`V_001P_ALL` 查看人事子范围分组)
+
+    ![V_511_B配置视图](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240611174250139.png)
+
 <!-- tab:0000 -->
 
 | 字段    | 描述     | 值表    | 文本表-字段     | 备注                                 |
