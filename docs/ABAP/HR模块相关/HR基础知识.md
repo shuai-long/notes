@@ -964,6 +964,12 @@ HR模块常用事物码如下：
 
     ![V_511_B配置视图](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20240611174250139.png)
 
+- 屏幕控制相关：
+
+  - PA20/PA30 控制屏幕字段显示与否`V_T588M`。
+  - 员工入职函数必填校验：`V_T588MFPROPS` 和 `V_T588MFPROPC`。
+
+
 <!-- tab:0000 -->
 
 | 字段    | 描述     | 值表    | 文本表-字段     | 备注                                                         |
