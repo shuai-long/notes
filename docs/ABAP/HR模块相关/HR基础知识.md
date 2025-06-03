@@ -23,8 +23,9 @@
   <!-- tab:创建对象并创建关系 -->
 
   ```abap
-  data: lt_hri1001 type table of hri1001,
-        ls_hrp1000 type hrp1000.
+  data: lt_hri1001    type table of hri1001,
+        ls_hrp1000    type hrp1000,
+        lv_commit_flg type c.
         
   "--------------------> 创建对象
   call function 'RH_OBJECT_CREATE'
@@ -56,14 +57,22 @@
                         prozt = '000' ).
   call function 'RH_INSERT_INFTY_1001_EXT'
     exporting
-      fcode = 'INSE'
-      vtask = 'S'
+      fcode                   = 'INSE'
+      vtask                   = 'D'
+      commit_flg              = lv_commit_flg
     tables
-      innnn = lt_hri1001.
+      innnn                   = lt_hri1001
+    exceptions
+      no_authorization        = 1
+      error_during_insert     = 2
+      relation_not_reversible = 3
+      corr_exit               = 4
+      begda_greater_endda     = 5
+      others                  = 6.
   ```
-
+  
   <!-- tab:信息类型增删改操作 -->
-
+  
   ```abap
   data: lv_act_fcode       type t77fc-fcode,
         lv_act_infty       type t778t-infty,
@@ -72,7 +81,8 @@
         ls_act_pnnnn       type p0001,
         "lt_act_hrtnnnn     type standard table of hrtxxxx,
         lv_suppress_dialog type pppar-dsupr value '2',
-        lt_act_mess_info   type hrrhad_msg.
+        lt_act_mess_info   type hrrhad_msg,
+        lv_commit_flg      type c.
   
   call function 'RH_PNNNN_MAINTAIN'
     exporting
@@ -87,6 +97,8 @@
       act_endda           = ls_objec-endda
       act_pnnnn           = ls_act_pnnnn
       suppress_dialog     = lv_suppress_dialog
+      act_vtask           = 'D'
+      act_commit_flg      = lv_commit_flg
     importing
       act_mess_info       = lt_act_mess_info
       "tables
@@ -101,24 +113,24 @@
       no_gdate            = 7
       fcode_not_supported = 8.
   ```
-
+  
   <!-- tab:其他常用函数 -->
-
-  | 函数                           | 描述                                                         |
-  | ------------------------------ | ------------------------------------------------------------ |
-  | `HR_ENQUEUE_OBJECT`            | 锁定待操作的OM对象                                           |
-  | `HR_DEQUEUE_OBJECT`            | 解锁待操作的OM对象                                           |
-  | `RH_CLEAR_BUFFER`              | 清空缓存                                                     |
-  | `RH_DELETE_INFTY`              | 删除信息类型数据                                             |
-  | `RH_INSERT_INFTY`              | 信息类型插入数据                                             |
-  | `RH_UPDATE_INFTY`              | 更新信息类型数据                                             |
-  | **`**RH_UPDATE_DATABASE`       | 提交数据库.如果上述`delete/insert/update`需要整体提交,可在调用时设置参数`VTASK='B'`.然后调佣该函数进行提交<br />S:  V:  B:  D: |
-  | ` RH_READ_INFTY`               | 读取OM信息类型数据                                           |
-  | `RH_DELETE_OBJECT`             | 删除组织对象（岗位，单位，部门等）                           |
-  | `RH_READ_INFTY_1000`           | 读取信息类型1000的数据                                       |
-  | `RH_READ_INFTY_1001`           | 读取信息类型1001的数据                                       |
-  | `HR_READ_FOREIGN_OBJECT_TEXT'` | 返回对象文本                                                 |
-
+  
+  | 函数                          | 描述                                                         |
+  | ----------------------------- | ------------------------------------------------------------ |
+  | `HR_ENQUEUE_OBJECT`           | 锁定待操作的OM对象                                           |
+  | `HR_DEQUEUE_OBJECT`           | 解锁待操作的OM对象                                           |
+  | `RH_CLEAR_BUFFER`             | 清空缓存                                                     |
+  | `RH_DELETE_INFTY`             | 删除信息类型数据                                             |
+  | `RH_INSERT_INFTY`             | 信息类型插入数据                                             |
+  | `RH_UPDATE_INFTY`             | 更新信息类型数据                                             |
+  | `RH_UPDATE_DATABASE`          | 提交数据库.如果上述`delete/insert/update`需要整体提交,可在调用时设置参数`VTASK='B'`.然后调佣该函数进行提交 |
+  | ` RH_READ_INFTY`              | 读取OM信息类型数据                                           |
+  | `RH_DELETE_OBJECT`            | 删除组织对象（岗位，单位，部门等）                           |
+  | `RH_READ_INFTY_1000`          | 读取信息类型1000的数据                                       |
+  | `RH_READ_INFTY_1001`          | 读取信息类型1001的数据                                       |
+  | `HR_READ_FOREIGN_OBJECT_TEXT` | 返回对象文本                                                 |
+  
   > [!Note]
   >
   > 拿`RH_INSERT_INFTY`举例，其中参数VTASK有如下几种
@@ -147,97 +159,91 @@
 
   <!-- tab:员工入职 -->
 
-  - 方法定义
+  - 将信息类型转换为PNNNN
 
     ```abap
-    types: begin of ty_pnnnn,
-             infty type infty,
-             pnnnn type ref to data,
-           end of ty_pnnnn,
-           tt_pnnnn type table of ty_pnnnn.
-    methods create_pernr
+    methods append_data_to_pnnnn
       importing
-                is_p0000         type p0000
-                it_pnnnn         type tt_pnnnn optional
-                iv_commit        type c default 'X'
-      exporting
-                ev_pernr         type pernr_d
-      returning value(rv_result) type boole.
+        is_primary_record   type any
+    	  is_secondary_record type any option
+    	changing
+    	  ct_prelp            type prelp_tab.
     ```
-
-  - 方法实现
-
+  
     ```abap
-    method create_pernr.
-    
-      data: lv_employeenumber  type pernr_d,
-            lv_referencepernr  type pernr_d,
-            lv_hiringdate      type begda,
-            lv_actiontype      type massn,
-            lv_reasonforaction type massg,
-            lt_pnnnn_tab       type prelp_tab,
-            lt_pref_tab        type pref_tab,
-            lv_nocommit        type flag,
-            lt_return_tab      type hrpad_return_tab,
-            lt_bapipakey_tab   type hrpad_bapipakey_tab,
-            lv_is_ok           type boole_d.
-    
-      lv_employeenumber = is_p0000-pernr.
-      lv_referencepernr = '00000000'."参考人员编号
-      lv_hiringdate = is_p0000-begda.
-      lv_actiontype = is_p0000-massn.
-      lv_reasonforaction = is_p0000-massg.
-    
-      cl_hr_pnnnn_type_cast=>pnnnn_to_prelp(
-        exporting
-          pnnnn = is_p0000
-        importing
-          prelp = data(ls_prelp) ).
-      ls_prelp-infty = '0000'.
-      append ls_prelp to lt_pnnnn_tab.
-    
-      loop at it_pnnnn into data(ls_pnnnn).
-        assign ls_pnnnn-pnnnn->* to field-symbol(<fs_pnnnn>).
-        if <fs_pnnnn> is assigned.
-          cl_hr_pnnnn_type_cast=>pnnnn_to_prelp(
-            exporting
-              pnnnn = <fs_pnnnn>
-            importing
-              prelp = ls_prelp ).
-          ls_prelp-infty = ls_pnnnn-infty.
-          append ls_prelp to lt_pnnnn_tab.
-          unassign <fs_pnnnn>.
-        endif.
-      endloop.
-    
-      if iv_commit is initial.
-        lv_nocommit = 'X'.
+    method append_data_to_pnnnn.
+      check is_primary_record is not initial.
+      
+      if is_secondary_record is not supplied.
+        cl_hr_pnnnn_type_cast=>pnnnn_to_prelp(
+          exporting
+            pnnnn = is_primary_record
+          importing
+            prelp = data(ls_prelp) ).
+      else.
+        cl_hr_pnnnn_type_cast=>view_to_prelp(
+          exporting
+            primary_record   = is_primary_record
+            secondary_record = is_secondary_record
+          importing
+            prelp            = ls_prelp ).
       endif.
+    
+      append ls_prelp to ct_prelp.
+    endmethod.
+    ```
+  
+  - 员工入职
+  
+    ```abap
+    types: begin of ty_data_in,
+             pernr       type pernr_d,
+             begda       type begda,
+             massn       type massn,
+             massg       type massg,
+             plans       type plans,
+             nocommit    type flag,
+             pnnnn_tab   type prelp_tab,
+          end of ty_data_in.
+          
+    methods hire_employee
+      importing
+        !is_data type ty_data_in.
+    ```
+    
+    ```abap
+    method hire_employee.
+    
+      data: lt_return_tab        type hrpad_return_tab,
+            lt_bapipakey_tab     type hrpad_bapipakey_tab,
+            lv_is_ok             type boole_d,
+            lt_modified_keys_tab type hrpad_pskey_tab.
     
       call function 'HR_PAD_HIRE_EMPLOYEE'
         exporting
-          employeenumber  = lv_employeenumber
-          referencepernr  = lv_referencepernr
-          hiringdate      = lv_hiringdate
-          actiontype      = lv_actiontype
-          reasonforaction = lv_reasonforaction
-          pnnnn_tab       = lt_pnnnn_tab
-          pref_tab        = lt_pref_tab
-          nocommit        = lv_nocommit
+          employeenumber    = is_data-pernr
+          hiringdate        = is_data-begda
+          actiontype        = is_data-massn
+          reasonforaction   = is_data-massg
+          pnnnn_tab         = is_data-pnnnn_tab
+          nocommit          = is_data-nocommit
         importing
-          return_tab      = lt_return_tab
-          bapipakey_tab   = lt_bapipakey_tab
-          is_ok           = lv_is_ok.
+          return_tab        = lt_return_tab
+          bapipakey_tab     = lt_bapipakey_tab
+          is_ok             = lv_is_ok
+          modified_keys_tab = lt_modified_keys_tab.
     
-      rv_result = lv_is_ok.
+      if lv_is_ok is initial.
+        "Create failed
+      endif.
     
     endmethod.
     ```
-
+  
   <!-- tab:信息类型增删改操作 -->
-
+  
   <!-- tabs:start -->
-
+  
   <!-- tab:获取第二信息类型 -->
 
   ```abap
@@ -246,7 +252,7 @@
               iv_infty         type infty
     returning value(rs_result) type t777d.
   ```
-
+  
   ```abap
   method get_secend_infty.
   
@@ -268,9 +274,9 @@
   
   endmethod.
   ```
-
+  
   <!-- tab:信息类型增删改查 -->
-
+  
   ```abap
   methods call_bapi_to_write_data
     importing
@@ -281,7 +287,7 @@
               es_message       type string
     returning value(rv_result) type boole.
   ```
-
+  
   ```abap
   method call_bapi_to_write_data.
   
@@ -307,6 +313,10 @@
     if iv_commit is initial.
       lv_nocommit = 'X'.
     endif.
+    
+    call function 'HR_INITIALIZE_BUFFER'.
+  
+    call function 'HR_PSBUFFER_INITIALIZE'.
   
     if is_second_data is not initial.
       call function 'HR_INFOTYPE_OPERATION'
@@ -318,7 +328,6 @@
           validitybegin    = ls_hrkey-begda
           record           = is_data
           operation        = 'INS'
-          dialog_mode      = '2'
           nocommit         = lv_nocommit
           view_identifier  = '28'
           secondary_record = is_second_data
@@ -335,7 +344,6 @@
           validitybegin = ls_hrkey-begda
           record        = is_data
           operation     = 'INS'
-          dialog_mode   = '2'
           nocommit      = lv_nocommit
         importing
           return        = ls_return
@@ -348,23 +356,23 @@
       return.
     endif.
   
+    call function 'BAPI_EMPLOYEE_DEQUEUE'
+      exporting
+        number = ls_hrkey-pernr.
+        
     if iv_commit is not initial.
       call function 'BAPI_TRANSACTION_COMMIT'
         exporting
           wait = abap_true.
     endif.
   
-    call function 'BAPI_EMPLOYEE_DEQUEUE'
-      exporting
-        number = ls_hrkey-pernr.
-  
     rv_result = abap_true.
   
   endmethod.
   ```
-
+  
   <!-- tabs:end -->
-
+  
   <!-- tab:成本分配 -->
 
   0014和0015中成本分配存储的表是:`ASSOB`和`ASSHR`. 其数据库视图是`ASSOB_HR`
@@ -391,9 +399,9 @@
         interval_not_found      = 2
         number_range_not_intern = 3.
     ```
-
+  
   - 更新成本分配
-
+  
     ```abap
     data: lv_opera type syst_msgty value 'U', "U: 更改 I:插入 D:删除
           lv_pdsnr type pdsnr-pdsnr, "要操作的编号
@@ -436,9 +444,9 @@
         delete_teven_more_not_possible = 19
         others                         = 20.
     ```
-
+  
   <!-- tab:信息类型长文本 -->
-
+  
   - 读取长文本（还可以使用函数：`HR_READ_INFTY_NOTE`）
 
     ```abap
@@ -457,9 +465,9 @@
       importing
         text_tab      = lt_text_tab ).
     ```
-
+  
   - 写入长文本（暂未研究），可参考 [Update long text in infotypes](https://blogs.sap.com/2013/04/30/update-long-text-in-infotypes/)、[长文本值未显示在 pa30 屏幕中 |SAP 社区](https://answers.sap.com/questions/7159166/long-text-value-not-displaying-in-pa30-screen.html)
-
+  
   <!-- tab:其他常用函数 -->
 
   | 函数                             | 描述                                                         |
@@ -472,7 +480,7 @@
   | `HR_READ_INFOTYPE`               | 读取某个员工的某个信息类型数据                               |
   | `HR_ECM_READ_IT0041_DATE_TYPE`   | 查询0041的日期                                               |
   |                                  |                                                              |
-
+  
   <!-- tabs:end -->
 
 ## PT-时间管理
@@ -919,19 +927,29 @@ HR模块常用事物码如下：
 
 <!-- tab:Others -->
 
-- 信息类型相关: `lv_infty`
+- 信息类型相关: `T582A`
 
-  - 可用工资项 `T512Z`
+  - 子类型对应字段 `T582A-NAMST`
+
+  - 可用子类型存储表 `T582A-STYPT` 
+
+  - 可用子类型文本表 `T582A-SYTXT`
+
+  - 子类型时间限制表 `T582A-ZBTAB`
+
+  - 信息类型时间限制 `T582A-ZEITB`
 
     ```abap
-    select * into table @data(lt_t512z) from t512z where infty eq lv_infty and molga eq '28'.
+    select single zeitb into @data(lv_zeitd) from t582a where infty eq @lv_infty.
     ```
 
-  - 可用子类型 `T591A`
-
-    ```abap
-    select * into table @data(lt_t591a) from t591a where infty eq lv_infty.
-    ```
+    - 1: 记录存在必须无间断，无重复
+    - 2: 记录可含间断，不能重复
+    - 3: 记录可含间断并且可以存在不只一次，可重复
+    - T: 时间约束基于子类型或子类型表，子类型时间限制
+    - Z: 时间管理信息类型的时间约束种类 -> T554Y
+    - A: 从1800年1月1日到9999年十二月12日信息类别仅存在一次
+    - B: 自1800年1月1日到9999年12月12日中IT最多存在一次
 
 - 工资项相关
 
@@ -992,24 +1010,6 @@ HR模块常用事物码如下：
 |         |            |         |                 |                                   |
 
 <!-- tabs:end -->
-
-<!-- tab:信息类型时间限制 -->
-
-- OM时间限制，维护路径：SPRO/
-
-  - 0: 可以仅存在一次
-
-  - 1: 没有间隔
-
-  - 2: 具有间隔
-
-  - 3: 与需要的一样频繁
-
-- PA时间限制， 维护路径：PM01/信息类型特征/双击
-
-  - 1: 记录存在必须无间断，无重复
-  - 2: 记录可含间断，不能重复
-  - 3: 记录可含间断并且可以存在不只一次，可重复
 
 <!-- tab:常用的对象关系 -->
 
