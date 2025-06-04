@@ -11,9 +11,9 @@
     - [CPI添加接口](ABAP/CPI相关/CPI添加接口.md)
     - [CPI证书导入导出](ABAP/CPI相关/CPI证书导入导出.md)
   -  HR模块相关 
-    - [HR 员工照片操作](ABAP/HR模块相关/HR%20员工照片操作.md)
     - [HR 考勤表](ABAP/HR模块相关/HR%20考勤表.md)
     - [HR 考核文档下载](ABAP/HR模块相关/HR%20考核文档下载.md)
+    - [HR员工照片操作](ABAP/HR模块相关/HR员工照片操作.md)
     - [HR基础知识](ABAP/HR模块相关/HR基础知识.md)
     - [HR常用函数](ABAP/HR模块相关/HR常用函数.md)
     - [HR开发相关知识点.pdf](ABAP/HR模块相关/HR开发相关知识点.pdf.md)
