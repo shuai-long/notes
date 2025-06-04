@@ -1,5 +1,3 @@
-# HR逻辑数据库 #
-
 ## LDB简介 ##
 
 LDB —– 逻辑数据库(SE36),在HR报表开发中,用于替代传统的SQL语句,实质上就是一个程序,LDB自带屏幕,可根据配置实现不同的屏幕展现.
@@ -39,10 +37,10 @@ HR中常用的LDB有:
 
 常用的包含的文件(LDB报表中不需要声明): **DBPNPCESEL**(LDB选择屏幕)   **DBPNPCECOM**(常用宏包含文件),保存宏的表 **TRMAC**,类似于PNP,目前常用宏中有两个名称可能不一致
 
-| PNP                    | PNPCE                  |
-| ---------------------- | ---------------------- |
-| *RP-SET-DATA-INTERVAL* | *RP_SET_DATA_INTERVAL* |
-| *PNP-SW-SKIP-PERNR*    | *PNP_SW_SKIP_PERNR*    |
+| PNP                  | PNPCE                |
+| -------------------- | -------------------- |
+| RP-SET-DATA-INTERVAL | RP_SET_DATA_INTERVAL |
+| PNP-SW-SKIP-PERNR    | PNP_SW_SKIP_PERNR    |
 
 ```ABAP
 TABLES: PERNR.
@@ -50,8 +48,6 @@ NODES: PERAS.
 INFOTYPES: 0000, 1111, ..., .
 GET PERAS.
 ```
-
-
 
 ### HR PCH ###
 
@@ -68,13 +64,13 @@ GET OBJEC.
 
 ## 常用指令 ##
 
-| 指令/语句                 | 用途                                                         |
-| ------------------------- | ------------------------------------------------------------ |
-| **NODES**                 | 声明LDB逻辑数据库节点,例: `NODES:BERAS.`                     |
-| **INFOTYPES**             | 声明信息类型,声明后会自动创建一个带表头的PXXXX内表,并且自动填充满足条件的数据 |
-| **INFOTYPES XXXX MODE N** | 声明信息类型 XXXX,但不填充数据(此处用于其中某些信息类型没有权限) |
-| **GET**                   | 循环LDB节点,例: `GET PERNR.`                                 |
-| **GET…LATE**              | 当节点的一条数据循环结束后触发.例如:<br />在PNP逻辑数据库中,一个员工可能会有很多薪资发放揭露,此时会有嵌套调用:<br />`start-of-selection`<br />`get pernr`.<br />`get payroll`.<br />`get pernr late`. |
-| **REJECT**                | 终止本次循环的后续代码执行,跳转到下一条记录.类似于`LOOP`中的`continue`语句. |
-| **STOP**                  | 结束LDB执行,直接跳转至`end-of-selection`                     |
+| 指令/语句             | 用途                                                         |
+| --------------------- | ------------------------------------------------------------ |
+| NODES                 | 声明LDB逻辑数据库节点,例: `NODES: BERAS.`                    |
+| INFOTYPES             | 声明信息类型,声明后会自动创建一个带表头的PXXXX内表,并且自动填充满足条件的数据 |
+| INFOTYPES XXXX MODE N | 声明信息类型 XXXX,但不填充数据(此处用于其中某些信息类型没有权限) |
+| GET                   | 循环LDB节点,例: `GET PERNR.`                                 |
+| GET…LATE              | 当节点的一条数据循环结束后触发.例如:<br />在PNP逻辑数据库中,一个员工可能会有很多薪资发放揭露,此时会有嵌套调用:<br />`start-of-selection`<br />`get pernr`.<br />`get payroll`.<br />`get pernr late`. |
+| REJECT                | 终止本次循环的后续代码执行,跳转到下一条记录.类似于`LOOP`中的`continue`语句. |
+| STOP                  | 结束LDB执行,直接跳转至`end-of-selection`                     |
 
