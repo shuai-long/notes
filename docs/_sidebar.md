@@ -11,27 +11,24 @@
     - [CPI添加接口](ABAP/CPI相关/CPI添加接口.md)
     - [CPI证书导入导出](ABAP/CPI相关/CPI证书导入导出.md)
   -  HR模块相关 
-    - [HR 考勤表](ABAP/HR模块相关/HR%20考勤表.md)
-    - [HR 考核文档下载](ABAP/HR模块相关/HR%20考核文档下载.md)
     - [HR员工照片操作](ABAP/HR模块相关/HR员工照片操作.md)
     - [HR基础知识](ABAP/HR模块相关/HR基础知识.md)
     - [HR常用函数](ABAP/HR模块相关/HR常用函数.md)
     - [HR开发相关知识点.pdf](ABAP/HR模块相关/HR开发相关知识点.pdf.md)
     - [HR权限检查](ABAP/HR模块相关/HR权限检查.md)
+    - [HR考勤表](ABAP/HR模块相关/HR考勤表.md)
+    - [HR考核文档操作](ABAP/HR模块相关/HR考核文档操作.md)
     - [HR逻辑数据库](ABAP/HR模块相关/HR逻辑数据库.md)
   -  OO开发 
     - [新语法](ABAP/OO开发/新语法.md)
     - [类](ABAP/OO开发/类.md)
   -  T-code 
-    - [SAP T-CODE](ABAP/T-code/SAP%20T-CODE.md)
+    - [常用T-code](ABAP/T-code/常用T-code.md)
   -  UI5 
     - [UI5](ABAP/UI5/UI5.md)
   -  动态编程 
     - [动态函数](ABAP/动态编程/动态函数.md)
     - [反射](ABAP/动态编程/反射.md)
-  -  实用函数 
-    - [弹窗示例](ABAP/实用函数/弹窗示例.md)
-    - [搜索帮助](ABAP/实用函数/搜索帮助.md)
   -  实用程序 
     - [SAP 字典描述获取](ABAP/实用程序/SAP%20字典描述获取.md)
     - [Word 模版填充封装类](ABAP/实用程序/Word%20模版填充封装类.md)
@@ -78,6 +75,12 @@
     - [WebService](ABAP/接口相关/WebService.md)
     - [加密](ABAP/接口相关/加密.md)
     - [邮件发送](ABAP/接口相关/邮件发送.md)
+  -  搜索帮助 
+    - [HR相关搜索帮助](ABAP/搜索帮助/HR相关搜索帮助.md)
+    - [弹窗示例](ABAP/搜索帮助/弹窗示例.md)
+    - [搜索帮助](ABAP/搜索帮助/搜索帮助.md)
+    - [文件相关搜索帮助](ABAP/搜索帮助/文件相关搜索帮助.md)
+    - [请求号相关搜索帮助](ABAP/搜索帮助/请求号相关搜索帮助.md)
   -  数据处理 
     - [ABAP 内置类型](ABAP/数据处理/ABAP%20内置类型.md)
     - [Lock 锁](ABAP/数据处理/Lock%20锁.md)

@@ -1,43 +1,4 @@
-# 考核文档下载
-
-- **考核文档搜索帮助**
-
-  考核文档也存储在 HRP1000中，对象类型为 VA
-
-  ```abap
-    class-methods set_f4_for_tempid_low.
-    method set_f4_for_tempid_low.
-  
-      data: lt_selected  type hap_t_templates,
-            lt_templates type hap_t_templates,
-            ls_return    type bal_s_msg.
-  
-      select * into corresponding fields of table lt_selected
-        from hrp1000 where plvar eq '01' and otype eq 'VA' and objid in s_tempid.
-  
-      call function 'HRHAP_POPUP_F4_TEMPLATE'
-        exporting
-          authority_check    = '03'
-          plan_version       = '01'
-          multiple_selection = 'X'
-          t_selected         = lt_selected
-        importing
-          t_templates        = lt_templates
-          s_return           = ls_return.
-  
-      clear: s_tempid, s_tempid[].
-      loop at lt_templates into data(ls_templates).
-        if sy-tabix eq 1.
-          s_tempid = value #( sign = 'I' option = 'EQ' low = ls_templates-objid ).
-        endif.
-  
-        s_tempid[] = value #( base s_tempid[] sign = 'I' option = 'EQ' ( low = ls_templates-objid ) ).
-      endloop.
-  
-    endmethod.
-  ```
-
-  
+[参考链接](https://community.sap.com/t5/application-development-and-automation-blog-posts/hr-appraisal-function-modules-with-screenshots/ba-p/13235651)
 
 - **获取考核文档列表**
 
@@ -229,7 +190,7 @@
     endmethod.
   ```
 
-# 整体代码
+## 整体代码
 
 ```abap
 
