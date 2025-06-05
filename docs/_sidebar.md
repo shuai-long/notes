@@ -1,8 +1,11 @@
 <!-- _sidebar.md -->
 -  ABAP 
-  -  ALV开发 
-    - [ALV常用功能](ABAP/ALV开发/ALV常用功能.md)
-    - [ALV常用类型](ABAP/ALV开发/ALV常用类型.md)
+  -  ABAP New 
+    - [新语法](ABAP/ABAP%20New/新语法.md)
+    - [类](ABAP/ABAP%20New/类.md)
+  -  ALV相关 
+    - [ALV常用功能](ABAP/ALV相关/ALV常用功能.md)
+    - [ALV常用类型](ABAP/ALV相关/ALV常用类型.md)
   -  CDS相关 
     - [CDS基础](ABAP/CDS相关/CDS基础.md)
   -  CPI相关 
@@ -19,9 +22,6 @@
     - [HR考勤表](ABAP/HR模块相关/HR考勤表.md)
     - [HR考核文档操作](ABAP/HR模块相关/HR考核文档操作.md)
     - [HR逻辑数据库](ABAP/HR模块相关/HR逻辑数据库.md)
-  -  OO开发 
-    - [新语法](ABAP/OO开发/新语法.md)
-    - [类](ABAP/OO开发/类.md)
   -  T-code 
     - [常用T-code](ABAP/T-code/常用T-code.md)
   -  UI5 
