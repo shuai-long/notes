@@ -1,18 +1,14 @@
-[TOC]
-
-# WebService #
-
-## 简介 ##
+## 简介
 
 SAP 的 web service 是在 Netweaver 组件通过 UDDI 工具，采用 **SOAP** 和 **WSDL** 这两种 web 服务技术，将 SAP 已有功能封装成 webservice 对象，供其他系统调用或者调用其他系统的 webservice，从而实现 SAP 与非 SAP 系统（如 OA、PLM 等）系统的集成。
 
 名词解释:
 
-* **UUDI:** 在用户能够调用 Web 服务之前，必须确定这个服务内包含哪些属性与方法，找到被调用的接口定义，而这些都需要服务提供者（Service Provider）通过标准的 web 服务协议来进行编制。 UDDI 正是这样一个工具，用户通过 web 在 UDDI 中查找并定位那些他们需要的服务。UDDI 利用 SOAP 消息机制（标准的 XML/HTTP）来发布、编辑、浏览以及查找注册信息。它采用 XML 格式来封装各种不同类型的数据，并且发送到服务请求者或者由服务提供者返回需要的数据。
+* **UUDI**: 在用户能够调用 Web 服务之前，必须确定这个服务内包含哪些属性与方法，找到被调用的接口定义，而这些都需要服务提供者（Service Provider）通过标准的 web 服务协议来进行编制。 UDDI 正是这样一个工具，用户通过 web 在 UDDI 中查找并定位那些他们需要的服务。UDDI 利用 SOAP 消息机制（标准的 XML/HTTP）来发布、编辑、浏览以及查找注册信息。它采用 XML 格式来封装各种不同类型的数据，并且发送到服务请求者或者由服务提供者返回需要的数据。
 
-* **WSDL:**对于服务消费者（Service Consumer）来说，要找到一个自己需要使用的服务，他必须知道如何以及从哪调用。 WSDL 规范是一个描述接口、语义以及 Web 服务的 XML 文档。给这个 XML 文档配置上网络地址后，就可以简单而又快捷地被查找和定位。
+* **WSDL**:对于服务消费者（Service Consumer）来说，要找到一个自己需要使用的服务，他必须知道如何以及从哪调用。 WSDL 规范是一个描述接口、语义以及 Web 服务的 XML 文档。给这个 XML 文档配置上网络地址后，就可以简单而又快捷地被查找和定位。
 
-* **SOAP:**当商业用户通过 UDDI 找到你的 WSDL 描述文档后，它通过 SOAP 协议调用你建立的 Web 服务中的一个或多个对象。从技术角度来看，SOAP 详细指明了如何响应不同的请求以及如何对参数编码。一个 SOAP 封装了可选的头信息和正文，并且通常使用 HTTP POST 方法来传送到一个 HTTP 服务器。SOAP 同时支持消息传送和远程过程调用。
+* **SOAP**:当商业用户通过 UDDI 找到你的 WSDL 描述文档后，它通过 SOAP 协议调用你建立的 Web 服务中的一个或多个对象。从技术角度来看，SOAP 详细指明了如何响应不同的请求以及如何对参数编码。一个 SOAP 封装了可选的头信息和正文，并且通常使用 HTTP POST 方法来传送到一个 HTTP 服务器。SOAP 同时支持消息传送和远程过程调用。
 
 ## 发布 WebService ##
 
@@ -31,7 +27,7 @@ Webservice 最终是以 WSDL 形式发布，即一个带有 URL 的 XML 文件�
 * **rdisp/mshost** 状态栏中显示的系统名称
 * **Sapglobalhost** SAP 全局主机名，这个参数就是后面需要设置的被解析的对象
 
-1. 运行 T-CODE:**`RZ10`**, 即可进入服务器参数文件管理界面，如下图：
+1. 运行 T-CODE:`RZ10`, 即可进入服务器参数文件管理界面，如下图：
 
 ![服务器参数文件管理](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/1681095747195.jpg)
 
@@ -63,7 +59,7 @@ Webservice 最终是以 WSDL 形式发布，即一个带有 URL 的 XML 文件�
 
 ### 启动 SOAMANAGER 服务 ###
 
-前面已经介绍过 SAP 是通过 SOAMANAGER 来对外发布指定服务器的，SOAMANAGER 本身其实也是一个基于 Netweaver 的 Web Dynpro 程序，当你在 SAP GUI 客户端执行 T-Code：SOAMANAGER 的时候，就会默认调用 IE 来打开这个 WDA 程序，从而实现对 webservice 的发布的管理。但是根据 SAP 官方 Note1124553 的说法，出于安全方面的考虑，SAP Netweaver 组件安装后，默认是不激活 WDA 程序显示服务以及 SOAMANAGER 服务的，因此，需要手工通过 T-Code：==`SICF`== 来先激活 WAD 程序显示相关服务以及 SOAMANAGER 服务，具体需要激活的服务如下：
+前面已经介绍过 SAP 是通过 SOAMANAGER 来对外发布指定服务器的，SOAMANAGER 本身其实也是一个基于 Netweaver 的 Web Dynpro 程序，当你在 SAP GUI 客户端执行 T-Code：SOAMANAGER 的时候，就会默认调用 IE 来打开这个 WDA 程序，从而实现对 webservice 的发布的管理。但是根据 SAP 官方 Note1124553 的说法，出于安全方面的考虑，SAP Netweaver 组件安装后，默认是不激活 WDA 程序显示服务以及 SOAMANAGER 服务的，因此，需要手工通过 T-Code：`SICF` 来先激活 WAD 程序显示相关服务以及 SOAMANAGER 服务，具体需要激活的服务如下：
 
 * **与显示 WDA 程序相关的服务**
 
@@ -95,7 +91,7 @@ Webservice 最终是以 WSDL 形式发布，即一个带有 URL 的 XML 文件�
 
 1. 创建 RFC 函数
 
-   使用 T-code：==SE37== 或者 ==SE80==，创建函数，函数组设置与编程过程这里不作详细描述。将函数属性页签中的处理类型设置为 “远程启用的模块”，然后激活程序即可。
+   使用 T-code：SE37 或者 SE80，创建函数，函数组设置与编程过程这里不作详细描述。将函数属性页签中的处理类型设置为 “远程启用的模块”，然后激活程序即可。
 
    ![创建 RFC 函数](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/1203362-20170806211554178-395153451.png)
 
@@ -160,7 +156,7 @@ Webservice 最终是以 WSDL 形式发布，即一个带有 URL 的 XML 文件�
 
 使用 SOAMANAGER 生成 WSDL( 可供外部访问的 XML 链接 ),  WebService 创建完成后，并不代表 WebService 配置完成，还需要使用 SOAMANAGER 来进行绑定 WSDL 才能被其他系统通过 WEB 方式进行访问和调用。具体操作步骤如下：
 
-1. 输入 T-code: ==SOAMANAGER==, 回车执行
+1. 输入 T-code: SOAMANAGER, 回车执行
 
 ![生成WSDL地址-步骤1](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/1203362-20170806212025365-489854068.png)
 
@@ -216,7 +212,7 @@ SAP 能通过设置 WebService 与外部的 webservice 服务连接；
 
 ### **创建企业服务** ###
 
-1. 使用 T-Code：==SE80==, 选择包 Package ，指定保存的开发包，按图 1 操作，创建一个 Enterprise Service。
+1. 使用 T-Code：SE80, 选择包 Package ，指定保存的开发包，按图 1 操作，创建一个 Enterprise Service。
 
    ![创建企业服务-步骤1](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/20210211123235736.png)
 
@@ -224,11 +220,11 @@ SAP 能通过设置 WebService 与外部的 webservice 服务连接；
 
    ![创建企业服务-步骤2](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/20210211123849145.png)
 
-3. 选择 ==External WSDL/Schema==
+3. 选择 External WSDL/Schema
 
    ![创建企业服务-步骤3](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/20210211124013366.png)
 
-4. 选择 ==URL==, 点击继续
+4. 选择 URL, 点击继续
 
    ![创建企业服务-步骤4](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/20210211124216607.png)
 
@@ -252,7 +248,7 @@ SAP 能通过设置 WebService 与外部的 webservice 服务连接；
 
 ### 创建逻辑端口 ###
 
-1. 执行事务: ==LPCONFIG==
+1. 执行事务: LPCONFIG
 
    ![创建逻辑端口-步骤1](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/20210211125122662.png)
 
@@ -260,13 +256,13 @@ SAP 能通过设置 WebService 与外部的 webservice 服务连接；
 
    ![创建逻辑端口-步骤2](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/2021021112534096.png)
 
-3. 点击创建, 填写描述 和对方的 ==URL== 地址, 勾选消息标识和状态管理
+3. 点击创建, 填写描述 和对方的 URL 地址, 勾选消息标识和状态管理
 
    ![创建逻辑端口-步骤3](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/20210211130313472.png)
 
 4. 在一般设置下的操作页签: 在激活代理类时, 系统自动将带出将要操作 WebService 的行为(方法), 在对应生产的代理类中又对应方法的输入及输出参数
 
-   ==SOAP 操作==: 执行 WebService 行为的地址
+   SOAP 操作: 执行 WebService 行为的地址
 
    ![创建逻辑端口-步骤4](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/20210211130802116.png)
 

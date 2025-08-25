@@ -9,26 +9,26 @@
 2. 实现 HANDLE_REQUEST　方法
 
    ```ABAP
-      DATA:  lv_verb   TYPE string,  "HTTP动作：post、get、put、delete
-             lv_path   TYPE string,  "http请求路径
-             path_info TYPE string,  "定义的服务
-             params    TYPE string,  "其他参数
-             req_json  TYPE string,  "接收报文
-             lv_json   TYPE string.  "返回报文
+   DATA:  lv_verb   TYPE string,  "HTTP动作：post、get、put、delete
+          lv_path   TYPE string,  "http请求路径
+          path_info TYPE string,  "定义的服务
+          params    TYPE string,  "其他参数
+          req_json  TYPE string,  "接收报文
+          lv_json   TYPE string.  "返回报文
    
-       lv_verb = server->request->get_header_field( '~request_method' ) .
-       lv_path = server->request->get_header_field( '~request_uri' ).
-       SPLIT lv_path AT '?' INTO path_info params.
+   lv_verb = server->request->get_header_field( '~request_method' ) .
+   lv_path = server->request->get_header_field( '~request_uri' ).
+   SPLIT lv_path AT '?' INTO path_info params.
    
-       IF lv_verb = 'POST' AND path_info = '/cctc/zfi_push_financ'.
-         req_json = server->request->get_cdata( ).
-       	 /ui2/cl_json=>deserialize( EXPORTING json = req_json pretty_name = /ui2/cl_json=>pretty_mode-camel_case CHANGING data = lt_data_in ).
-   		
-   	    lv_json = /ui2/cl_json=>serialize( data = ls_data_return  compress = abap_true pretty_name = /ui2/cl_json=>pretty_mode-camel_case ).
-   	    server->response->set_status( code = 200 reason = 'Ok' ).
-   	    server->response->set_content_type( 'application/json' ).
-   	    server->response->set_cdata( data = lv_json ).
-       ENDIF.
+   IF lv_verb = 'POST' AND path_info = '/cctc/zfi_push_financ'.
+     req_json = server->request->get_cdata( ).
+      /ui2/cl_json=>deserialize( EXPORTING json = req_json pretty_name = /ui2/cl_json=>pretty_mode-camel_case CHANGING data = lt_data_in ).
+   
+     lv_json = /ui2/cl_json=>serialize( data = ls_data_return  compress = abap_true pretty_name = /ui2/cl_json=>pretty_mode-camel_case ).
+     server->response->set_status( code = 200 reason = 'Ok' ).
+     server->response->set_content_type( 'application/json' ).
+     server->response->set_cdata( data = lv_json ).
+   ENDIF.
    ```
 
 3. SICF 创建服务

@@ -496,11 +496,6 @@ public section.
   data:
     gt_params type hashed table of ty_list_params with unique key name .      "参数列表
 
-*  class-methods INITIALIZATION
-*    importing
-*      !IO_SERVER type ref to IF_HTTP_SERVER
-*    returning
-*      value(EO_RESULT) type ref to ZCL_HTTP_EXTENSION .
   methods INITIALIZATION
     importing
       !IO_SERVER type ref to IF_HTTP_SERVER .
@@ -1244,7 +1239,10 @@ ENDCLASS.
 
 ## 相关表
 
-- [接口日志记录表](./resource/reports/接口日志程序/dictionary/ztint_log.html ':include :type=iframe')
-- [接口端口配置表](./resource/reports/接口日志程序/dictionary/ztint_ipport.html ':include :type=iframe')
-- [接口地址配置表](./resource/reports/接口日志程序/dictionary/ztint_info.html ':include :type=iframe')
-- [接口参数配置表](./resource/reports/接口日志程序/dictionary/ztint_para.html ':include :type=iframe')
+[接口日志记录表](./resource/reports/接口日志程序/dictionary/ztint_log.html ':include :type=iframe')
+
+[接口端口配置表](./resource/reports/接口日志程序/dictionary/ztint_ipport.html ':include :type=iframe')
+
+[接口地址配置表](./resource/reports/接口日志程序/dictionary/ztint_info.html ':include :type=iframe')
+
+[接口参数配置表](./resource/reports/接口日志程序/dictionary/ztint_para.html ':include :type=iframe')

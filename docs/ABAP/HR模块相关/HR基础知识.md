@@ -674,21 +674,44 @@
 
   - `PAYTY`:  支付类型:  A奖金
 
-  - `FPBEG`:  工资发放期间的开始(历经期)
+  - `SRTZA`:  当前标识符， O: 第一条数据; P: 中间数据; 'A': 最新一条数据
 
-  - `FPEND`:  工资发放期间的结束 (历经期间)
+  - 薪资期间：
 
+    - `FPPER`:  工资核算历经期 (YYYYMM)
+    - `FPBEG`:  工资发放期间的开始(历经期)
+    - `FPEND`:  工资发放期间的结束(历经期)
+    - `INPER`:  工资发放所在期 (YYYYMM)
+    - `IPEND`:  工资发放期间的结束(所在期间)
+  
+  
+  > [!Note]
+  >
+  > 1. CRT:  累计结果（月度、季度、年度），参考：PC208
+  >    TCRT: 记录和税相关的工资项 & 影响上发薪和下发薪，参考： PC2G5
+  >    上发薪：一年的税对应当年1至12月公司发放的工资
+  >    下发薪：一年的税对应去年12月至当年11月公司发放的工资
+  >
+  > 2. 下图结果是带回算数据：
+  >
+  >    核算五月工资 --> 六月回算五月数据 --> 七月回算五月和六月数据 --> 八月回算六月和七月数据 
+  >
+  >    ![image-20250825171537722](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20250825171537722.png)
+  >
+  
+  
+  
   <!-- tabs:start -->
-
+  
   <!-- tab:调用函数 -->
-
+  
   ```abap
   data: lt_rgdir     type table of pc261,
         lt_payresult type paycn_result,
         ls_rt        type pc207,
         lv_nr        type pc261-seqnr.
   ```
-
+  
   ```abap
   call function 'CU_READ_RGDIR'
     exporting
@@ -699,7 +722,7 @@
       no_record_found = 1
       others          = 2.
   ```
-
+  
   ```abap
   read table lt_rgdir into gs_rgdir with key fpper = ls_data_in-fpper.
   if sy-subrc = 0.
@@ -725,9 +748,9 @@
         others                       = 10.
   endif.
   ```
-
+  
   <!-- tab:import -->
-
+  
   ```abap
   data: lv_key   type pcl2-srtfd,
         lv_pernr type pernr_d,
@@ -735,12 +758,12 @@
         lt_rt    type standard table of pc207,
         lt_tcrt  type standard table of pc2g5.
   ```
-
+  
   ```abap
    lv_key = |{ ls_alv-pernr alpha = in }|.
    import rgdir = lt_rgdir from database pcl2(cu) id lv_key.
   ```
-
+  
   ```abap
   loop at lt_rgdir into data(ls_rgdir).
   	"---------------------> 过滤条件
@@ -752,7 +775,7 @@
   
   endloop.
   ```
-
+  
   > [!Note]
   >
   > - `PCL1`  主要存储一些信息类型的文本信息
@@ -760,14 +783,14 @@
   > - `PCL2`  主要存储员工工资核算结果,时间评估数据
   > - `PCL3`  待补充
   > - `PCL4`  待补充
-
+  
   <!-- tab:其他常用函数 -->
-
+  
   | 函数                        | 描述                       |
   | --------------------------- | -------------------------- |
   | `PYXX_GET_RELID_FROM_PERNR` | 读取员工区域标示和国家分组 |
   |                             |                            |
-
+  
   <!-- tabs:end -->
 
 ## 读取组织架构

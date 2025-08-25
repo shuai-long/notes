@@ -22,6 +22,7 @@
     - [HR考勤表](ABAP/HR模块相关/HR考勤表.md)
     - [HR考核文档操作](ABAP/HR模块相关/HR考核文档操作.md)
     - [HR逻辑数据库](ABAP/HR模块相关/HR逻辑数据库.md)
+    - [薪酬schema增强](ABAP/HR模块相关/薪酬schema增强.md)
   -  T-code 
     - [常用T-code](ABAP/T-code/常用T-code.md)
   -  UI5 
