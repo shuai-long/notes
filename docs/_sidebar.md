@@ -15,7 +15,6 @@
     - [CPI证书导入导出](ABAP/CPI相关/CPI证书导入导出.md)
   -  HR模块相关 
     - [HR员工照片操作](ABAP/HR模块相关/HR员工照片操作.md)
-    - [HR培训视频](ABAP/HR模块相关/HR培训视频.md)
     - [HR基础知识](ABAP/HR模块相关/HR基础知识.md)
     - [HR常用函数](ABAP/HR模块相关/HR常用函数.md)
     - [HR开发相关知识点.pdf](ABAP/HR模块相关/HR开发相关知识点.pdf.md)
