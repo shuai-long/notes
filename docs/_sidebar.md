@@ -15,6 +15,7 @@
     - [CPI证书导入导出](ABAP/CPI相关/CPI证书导入导出.md)
   -  HR模块相关 
     - [HR员工照片操作](ABAP/HR模块相关/HR员工照片操作.md)
+    - [HR培训视频](ABAP/HR模块相关/HR培训视频.md)
     - [HR基础知识](ABAP/HR模块相关/HR基础知识.md)
     - [HR常用函数](ABAP/HR模块相关/HR常用函数.md)
     - [HR开发相关知识点.pdf](ABAP/HR模块相关/HR开发相关知识点.pdf.md)
@@ -34,7 +35,6 @@
     - [实用程序](ABAP/实用程序/实用程序.md)
     - [展示 HTML 页面](ABAP/实用程序/展示%20HTML%20页面.md)
     - [工具类—文本:描述获取](ABAP/实用程序/工具类—文本:描述获取.md)
-    - [接口日志程序](ABAP/实用程序/接口日志程序.md)
     - [版本批量对比程序](ABAP/实用程序/版本批量对比程序.md)
     - [通用薪资报表](ABAP/实用程序/通用薪资报表.md)
     - [邮件发送封装类](ABAP/实用程序/邮件发送封装类.md)
@@ -71,6 +71,7 @@
     - [替代和校验](ABAP/常用增强/替代和校验.md)
   -  接口相关 
     - [REST 接口发送文件](ABAP/接口相关/REST%20接口发送文件.md)
+    - [REST 接口日志程序](ABAP/接口相关/REST%20接口日志程序.md)
     - [RESTFUL 接口](ABAP/接口相关/RESTFUL%20接口.md)
     - [WebService](ABAP/接口相关/WebService.md)
     - [加密](ABAP/接口相关/加密.md)
