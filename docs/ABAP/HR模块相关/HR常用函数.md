@@ -32,7 +32,9 @@ method get_date_for_it0041.
 endmethod.
 ```
 
+## 读取信息类型文本描述
 
+`RH_TEXT_GET`
 
 
 

@@ -76,7 +76,7 @@ def process_directory(root_dir, current_dir, exclude_lower, level, md_lines, enc
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        print("用法: python generate_readme.py <目标目录> [encode]")
+        print("用法: python sidebarn.py <目标目录> [encode]")
         sys.exit(1)
 
     target_dir = sys.argv[1]

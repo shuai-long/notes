@@ -47,5 +47,8 @@
   sudo nvram AutoBoot=%03
   ```
 
-  
+- 清空MAC DNS解析缓存
+
+  ```bash
+  sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder
 

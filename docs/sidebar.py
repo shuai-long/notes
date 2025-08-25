@@ -88,7 +88,7 @@ def process_directory(root_dir, current_dir, exclude_lower, level, md_lines):
 if __name__ == '__main__':
     import sys
     if len(sys.argv) < 2:
-        print("Usage: python generate_readme.py <target_directory>")
+        print("Usage: python sidebar.py <target_directory>")
         sys.exit(1)
 
     target_dir = sys.argv[1]
