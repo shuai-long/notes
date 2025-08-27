@@ -72,7 +72,7 @@
         nodesToMove.forEach(node => content.appendChild(node))
 
         // 从JSON存储恢复状态
-        const savedState = collapsibleStates[storageKey]
+        const savedState = 'collapsed' //collapsibleStates[storageKey]
         content.style.display = (savedState === 'collapsed') ? 'none' : 'block'
 
         // 修改后的点击事件处理

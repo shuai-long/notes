@@ -81,7 +81,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
       li.dataset.sidebarId = elementId; // 存储标识符到DOM
 
       // 应用存储状态或默认值
-      const storedState = sidebarState[elementId];
+      const storedState = true;//sidebarState[elementId];
       li.classList.toggle('folder-expanded', storedState || false);
 
       li.addEventListener('click', function (e) {
