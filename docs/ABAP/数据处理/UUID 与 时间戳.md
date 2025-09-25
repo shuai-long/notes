@@ -141,4 +141,31 @@ UTC（UTC, Universal Time Coordinated，通用协调时）时间戳，分为长�
    CONDENSE secends_s.
    ```
 
+
+5. **获取 JAVA 时间戳**
+
+   ```abap
+   "时间戳是指格林威治时间1970年01月01日00时00分00秒(北京时间1970年01月01日08时00分00秒)起至现在的总秒数。
+    CALL METHOD cl_pco_utility=>convert_abap_timestamp_to_java
+      EXPORTING
+        iv_date      = date
+        iv_time      = time
+      IMPORTING
+        ev_timestamp = javatimestamp.    "JAVA时间戳
+   ```
+
+6. **将 JAVA 时间戳转换为时间**
+
+   ```abap
+    *将格林威治时间转换成北京时间(+8小时)
+    lv_ts = javatimestamp + 8 * 60 * 60 * 1000.
+    
+    CALL METHOD cl_pco_utility=>convert_java_timestamp_to_abap     "JAVA时间戳转日期
+      EXPORTING
+        iv_timestamp = lv_ts
+      IMPORTING
+        ev_date      = lv_date
+        ev_time      = lv_time.
+   ```
+
    

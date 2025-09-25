@@ -580,8 +580,240 @@
       tim_b2 = ls_time_b2.
   ```
 
-  <!-- tab:其他常用函数 -->
+  <!-- tab:计算缺勤时长 -->
 
+  `HR_ABS_ATT_TIMES_AT_ENTRY`,函数关键填充，0000，0001，0002，0007，2001，2002，2003等信息类型数据。[参考链接1](https://blog.csdn.net/wl8511/article/details/142291441)
+  
+  ```abap
+  types: begin of ty_input,
+            pernr type string,
+            awart type string,
+            begda type string,
+            endda type string,
+            beguz type string,
+            enduz type string,
+         end of ty_input.
+         
+  types: begin of ty_output,
+            stdaz   type string,
+            abwtg   type string,
+            msgtype type string,
+            msgtext type string,
+          end of ty_output .
+          
+  methods calc_vacation
+    importing
+    	value(is_input)  type ty_input
+    returning
+    	value(rs_output) type ty_output .   
+  ```
+  
+  ```abap
+  method calc_vacation.
+    data:
+      lt_0001 type tyt_0001,
+      lt_0007 type tyt_0007,
+      lt_2001 type tyt_2001,
+      lt_2002 type tyt_2002,
+      lt_2003 type tyt_2003.
+    data:
+      l_abwtg type p2001-abwtg,
+      l_stdaz type p2001-stdaz.
+    data:
+      lt_abs_quota   type table of hrf_time_quota_au,
+      lt_abs_quota_s type table of hrf_time_quota_au,
+      l_ktart        type p2006-ktart,
+      l_subrc        type sy-subrc.
+  
+  
+    if is_input-begda > is_input-endda
+      or is_input-begda = is_input-endda and is_input-beguz > is_input-enduz.
+      rs_output-msgtype = 'E'.
+      rs_output-msgtext = '结束时间要大于开始时间'.
+      return.
+    endif.
+  
+    types: begin of ty_period,
+             begda type pa2001-begda,
+             endda type pa2001-endda,
+             beguz type pa2001-beguz,
+             enduz type pa2001-enduz,
+           end of ty_period.
+    data: lt_period type table of ty_period,
+          ls_period type ty_period.
+    "第一天
+    ls_period-begda = is_input-begda.
+    ls_period-beguz = is_input-beguz.
+    ls_period-endda = is_input-begda.
+    if ls_period-endda = is_input-endda.
+      ls_period-enduz = is_input-enduz.
+    else.
+      ls_period-enduz = '240000'.
+    endif.
+    if ls_period-begda = ls_period-endda and
+       ls_period-beguz = ls_period-enduz.
+      "特殊情况，需排除，因为若开始时间与结束时间相同则标准函数计算时默认从开始时间到下班时间
+    else.
+      append ls_period to lt_period.
+    endif.
+  
+    "中间天
+    ls_period-begda = ls_period-begda + 1.
+    if ls_period-begda < is_input-endda.
+      ls_period-beguz = '000000'.
+      ls_period-endda = is_input-endda.
+      ls_period-endda = ls_period-endda - 1.
+      if ls_period-begda <= is_input-endda.
+        ls_period-enduz = '240000'.
+        append ls_period to lt_period.
+      endif.
+    endif.
+  
+    "最后一天
+    if is_input-begda < is_input-endda.
+      ls_period-begda = is_input-endda.
+      ls_period-beguz = '000000'.
+      ls_period-endda = is_input-endda.
+      ls_period-enduz = is_input-enduz.
+      if ls_period-enduz <> '000000'.
+        append ls_period to lt_period.
+      endif.
+    endif.
+  
+  
+    data:
+      lt_0000          type table of p0000,
+      lt_0002          type table of p0002,
+      lt_times_per_day type table of ptm_times_per_day,
+      l_vtken          type p2001-vtken.
+    loop at lt_period into ls_period.
+      clear: lt_0001[],lt_0007[],lt_2002[],lt_2003[],lt_0000[],lt_0002[],lt_times_per_day[],l_abwtg,l_stdaz.
+      call function 'HR_READ_INFOTYPE'
+        exporting
+          pernr           = conv pernr_d( is_input-pernr )
+          infty           = '0001'
+          begda           = ls_period-begda
+          endda           = ls_period-endda
+        importing
+          subrc           = l_subrc
+        tables
+          infty_tab       = lt_0001
+        exceptions
+          infty_not_found = 1
+          invalid_input   = 2
+          others          = 3.
+      if lt_0001 is initial.
+        rs_output-msgtype = 'E'.
+        rs_output-msgtext = '人员编号不存在'.
+        continue.
+      endif.
+  
+  *检查0007计划时间
+      call function 'HR_READ_INFOTYPE'
+        exporting
+          pernr           = conv pernr_d( is_input-pernr )
+          infty           = '0007'
+          begda           = ls_period-begda
+          endda           = ls_period-endda
+        importing
+          subrc           = l_subrc
+        tables
+          infty_tab       = lt_0007
+        exceptions
+          infty_not_found = 1
+          invalid_input   = 2
+          others          = 3.
+      if lt_0007 is initial.
+        rs_output-msgtype = 'E'.
+        rs_output-msgtext = '计划工作时间不存在'.
+        continue.
+      endif.
+  
+  *获取出勤
+      call function 'HR_READ_INFOTYPE'
+        exporting
+          pernr           = conv pernr_d( is_input-pernr )
+          infty           = '2002'
+          begda           = ls_period-begda
+          endda           = ls_period-endda
+        importing
+          subrc           = l_subrc
+        tables
+          infty_tab       = lt_2002
+        exceptions
+          infty_not_found = 1
+          invalid_input   = 2
+          others          = 3.
+  
+  *替代
+      call function 'HR_READ_INFOTYPE'
+        exporting
+          pernr           = conv pernr_d( is_input-pernr )
+          infty           = '2003'
+          begda           = ls_period-begda
+          endda           = ls_period-endda
+        importing
+          subrc           = l_subrc
+        tables
+          infty_tab       = lt_2003
+        exceptions
+          infty_not_found = 1
+          invalid_input   = 2
+          others          = 3.
+  
+  
+  *计算缺勤时数
+  
+      call function 'HR_ABS_ATT_TIMES_AT_ENTRY'
+        exporting
+          pernr             = conv pernr_d( is_input-pernr )
+          awart             = conv awart( is_input-awart )
+          begda             = ls_period-begda
+          endda             = ls_period-endda
+          use_variant       = 'X'
+        importing
+          abwtg             = l_abwtg
+        tables
+          m0000             = lt_0000
+          m0001             = lt_0001
+          m0002             = lt_0002
+          m0007             = lt_0007
+          m2001             = lt_2001
+          m2002             = lt_2002
+          m2003             = lt_2003
+          times_per_day     = lt_times_per_day
+        changing
+          beguz             = ls_period-beguz
+          enduz             = ls_period-enduz
+          vtken             = l_vtken
+          stdaz             = l_stdaz
+        exceptions
+          it0001_missing    = 1
+          customizing_error = 2
+          error_occurred    = 3
+          end_before_begin  = 4
+          others            = 5.
+      if sy-subrc <> 0.
+        rs_output-msgtype = 'E'.
+        rs_output-msgtext = '计算实际缺勤时间时错误!'.
+        continue.
+      endif.
+      rs_output-abwtg += l_abwtg.
+      rs_output-stdaz += l_stdaz.
+    endloop.
+  
+    if lt_period[] is initial.
+      rs_output-abwtg = 0.
+      rs_output-stdaz = 0.
+    endif.
+    condense: rs_output-abwtg,rs_output-stdaz.
+  endmethod.
+  ```
+  
+  
+  
+  <!-- tab:其他常用函数 -->
+  
   | 函数                          | 描述                     |
   | ----------------------------- | ------------------------ |
   | `HR_TIME_RESULTS_IN_INTERVAL` | 读取考勤评估记录(常用)   |
@@ -590,7 +822,7 @@
   | `MONTH_NAMES_GET`             | 月份名称获取             |
   | `HOLIDAY_CALENDAR_GET`        | 读取公共假日列表         |
   | `LAST_DAY_OF_MONTHS`          | 计算指定月份的最后一天   |
-
+  
   <!-- tabs:end -->
 
 ## PY-薪酬管理
