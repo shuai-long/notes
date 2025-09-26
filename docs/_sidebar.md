@@ -4,6 +4,7 @@
     - [新语法](ABAP/ABAP%20New/新语法.md)
     - [类](ABAP/ABAP%20New/类.md)
   -  ALV相关 
+    - [ALV小技巧](ABAP/ALV相关/ALV小技巧.md)
     - [ALV常用功能](ABAP/ALV相关/ALV常用功能.md)
     - [ALV常用类型](ABAP/ALV相关/ALV常用类型.md)
   -  CDS相关 
@@ -15,13 +16,16 @@
     - [CPI证书导入导出](ABAP/CPI相关/CPI证书导入导出.md)
   -  HR模块相关 
     - [HR员工照片操作](ABAP/HR模块相关/HR员工照片操作.md)
-    - [HR基础知识](ABAP/HR模块相关/HR基础知识.md)
     - [HR常用函数](ABAP/HR模块相关/HR常用函数.md)
     - [HR开发相关知识点.pdf](ABAP/HR模块相关/HR开发相关知识点.pdf.md)
     - [HR权限检查](ABAP/HR模块相关/HR权限检查.md)
     - [HR考勤表](ABAP/HR模块相关/HR考勤表.md)
     - [HR考核文档操作](ABAP/HR模块相关/HR考核文档操作.md)
     - [HR逻辑数据库](ABAP/HR模块相关/HR逻辑数据库.md)
+    - [OM-组织管理](ABAP/HR模块相关/OM-组织管理.md)
+    - [PA-人事管理](ABAP/HR模块相关/PA-人事管理.md)
+    - [PT-考勤管理](ABAP/HR模块相关/PT-考勤管理.md)
+    - [PY-薪酬管理](ABAP/HR模块相关/PY-薪酬管理.md)
     - [薪酬schema增强](ABAP/HR模块相关/薪酬schema增强.md)
   -  T-code 
     - [常用T-code](ABAP/T-code/常用T-code.md)

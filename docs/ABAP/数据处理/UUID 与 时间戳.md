@@ -1,7 +1,3 @@
-[TOC]
-
-# UUID 与 时间戳 #
-
 ## UUID ##
 
 UUID含义是通用唯一识别码 (Universally Unique Identifier)，通俗一点就是一个不重复的字符串，有时会把UUID作为数据库的一个主键，这样就不用担心主键重复的问题。
