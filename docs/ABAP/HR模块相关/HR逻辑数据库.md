@@ -37,10 +37,10 @@ HR中常用的LDB有:
 
 常用的包含的文件(LDB报表中不需要声明): **DBPNPCESEL**(LDB选择屏幕)   **DBPNPCECOM**(常用宏包含文件),保存宏的表 **TRMAC**,类似于PNP,目前常用宏中有两个名称可能不一致
 
-| PNP                  | PNPCE                |
-| -------------------- | -------------------- |
-| RP-SET-DATA-INTERVAL | RP_SET_DATA_INTERVAL |
-| PNP-SW-SKIP-PERNR    | PNP_SW_SKIP_PERNR    |
+| PNP                    | PNPCE                        |
+| ---------------------- | ---------------------------- |
+| `RP-SET-DATA-INTERVAL` | `rp_set_data_interval_infty` |
+| PNP-SW-SKIP-PERNR      | PNP_SW_SKIP_PERNR            |
 
 ```ABAP
 TABLES: PERNR.

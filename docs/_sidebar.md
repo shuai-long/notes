@@ -26,7 +26,7 @@
     - [PA-人事管理](ABAP/HR模块相关/PA-人事管理.md)
     - [PT-考勤管理](ABAP/HR模块相关/PT-考勤管理.md)
     - [PY-薪酬管理](ABAP/HR模块相关/PY-薪酬管理.md)
-    - [薪酬schema增强](ABAP/HR模块相关/薪酬schema增强.md)
+    - [Schema增强](ABAP/HR模块相关/Schema增强.md)
   -  T-code 
     - [常用T-code](ABAP/T-code/常用T-code.md)
   -  UI5 

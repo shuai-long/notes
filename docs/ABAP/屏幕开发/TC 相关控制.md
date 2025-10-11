@@ -1,7 +1,3 @@
-[TOC]
-
-# TC 相关控制 #
-
 ## 设置某列不可输入 ##
 
 ```abap
@@ -78,3 +74,8 @@ else.
 endif.
 ```
 
+## FRAME标题动态
+
+Dialog中框的动态标题，在程序中定义同名变量，勾选输出字段即可。
+
+![image-20250930141252506](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20250930141252506.png)
