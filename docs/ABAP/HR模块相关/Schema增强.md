@@ -138,4 +138,6 @@
 
   ![image-20251011091505616](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20251011091505616.png)
 
-  
+  > [!Note]
+  >
+  > - 当前处理日期用程序里的`acdate`字段
