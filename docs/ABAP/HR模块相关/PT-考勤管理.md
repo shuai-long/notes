@@ -50,6 +50,29 @@ call function 'HR_PERSONAL_WORK_SCHEDULE'
     others            = 3.
 ```
 
+<!-- tab:获取员工日工作计划时间 -->
+
+```abap
+  call function 'HR_WORK_SCHEDULE_TIMES'
+    exporting
+      pernr         = pernr-pernr
+      begda         = beg_dateb
+      endda         = end_datea
+    tables
+*     I0001         = P0001
+      i0007         = p0007
+      i2003         = p2003
+      perws         = gt_psp
+      daygen        = gt_daygen
+      dayint        = gt_dayint "包含休息时间 ，intyp=40为休息时间
+    exceptions
+      error_occured = 1
+      abort_occured = 2
+      others        = 3.
+```
+
+
+
 <!-- tab:批量获取日工作计划 -->
 
 ```abap
