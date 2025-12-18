@@ -7,6 +7,7 @@
     - [ALV小技巧](ABAP/ALV相关/ALV小技巧.md)
     - [ALV常用功能](ABAP/ALV相关/ALV常用功能.md)
     - [ALV常用类型](ABAP/ALV相关/ALV常用类型.md)
+    - [FCAT字段列表](ABAP/ALV相关/FCAT字段列表.md)
   -  CDS相关 
     - [CDS基础](ABAP/CDS相关/CDS基础.md)
   -  CPI相关 
@@ -27,6 +28,7 @@
     - [PT-考勤管理](ABAP/HR模块相关/PT-考勤管理.md)
     - [PY-薪酬管理](ABAP/HR模块相关/PY-薪酬管理.md)
     - [Schema增强](ABAP/HR模块相关/Schema增强.md)
+    - [TY-附录](ABAP/HR模块相关/TY-附录.md)
   -  SF开发 
     - [Untitled](ABAP/SF开发/Untitled.md)
   -  T-code 
