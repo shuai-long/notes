@@ -29,6 +29,7 @@
     - [PY-薪酬管理](ABAP/HR模块相关/PY-薪酬管理.md)
     - [Schema增强](ABAP/HR模块相关/Schema增强.md)
     - [TY-附录](ABAP/HR模块相关/TY-附录.md)
+    - [标准薪资过账](ABAP/HR模块相关/标准薪资过账.md)
   -  SF开发 
     - [Untitled](ABAP/SF开发/Untitled.md)
   -  T-code 
@@ -42,12 +43,9 @@
     - [Word 模版填充封装类](ABAP/实用程序/Word%20模版填充封装类.md)
     - [实用程序](ABAP/实用程序/实用程序.md)
     - [展示 HTML 页面](ABAP/实用程序/展示%20HTML%20页面.md)
-    - [工具类—文本:描述获取](ABAP/实用程序/工具类—文本:描述获取.md)
     - [消息处理类](ABAP/实用程序/消息处理类.md)
     - [版本批量对比程序](ABAP/实用程序/版本批量对比程序.md)
-    - [通用薪资报表](ABAP/实用程序/通用薪资报表.md)
     - [邮件发送封装类](ABAP/实用程序/邮件发送封装类.md)
-    - [配置表维护清单树](ABAP/实用程序/配置表维护清单树.md)
   -  屏幕开发 
     - [Dialog 相关开发](ABAP/屏幕开发/Dialog%20相关开发.md)
     - [TC 相关控制](ABAP/屏幕开发/TC%20相关控制.md)
