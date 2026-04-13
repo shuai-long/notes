@@ -498,6 +498,50 @@
   lo_col->set_technical( 'X' ).
   ```
 
+  <!-- tab:设置其他事件按钮 -->
+
+  ```abap
+  "定义事件方法
+  methods popup_added_function for event added_function of cl_salv_events_table
+    importing
+      sender
+      e_salv_function.
+  ```
+
+  ```abap
+  " 事件方法实现
+  method popup_added_function.
+  	
+  	" 捕捉 GUI STATUS 的按钮
+    case e_salv_function.
+      when 'GOON'.
+        gv_create = abap_true.
+      when 'EABR'.
+        gv_create = abap_false.
+    endcase.
+  	
+  	" 若处理后需要退出当前屏幕，则调用下边子例程
+    perform exit in program saplslvc_fullscreen if found.
+    
+  endmethod.
+  ```
+
+  ```abap
+  " 获取事件对象
+  data(lo_events) = lo_alv->get_event( ).
+  
+  " 注册事件
+  set handler popup_added_function for lo_events.
+  
+  " 设置 GUI STATUS (新增按钮事件均在 GUI STATUS)
+  lo_alv->set_screen_status(
+      pfstatus = 'ST850'
+      report   = 'SAPLKKBL'
+    ).
+  ```
+
+  
+
   <!-- tabs:end -->
 
 - 展示ALV
