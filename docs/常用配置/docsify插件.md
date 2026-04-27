@@ -9,12 +9,11 @@
 
   ```shell
   cd /Users/zhangshuailong/Desktop/notes/notes/docs
-  python3 sidebarn.py .  
+  python3 sidebarn.py .
   ```
 
-<!-- tabs:start -->
 
-#### **dashbord**
+### dashbord
 
 要创建仪表板，只需将以下代码添加到您的 markdown 文件中
 
@@ -26,7 +25,7 @@
 <!-- tabs:end -->
 ```
 
-#### **tag-list**
+### tag-list
 
 创建侧边栏标签列表，只需将以下代码添加到侧边栏文件(例如：`_sidebar.md`)
 
@@ -34,7 +33,7 @@
 <!-- tag-list -->
 ```
 
-#### **Flexible Alerts**
+### Flexible Alerts
 
 [GitHub地址](https://github.com/fzankl/docsify-plugin-flexible-alerts)
 
@@ -65,6 +64,3 @@
   > [!ATTENTION]
   > An alert of type 'attention' using global style 'callout'.
   ```
-
-<!-- tabs:end -->
-

@@ -37,10 +37,10 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
         border-radius: 6px;
         color: #475569;
         display: flex;
-        font-size: 13px;
+        font-size: 15px;
         gap: 5px;
         line-height: 1.35;
-        min-height: 28px;
+        min-height: 30px;
         overflow: visible;
         padding: 4px 6px;
         text-overflow: clip;
@@ -66,7 +66,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
         display: inline-flex;
         flex: 0 0 auto;
         font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-        font-size: 10px;
+        font-size: 11px;
         font-weight: 700;
         justify-content: center;
         letter-spacing: 0;
@@ -94,10 +94,10 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
         border-radius: 6px;
         color: #334155;
         cursor: pointer;
-        font-size: 13px;
+        font-size: 15px;
         font-weight: 650;
         line-height: 1.35;
-        min-height: 28px;
+        min-height: 30px;
         padding: 0;
         user-select: none;
       }

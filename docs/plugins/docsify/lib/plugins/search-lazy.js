@@ -11,7 +11,7 @@
     namespace: "",
     loadingText: "索引加载中...",
   };
-  const CACHE_VERSION = "v2";
+  const CACHE_VERSION = "v3";
 
   function escapeHtml(value) {
     return String(value)
@@ -419,11 +419,14 @@
 
     hook.mounted(function () {
       Docsify.dom.style(`
-        .sidebar { padding-top: 0; }
-        .search { margin-bottom: 20px; padding: 6px; border-bottom: 1px solid #eee; }
+        .sidebar { display: flex; flex-direction: column; height: 100vh; overflow: hidden !important; padding-top: 0; }
+        .sidebar .app-name,
+        .sidebar .search { flex: 0 0 auto; }
+        .sidebar-nav { flex: 1 1 auto; overflow-x: hidden; overflow-y: auto !important; }
+        .search { margin-bottom: 10px; padding: 6px; border-bottom: 1px solid #eee; }
         .search .input-wrap { display: flex; align-items: center; }
         .search .results-panel { display: none; }
-        .search .results-panel.show { display: block; }
+        .search .results-panel.show { display: block; max-height: 42vh; overflow-y: auto; }
         .search input { outline: none; border: 1px solid transparent; width: 100%; padding: 0.6em 7px; font-size: inherit; }
         .search input:focus { box-shadow: 0 0 5px var(--theme-color, #42b983); border: 1px solid var(--theme-color, #42b983); }
         .search .clear-button { cursor: pointer; width: 36px; text-align: right; display: none; border: 0; background: transparent; }

@@ -1,8 +1,7 @@
 ## 员工照片工具类
 
-<!-- tabs:start -->
 
-<!-- tab:类定义 -->
+### 类定义
 
 ```abap
 class zcl_staff_photo_tool definition create private.
@@ -135,7 +134,7 @@ class zcl_staff_photo_tool definition create private.
 endclass.
 ```
 
-<!-- tab:类实现 -->
+### 类实现
 
 ```abap
 class zcl_staff_photo_tool implementation.
@@ -583,7 +582,6 @@ endclass.
 
 ```
 
-<!-- tabs:end -->
 
 ## 照片存储库信息
 

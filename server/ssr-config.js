@@ -7,7 +7,6 @@ module.exports = {
   subMaxLevel: 4,
   loadNavbar: true,
   coverpage: false,
-  mergeNavbar: true,
   autoHeader: false,
   onlyCover: false,
   auto2top: true,
@@ -35,7 +34,7 @@ module.exports = {
   },
   themeable: {
     readyTransition: true,
-    responsiveTables: true,
+    responsiveTables: false,
   },
   prism: {
     copySuccessText: "复制成功",
@@ -62,13 +61,6 @@ module.exports = {
     sort: false,
     theme: "default",
     tagboardTheme: "default",
-  },
-  tabs: {
-    persist: true,
-    sync: true,
-    theme: "classic",
-    tabComments: true,
-    tabHeadings: true,
   },
   requestHeaders: {
     "cache-control": "max-age=600",

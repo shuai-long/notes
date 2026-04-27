@@ -50,16 +50,7 @@
         line-height: 1;
       }
 
-      @media (max-width: 768px) {
-        #${BUTTON_ID} {
-          right: 16px;
-          bottom: 18px;
-          width: 40px;
-          height: 40px;
-        }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
+	      @media (prefers-reduced-motion: reduce) {
         #${BUTTON_ID} {
           transition: none;
         }

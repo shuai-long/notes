@@ -3,11 +3,34 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
   const DEFAULT_MAX_LINE_NUMBERS = 500;
 
   const styles = `
+    .docs-code-block {
+      background: var(--docs-code-block-background, var(--code-theme-background, #fdf6e3));
+      border-radius: var(--code-block-border-radius, 4px);
+      margin: var(--code-block-margin, 1.2em 0);
+      overflow: hidden;
+    }
+    .docs-code-block-header {
+      align-items: center;
+      background: var(--docs-code-block-background, var(--code-theme-background, #fdf6e3));
+      border-bottom: 1px solid rgba(100, 116, 139, 0.16);
+      display: flex;
+      justify-content: space-between;
+      min-height: 28px;
+      padding: 5px 10px 3px;
+    }
+    html[data-theme="dark"] .docs-code-block-header {
+      border-bottom-color: rgba(226, 232, 240, 0.12);
+    }
+    .docs-code-block pre {
+      border-radius: 0 !important;
+      margin: 0 !important;
+    }
+    .docs-code-block pre::after {
+      content: none !important;
+      display: none !important;
+    }
     .code-buttons {
-      position: absolute;
-      top: var(--code-buttons-top, 2px);
-      left: var(--code-buttons-left, 6px);
-      right: auto;
+      align-items: center;
       display: flex;
       gap: 6px;
       opacity: 0.72;
@@ -16,7 +39,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
       background: transparent;
       padding: 0;
     }
-    pre:hover > .code-buttons {
+    .docs-code-block:hover .code-buttons {
       opacity: 1;
     }
     .code-buttons button {
@@ -37,6 +60,18 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
       color: var(--theme-color, #42b983);
     }
     html[data-theme="dark"] .code-buttons button {
+      color: #cbd5e1;
+    }
+    .code-language-label {
+      color: #64748b;
+      font-size: 12px;
+      letter-spacing: 0;
+      line-height: 1;
+      opacity: 0.72;
+      text-transform: uppercase;
+      user-select: none;
+    }
+    html[data-theme="dark"] .code-language-label {
       color: #cbd5e1;
     }
     .code-line-numbers {
@@ -238,10 +273,6 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
       "--code-linenos-padding-left",
       `${paddingLeft + gutterWidth + fontSize * 0.75}px`
     );
-    preElement.style.setProperty(
-      "--code-buttons-left",
-      "6px"
-    );
     preElement.style.setProperty("--code-linenos-line-height", `${lineHeight}px`);
 
     lineNumbers.style.fontFamily = codeStyle.fontFamily;
@@ -275,6 +306,47 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
     );
   }
 
+  function getLanguageLabel(language) {
+    const prismConfig = (vm && vm.config && vm.config.prism) || {};
+    const languageConfig = prismConfig.showLanguage || {};
+    const mapping = languageConfig.mapping || {};
+    return mapping[language] || language.toUpperCase();
+  }
+
+  function ensureCodeBlockShell(preElement, language) {
+    let wrapper = preElement.parentElement;
+    if (!wrapper || !wrapper.classList.contains("docs-code-block")) {
+      wrapper = document.createElement("div");
+      wrapper.className = "docs-code-block";
+      preElement.parentNode.insertBefore(wrapper, preElement);
+      wrapper.appendChild(preElement);
+    }
+
+    let header = wrapper.querySelector(":scope > .docs-code-block-header");
+    if (!header) {
+      header = document.createElement("div");
+      header.className = "docs-code-block-header";
+      wrapper.insertBefore(header, preElement);
+    }
+
+    let buttons = header.querySelector(".code-buttons");
+    if (!buttons) {
+      buttons = document.createElement("div");
+      buttons.className = "code-buttons";
+      header.appendChild(buttons);
+    }
+
+    let languageLabel = header.querySelector(".code-language-label");
+    if (!languageLabel) {
+      languageLabel = document.createElement("span");
+      languageLabel.className = "code-language-label";
+      header.appendChild(languageLabel);
+    }
+    languageLabel.textContent = getLanguageLabel(language);
+
+    return { wrapper, header, buttons };
+  }
+
   function enhanceCodeBlock(codeElement, config) {
     if (codeElement.dataset.codeButtonProcessed === "true") return;
 
@@ -289,15 +361,14 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
 
     codeElement.dataset.codeButtonProcessed = "true";
     preElement.style.position = "relative";
+    const shell = ensureCodeBlockShell(preElement, language);
 
     if (!preElement.querySelector(".code-line-numbers")) {
       addLineNumbers(preElement, codeElement, lineCount, config);
     }
 
-    if (preElement.querySelector(".code-buttons")) return;
-
-    const buttons = document.createElement("div");
-    buttons.className = "code-buttons";
+    const buttons = shell.buttons;
+    if (buttons.dataset.codeButtonsReady === "true") return;
 
     const downloadButton = createButton("fa-download", "下载代码", () => {
       const blob = new Blob([codeElement.textContent], { type: "text/plain" });
@@ -329,7 +400,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
       buttons.append(runButton);
     }
 
-    preElement.prepend(buttons);
+    buttons.dataset.codeButtonsReady = "true";
   }
 
   hook.doneEach(function () {

@@ -16,13 +16,11 @@
 
 ### **常用函数**
 
-<!-- tabs:start -->
 
-<!-- tab:获取日工作计划 -->
+### 获取日工作计划
 
-<!-- tabs:start -->
 
-<!-- tab:获取单人工作计划 -->
+#### 获取单人工作计划
 
 ```abap
 data: lt_psp           type table of ptpsp,
@@ -51,7 +49,7 @@ call function 'HR_PERSONAL_WORK_SCHEDULE'
     others            = 3.
 ```
 
-<!-- tab:获取员工日工作计划时间 -->
+#### 获取员工日工作计划时间
 
 ```abap
   call function 'HR_WORK_SCHEDULE_TIMES'
@@ -74,7 +72,7 @@ call function 'HR_PERSONAL_WORK_SCHEDULE'
 
 
 
-<!-- tab:批量获取日工作计划 -->
+#### 批量获取日工作计划
 
 ```abap
 data: lt_pernr  type table of pdpnr ,   "功能模块调用的含人员编号的结构
@@ -102,9 +100,8 @@ call function 'HR_PERSON_READ_WORK_SCHEDULE'
     others             = 2.
 ```
 
-<!-- tabs:end -->
 
-<!-- tab:读取个人考勤记录 -->
+### 读取个人考勤记录
 
 ```abap
 data: ls_time_b2 type hrf_tim_b2.
@@ -117,7 +114,7 @@ call function 'HR_FORMS_TIM_GET_B2_RESULTS'
     tim_b2 = ls_time_b2.
 ```
 
-<!-- tab:计算缺勤时长 -->
+### 计算缺勤时长
 
 `HR_ABS_ATT_TIMES_AT_ENTRY`,函数关键填充，0000，0001，0002，0007，2001，2002，2003等信息类型数据。[参考链接1](https://blog.csdn.net/wl8511/article/details/142291441)
 
@@ -130,19 +127,19 @@ types: begin of ty_input,
           beguz type string,
           enduz type string,
        end of ty_input.
-       
+
 types: begin of ty_output,
           stdaz   type string,
           abwtg   type string,
           msgtype type string,
           msgtext type string,
         end of ty_output .
-        
+
 methods calc_vacation
   importing
-  	value(is_input)  type ty_input
+    value(is_input)  type ty_input
   returning
-  	value(rs_output) type ty_output .   
+    value(rs_output) type ty_output .
 ```
 
 ```abap
@@ -346,7 +343,7 @@ method calc_vacation.
 endmethod.
 ```
 
-<!-- tab:其他常用函数 -->
+### 其他常用函数
 
 | 函数                          | 描述                     |
 | ----------------------------- | ------------------------ |
@@ -357,7 +354,6 @@ endmethod.
 | `HOLIDAY_CALENDAR_GET`        | 读取公共假日列表         |
 | `LAST_DAY_OF_MONTHS`          | 计算指定月份的最后一天   |
 
-<!-- tabs:end -->
 
 ### 正向考勤(2011，时间事件)
 
@@ -372,23 +368,23 @@ endmethod.
 
   ```abap
   data: lt_timeevent type table of cc1_timeevent.
-  
+
   call function 'HR_CC1_TIMEEVENT_INSERT'
-  	tables
-  		timeevent          = lt_timeevent
+    tables
+      timeevent          = lt_timeevent
     exceptions
-      number_range_error = 1                              
+      number_range_error = 1
       others             = 2.
-  
+
   check sy-subrc = 0.
-  
+
   data: lv_posted_timeevents   like sy-dbcnt,
         lv_faulty_timeevents   like sy-dbcnt,
         lv_locked_timeevents   like sy-dbcnt,
         lv_total_timeevents    like sy-dbcnt,
         lv_uploaded_timeevents like sy-dbcnt,
         lv_skipped_timeevents  like sy-dbcnt.
-        
+
    call function 'HR_CC1_TIMEEVENT_POST'
       exporting
         update             = 'X'
@@ -397,11 +393,11 @@ endmethod.
         posted_timeevents  = lv_posted_timeevents
         faulty_timeevents  = lv_faulty_timeevents
         locked_timeevents  = lv_locked_timeevents
-        skipped_timeevents = lv_skipped_timeevents   
+        skipped_timeevents = lv_skipped_timeevents
       exceptions
         others             = 0.
   ```
-  
+
   > [!Note]
   >
   > 表`cc1_timeevent`常用字段如下：
@@ -427,7 +423,7 @@ endmethod.
   ```abap
   data: lv_srtfd like pcl1-srtfd,
         lv_relid like pcl1-relid value 'B1'.
-  
+
   loop at gt_timeevent into gs_timeevent.
     lv_srtfd = gs_timeevent-pernr.
     select count( * ) from pcl1 where relid eq lv_relid and srtfd eq lv_srtfd.
@@ -445,8 +441,3 @@ endmethod.
     commit work.
   endloop.
   ```
-
-  
-
-
-

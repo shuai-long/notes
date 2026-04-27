@@ -15,9 +15,9 @@
 
   - 存储表
 
-    - `T569U`  工资范围当前状态和核算期间 
+    - `T569U`  工资范围当前状态和核算期间
 
-    - `T569V`  工资范围工资核算日志 
+    - `T569V`  工资范围工资核算日志
 
   - 查询当前工资范围的核算状态
 
@@ -38,12 +38,12 @@
       with pnppabrj = p_abrj0
       with pnppernr in pnppernr
       with pnpabkrs in pnpabkrs
-      
+
       "with ocrsn    = p_ocrsn "非周期工资核算的原因
       "with payty    = p_payty "非周期的工资核算
       "with payid    = p_payid "非周期的工资核算
       "with bondt    = p_bondt "非周期的工资核算--非周期工资发放付款日期
-      
+
       with schema   = 'ZN28'
       with tst_on   = 'X'
       with test     = 'NOUPD/RT/OFF' "程序中有判断 test 中包含 RT 会抛内存出来
@@ -73,7 +73,7 @@
   >
   > 读取员工某个期间的工资发放明细,类型 PAY99_RESULT / PAYCN_RESULT.一定要设置参数`READ_ONLY_INTERNATIONAL`,才能使用PAY99_RESULT.
 
-  读取员工所有的薪资发放结果`PC261` 
+  读取员工所有的薪资发放结果`PC261`
 
   - `BONDT`:  非周期性发放日期
 
@@ -88,8 +88,8 @@
     - `FPEND`:  工资发放期间的结束(历经期)
     - `INPER`:  工资发放所在期 (YYYYMM)
     - `IPEND`:  工资发放期间的结束(所在期间)
-  
-  
+
+
   > [!Note]
   >
   > 1. CRT:  累计结果（月度、季度、年度），参考：PC208
@@ -99,110 +99,107 @@
   >
   > 2. 下图结果是带回算数据：
   >
-  >    核算五月工资 --> 六月回算五月数据 --> 七月回算五月和六月数据 --> 八月回算六月和七月数据 
+  >    核算五月工资 --> 六月回算五月数据 --> 七月回算五月和六月数据 --> 八月回算六月和七月数据
   >
   >    ![image-20250825171537722](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/image-20250825171537722.png)
   >
-  
-  
-  
-  <!-- tabs:start -->
-  
-  <!-- tab:调用函数 -->
-  
-  ```abap
-  data: lt_rgdir     type table of pc261,
-        lt_payresult type paycn_result,
-        ls_rt        type pc207,
-        lv_nr        type pc261-seqnr.
-  ```
-  
-  ```abap
-  call function 'CU_READ_RGDIR'
+
+
+
+
+### 调用函数
+
+```abap
+data: lt_rgdir     type table of pc261,
+      lt_payresult type paycn_result,
+      ls_rt        type pc207,
+      lv_nr        type pc261-seqnr.
+```
+
+```abap
+call function 'CU_READ_RGDIR'
+  exporting
+    persnr          = ls_data_in-pernr
+  tables
+    in_rgdir        = lt_rgdir
+  exceptions
+    no_record_found = 1
+    others          = 2.
+```
+
+```abap
+read table lt_rgdir into gs_rgdir with key fpper = ls_data_in-fpper.
+if sy-subrc = 0.
+  lv_nr = sy-tabix.
+
+  call function 'PYXX_READ_PAYROLL_RESULT'
     exporting
-      persnr          = ls_data_in-pernr
-    tables
-      in_rgdir        = lt_rgdir
+      clusterid                    = 'CN'
+      employeenumber               = ls_data_in-pernr
+      sequencenumber               = lv_nr
+    changing
+      payroll_result               = lt_payresult
     exceptions
-      no_record_found = 1
-      others          = 2.
-  ```
-  
-  ```abap
-  read table lt_rgdir into gs_rgdir with key fpper = ls_data_in-fpper.
-  if sy-subrc = 0.
-    lv_nr = sy-tabix.
-  
-    call function 'PYXX_READ_PAYROLL_RESULT'
-      exporting
-        clusterid                    = 'CN'
-        employeenumber               = ls_data_in-pernr
-        sequencenumber               = lv_nr
-      changing
-        payroll_result               = lt_payresult
-      exceptions
-        illegal_isocode_or_clusterid = 1
-        error_generating_import      = 2
-        import_mismatch_error        = 3
-        subpool_dir_full             = 4
-        no_read_authority            = 5
-        no_record_found              = 6
-        versions_do_not_match        = 7
-        error_reading_archive        = 8
-        error_reading_relid          = 9
-        others                       = 10.
-  endif.
-  ```
-  
-  <!-- tab:import -->
-  
-  ```abap
-  data: lv_key   type pcl2-srtfd,
-        lv_pernr type pernr_d,
-        lt_rgdir type standard table of pc261,
-        lt_rt    type standard table of pc207,
-        lt_tcrt  type standard table of pc2g5.
-  ```
-  
-  ```abap
-   lv_key = |{ ls_alv-pernr alpha = in }|.
-   import rgdir = lt_rgdir from database pcl2(cu) id lv_key.
-  ```
-  
-  ```abap
-  loop at lt_rgdir into data(ls_rgdir).
-  	"---------------------> 过滤条件
-  	
-  	"---------------------> 取数
-  	lv_key = |{ lv_pernr }{ ls_rgdir-seqnr }|.
-    import rt = lt_rt from database pcl2(cn) id lv_key.
-    import tcrt = lt_tcrt from database pcl2(cn) id lv_key.	
-  
-  endloop.
-  ```
-  
-  > [!Note]
-  >
-  > - `PCL1`  主要存储一些信息类型的文本信息
-  >
-  > - `PCL2`  主要存储员工工资核算结果,时间评估数据
-  > - `PCL3`  待补充
-  > - `PCL4`  待补充
-  
-  <!-- tab:其他常用函数 -->
-  
-  | 函数                        | 描述                       |
-  | --------------------------- | -------------------------- |
-  | `PYXX_GET_RELID_FROM_PERNR` | 读取员工区域标示和国家分组 |
-  |                             |                            |
-  
-  <!-- tabs:end -->
+      illegal_isocode_or_clusterid = 1
+      error_generating_import      = 2
+      import_mismatch_error        = 3
+      subpool_dir_full             = 4
+      no_read_authority            = 5
+      no_record_found              = 6
+      versions_do_not_match        = 7
+      error_reading_archive        = 8
+      error_reading_relid          = 9
+      others                       = 10.
+endif.
+```
+
+### import
+
+```abap
+data: lv_key   type pcl2-srtfd,
+      lv_pernr type pernr_d,
+      lt_rgdir type standard table of pc261,
+      lt_rt    type standard table of pc207,
+      lt_tcrt  type standard table of pc2g5.
+```
+
+```abap
+ lv_key = |{ ls_alv-pernr alpha = in }|.
+ import rgdir = lt_rgdir from database pcl2(cu) id lv_key.
+```
+
+```abap
+loop at lt_rgdir into data(ls_rgdir).
+  "---------------------> 过滤条件
+
+  "---------------------> 取数
+  lv_key = |{ lv_pernr }{ ls_rgdir-seqnr }|.
+  import rt = lt_rt from database pcl2(cn) id lv_key.
+  import tcrt = lt_tcrt from database pcl2(cn) id lv_key.
+
+endloop.
+```
+
+> [!Note]
+>
+> - `PCL1`  主要存储一些信息类型的文本信息
+>
+> - `PCL2`  主要存储员工工资核算结果,时间评估数据
+> - `PCL3`  待补充
+> - `PCL4`  待补充
+
+### 其他常用函数
+
+| 函数                        | 描述                       |
+| --------------------------- | -------------------------- |
+| `PYXX_GET_RELID_FROM_PERNR` | 读取员工区域标示和国家分组 |
+|                             |                            |
+
 
 ## 读取组织架构
 
-<!-- tabs:start -->
 
-<!-- tab:代码示例 -->
+### 代码示例
 
 ```abap
 data:lv_act_plvar        type objec-plvar,
@@ -247,7 +244,7 @@ call function 'RH_STRUC_GET'
     others           = 3.
 ```
 
-<!-- tab:常用评估路径 -->
+### 常用评估路径
 
 在开发过程中，会使用函数`rh_struc_get`来读取评估路径数据，评估路径存储表`T778A`,评估路径文本存储表`T778T`.
 
@@ -263,6 +260,3 @@ call function 'RH_STRUC_GET'
 | `P-S-C-O`  | 人员相关的职位职务组织单位信息 |
 | `P-S-O-O`  | 人员的组织架构信息(完整)       |
 | `O-P`      | 查询直接挂在当前组织下的员工   |
-
-<!-- tabs:end -->
-

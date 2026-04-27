@@ -6,17 +6,14 @@
     <title>abap notes</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="description" content="Description" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#42b983" />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#272822" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-title" content="Notes" />
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" href="./icons/pwa-icon.svg" type="image/svg+xml" />
     <!-- 图标 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-    <!-- 添加tab标签 -->
+    <!-- 首页卡片样式 -->
     <link rel="stylesheet" href="./_css/dashboard.min.css" />
 
     <!-- 代码插件样式 -->
@@ -90,8 +87,6 @@
             loadNavbar: true,
             // 封面支持，默认加载的是项目根目录下的_coverpage.md文件
             coverpage: true,
-            // 小屏设备下合并导航栏到侧边栏
-            mergeNavbar: true,
             // 自动为每个页面增加标题。
             autoHeader: false,
             // 只在访问主页时加载封面。
@@ -131,7 +126,7 @@
             // 主题样式
             themeable: {
                 readyTransition: true, // default
-                responsiveTables: true, // default
+                responsiveTables: false,
             },
 
             // 插件功能配置
@@ -160,21 +155,13 @@
                 selector: ".markdown-section",
             },
 
-            // 添加tab标签
+            // 首页卡片
             dashboard: {
                 numTabContent: 3, //幻灯片中显示的卡片数量
                 metadataUrl: "metadata/posts",
                 sort: false, // sort the posts by time
                 theme: "default", // (1) default, (2) cards, (3) list
                 tagboardTheme: "default", // options are same as above
-            },
-
-            tabs: {
-                persist: true, // default 确定页面刷新/重新访问后是否恢复选项卡选择
-                sync: true, // default 确定选项卡选择是否将在具有匹配标签的选项卡之间同步。
-                theme: "classic", // default 设置标签页主题。值为false表示不应用任何主题，该值应在创建自定义标签页主题时使用。
-                tabComments: true, // default 确定是否可以使用选项卡注释来定义选项卡集中的选项卡。
-                tabHeadings: true, // default 确定是否可以使用标题 + 粗体标记来定义选项卡集中的选项卡。
             },
 
             // 设置请求资源的请求头。
@@ -217,9 +204,6 @@
     <!-- 侧边栏添加折叠 -->
     <script src="./plugins/docsify/lib/plugins/docsify-sidebar-collapse.min.js"></script>
 
-    <!-- 标题添加折叠-->
-    <script src="./plugins/docsify/lib/plugins/docsify-header-collapse.min.js"></script>
-
     <!-- 插入pdf插件 -->
     <script src="./plugins/docsify/lib/plugins/pdfobject.min.js"></script>
     <script src="./plugins/docsify/lib/plugins/docsify-pdf-embed.min.js"></script>
@@ -246,16 +230,10 @@
     <!-- 搜索功能支持 -->
     <script src="./plugins/docsify/lib/plugins/search-lazy.js"></script>
 
-    <!-- 添加tab标签 -->
-    <script src="./plugins/docsify/lib/plugins/docsify-tabs.min.js"></script>
-    <script src="./plugins/docsify/lib/plugins/docsify-tabs-fix.js"></script>
     <script src="./plugins/docsify/lib/plugins/docsify-dashboard.js"></script>
 
     <!-- 代码块按钮 -->
     <script src="./plugins/docsify/lib/plugins/code-button.js"></script>
-
-    <!-- 移动端表格滚动 -->
-    <script src="./plugins/docsify/lib/plugins/docsify-responsive-tables.js"></script>
 
     <!-- 返回顶部 -->
     <script src="./plugins/docsify/lib/plugins/docsify-back-to-top.js"></script>

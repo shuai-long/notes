@@ -2,13 +2,11 @@
 
 区别于常用的 PFCG 权限控制模式，结构化权限控制以组织结构对象为控制对象，并可以控制评估路径（根据评估路径，可获取不同的结构化数据）。然后再分配给特定的人员。权限控制更精准的方便。[官方帮助文档](https://help.sap.com/docs/SAP_S4HANA_ON-PREMISE/c6c3ffd90792427a9fee1a19df5b0925/6903dd5321e8424de10000000a174cb4.html),[参考链接1](https://blog.csdn.net/ROYHAO/article/details/132556810)[参考链接二](https://blog.sina.com.cn/s/blog_6fe5fac90102ys87.html)
 
-<!-- tabs:start -->
 
-<!-- tab:结构化权限检查 -->
+### 结构化权限检查
 
-<!-- tabs:start -->
 
-<!-- tab:结构化权限配置 -->
+#### 结构化权限配置
 
 - 创建权限参数文件
 
@@ -36,7 +34,7 @@
     ![分配结构化参数文件](https://picture-bj.oss-cn-beijing.aliyuncs.com/pciture/af3cc6184e9620742bcbacc17c076d64.png)
 
 
-<!-- tab:结构化权限函数 -->
+#### 结构化权限函数
 
 ```abap
 data:lv_fcode        type string,
@@ -60,13 +58,11 @@ call function 'RH_STRU_AUTHORITY_CHECK'
     others                   = 5.
 
 ```
-<!-- tabs:end -->
 
-<!-- tab:PFCG权限检查 -->
+### PFCG权限检查
 
-<!-- tabs:start -->
 
-<!-- tab:PFCG权限对象配置 -->
+#### PFCG权限对象配置
 
 - 角色配置使用`PFCG`，常用权限对象如下：
 
@@ -80,7 +76,7 @@ call function 'RH_STRU_AUTHORITY_CHECK'
   | `P_PERNR` | 校验人员编号权限                         | AUTHC：\*<br/>PSIGN：\*<br/>INFTY：\* <br/>SUBTY：\*         |
 
 
-<!-- tab:PFCG权限函数 -->
+#### PFCG权限函数
 
 - 基本权限检查
 
@@ -91,7 +87,7 @@ call function 'RH_STRU_AUTHORITY_CHECK'
         lv_infty type string,
         lv_subty type string,
         lv_istat type string.
-  
+
   call function 'RH_BASE_AUTHORITY_CHECK'
     exporting
       fcode             = lv_fcode  "默认DISP: DISP(显示) CUTI(定界) INSE(创建) DELO(删除) 具体值可查看T77FC
@@ -103,7 +99,7 @@ call function 'RH_STRU_AUTHORITY_CHECK'
     exceptions
       no_base_authority = 1
       others            = 2.
-  
+
   ```
 
 - PA权限检查
@@ -118,7 +114,7 @@ call function 'RH_STRU_AUTHORITY_CHECK'
         lv_endda TYPE prelp-endda,
         lv_level TYPE authc_d,
         lv_uname TYPE syuname.
-  
+
   CALL FUNCTION 'HR_CHECK_AUTHORITY_INFTY'
     EXPORTING
       tclas            = lv_tclas  "默认A
@@ -128,19 +124,18 @@ call function 'RH_STRU_AUTHORITY_CHECK'
       begda            = lv_begda
       endda            = lv_endda
       level            = lv_level  "默认R
-      uname            = lv_uname 
+      uname            = lv_uname
     TABLES
       i0001            = lt_i0001
     EXCEPTIONS
       no_authorization = 1
       internal_error   = 2
       OTHERS           = 3.
-  
+
   ```
 
-<!-- tabs:end -->
 
-<!-- tab:授权主开关配置 -->
+### 授权主开关配置
 
 - 使用事物码：`OOAC`
 
@@ -155,6 +150,3 @@ call function 'RH_STRU_AUTHORITY_CHECK'
   | ORGPD    | HR：结构权限检查        | 是否启用结构化授权检查                                   |
   | ORGXX    | HR：主数据 - 扩展的检查 | 是否检查权限对象P_ORGXX                                  |
   | PERNR    | HR：主数据 - 个人号检查 | 是否检查权限对象P_PERNR                                  |
-
-
-<!-- tabs:end -->

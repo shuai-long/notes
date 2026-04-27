@@ -21,6 +21,11 @@ const renderer = new Renderer({
   template: fs.readFileSync(templatePath, "utf8"),
   config: docsifyConfig,
 });
+const parseRoute = renderer.router.parse.bind(renderer.router);
+
+renderer.router.parse = function parse(urlPath) {
+  return parseRoute(urlPath || this.getCurrentPath() || "/");
+};
 
 const mimeTypes = {
   ".css": "text/css; charset=utf-8",

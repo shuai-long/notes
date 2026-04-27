@@ -1,4 +1,4 @@
-const CACHE_VERSION = "notes-pwa-v4";
+const CACHE_VERSION = "notes-pwa-v6";
 const PRECACHE = `${CACHE_VERSION}-precache`;
 const RUNTIME = `${CACHE_VERSION}-runtime`;
 
@@ -23,7 +23,6 @@ const APP_SHELL = [
   "./icons/pwa-icon.svg",
   "./plugins/docsify/lib/plugins/prismjs-class.js",
   "./plugins/docsify/lib/plugins/docsify-sidebar-collapse.min.js",
-  "./plugins/docsify/lib/plugins/docsify-header-collapse.min.js",
   "./plugins/docsify/lib/plugins/pdfobject.min.js",
   "./plugins/docsify/lib/plugins/docsify-pdf-embed.min.js",
   "./plugins/docsify/lib/plugins/d3.min.js",
@@ -32,11 +31,8 @@ const APP_SHELL = [
   "./plugins/docsify/lib/plugins/docsify-image-caption.min.js",
   "./plugins/docsify/lib/plugins/zoom-image.min.js",
   "./plugins/docsify/lib/plugins/search-lazy.js",
-  "./plugins/docsify/lib/plugins/docsify-tabs.min.js",
-  "./plugins/docsify/lib/plugins/docsify-tabs-fix.js",
   "./plugins/docsify/lib/plugins/docsify-dashboard.js",
   "./plugins/docsify/lib/plugins/code-button.js",
-  "./plugins/docsify/lib/plugins/docsify-responsive-tables.js",
   "./plugins/docsify/lib/plugins/docsify-back-to-top.js",
   "./plugins/docsify/lib/plugins/docsify-hide-code.js",
   "./plugins/docsify/lib/plugins/docsify-inline-code-highing.js",

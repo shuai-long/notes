@@ -9,9 +9,8 @@
 
 ## CDS注解
 
-<!-- tabs:start -->
 
-<!-- tab:目录注解 -->
+### 目录注解
 
 - **CDS视图名称**
   - 注解：`@AbapCatalog.sqlViewName: 'ZFIV_DOCUMENT'`
@@ -22,7 +21,7 @@
   - 描述：用户看到的文本（即 SE11 查看的描述 ）。
   - 值：是一个最多 40 位字符的字符串，
 
-<!-- tab:语义注解 -->
+### 语义注解
 
 - **货币和金额注解**
 
@@ -43,20 +42,14 @@
   bseg.h_hwaer,
   ```
 
-<!-- tabs:end -->
 
 ## CDS使用
 
-<!-- tabs:start -->
 
-<!-- tab:CDS输出 -->
+### CDS输出
 
 一句话将CDS以ALV形式输出，其中`iv_cds_view_name`为CDS定义的名称
 
 ```abap
 cl_salv_gui_table_ida=>create_for_cds_view( iv_cds_view_name = 'ZZ_C_FLY' )->fullscreen( )->display( ).
 ```
-
-
-
-<!-- tabs:end -->

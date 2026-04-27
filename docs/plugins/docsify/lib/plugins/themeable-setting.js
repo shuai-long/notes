@@ -772,7 +772,7 @@ window.$docsify.plugins = [].concat(function (hook, vm) {
           font-size: 14px;
           line-height: 1;
           margin-left: 15px;
-        }          
+        }
 
         /* 表格容器 */
         #css-var-control-panel .table-wrapper {
@@ -872,7 +872,7 @@ window.$docsify.plugins = [].concat(function (hook, vm) {
           flex: 1;
           max-width: 300px;
         }
-        
+
         #css-var-control-panel .search-input {
           width: 100%;
           padding: 8px 30px 8px 12px !important;
@@ -882,12 +882,12 @@ window.$docsify.plugins = [].concat(function (hook, vm) {
           background: #f5f5f5 !important;
           transition: all 0.3s !important;
         }
-        
+
         #css-var-control-panel .search-input:focus {
           background: #fff !important;
           box-shadow: 0 0 0 2px rgba(77, 171, 247, 0.2) !important;
         }
-        
+
         #css-var-control-panel .search-icon {
           position: absolute;
           right: 12px;
@@ -895,7 +895,7 @@ window.$docsify.plugins = [].concat(function (hook, vm) {
           transform: translateY(-50%);
           fill: #666;
         }
-        
+
         #css-var-control-panel .header-left {
           display: flex;
           align-items: center;
@@ -917,13 +917,13 @@ window.$docsify.plugins = [].concat(function (hook, vm) {
           z-index: 10000;
           display: none;
         }
-        
+
         #css-var-control-panel .history-item {
           padding: 8px 12px;
           cursor: pointer;
           transition: background 0.2s;
         }
-        
+
         #css-var-control-panel .history-item:hover {
           background: #f5f5f5;
         }
@@ -943,17 +943,17 @@ window.$docsify.plugins = [].concat(function (hook, vm) {
           align-items: center;
           gap: 8px;
         }
-        
+
         #css-var-control-panel  .color-input {
           width: 120px !important;
         }
-        
+
         #css-var-control-panel  .contrast-warning {
           color: #ff4444;
           cursor: help;
           position: relative;
         }
-        
+
         #css-var-control-panel  .contrast-warning:hover::after {
           content: "对比度不足（最小建议4.5）";
           position: absolute;
@@ -971,12 +971,12 @@ window.$docsify.plugins = [].concat(function (hook, vm) {
           align-items: center;
           gap: 8px;
         }
-        
+
         #css-var-control-panel  .color-value {
           font-family: monospace;
           font-size: 0.9em;
         }
-        
+
         #css-var-control-panel  .color-preview {
           width: 20px;
           height: 20px;
@@ -984,29 +984,12 @@ window.$docsify.plugins = [].concat(function (hook, vm) {
           border-radius: 4px;
           flex-shrink: 0;
         }
-        
+
         /* 保持输入组件样式一致 */
         #css-var-control-panel  .color-input-group {
           display: flex;
           align-items: center;
           gap: 8px;
-        }
-              
-        /* 响应式处理 */
-        @media (max-width: 768px) {
-          #css-var-control-panel {
-            width: 95%;
-            padding: 15px;
-          }
-          
-          #css-var-control-panel .table-wrapper {
-            max-height: 60vh;
-          }
-          
-          #css-var-control-panel button {
-            padding: 4px 8px;
-            font-size: 0.9em;
-          }
         }
 
 `;
@@ -1208,8 +1191,8 @@ window.$docsify.plugins = [].concat(function (hook, vm) {
                 <td>
                   <div class="color-input-group">
                     ${isColorSaved ? `
-                      <input 
-                        type="color" 
+                      <input
+                        type="color"
                         value="${savedValue}"
                         data-var="${varName}"
                         title="点击选择颜色"

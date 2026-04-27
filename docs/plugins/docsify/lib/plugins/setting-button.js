@@ -167,7 +167,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
               background: rgba(0,0,0,0.5);
               z-index: 10000;
             }
-      
+
             :host(.active) {
               display: flex;
               justify-content: center;
@@ -1030,7 +1030,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
             <div id="css-var-control-panel" class="modal-wrapper">
               <div class="modal-container">
                 <div class="modal-header">
-                  <h3>页面变量配置(操作有危险,更改需谨慎)</h3>   
+                  <h3>页面变量配置(操作有危险,更改需谨慎)</h3>
                   <div class="header-left">
                     <div class="clear-all-wrapper">
                       <div class="search-box">
@@ -1332,189 +1332,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
           font-size: 0.9em;
         }
 
-        @media screen and (max-width: 768px) {
-          #css-var-control-panel {
-            --local-font-size: 12px;
-          }
-
-          .modal-container {
-            min-width: 100% !important;
-            max-width: 100vw !important;
-            border-radius: 0;
-            max-height: 100vh;
-            margin: 0;
-          }
-
-          .modal-wrapper {
-            padding: 0;
-            align-items: flex-end;
-          }
-
-          .modal-header {
-            padding: 12px !important;
-            flex-wrap: wrap;
-          }
-
-          .modal-header h3 {
-            font-size: 16px !important;
-            width: 100%;
-            margin-bottom: 8px !important;
-          }
-
-          .search-box {
-            margin-left: 0 !important;
-            max-width: 100% !important;
-          }
-
-          #css-var-control-panel td {
-            padding: 8px 10px !important;
-            min-width: 80px;
-          }
-
-          #css-var-control-panel input {
-            height: 36px !important;
-            padding: 8px !important;
-          }
-
-          .table-wrapper {
-            height: 60vh !important;
-            margin: 8px 0 !important;
-          }
-
-          #css-var-control-panel table {
-            min-width: 100%;
-          }
-
-          #css-var-control-panel td:last-child {
-            white-space: normal;
-          }
-
-          #css-var-control-panel button {
-            padding: 8px 12px !important;
-            margin: 4px !important;
-            width: 100%;
-          }
-
-          .color-input-group {
-            flex-direction: column;
-          }
-
-          .color-input {
-            width: 100% !important;
-          }
-
-          .contrast-warning {
-            display: none;
-          }
-
-          .modal-footer {
-            padding: 12px !important;
-          }
-
-          .modal-body {
-            padding: 12px !important;
-          }
-
-          input[type="color"] {
-            height: 40px !important;
-            width: 40px !important;
-          }
-
-          /* 表格移动端适配 */
-          #css-var-control-panel table,
-          #css-var-control-panel thead,
-          #css-var-control-panel tbody,
-          #css-var-control-panel th,
-          #css-var-control-panel td,
-          #css-var-control-panel tr {
-            display: block;
-            width: 100% !important;
-            min-width: 0 !important;
-          }
-
-          #css-var-control-panel thead {
-            position: absolute;
-            opacity: 0;
-            pointer-events: none;
-          }
-
-          #css-var-control-panel tbody tr {
-            display: flex;
-            flex-direction: column;
-            margin: 12px 0;
-            padding: 16px;
-            border: 1px solid #eee;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            background: #fff;
-          }
-
-          #css-var-control-panel td {
-            position: relative;
-            padding: 12px 8px 8px 25% !important;
-            border: none !important;
-            min-height: 48px;
-          }
-
-          #css-var-control-panel td::before {
-            content: attr(data-label);
-            position: absolute;
-            left: 8px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 20%;
-            padding-right: 10px;
-            font-weight: 500;
-            color: #666;
-            font-size: 0.9em;
-          }
-
-          #css-var-control-panel td:last-child {
-            border-top: 1px solid #eee !important;
-            padding-top: 16px !important;
-            margin-top: 8px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-          }
-
-          #css-var-control-panel td:last-child::before {
-            content: "操作";
-            width: 100%;
-            transform: translateY(-50%);
-            margin-bottom: 8px;
-          }
-
-          .color-input-group {
-            flex-direction: row !important;
-          }
-
-          #css-var-control-panel button {
-            width: auto !important;
-            flex: 1;
-            min-width: 80px;
-          }
-
-          #css-var-control-panel td:last-child {
-            flex-direction: row !important;
-            gap: 8px;
-            padding-top: 12px !important;
-          }
-
-          #css-var-control-panel button[data-action] {
-            flex: none !important;
-            width: auto !important;
-            min-width: 70px;
-            padding: 8px 12px !important;
-          }
-
-          /* 横屏优化 */
-          @media (orientation: landscape) {
-            .table-wrapper {
-              max-height: 50vh !important;
-            }
-          }
-        }`;
+	        `;
         document.head.appendChild(style);
 
         const panel = document.createElement("div");
@@ -1720,8 +1538,8 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
                           <div class="color-input-group">
                             ${isColorSaved
                     ? `
-                              <input 
-                                type="color" 
+                              <input
+                                type="color"
                                 value="${savedValue}"
                                 data-var="${varName}"
                                 title="点击选择颜色"
@@ -1991,13 +1809,12 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
 
     // 按钮组配置
     const buttons = [
-      {
-        icon: "fas fa-gears",
-        text: "设置",
-        id: 'createControlPanel',
-        // 在移动端隐藏这个按钮
-        hideOnTouch: false,
-      },
+	      {
+	        icon: "fas fa-gears",
+	        text: "设置",
+	        id: 'createControlPanel',
+	        hideOnTouch: false,
+	      },
       {
         get icon() {
           return `fas ${themeManager.isDark ? "fa-sun" : "fa-moon"}`;
