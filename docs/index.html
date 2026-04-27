@@ -15,15 +15,55 @@
     <link rel="stylesheet" href="./_css/dashboard.min.css" />
 
     <!-- 代码插件样式 -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-solarizedlight.min.css"
+        id="prism-theme-light" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css"
+        id="prism-theme-dark" disabled />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/match-braces/prism-match-braces.min.css">
 
     <!-- 主题插件 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple.css"
         id="docsify-theme-light" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple-dark.css"
-        id="docsify-theme-dark" />
+        id="docsify-theme-dark" disabled />
     <link rel="stylesheet" href="./_css/theme-custom.min.css" />
+    <script>
+        (function () {
+            var mediaQuery = window.matchMedia
+                ? window.matchMedia("(prefers-color-scheme: dark)")
+                : null;
+
+            function setLinkState(id, disabled) {
+                var link = document.getElementById(id);
+                if (link) link.disabled = disabled;
+            }
+
+            function applySystemTheme() {
+                var isDark = mediaQuery ? mediaQuery.matches : false;
+                var theme = isDark ? "dark" : "light";
+                document.documentElement.setAttribute("data-theme", theme);
+                setLinkState("docsify-theme-light", isDark);
+                setLinkState("docsify-theme-dark", !isDark);
+                setLinkState("prism-theme-light", isDark);
+                setLinkState("prism-theme-dark", !isDark);
+
+                if (typeof CustomEvent === "function") {
+                    document.dispatchEvent(new CustomEvent("theme-change", { detail: theme }));
+                }
+            }
+
+            window.__docsifyApplySystemTheme = applySystemTheme;
+            applySystemTheme();
+
+            if (mediaQuery) {
+                if (mediaQuery.addEventListener) {
+                    mediaQuery.addEventListener("change", applySystemTheme);
+                } else if (mediaQuery.addListener) {
+                    mediaQuery.addListener(applySystemTheme);
+                }
+            }
+        })();
+    </script>
 </head>
 
 <body>
@@ -169,9 +209,6 @@
         src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/normalize-whitespace/prism-normalize-whitespace.min.js"></script>
     <script src="./plugins/docsify/lib/plugins/prismjs-class.js"></script>
 
-    <!-- 样式修改 -->
-    <script src="./plugins/docsify/lib/plugins/setting-button-new.js"></script>
-
     <!-- 侧边栏添加折叠 -->
     <script src="./plugins/docsify/lib/plugins/docsify-sidebar-collapse.min.js"></script>
 
@@ -211,6 +248,9 @@
 
     <!-- 代码块按钮 -->
     <script src="./plugins/docsify/lib/plugins/code-button.js"></script>
+
+    <!-- 返回顶部 -->
+    <script src="./plugins/docsify/lib/plugins/docsify-back-to-top.js"></script>
 
     <!-- 代码块折叠 -->
     <script src="./plugins/docsify/lib/plugins/docsify-hide-code.js"></script>

@@ -9,6 +9,8 @@
   --heading-margin: 1rem 0 0;
   --heading-h2-padding: 0 0 0 0;
   --heading-h2-margin: 1rem 0 0.5rem;
+  --code-theme-background: rgb(253, 246, 227);
+  --docs-code-block-background: rgb(253, 246, 227);
 
   /* sidebar */
   --sidebar-nav-indent: 0.75em;
@@ -16,6 +18,11 @@
   --sidebar-nav-link-before-content-l3--active: "\f15c";
   --sidebar-nav-link-before-content-l4: "\f0c9";
   --sidebar-nav-link-before-content-l4--active: "\f550";
+}
+
+html[data-theme="dark"] {
+  --code-theme-background: rgb(39, 40, 34);
+  --docs-code-block-background: rgb(39, 40, 34);
 }
 
 .sidebar-nav > ul > li a::before {
@@ -40,6 +47,14 @@
 .markdown-section pre code.language-abap .token.operator,
 .markdown-section pre.language-abap code .token.operator {
   background: transparent !important;
+}
+
+.markdown-section pre,
+.markdown-section pre[class*="language-"],
+.markdown-section pre[data-lang],
+.markdown-section pre > code,
+.markdown-section .code-line-numbers {
+  background: var(--docs-code-block-background) !important;
 }
 
 .markdown-section figure {
