@@ -5,29 +5,39 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
   const styles = `
     .code-buttons {
       position: absolute;
-      top: 8px;
+      top: var(--code-buttons-top, 2px);
       left: var(--code-buttons-left, 8px);
       right: auto;
       display: flex;
-      gap: 8px;
-      opacity: 0.68;
+      gap: 6px;
+      opacity: 0.72;
       transition: opacity 0.2s;
       z-index: 2;
-      background: rgba(255,255,255,0.86);
-      padding: 4px;
-      border-radius: 4px;
+      background: transparent;
+      padding: 0;
     }
     pre:hover > .code-buttons {
       opacity: 1;
     }
     .code-buttons button {
+      align-items: center;
       background: none;
       border: none;
+      color: #64748b;
       cursor: pointer;
-      color: #666;
-      font-size: 14px;
+      display: inline-flex;
+      font-size: 13px;
+      height: 18px;
+      justify-content: center;
       line-height: 1;
-      padding: 2px;
+      padding: 0;
+      width: 18px;
+    }
+    .code-buttons button:hover {
+      color: var(--theme-color, #42b983);
+    }
+    html[data-theme="dark"] .code-buttons button {
+      color: #cbd5e1;
     }
     .code-line-numbers {
       position: absolute;

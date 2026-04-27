@@ -1,4 +1,4 @@
-const CACHE_VERSION = "notes-pwa-v1";
+const CACHE_VERSION = "notes-pwa-v2";
 const PRECACHE = `${CACHE_VERSION}-precache`;
 const RUNTIME = `${CACHE_VERSION}-runtime`;
 

@@ -15,9 +15,6 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
     const style = document.createElement('style');
     style.id = 'docsify-sidebar-collapse-style';
     style.textContent = `
-      .sidebar {
-        background: linear-gradient(180deg, rgba(250, 252, 255, 0.98), rgba(246, 248, 251, 0.98));
-      }
       .sidebar-nav {
         padding: 8px 6px 24px;
       }
@@ -51,7 +48,6 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
         white-space: normal;
       }
       .sidebar-nav li a:hover {
-        background: rgba(66, 185, 131, 0.10);
         color: #1f7a56;
         transform: translateX(1px);
       }
@@ -61,14 +57,11 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
       }
       .sidebar-nav li.active > a,
       .sidebar-nav li.open > a {
-        background: rgba(66, 185, 131, 0.14);
         color: var(--theme-color, #42b983);
         font-weight: 600;
       }
       .sidebar-nav .sidebar-chapter-number {
         align-items: center;
-        background: rgba(148, 163, 184, 0.14);
-        border-radius: 999px;
         color: #64748b;
         display: inline-flex;
         flex: 0 0 auto;
@@ -83,9 +76,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
         text-align: center;
       }
       .sidebar-nav li.active > a .sidebar-chapter-number,
-      .sidebar-nav li.open > a .sidebar-chapter-number,
-      .sidebar-nav li.arrow.folder-expanded > .sidebar-folder-label .sidebar-chapter-number {
-        background: rgba(66, 185, 131, 0.16);
+      .sidebar-nav li.open > a .sidebar-chapter-number {
         color: var(--theme-color, #42b983);
       }
       .sidebar-nav .sidebar-chapter-title,
@@ -120,14 +111,13 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
         white-space: normal;
       }
       .sidebar-nav li.arrow:hover {
-        background: rgba(148, 163, 184, 0.10);
+        color: #1f7a56;
       }
       .sidebar-nav li.arrow.folder-expanded {
-        background: rgba(66, 185, 131, 0.06);
+        color: #1f7a56;
       }
       .sidebar-nav li.arrow.folder-expanded > ul {
-        background: rgba(255, 255, 255, 0.48);
-        border-radius: 0 0 6px 6px;
+        border-radius: 0;
       }
     `;
     document.head.appendChild(style);
@@ -149,6 +139,37 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
       return path.join('.');
     }
 
+    function isChapterLink(link) {
+      const href = link.getAttribute('href') || '';
+      return (
+        link.classList.contains('section-link') ||
+        Boolean(link.closest('ul.app-sub-sidebar')) ||
+        href.includes('?id=')
+      );
+    }
+
+    function generateChapterPath(element) {
+      const path = [];
+      let currentElement = element;
+
+      while (currentElement && currentElement.tagName === 'LI') {
+        const parent = currentElement.parentElement;
+        const siblings = Array.from(parent.children).filter(child => {
+          const link = Array.from(child.children).find(node => node.tagName === 'A');
+          return link && isChapterLink(link);
+        });
+        const index = siblings.indexOf(currentElement);
+        if (index >= 0) path.unshift(index + 1);
+
+        if (parent.classList.contains('app-sub-sidebar')) break;
+
+        const parentLi = parent.parentElement;
+        currentElement = parentLi && parentLi.tagName === 'LI' ? parentLi : null;
+      }
+
+      return path.join('.');
+    }
+
     function normalizeText(text) {
       return (text || '').replace(/\s+/g, ' ').trim();
     }
@@ -160,7 +181,16 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
       return number;
     }
 
-    function ensureLinkNumber(link, number) {
+    function removeLinkNumber(link) {
+      const oldNumber = link.querySelector(':scope > .sidebar-chapter-number');
+      const title = link.querySelector(':scope > .sidebar-chapter-title');
+      if (oldNumber) oldNumber.remove();
+      if (title) {
+        link.textContent = normalizeText(title.textContent);
+      }
+    }
+
+    function ensureChapterNumber(link, number) {
       let title = link.querySelector(':scope > .sidebar-chapter-title');
       const oldNumber = link.querySelector(':scope > .sidebar-chapter-number');
       if (oldNumber) oldNumber.remove();
@@ -177,7 +207,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
       link.insertBefore(createChapterNumber(number), title);
     }
 
-    function ensureFolderLabel(li, number) {
+    function ensureFolderLabel(li) {
       let label = Array.from(li.children).find(child => child.classList.contains('sidebar-folder-label'));
       let title = label && label.querySelector('.sidebar-folder-title');
       const directText = normalizeText(
@@ -204,7 +234,6 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
         .forEach(node => node.remove());
 
       label.textContent = '';
-      label.appendChild(createChapterNumber(number));
       title.textContent = titleText;
       label.appendChild(title);
     }
@@ -218,7 +247,11 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
       );
 
       if (directLink) {
-        ensureLinkNumber(directLink, generateElementPath(li));
+        if (isChapterLink(directLink)) {
+          ensureChapterNumber(directLink, generateChapterPath(li));
+        } else {
+          removeLinkNumber(directLink);
+        }
       }
 
       const hasDirectLink = Array.from(li.children).some(
@@ -227,7 +260,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
 
       if (hasDirectLink) return;
 
-      ensureFolderLabel(li, generateElementPath(li));
+      ensureFolderLabel(li);
 
       if (!li.classList.contains('has-arrow')) {
         li.classList.add('arrow', 'has-arrow');
