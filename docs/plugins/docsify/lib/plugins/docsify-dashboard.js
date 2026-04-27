@@ -193,8 +193,12 @@ function dashboardPlugin(t, e) {
       tagsHtml = `<div class="toc-tags-container"><ul style="list-style: none;padding: 0;margin-bottom: 0.5em;display: flex;gap: 8px;flex-wrap: wrap;">${tags.map(tag => `<li style="background: #f0f0f0;padding: 4px 8px;border-radius: 4px;font-size: calc(1rem * 0.9);margin-right: .5em;">${tag}</li>`).join('')}</ul></div>`;
     }
 
+    if (c && c.indexOf("/notes/") === 0 && window.location.pathname.indexOf("/notes/") !== 0) {
+      c = c.replace(/^\/notes\//, "");
+    }
+
     // 修改后的HTML结构
-    n += `<a class="toc-page-display-a" id="${e}" href="${l}"><div class="toc-page-display-div" id="${e}"><div class="toc-page-display-title-img" id="${e}"><center><img class="ignore-view-full-image-img" src="${c}"></center></div><div class="toc-content-wrapper" style="flex: 1;padding-left: 15px;"><div class="toc-title-time" style="display: flex;justify-content: flex-start;align-items: self-end;margin-bottom: 8px;"><div class="toc-page-title" style="font-size: calc(1rem *1.2);">${o}</div><div class="toc-page-time" style="padding-left: .5rem;padding-bottom: 0.2rem;color: #969391;font-size: calc(1rem *0.8);">${i}</div></div>${d ? `<div class="toc-page-subtitle">${s}</div>` : ''}${tagsHtml}</div></div></a>`;
+    n += `<a class="toc-page-display-a" id="${e}" href="${l}"><div class="toc-page-display-div" id="${e}"><div class="toc-page-display-title-img" id="${e}"><center><img class="ignore-view-full-image-img" src="${c}" loading="lazy"></center></div><div class="toc-content-wrapper" style="flex: 1;padding-left: 15px;"><div class="toc-title-time" style="display: flex;justify-content: flex-start;align-items: self-end;margin-bottom: 8px;"><div class="toc-page-title" style="font-size: calc(1rem *1.2);">${o}</div><div class="toc-page-time" style="padding-left: .5rem;padding-bottom: 0.2rem;color: #969391;font-size: calc(1rem *0.8);">${i}</div></div>${d ? `<div class="toc-page-subtitle">${s}</div>` : ''}${tagsHtml}</div></div></a>`;
     return n;
   }
 
@@ -297,7 +301,7 @@ function dashboardPlugin(t, e) {
       c();
     });
 }
-window.$docsify.plugins = [].concat(
-  [plugin, dashboardPlugin],
-  window.$docsify.plugins
-);
+window.$docsify.plugins = (window.$docsify.plugins || []).concat([
+  plugin,
+  dashboardPlugin,
+]);

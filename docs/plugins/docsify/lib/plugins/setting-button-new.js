@@ -152,7 +152,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
       // 新增配置文件加载方法
       async function loadConfig() {
         try {
-          const response = await fetch('/notes/metadata/css-vars-config.json'); // 配置文件路径
+          const response = await fetch('./metadata/css-vars-config.json'); // 配置文件路径
           config = await response.json();
           if (!Array.isArray(config.cssVariables)) {
             console.error('配置文件格式错误，应为 { "cssVariables": [...] }');
@@ -768,7 +768,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
 
       function applyTheme(index) {
         currentIndex = (index + themes.length) % themes.length;
-        const themeUrl = `//cdn.jsdelivr.net/npm/prismjs/themes/${themes[currentIndex]}`;
+        const themeUrl = `https://cdn.jsdelivr.net/npm/prismjs/themes/${themes[currentIndex]}`;
 
         if (!styleElement) {
           styleElement = document.createElement("link");
@@ -822,7 +822,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
       {
         icon: "fas fa-home",
         text: "首页",
-        action: () => (window.location.href = "/notes/#/"),
+        action: () => (window.location.href = "#/"),
       },
     ];
 

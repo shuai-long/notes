@@ -9,19 +9,19 @@
     <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
     <!-- 图标 -->
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
     <!-- 添加tab标签 -->
     <link rel="stylesheet" href="./_css/dashboard.min.css" />
 
     <!-- 代码插件样式 -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css">
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/match-braces/prism-match-braces.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/match-braces/prism-match-braces.min.css">
 
     <!-- 主题插件 -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple.css"
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple.css"
         id="docsify-theme-light" />
-    <link rel=" stylesheet" href="//cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple-dark.css"
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple-dark.css"
         id="docsify-theme-dark" />
     <link rel="stylesheet" href="./_css/theme-custom.min.css" />
 </head>
@@ -72,6 +72,7 @@
             hideCode: {
                 scroll: true, // Enable scrolling
                 height: 500, // Max height
+                minLines: 28, // 低于该行数不做高度测量，减少布局计算
             },
 
             // 分页插件
@@ -91,6 +92,7 @@
             // 插件功能配置
             prism: {
                 copySuccessText: "复制成功", // 自定义复制成功提示
+                maxMatchBracesChars: 12000, // 长代码块跳过括号匹配二次高亮
                 showLanguage: {
                     useDataAttribute: true, // 是否使用 data-language 属性显示语言标签
                     mapping: {
@@ -100,6 +102,12 @@
                         sh: "Shell",
                     },
                 },
+            },
+
+            // 代码块工具配置
+            codeButton: {
+                lineNumbers: true,
+                maxLineNumbers: 500, // 长代码块不生成逐行 DOM，避免页面卡顿
             },
 
             // 添加tab标签
@@ -127,7 +135,7 @@
             // 设置全局搜索
             search: {
                 maxAge: 86400000, // 过期时间，单位毫秒，默认一天
-                paths: "auto", // 注意：仅适用于 paths: 'auto' 模式
+                paths: "auto", // 使用懒加载搜索插件，只有聚焦搜索框时才索引全站
                 placeholder: "搜索",
                 noData: "No Results",
                 depth: 4,
@@ -138,22 +146,26 @@
     </script>
 
     <!-- Docsify 核心 -->
-    <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
 
     <!-- Docsify 主题 -->
-    <script src="//cdn.jsdelivr.net/npm/docsify-themeable/dist/js/docsify-themeable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docsify-themeable/dist/js/docsify-themeable.min.js"></script>
 
     <!-- Prism 语言组件 -->
-    <script src="./plugins/docsify/lib/plugins/prismjs-class.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-abap.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/match-braces/prism-match-braces.min.js"></script>
+    <script>
+        window.Prism = window.Prism || {};
+        window.Prism.manual = true;
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-abap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/match-braces/prism-match-braces.min.js"></script>
     <script
-        src="//cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/normalize-whitespace/prism-normalize-whitespace.min.js"></script>
+        src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/normalize-whitespace/prism-normalize-whitespace.min.js"></script>
+    <script src="./plugins/docsify/lib/plugins/prismjs-class.js"></script>
 
     <!-- 样式修改 -->
-    <script src="./plugins/docsify/lib/plugins/setting-button-new.min.js"></script>
+    <script src="./plugins/docsify/lib/plugins/setting-button-new.js"></script>
 
     <!-- 侧边栏添加折叠 -->
     <script src="./plugins/docsify/lib/plugins/docsify-sidebar-collapse.min.js"></script>
@@ -185,20 +197,21 @@
     <script src="./plugins/docsify/lib/plugins/zoom-image.min.js"></script>
 
     <!-- 搜索功能支持 -->
-    <script src="./plugins/docsify/lib/plugins/search.min.js"></script>
-
-    <!-- 代码块按钮 -->
-    <script src="./plugins/docsify/lib/plugins/code-button.min.js"></script>
+    <script src="./plugins/docsify/lib/plugins/search-lazy.js"></script>
 
     <!-- 添加tab标签 -->
-    <script src="./plugins/docsify/lib/plugins/docsify-dashboard.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/docsify-tabs@1"></script>
+    <script src="./plugins/docsify/lib/plugins/docsify-tabs.min.js"></script>
+    <script src="./plugins/docsify/lib/plugins/docsify-tabs-fix.js"></script>
+    <script src="./plugins/docsify/lib/plugins/docsify-dashboard.js"></script>
+
+    <!-- 代码块按钮 -->
+    <script src="./plugins/docsify/lib/plugins/code-button.js"></script>
 
     <!-- 代码块折叠 -->
-    <script src="./plugins/docsify/lib/plugins/docsify-hide-code.min.js"></script>
+    <script src="./plugins/docsify/lib/plugins/docsify-hide-code.js"></script>
 
     <!-- 行内代码高亮 -->
-    <script src="./plugins/docsify/lib/plugins/docsify-inline-code-highing.min.js"></script>
+    <script src="./plugins/docsify/lib/plugins/docsify-inline-code-highing.js"></script>
 
     <!-- 分页插件
     <script src="./plugins/docsify/lib/plugins/docsify-pagination.min.js"></script> -->

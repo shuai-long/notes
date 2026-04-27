@@ -1,181 +1,226 @@
-(window.$docsify = window.$docsify || {}),
-  (window.$docsify.plugins = [].concat(function (hook, vm) {
-    // 新增行号样式
-    const lineNumberStyles = `
-       .code-line-numbers {
-         position: absolute;
-         left: 0;
-         top: 2.15em;
-         padding: var(--code-block-padding);
-         border-right: 1px solid;
-         text-align: right;
-         user-select: none;
-         line-height: 1.5;
-       }
-       pre[data-linenos] {
-         position: relative;
-         padding-left: 4em !important;
-       }
-       pre[data-linenos] code {
-         counter-reset: linenumber;
-       }
-       pre[data-linenos] code > .line {
-         counter-increment: linenumber;
-       }
-       pre[data-linenos] code > .line::before {
-         content: counter(linenumber);
-         display: inline-block;
-         width: 2em;
-         padding-right: 0.5em;
-         text-align: right;
-         user-select: none;
-       }
-     `;
+window.$docsify = window.$docsify || {};
+window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook, vm) {
+  const DEFAULT_MAX_LINE_NUMBERS = 500;
 
-    // 插入行号样式
-    const style = document.createElement('style');
-    style.textContent = lineNumberStyles;
-    document.head.appendChild(style);
-
-    function createButton(e, t) {
-      const n = document.createElement("button");
-      return (
-        (n.className = "fa-solid " + e),
-        (n.style.background = "none"),
-        (n.style.border = "none"),
-        (n.style.cursor = "pointer"),
-        (n.style.color = "#666"),
-        (n.style.fontSize = "14px"),
-        n.addEventListener("click", t),
-        n
-      );
+  const styles = `
+    .code-buttons {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      display: flex;
+      gap: 8px;
+      opacity: 0.68;
+      transition: opacity 0.2s;
+      z-index: 2;
+      background: rgba(255,255,255,0.86);
+      padding: 4px;
+      border-radius: 4px;
     }
-    function showToast(e, t = !1) {
-      const n = document.createElement("div");
-      (n.textContent = e),
-        (n.style.position = "fixed"),
-        (n.style.bottom = "20px"),
-        (n.style.left = "50%"),
-        (n.style.transform = "translateX(-50%)"),
-        (n.style.background = t ? "#ff4444" : "#4CAF50"),
-        (n.style.color = "white"),
-        (n.style.padding = "8px 16px"),
-        (n.style.borderRadius = "20px"),
-        (n.style.fontSize = "14px"),
-        (n.style.boxShadow = "0 2px 4px rgba(0,0,0,0.2)"),
-        document.body.appendChild(n),
-        setTimeout(() => n.remove(), 1500);
+    pre:hover > .code-buttons {
+      opacity: 1;
     }
-    function runHtmlCss(e) {
-      const t = document.createElement("iframe");
-      (t.srcdoc = e), showCodeResult(t);
+    .code-buttons button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #666;
+      font-size: 14px;
+      line-height: 1;
+      padding: 2px;
     }
-    function runJavaScript(code) {
-      const result = eval(code);
-      showCodeResult(result);
+    .code-line-numbers {
+      position: absolute;
+      left: 0;
+      top: 2.15em;
+      padding: var(--code-block-padding);
+      border-right: 1px solid;
+      text-align: right;
+      user-select: none;
+      line-height: 1.5;
+      box-sizing: border-box;
     }
-    function runHtmlCss(e) {
-      const t = document.createElement("iframe");
-      (t.style.cssText =
-        "width: 100%;height: 300px;border: 1px solid #e1e4e8;border-radius: 6px;background: white;margin: 10px 0;"),
-        (t.srcdoc = `<!DOCTYPE html><html><head><style>body {padding: 20px;font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;line-height: 1.6; }</style></head><body>${e}</body></html>`),
-        showCodeResult(t);
+    .code-line-numbers span {
+      display: block;
     }
-    function showCodeResult(e) {
-      const t = document.createElement("div");
-      t.style.cssText =
-        "position: fixed;top: 0;left: 0;width: 100%;height: 100%;background: rgba(0,0,0,0.5);display: flex;justify-content: center;align-items: center;backdrop-filter: blur(2px);z-index: 9999;";
-      const n = document.createElement("div");
-      n.style.cssText =
-        "background: white;padding: 24px;border-radius: 12px;width: min(90%, 800px);max-height: 80vh;box-shadow: 0 8px 32px rgba(0,0,0,0.2);position: relative;";
-      const o = document.createElement("div");
-      o.style.cssText =
-        "display: flex;justify-content: space-between;align-items: center;margin-bottom: 16px;padding-bottom: 8px;border-bottom: 1px solid #eee;";
-      const s = document.createElement("h3");
-      (s.textContent = "运行结果"),
-        (s.style.cssText =
-          "margin: 0;font-size: 18px;color: #333;\n    ");
-      const c = document.createElement("button");
-      (c.innerHTML = '<i class="fa-solid fa-xmark"></i>'),
-        (c.style.cssText =
-          "background: none;border: none;cursor: pointer;color: #666;font-size: 16px;padding: 4px;"),
-        (c.onclick = () => t.remove()),
-        o.append(s, c),
-        n.append(o, e),
-        t.append(n),
-        document.body.appendChild(t);
+    pre[data-linenos] {
+      position: relative;
+      padding-left: 4em !important;
+    }
+    pre[data-linenos-skipped] {
+      position: relative;
+    }
+  `;
+
+  const style = document.createElement("style");
+  style.textContent = styles;
+  document.head.appendChild(style);
+
+  function getConfig() {
+    const config = (vm && vm.config && vm.config.codeButton) || {};
+    return {
+      lineNumbers: config.lineNumbers !== false,
+      maxLineNumbers:
+        Number(config.maxLineNumbers) || DEFAULT_MAX_LINE_NUMBERS,
+    };
+  }
+
+  function schedule(task) {
+    if ("requestIdleCallback" in window) {
+      requestIdleCallback(task, { timeout: 800 });
+      return;
+    }
+    setTimeout(task, 0);
+  }
+
+  function createButton(icon, title, onClick) {
+    const button = document.createElement("button");
+    button.className = "fa-solid " + icon;
+    button.type = "button";
+    button.title = title;
+    button.setAttribute("aria-label", title);
+    button.addEventListener("click", onClick);
+    return button;
+  }
+
+  function showToast(message, isError = false) {
+    const toast = document.createElement("div");
+    toast.textContent = message;
+    toast.style.position = "fixed";
+    toast.style.bottom = "20px";
+    toast.style.left = "50%";
+    toast.style.transform = "translateX(-50%)";
+    toast.style.background = isError ? "#ff4444" : "#4CAF50";
+    toast.style.color = "white";
+    toast.style.padding = "8px 16px";
+    toast.style.borderRadius = "20px";
+    toast.style.fontSize = "14px";
+    toast.style.boxShadow = "0 2px 4px rgba(0,0,0,0.2)";
+    toast.style.zIndex = "10001";
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 1500);
+  }
+
+  function runHtmlCss(code) {
+    const iframe = document.createElement("iframe");
+    iframe.style.cssText =
+      "width: 100%;height: 300px;border: 1px solid #e1e4e8;border-radius: 6px;background: white;margin: 10px 0;";
+    iframe.srcdoc = `<!DOCTYPE html><html><head><style>body {padding: 20px;font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;line-height: 1.6; }</style></head><body>${code}</body></html>`;
+    showCodeResult(iframe);
+  }
+
+  function runJavaScript(code) {
+    const result = eval(code);
+    showCodeResult(document.createTextNode(String(result)));
+  }
+
+  function showCodeResult(content) {
+    const overlay = document.createElement("div");
+    overlay.style.cssText =
+      "position: fixed;top: 0;left: 0;width: 100%;height: 100%;background: rgba(0,0,0,0.5);display: flex;justify-content: center;align-items: center;backdrop-filter: blur(2px);z-index: 9999;";
+    const panel = document.createElement("div");
+    panel.style.cssText =
+      "background: white;padding: 24px;border-radius: 12px;width: min(90%, 800px);max-height: 80vh;box-shadow: 0 8px 32px rgba(0,0,0,0.2);position: relative;";
+    const header = document.createElement("div");
+    header.style.cssText =
+      "display: flex;justify-content: space-between;align-items: center;margin-bottom: 16px;padding-bottom: 8px;border-bottom: 1px solid #eee;";
+    const title = document.createElement("h3");
+    title.textContent = "运行结果";
+    title.style.cssText = "margin: 0;font-size: 18px;color: #333;";
+    const closeButton = document.createElement("button");
+    closeButton.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+    closeButton.style.cssText =
+      "background: none;border: none;cursor: pointer;color: #666;font-size: 16px;padding: 4px;";
+    closeButton.onclick = () => overlay.remove();
+    header.append(title, closeButton);
+    panel.append(header, content);
+    overlay.append(panel);
+    document.body.appendChild(overlay);
+  }
+
+  function countLines(text) {
+    return text ? text.split("\n").length : 0;
+  }
+
+  function addLineNumbers(preElement, codeElement, lineCount, config) {
+    if (!config.lineNumbers || lineCount > config.maxLineNumbers) {
+      preElement.setAttribute("data-linenos-skipped", "");
+      return;
     }
 
-    // 新增行号生成函数
-    function addLineNumbers(preElement, codeElement) {
-      // 创建行号容器
-      const lineNumbers = document.createElement('div');
-      lineNumbers.className = 'code-line-numbers';
+    const lineNumbers = document.createElement("div");
+    lineNumbers.className = "code-line-numbers";
+    lineNumbers.innerHTML = Array.from(
+      { length: lineCount },
+      (_, index) => `<span>${index + 1}</span>`
+    ).join("");
 
-      // 计算行数
-      const lines = codeElement.textContent.split('\n');
-      const lineCount = lines.length;
+    preElement.insertBefore(lineNumbers, codeElement);
+    preElement.setAttribute("data-linenos", "");
+  }
 
-      // 生成行号
-      lineNumbers.innerHTML = Array.from(
-        { length: lineCount },
-        (_, i) => `<span>${i + 1}</span>`
-      ).join('\n');
+  function enhanceCodeBlock(codeElement, config) {
+    if (codeElement.dataset.codeButtonProcessed === "true") return;
 
-      // 添加行号到代码块
-      preElement.insertBefore(lineNumbers, codeElement);
+    const preElement = codeElement.parentElement;
+    const lineCount = countLines(codeElement.textContent);
+    const language =
+      (
+        codeElement.className.match(/language-([\w-]+)/) ||
+        codeElement.className.match(/lang-([\w-]+)/) ||
+        []
+      )[1] || "txt";
 
-      // 为代码块添加data属性用于样式控制
-      preElement.setAttribute('data-linenos', '');
+    codeElement.dataset.codeButtonProcessed = "true";
+    preElement.style.position = "relative";
+
+    if (!preElement.querySelector(".code-line-numbers")) {
+      addLineNumbers(preElement, codeElement, lineCount, config);
     }
 
-    hook.doneEach(function () {
-      document.querySelectorAll("pre > code").forEach((e) => {
-        const t = e.parentElement;
+    if (preElement.querySelector(".code-buttons")) return;
 
-        // 新增行号添加逻辑
-        if (!t.querySelector('.code-line-numbers')) {
-          addLineNumbers(t, e);
-        }
+    const buttons = document.createElement("div");
+    buttons.className = "code-buttons";
 
-        if (t.querySelector(".code-buttons")) return;
-        const n = (e.className.match(/language-(\w+)/) || e.className.match(/lang-(\w+)/) || [])[1],
-          o = e.textContent,
-          s = document.createElement("div");
-        (s.className = "code-buttons"),
-          (s.style.cssText =
-            "  top: 8px;  right: 8px;  display: flex;  gap: 8px;  opacity: 0.6;  transition: opacity 0.2s;  z-index: 1;  background: rgba(255,255,255,0.8);  padding: 4px;\n    margin-left: -4.01em;   "),
-          (t.style.position = "relative");
-        const c = t.querySelector("::after");
-        c && ((c.style.right = "auto"), (c.style.left = "8px")),
-          t.addEventListener("mouseenter", () => (s.style.opacity = "1")),
-          t.addEventListener("mouseleave", () => (s.style.opacity = "0.6"));
-        const a = createButton("fa-copy", () => {
-          navigator.clipboard.writeText(o), showToast("Copied!");
-        }),
-          d = createButton("fa-download", () => {
-            const e = new Blob([o], { type: "text/plain" }),
-              t = URL.createObjectURL(e),
-              s = document.createElement("a");
-            (s.href = t),
-              (s.download = `code.${n || "txt"}`),
-              s.click(),
-              URL.revokeObjectURL(t);
-          }),
-          r = ["html", "css", "javascript", "js"];
-        if ((s.append(d, a), r.includes(n))) {
-          const e = createButton("fa-play", () => {
-            try {
-              ["html", "css"].includes(n)
-                ? runHtmlCss(o)
-                : ["javascript", "js"].includes(n) && runJavaScript(o);
-            } catch (e) {
-              showToast(`Error: ${e.message}`, !0);
-            }
-          });
-          s.append(e);
-        }
-        t.prepend(s);
-      });
+    const downloadButton = createButton("fa-download", "下载代码", () => {
+      const blob = new Blob([codeElement.textContent], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `code.${language}`;
+      link.click();
+      URL.revokeObjectURL(url);
     });
-  }, window.$docsify.plugins));
+
+    const copyButton = createButton("fa-copy", "复制代码", async () => {
+      await navigator.clipboard.writeText(codeElement.textContent);
+      showToast("复制成功");
+    });
+
+    buttons.append(downloadButton, copyButton);
+
+    if (["html", "css", "javascript", "js"].includes(language)) {
+      const runButton = createButton("fa-play", "运行代码", () => {
+        try {
+          ["html", "css"].includes(language)
+            ? runHtmlCss(codeElement.textContent)
+            : runJavaScript(codeElement.textContent);
+        } catch (error) {
+          showToast(`Error: ${error.message}`, true);
+        }
+      });
+      buttons.append(runButton);
+    }
+
+    preElement.prepend(buttons);
+  }
+
+  hook.doneEach(function () {
+    const config = getConfig();
+    schedule(function () {
+      document
+        .querySelectorAll(".content pre > code")
+        .forEach((codeElement) => enhanceCodeBlock(codeElement, config));
+    });
+  });
+});

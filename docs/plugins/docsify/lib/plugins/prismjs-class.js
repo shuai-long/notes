@@ -1,28 +1,39 @@
 window.$docsify = window.$docsify || {};
-window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (
-  hook,
-  vm
-) {
+window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook, vm) {
+  const DEFAULT_MAX_MATCH_BRACES_CHARS = 12000;
+
+  function getConfig() {
+    const config = (vm && vm.config && vm.config.prism) || {};
+    return {
+      maxMatchBracesChars:
+        Number(config.maxMatchBracesChars) || DEFAULT_MAX_MATCH_BRACES_CHARS,
+    };
+  }
+
   hook.doneEach(function () {
+    const config = getConfig();
+    const codeBlocks = document.querySelectorAll(".content pre > code");
 
-    const class_config = ['match-braces']; // 改为 const 防止修改
+    codeBlocks.forEach((codeEl) => {
+      if (codeEl.dataset.prismClassProcessed === "true") return;
 
-    document.querySelectorAll('pre > code').forEach(codeEl => {
       const preEl = codeEl.parentNode;
-      
-      class_config.forEach(class_name => {
-        // 仅当类名不存在时添加
-        if (!codeEl.classList.contains(class_name)) {
-          codeEl.classList.add(class_name);
-        }
-        if (!preEl.classList.contains(class_name)) {
-          preEl.classList.add(class_name);
-        }
-      });
-    });
+      const codeSize = codeEl.textContent.length;
 
-    if (window.Prism) {
-      Prism.highlightAll();
-    }
+      codeEl.dataset.prismClassProcessed = "true";
+
+      if (codeSize > config.maxMatchBracesChars) {
+        return;
+      }
+
+      codeEl.classList.add("match-braces");
+      preEl.classList.add("match-braces");
+
+      // Prism has already highlighted the block once through docsify. Re-highlight
+      // only small blocks so match-braces can attach without freezing long pages.
+      if (window.Prism && typeof Prism.highlightElement === "function") {
+        Prism.highlightElement(codeEl);
+      }
+    });
   });
 });
