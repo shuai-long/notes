@@ -8,6 +8,12 @@
     <meta name="description" content="Description" />
     <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#42b983" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#272822" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Notes" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" href="./icons/pwa-icon.svg" type="image/svg+xml" />
     <!-- 图标 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
@@ -267,7 +273,13 @@
 
     <script>
         //注册 离线模式
-        if (typeof navigator.serviceWorker !== "undefined") { navigator.serviceWorker.register("sw.js"); }
+        if (typeof navigator.serviceWorker !== "undefined") {
+            window.addEventListener("load", function () {
+                navigator.serviceWorker.register("./sw.js", { scope: "./" }).catch(function (error) {
+                    console.warn("Service worker registration failed:", error);
+                });
+            });
+        }
     </script>
 </body>
 

@@ -1,84 +1,130 @@
-/* ===========================================================
- * docsify sw.js
- * ===========================================================
- * Copyright 2016 @huxpro
- * Licensed under Apache 2.0
- * Register service worker.
- * ========================================================== */
+const CACHE_VERSION = "notes-pwa-v1";
+const PRECACHE = `${CACHE_VERSION}-precache`;
+const RUNTIME = `${CACHE_VERSION}-runtime`;
 
-const RUNTIME = 'docsify'
-const HOSTNAME_WHITELIST = [
-  self.location.hostname,
-  'fonts.gstatic.com',
-  'fonts.googleapis.com',
-  'cdn.jsdelivr.net'
-]
+const CDN_HOSTS = new Set([
+  "cdnjs.cloudflare.com",
+  "cdn.jsdelivr.net",
+  "fonts.googleapis.com",
+  "fonts.gstatic.com",
+  "unpkg.com",
+]);
 
-// The Util Function to hack URLs of intercepted requests
-const getFixedUrl = (req) => {
-  var now = Date.now()
-  var url = new URL(req.url)
+const APP_SHELL = [
+  "./",
+  "./index.html",
+  "./manifest.webmanifest",
+  "./README.md",
+  "./_coverpage.md",
+  "./_navbar.md",
+  "./_sidebar.md",
+  "./_css/dashboard.min.css",
+  "./_css/theme-custom.min.css",
+  "./icons/pwa-icon.svg",
+  "./plugins/docsify/lib/plugins/prismjs-class.js",
+  "./plugins/docsify/lib/plugins/docsify-sidebar-collapse.min.js",
+  "./plugins/docsify/lib/plugins/docsify-header-collapse.min.js",
+  "./plugins/docsify/lib/plugins/pdfobject.min.js",
+  "./plugins/docsify/lib/plugins/docsify-pdf-embed.min.js",
+  "./plugins/docsify/lib/plugins/d3.min.js",
+  "./plugins/docsify/lib/plugins/docsify-mermaid.min.js",
+  "./plugins/docsify/lib/plugins/docsify-mermaid-zoom.min.js",
+  "./plugins/docsify/lib/plugins/docsify-image-caption.min.js",
+  "./plugins/docsify/lib/plugins/zoom-image.min.js",
+  "./plugins/docsify/lib/plugins/search-lazy.js",
+  "./plugins/docsify/lib/plugins/docsify-tabs.min.js",
+  "./plugins/docsify/lib/plugins/docsify-tabs-fix.js",
+  "./plugins/docsify/lib/plugins/docsify-dashboard.js",
+  "./plugins/docsify/lib/plugins/code-button.js",
+  "./plugins/docsify/lib/plugins/docsify-back-to-top.js",
+  "./plugins/docsify/lib/plugins/docsify-hide-code.js",
+  "./plugins/docsify/lib/plugins/docsify-inline-code-highing.js",
+  "./plugins/docsify/lib/plugins/pangu.min.js",
+  "./plugins/docsify/lib/plugins/docsify-spacing.js",
+];
 
-  // 1. fixed same-origin URL
-  // Keep external CDN URLs on their original protocol. Rewriting them to the
-  // local http protocol causes redirects and slows down local preview.
-  if (url.hostname === self.location.hostname) {
-    url.protocol = self.location.protocol
-  }
-
-  // 2. add query for caching-busting.
-  // Github Pages served with Cache-Control: max-age=600
-  // max-age on mutable content is error-prone, with SW life of bugs can even extend.
-  // Until cache mode of Fetch API landed, we have to workaround cache-busting with query string.
-  // Cache-Control-Bug: https://bugs.chromium.org/p/chromium/issues/detail?id=453190
-  if (url.hostname === self.location.hostname) {
-    url.search += (url.search ? '&' : '?') + 'cache-bust=' + now
-  }
-  return url.href
+function isSameOrigin(url) {
+  return url.origin === self.location.origin;
 }
 
-/**
- *  @Lifecycle Activate
- *  New one activated when old isnt being used.
- *
- *  waitUntil(): activating ====> activated
- */
-self.addEventListener('activate', event => {
-  event.waitUntil(self.clients.claim())
-})
+function isCacheableRequest(request) {
+  if (request.method !== "GET") return false;
+  const url = new URL(request.url);
+  return isSameOrigin(url) || CDN_HOSTS.has(url.hostname);
+}
 
-/**
- *  @Functional Fetch
- *  All network requests are being intercepted here.
- *
- *  void respondWith(Promise<Response> r)
- */
-self.addEventListener('fetch', event => {
-  // Skip some of cross-origin requests, like those for Google Analytics.
-  if (HOSTNAME_WHITELIST.indexOf(new URL(event.request.url).hostname) > -1) {
-    // Stale-while-revalidate
-    // similar to HTTP's stale-while-revalidate: https://www.mnot.net/blog/2007/12/12/stale
-    // Upgrade from Jake's to Surma's: https://gist.github.com/surma/eb441223daaedf880801ad80006389f1
-    const cached = caches.match(event.request)
-    const fixedUrl = getFixedUrl(event.request)
-    const fetched = fetch(fixedUrl, { cache: 'no-store' })
-    const fetchedCopy = fetched.then(resp => resp.clone())
-
-    // Call respondWith() with whatever we get first.
-    // If the fetch fails (e.g disconnected), wait for the cache.
-    // If there’s nothing in cache, wait for the fetch.
-    // If neither yields a response, return offline pages.
-    event.respondWith(
-      Promise.race([fetched.catch(_ => cached), cached])
-        .then(resp => resp || fetched)
-        .catch(_ => { /* eat any errors */ })
-    )
-
-    // Update the cache with the version we fetched (only for ok status)
-    event.waitUntil(
-      Promise.all([fetchedCopy, caches.open(RUNTIME)])
-        .then(([response, cache]) => response.ok && cache.put(event.request, response))
-        .catch(_ => { /* eat any errors */ })
-    )
+function getCacheKey(request) {
+  const url = new URL(request.url);
+  if (isSameOrigin(url)) {
+    url.searchParams.delete("cache-bust");
   }
-})
+  return new Request(url.href, { method: "GET" });
+}
+
+async function putCache(request, response) {
+  if (!response || (!response.ok && response.type !== "opaque")) return;
+  const cache = await caches.open(RUNTIME);
+  await cache.put(getCacheKey(request), response.clone());
+}
+
+async function staleWhileRevalidate(request) {
+  const cacheKey = getCacheKey(request);
+  const cached = await caches.match(cacheKey);
+
+  const fetched = fetch(request, { cache: "no-store" })
+    .then((response) => {
+      putCache(request, response).catch(() => {});
+      return response;
+    })
+    .catch(() => null);
+
+  if (cached) return cached;
+  return (await fetched) || Response.error();
+}
+
+async function networkFirst(request) {
+  try {
+    const response = await fetch(request, { cache: "no-store" });
+    await putCache(request, response);
+    return response;
+  } catch (error) {
+    const cached = await caches.match(getCacheKey(request));
+    return cached || caches.match("./index.html");
+  }
+}
+
+self.addEventListener("install", (event) => {
+  event.waitUntil(
+    caches
+      .open(PRECACHE)
+      .then((cache) => cache.addAll(APP_SHELL))
+      .then(() => self.skipWaiting())
+  );
+});
+
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(
+          keys
+            .filter((key) => key !== PRECACHE && key !== RUNTIME)
+            .map((key) => caches.delete(key))
+        )
+      )
+      .then(() => self.clients.claim())
+  );
+});
+
+self.addEventListener("fetch", (event) => {
+  const { request } = event;
+  if (!isCacheableRequest(request)) return;
+
+  if (request.mode === "navigate") {
+    event.respondWith(networkFirst(request));
+    return;
+  }
+
+  event.respondWith(staleWhileRevalidate(request));
+});
