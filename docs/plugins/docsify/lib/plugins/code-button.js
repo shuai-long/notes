@@ -30,21 +30,28 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
     }
     .code-line-numbers {
       position: absolute;
-      left: 0;
-      top: 2.15em;
-      padding: var(--code-block-padding);
+      left: var(--code-linenos-left, 0);
+      top: var(--code-linenos-top, 0);
+      width: var(--code-linenos-width, 3.5em);
+      padding: 0 0.75em 0 0;
       border-right: 1px solid;
       text-align: right;
       user-select: none;
-      line-height: 1.5;
       box-sizing: border-box;
+      pointer-events: none;
+      opacity: 0.65;
     }
     .code-line-numbers span {
       display: block;
+      height: var(--code-linenos-line-height, 1.5em);
+      line-height: var(--code-linenos-line-height, 1.5em);
     }
     pre[data-linenos] {
       position: relative;
-      padding-left: 4em !important;
+      padding-left: var(--code-linenos-padding-left, 4em) !important;
+    }
+    pre[data-linenos] code {
+      white-space: pre;
     }
     pre[data-linenos-skipped] {
       position: relative;
@@ -141,6 +148,91 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
     return text ? text.split("\n").length : 0;
   }
 
+  function px(value, fallback = 0) {
+    const parsed = parseFloat(value);
+    return Number.isFinite(parsed) ? parsed : fallback;
+  }
+
+  function lineHeightPx(style, fontSize) {
+    if (style.lineHeight && style.lineHeight !== "normal") {
+      return px(style.lineHeight, fontSize * 1.5);
+    }
+
+    return fontSize * 1.5;
+  }
+
+  function getFirstCodeTextTop(preElement, codeElement, fallbackTop) {
+    const walker = document.createTreeWalker(codeElement, NodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        return node.nodeValue ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+      },
+    });
+    const textNode = walker.nextNode();
+
+    if (!textNode) return fallbackTop;
+
+    const range = document.createRange();
+    const start = Math.min(
+      Math.max(textNode.nodeValue.search(/\S/), 0),
+      Math.max(textNode.nodeValue.length - 1, 0)
+    );
+    const end = Math.min(start + 1, textNode.nodeValue.length);
+
+    try {
+      range.setStart(textNode, start);
+      range.setEnd(textNode, end);
+      const rect = range.getBoundingClientRect();
+
+      if (rect.height > 0) {
+        return rect.top - preElement.getBoundingClientRect().top;
+      }
+    } finally {
+      range.detach();
+    }
+
+    return fallbackTop;
+  }
+
+  function applyLineNumberMetrics(
+    preElement,
+    codeElement,
+    lineNumbers,
+    lineCount,
+    originalPaddingLeft
+  ) {
+    const preStyle = getComputedStyle(preElement);
+    const codeStyle = getComputedStyle(codeElement);
+    const fontSize = px(codeStyle.fontSize, px(preStyle.fontSize, 14));
+    const lineHeight = lineHeightPx(codeStyle, fontSize);
+    const paddingLeft = Number.isFinite(originalPaddingLeft)
+      ? originalPaddingLeft
+      : px(preStyle.paddingLeft);
+    const preRect = preElement.getBoundingClientRect();
+    const codeRect = codeElement.getBoundingClientRect();
+    const fallbackCodeTextTop =
+      Math.max(0, codeRect.top - preRect.top) + px(codeStyle.paddingTop);
+    const codeTextTop = getFirstCodeTextTop(
+      preElement,
+      codeElement,
+      fallbackCodeTextTop
+    );
+    const digits = String(lineCount).length;
+    const gutterWidth = Math.ceil(Math.max(fontSize * 3.5, fontSize * (digits + 2)));
+
+    preElement.style.setProperty("--code-linenos-left", `${paddingLeft}px`);
+    preElement.style.setProperty("--code-linenos-top", `${codeTextTop}px`);
+    preElement.style.setProperty("--code-linenos-width", `${gutterWidth}px`);
+    preElement.style.setProperty(
+      "--code-linenos-padding-left",
+      `${paddingLeft + gutterWidth + fontSize * 0.75}px`
+    );
+    preElement.style.setProperty("--code-linenos-line-height", `${lineHeight}px`);
+
+    lineNumbers.style.fontFamily = codeStyle.fontFamily;
+    lineNumbers.style.fontSize = codeStyle.fontSize;
+    lineNumbers.style.fontWeight = codeStyle.fontWeight;
+  }
+
   function addLineNumbers(preElement, codeElement, lineCount, config) {
     if (!config.lineNumbers || lineCount > config.maxLineNumbers) {
       preElement.setAttribute("data-linenos-skipped", "");
@@ -154,8 +246,17 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
       (_, index) => `<span>${index + 1}</span>`
     ).join("");
 
+    const originalPaddingLeft = px(getComputedStyle(preElement).paddingLeft);
+
     preElement.insertBefore(lineNumbers, codeElement);
     preElement.setAttribute("data-linenos", "");
+    applyLineNumberMetrics(
+      preElement,
+      codeElement,
+      lineNumbers,
+      lineCount,
+      originalPaddingLeft
+    );
   }
 
   function enhanceCodeBlock(codeElement, config) {

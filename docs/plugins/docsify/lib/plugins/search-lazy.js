@@ -11,6 +11,7 @@
     namespace: "",
     loadingText: "索引加载中...",
   };
+  const CACHE_VERSION = "v2";
 
   function escapeHtml(value) {
     return String(value)
@@ -44,19 +45,47 @@
     return "#" + route;
   }
 
+  function titleFromPath(path) {
+    if (path === "/" || /\/README$/i.test(path || "")) return "README";
+
+    return decodeURIComponent(String(path || "").split("/").pop() || path)
+      .replace(/\.md$/i, "")
+      .trim();
+  }
+
+  function slugify(value) {
+    return stripMarkdown(value)
+      .toLowerCase()
+      .replace(/[^\w\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u30ff\u3100-\u312f\u31a0-\u31bf\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\s-]/g, "")
+      .trim()
+      .replace(/\s+/g, "-");
+  }
+
+  function sectionUrl(path, title) {
+    const baseUrl = routeUrl(path);
+    const slug = slugify(title);
+    return slug ? baseUrl + "?id=" + encodeURIComponent(slug) : baseUrl;
+  }
+
   function parseSections(path, markdown, depth) {
-    const lines = String(markdown || "").replace(/```[\s\S]*?```/g, " ").split(/\r?\n/);
+    const markdownText = String(markdown || "");
+    const lines = markdownText.replace(/```[\s\S]*?```/g, " ").split(/\r?\n/);
+    const fileTitleMatch = markdownText.match(/^#\s+(.+)$/m);
+    const fileTitle = stripMarkdown(fileTitleMatch ? fileTitleMatch[1] : titleFromPath(path));
     const sections = [];
-    let title = path === "/" ? "README" : decodeURIComponent(path.split("/").pop() || path);
+    let title = "全文";
     let body = [];
 
     function push() {
       const content = stripMarkdown(body.join("\n"));
       if (title || content) {
         sections.push({
-          title: stripMarkdown(title),
+          path: path,
+          fileTitle: fileTitle,
+          fileUrl: routeUrl(path),
+          sectionTitle: stripMarkdown(title),
           content: content.slice(0, 12000),
-          url: routeUrl(path),
+          url: title === "全文" ? routeUrl(path) : sectionUrl(path, title),
         });
       }
       body = [];
@@ -74,7 +103,7 @@
 
     push();
     return sections.filter(function (item) {
-      return item.title || item.content;
+      return item.sectionTitle || item.content;
     });
   }
 
@@ -112,8 +141,8 @@
   function cacheKeys(config) {
     const namespace = config.namespace ? "/" + config.namespace : "";
     return {
-      expires: "docsify.lazy-search.expires" + namespace,
-      index: "docsify.lazy-search.index" + namespace,
+      expires: "docsify.lazy-search." + CACHE_VERSION + ".expires" + namespace,
+      index: "docsify.lazy-search." + CACHE_VERSION + ".index" + namespace,
     };
   }
 
@@ -177,38 +206,171 @@
     });
   }
 
+  function matchSnippets(content, keyword, limit) {
+    const normalized = normalize(content);
+    const snippets = [];
+    let fromIndex = 0;
+
+    while (snippets.length < limit) {
+      const position = normalized.indexOf(keyword, fromIndex);
+      if (position < 0) break;
+
+      const start = Math.max(0, position - 42);
+      const end = Math.min(content.length, position + keyword.length + 90);
+      snippets.push(content.slice(start, end));
+      fromIndex = position + keyword.length;
+    }
+
+    return snippets;
+  }
+
   function search(index, query) {
     const keyword = normalize(query).trim();
     if (!keyword) return [];
 
-    return index
-      .map(function (item) {
-        const title = normalize(item.title);
-        const content = normalize(item.content);
-        const titlePos = title.indexOf(keyword);
-        const contentPos = content.indexOf(keyword);
-        let score = 0;
+    const files = new Map();
 
-        if (titlePos >= 0) score += 4;
-        if (contentPos >= 0) score += 1;
-        if (!score) return null;
+    index.forEach(function (item) {
+      const fileTitle = item.fileTitle || item.title || titleFromPath(item.path);
+      const sectionTitle = item.sectionTitle || item.title || "全文";
+      const fileKey = item.path || item.fileUrl || fileTitle;
+      const fileTitleMatch = normalize(fileTitle).indexOf(keyword) >= 0;
+      const sectionTitleMatch = normalize(sectionTitle).indexOf(keyword) >= 0;
+      const snippets = matchSnippets(item.content || "", keyword, 3);
+      const matches = [];
+      let score = 0;
+      let fileGroup = files.get(fileKey);
 
-        const start = Math.max(0, contentPos - 40);
-        const end = Math.min(item.content.length, contentPos + keyword.length + 90);
-        const snippet = contentPos >= 0 ? item.content.slice(start, end) : item.content.slice(0, 120);
-
-        return {
-          title: item.title,
-          content: snippet,
-          url: item.url,
-          score: score,
+      if (!fileGroup) {
+        fileGroup = {
+          title: fileTitle,
+          url: item.fileUrl || item.url,
+          score: 0,
+          matchCount: 0,
+          titleMatched: false,
+          sections: new Map(),
         };
+        files.set(fileKey, fileGroup);
+      }
+
+      if (fileTitleMatch && !fileGroup.titleMatched) {
+        const fileMatchKey = item.fileUrl || fileGroup.url || fileKey;
+        let fileMatchGroup = fileGroup.sections.get(fileMatchKey);
+
+        if (!fileMatchGroup) {
+          fileMatchGroup = {
+            title: "全文",
+            url: item.fileUrl || fileGroup.url,
+            score: 0,
+            matches: [],
+          };
+          fileGroup.sections.set(fileMatchKey, fileMatchGroup);
+        }
+
+        fileGroup.titleMatched = true;
+        fileGroup.score += 8;
+        fileGroup.matchCount += 1;
+        fileMatchGroup.score += 8;
+        fileMatchGroup.matches.push({ label: "文件名", text: fileTitle });
+      }
+
+      if (sectionTitleMatch && sectionTitle !== fileTitle) {
+        score += 5;
+        matches.push({ label: "章节", text: sectionTitle });
+      }
+
+      snippets.forEach(function (snippet) {
+        score += 1;
+        matches.push({ label: "正文", text: "..." + snippet + "..." });
+      });
+
+      if (!matches.length) return;
+
+      const sectionKey = item.url || sectionTitle;
+      let sectionGroup = fileGroup.sections.get(sectionKey);
+
+      if (!sectionGroup) {
+        sectionGroup = {
+          title: sectionTitle,
+          url: item.url || fileGroup.url,
+          score: 0,
+          matches: [],
+        };
+        fileGroup.sections.set(sectionKey, sectionGroup);
+      }
+
+      fileGroup.score += score;
+      sectionGroup.score += score;
+      sectionGroup.matches.push.apply(sectionGroup.matches, matches);
+      fileGroup.matchCount += matches.length;
+    });
+
+    return Array.from(files.values())
+      .map(function (file) {
+        file.sections = Array.from(file.sections.values())
+          .sort(function (a, b) {
+            return b.score - a.score;
+          })
+          .slice(0, 8)
+          .map(function (section) {
+            section.matches = section.matches.slice(0, 4);
+            return section;
+          });
+        return file;
       })
-      .filter(Boolean)
+      .filter(function (file) {
+        return file.matchCount > 0;
+      })
       .sort(function (a, b) {
         return b.score - a.score;
       })
-      .slice(0, 30);
+      .slice(0, 12);
+  }
+
+  function renderResults(results, query) {
+    return results
+      .map(function (file) {
+        const sectionsHtml = file.sections
+          .map(function (section) {
+            const matchesHtml = section.matches
+              .map(function (match) {
+                return (
+                  '<li><a href="' +
+                  escapeHtml(section.url) +
+                  '"><span class="search-match-label">' +
+                  escapeHtml(match.label) +
+                  "</span><span>" +
+                  highlight(match.text, query) +
+                  "</span></a></li>"
+                );
+              })
+              .join("");
+
+            return (
+              '<div class="search-section"><a class="search-section-title" href="' +
+              escapeHtml(section.url) +
+              '"><span class="search-dim">章节</span>' +
+              highlight(section.title, query) +
+              '</a><ul class="search-matches">' +
+              matchesHtml +
+              "</ul></div>"
+            );
+          })
+          .join("");
+
+        return (
+          '<div class="search-file"><a class="search-file-title" href="' +
+          escapeHtml(file.url) +
+          '"><span class="search-dim">文件</span><strong>' +
+          highlight(file.title, query) +
+          '</strong><span class="search-count">' +
+          file.matchCount +
+          " 处</span></a>" +
+          sectionsHtml +
+          "</div>"
+        );
+      })
+      .join("");
   }
 
   function plugin(hook, vm) {
@@ -256,19 +418,7 @@
       }
 
       const results = search(index, query);
-      const html = results
-        .map(function (item) {
-          return (
-            '<div class="matching-post"><a href="' +
-            item.url +
-            '"><h2>' +
-            highlight(item.title, query) +
-            "</h2><p>" +
-            highlight("..." + item.content + "...", query) +
-            "</p></a></div>"
-          );
-        })
-        .join("");
+      const html = renderResults(results, query);
 
       panel.classList.add("show");
       panel.innerHTML = html || '<p class="empty">' + escapeHtml(config.noData) + "</p>";
@@ -290,10 +440,18 @@
         .search input:focus { box-shadow: 0 0 5px var(--theme-color, #42b983); border: 1px solid var(--theme-color, #42b983); }
         .search .clear-button { cursor: pointer; width: 36px; text-align: right; display: none; border: 0; background: transparent; }
         .search .clear-button.show { display: block; }
-        .search h2 { font-size: 17px; margin: 10px 0; }
         .search a { text-decoration: none; }
-        .search .matching-post { border-bottom: 1px solid #eee; }
-        .search .matching-post p { overflow: hidden; text-overflow: ellipsis; font-size: 14px; }
+        .search .search-file { border-bottom: 1px solid #eee; padding: 10px 0 8px; }
+        .search .search-file-title { align-items: center; color: inherit; display: flex; gap: 6px; line-height: 1.35; }
+        .search .search-file-title strong { flex: 1; font-size: 15px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .search .search-count { color: #999; flex: 0 0 auto; font-size: 12px; }
+        .search .search-section { margin: 7px 0 0 12px; }
+        .search .search-section-title { color: inherit; display: block; font-size: 13px; line-height: 1.35; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .search .search-matches { list-style: none; margin: 4px 0 0 0; padding: 0; }
+        .search .search-matches li { margin: 3px 0; }
+        .search .search-matches a { color: #666; display: block; font-size: 12px; line-height: 1.45; max-height: 3.1em; overflow: hidden; }
+        .search .search-match-label,
+        .search .search-dim { border: 1px solid #ddd; border-radius: 3px; color: #888; display: inline-block; font-size: 11px; line-height: 1.2; margin-right: 5px; padding: 1px 3px; vertical-align: 1px; }
         .search .search-keyword { color: var(--theme-color, #42b983); font-style: normal; font-weight: bold; }
         .search .empty { color: #777; font-size: 14px; }
         .sidebar-nav.hide, .app-name.hide { display: none; }
