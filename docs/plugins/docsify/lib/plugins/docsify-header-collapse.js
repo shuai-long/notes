@@ -1,45 +1,131 @@
 !(function () {
   if (typeof window.$docsify === 'undefined') return
 
-  window.$docsify.plugins.push(function (hook) {
+  const NAV_STATE_KEY = '__docsifyHeaderCollapseNavigation'
+  const NAV_BOUND_KEY = '__docsifyHeaderCollapseNavigationBound'
 
-    // 初始化计数器数组
+  function normalizeValue(value) {
+    const rawValue = (value || '').trim()
+
+    if (!rawValue) return ''
+
+    try {
+      return decodeURIComponent(rawValue)
+    } catch (error) {
+      return rawValue
+    }
+  }
+
+  function parseRoute(value) {
+    const rawValue = value || window.location.hash || ''
+    let hash = rawValue
+
+    try {
+      hash = new URL(rawValue, window.location.href).hash || rawValue
+    } catch (error) {
+      hash = rawValue
+    }
+
+    if (!hash.includes('#')) return { path: '', id: '' }
+
+    const route = hash.slice(hash.indexOf('#') + 1).replace(/^!/, '')
+    const parts = route.split('?')
+    const query = parts.slice(1).join('?')
+    const params = new URLSearchParams(query)
+
+    return {
+      path: normalizeValue(parts[0] || '/'),
+      id: normalizeValue(params.get('id') || ''),
+    }
+  }
+
+  function recordNavigation(source, href) {
+    const route = parseRoute(href)
+    window[NAV_STATE_KEY] = {
+      source: source,
+      path: route.path,
+      id: route.id,
+      createdAt: Date.now(),
+    }
+  }
+
+  if (!window[NAV_BOUND_KEY]) {
+    document.addEventListener(
+      'click',
+      function (event) {
+        const link = event.target && event.target.closest && event.target.closest('a[href]')
+
+        if (!link) return
+
+        if (link.closest('.search .results-panel')) {
+          recordNavigation('search', link.getAttribute('href'))
+          return
+        }
+
+        if (link.closest('.sidebar-nav')) {
+          recordNavigation('sidebar', link.getAttribute('href'))
+        }
+      },
+      true
+    )
+    window[NAV_BOUND_KEY] = true
+  }
+
+  window.$docsify.plugins.push(function (hook) {
     let counters = [0, 0, 0, 0, 0]
 
-    const getPageKey = () => {
-      return decodeURIComponent(window.location.hash.replace(/^#!?/, '')).split('?')[0]
+    function getNavigationIntent() {
+      const route = parseRoute()
+      const state = window[NAV_STATE_KEY]
+
+      if (!state || state.path !== route.path) {
+        return { source: 'default', targetId: '' }
+      }
+
+      if (state.source === 'search') {
+        return {
+          source: 'search',
+          targetId: state.id || route.id,
+        }
+      }
+
+      return { source: state.source || 'default', targetId: '' }
+    }
+
+    function setCollapsed(content, collapsed) {
+      content.style.display = collapsed ? 'none' : 'block'
     }
 
     hook.doneEach(function () {
+      try {
+        localStorage.removeItem('headingExpandedState')
+      } catch (error) {
+        // Ignore storage errors; heading state is intentionally not persisted.
+      }
 
-      // 重置计数器
       counters = [0, 0, 0, 0, 0]
-      const pageKey = getPageKey()
-
-      // 初始化折叠状态存储对象
-      let collapsibleStates = JSON.parse(localStorage.getItem('headingExpandedState') || '{}');
+      const navigationIntent = getNavigationIntent()
+      const shouldExpandSearchTarget =
+        navigationIntent.source === 'search' && Boolean(navigationIntent.targetId)
+      let targetHeader = null
 
       document.querySelector('.content').querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(header => {
         const tagLevel = parseInt(header.tagName.substring(1))
+        const normalizedHeaderId = normalizeValue(header.id)
 
-        // 保持原有过滤逻辑
         if (tagLevel < 2) {
           const existingNumber = header.querySelector('.header-number')
           if (existingNumber) existingNumber.remove()
           return
         }
 
-        // 保持原有计数器逻辑
         const level = tagLevel - 2
         counters[level]++
         for (let i = level + 1; i < 5; i++) counters[i] = 0
 
-        // 生成唯一存储键
         const sectionNumber = counters.slice(0, level + 1).join('.')
-        const storageKey = `${pageKey}|${sectionNumber}`
-        header.dataset.sectionKey = storageKey
+        header.dataset.sectionKey = sectionNumber
 
-        // 创建序号元素（保持原有逻辑）
         let numberSpan = header.querySelector('.header-number')
         if (!numberSpan) {
           numberSpan = document.createElement('span')
@@ -49,49 +135,49 @@
         }
         numberSpan.textContent = `${sectionNumber} `
 
-        // 创建内容容器（保持原有逻辑）
         const content = document.createElement('div')
         content.className = 'collapsible-content'
 
-        // 节点移动逻辑保持不变
         const nodesToMove = []
         let nextElem = header.nextElementSibling
-        // while (nextElem && !nextElem.matches('h1, h2, h3, h4, h5, h6')) {
-        //   nodesToMove.push(nextElem)
-        //   nextElem = nextElem.nextElementSibling
-        // }
         while (nextElem) {
-          if (nextElem.matches('h1, h2, h3, h4, h5, h6') ||
-            nextElem.classList.contains('docsify-pagination-container')) {
-            break;
+          if (
+            nextElem.matches('h1, h2, h3, h4, h5, h6') ||
+            nextElem.classList.contains('docsify-pagination-container')
+          ) {
+            break
           }
-          nodesToMove.push(nextElem);
-          nextElem = nextElem.nextElementSibling;
+          nodesToMove.push(nextElem)
+          nextElem = nextElem.nextElementSibling
         }
         header.parentNode.insertBefore(content, header.nextSibling)
         nodesToMove.forEach(node => content.appendChild(node))
 
-        // 从JSON存储恢复状态
-        const savedState = collapsibleStates[storageKey]
-        content.style.display = (savedState === 'collapsed') ? 'none' : 'block'
+        const isSearchTarget =
+          shouldExpandSearchTarget &&
+          normalizedHeaderId &&
+          normalizedHeaderId === navigationIntent.targetId
+        setCollapsed(content, !isSearchTarget)
 
-        // 修改后的点击事件处理
+        if (isSearchTarget) {
+          targetHeader = header
+        }
+
         header.addEventListener('click', function () {
           const isCollapsed = content.style.display === 'none'
-
-          // 更新显示状态
-          content.style.display = isCollapsed ? 'block' : 'none'
-
-          // 更新JSON存储对象
-          collapsibleStates = JSON.parse(localStorage.getItem('headingExpandedState') || '{}')
-          collapsibleStates[storageKey] = isCollapsed ? 'expanded' : 'collapsed'
-
-          // 保存整个JSON对象
-          localStorage.setItem('headingExpandedState', JSON.stringify(collapsibleStates))
+          setCollapsed(content, !isCollapsed)
         })
 
         header.classList.add('collapsible')
       })
+
+      if (targetHeader) {
+        setTimeout(function () {
+          targetHeader.scrollIntoView({ block: 'start' })
+        }, 0)
+      }
+
+      window[NAV_STATE_KEY] = null
     })
   })
 })()

@@ -6,7 +6,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
     .code-buttons {
       position: absolute;
       top: var(--code-buttons-top, 2px);
-      left: var(--code-buttons-left, 8px);
+      left: var(--code-buttons-left, 6px);
       right: auto;
       display: flex;
       gap: 6px;
@@ -240,7 +240,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
     );
     preElement.style.setProperty(
       "--code-buttons-left",
-      `${paddingLeft + gutterWidth + fontSize * 0.75}px`
+      "6px"
     );
     preElement.style.setProperty("--code-linenos-line-height", `${lineHeight}px`);
 

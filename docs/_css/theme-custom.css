@@ -132,6 +132,25 @@ html[data-theme="dark"] .sidebar-nav li.arrow.folder-expanded {
   max-height: none;
 }
 
+.markdown-section .docs-table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.markdown-section .docs-table-scroll table {
+  display: table;
+  margin: 0;
+  min-width: 100%;
+  table-layout: auto;
+  width: max-content;
+}
+
+.markdown-section .docs-table-scroll th,
+.markdown-section .docs-table-scroll td {
+  vertical-align: top;
+}
+
 @media screen and (max-width: 768px) {
   :root {
     --content-max-width: 100%;
@@ -184,9 +203,46 @@ html[data-theme="dark"] .sidebar-nav li.arrow.folder-expanded {
     display: flex;
     height: 40px;
     justify-content: center;
+    margin: 0 !important;
     left: 10px !important;
+    padding: 0 !important;
+    position: fixed !important;
     top: 10px !important;
+    transform: none !important;
+    z-index: 1000;
     width: 40px;
+  }
+
+  body.close .sidebar-toggle,
+  body:not(.close) .sidebar-toggle {
+    height: 40px !important;
+    left: 10px !important;
+    right: auto !important;
+    top: 10px !important;
+    transform: none !important;
+    width: 40px !important;
+  }
+
+  .sidebar-toggle .sidebar-toggle-button {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    height: 24px;
+    justify-content: center;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: static !important;
+    width: 24px;
+  }
+
+  .sidebar-toggle span {
+    display: block !important;
+    height: 2px !important;
+    margin: 0 !important;
+    position: static !important;
+    transform: none !important;
+    width: 20px !important;
   }
 
   html[data-theme="dark"] .sidebar-toggle {
@@ -266,14 +322,26 @@ html[data-theme="dark"] .sidebar-nav li.arrow.folder-expanded {
   }
 
   .code-buttons {
+    left: 6px;
     top: 2px;
   }
 
-  .markdown-section table {
-    display: block;
+  .markdown-section .docs-table-scroll {
+    margin: 0.85rem -8px 1rem;
     max-width: 100%;
+    padding: 0 8px;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+  }
+
+  .markdown-section .docs-table-scroll table {
+    display: table;
+    min-width: 100%;
+    width: max-content;
+  }
+
+  .markdown-section .docs-table-scroll th,
+  .markdown-section .docs-table-scroll td {
     white-space: nowrap;
   }
 

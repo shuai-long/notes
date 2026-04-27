@@ -1,4 +1,4 @@
-const CACHE_VERSION = "notes-pwa-v2";
+const CACHE_VERSION = "notes-pwa-v4";
 const PRECACHE = `${CACHE_VERSION}-precache`;
 const RUNTIME = `${CACHE_VERSION}-runtime`;
 
@@ -36,6 +36,7 @@ const APP_SHELL = [
   "./plugins/docsify/lib/plugins/docsify-tabs-fix.js",
   "./plugins/docsify/lib/plugins/docsify-dashboard.js",
   "./plugins/docsify/lib/plugins/code-button.js",
+  "./plugins/docsify/lib/plugins/docsify-responsive-tables.js",
   "./plugins/docsify/lib/plugins/docsify-back-to-top.js",
   "./plugins/docsify/lib/plugins/docsify-hide-code.js",
   "./plugins/docsify/lib/plugins/docsify-inline-code-highing.js",

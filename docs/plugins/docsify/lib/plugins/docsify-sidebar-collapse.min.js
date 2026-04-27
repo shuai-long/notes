@@ -170,6 +170,84 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
       return path.join('.');
     }
 
+    function normalizeChapterId(value) {
+      const rawValue = (value || '').trim();
+
+      if (!rawValue) return '';
+
+      try {
+        return decodeURIComponent(rawValue);
+      } catch (error) {
+        return rawValue;
+      }
+    }
+
+    function getChapterLinkId(link) {
+      const href = link.getAttribute('href') || '';
+      const marker = '?id=';
+      const markerIndex = href.indexOf(marker);
+
+      if (markerIndex < 0) return '';
+
+      return normalizeChapterId(
+        href
+          .slice(markerIndex + marker.length)
+          .split('&')[0]
+      );
+    }
+
+    function createChapterNumberMap() {
+      const chapterLinks = Array.from(document.querySelectorAll('.sidebar-nav a'))
+        .filter(isChapterLink);
+      const linkedIds = new Set(
+        chapterLinks
+          .map(getChapterLinkId)
+          .filter(Boolean)
+      );
+
+      if (!linkedIds.size) return new Map();
+
+      const headings = Array.from(
+        document.querySelectorAll(
+          '.markdown-section h1[id], .markdown-section h2[id], .markdown-section h3[id], .markdown-section h4[id], .markdown-section h5[id], .markdown-section h6[id]'
+        )
+      )
+        .map(heading => ({
+          id: normalizeChapterId(heading.id),
+          level: Number(heading.tagName.slice(1)),
+        }))
+        .filter(heading => linkedIds.has(heading.id));
+
+      if (!headings.length) return new Map();
+
+      const minLevel = Math.min(...headings.map(heading => heading.level));
+      const counters = [];
+      const numbers = new Map();
+
+      headings.forEach(heading => {
+        const depth = Math.max(0, heading.level - minLevel);
+        counters.length = depth + 1;
+
+        for (let index = 0; index < depth; index += 1) {
+          if (!counters[index]) counters[index] = 1;
+        }
+
+        counters[depth] = (counters[depth] || 0) + 1;
+        numbers.set(heading.id, counters.slice(0, depth + 1).join('.'));
+      });
+
+      return numbers;
+    }
+
+    function getChapterNumber(link, element, chapterNumberMap) {
+      const chapterId = getChapterLinkId(link);
+
+      return (
+        (chapterId && chapterNumberMap.get(chapterId)) ||
+        generateChapterPath(element)
+      );
+    }
+
     function normalizeText(text) {
       return (text || '').replace(/\s+/g, ' ').trim();
     }
@@ -238,6 +316,8 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
       label.appendChild(title);
     }
 
+    const chapterNumberMap = createChapterNumberMap();
+
     document.querySelectorAll('.sidebar-nav li').forEach(li => {
       const elementId = `sidebar-path-${generateElementPath(li)}`;
       li.dataset.sidebarId = elementId;
@@ -248,7 +328,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
 
       if (directLink) {
         if (isChapterLink(directLink)) {
-          ensureChapterNumber(directLink, generateChapterPath(li));
+          ensureChapterNumber(directLink, getChapterNumber(directLink, li, chapterNumberMap));
         } else {
           removeLinkNumber(directLink);
         }
