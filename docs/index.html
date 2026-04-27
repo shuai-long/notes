@@ -110,6 +110,11 @@
                 maxLineNumbers: 500, // 长代码块不生成逐行 DOM，避免页面卡顿
             },
 
+            // 中英文自动空格
+            spacing: {
+                selector: ".markdown-section",
+            },
+
             // 添加tab标签
             dashboard: {
                 numTabContent: 3, //幻灯片中显示的卡片数量
@@ -212,6 +217,10 @@
 
     <!-- 行内代码高亮 -->
     <script src="./plugins/docsify/lib/plugins/docsify-inline-code-highing.js"></script>
+
+    <!-- 中英文自动空格 -->
+    <script src="./plugins/docsify/lib/plugins/pangu.min.js"></script>
+    <script src="./plugins/docsify/lib/plugins/docsify-spacing.js"></script>
 
     <!-- 分页插件
     <script src="./plugins/docsify/lib/plugins/docsify-pagination.min.js"></script> -->
