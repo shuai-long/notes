@@ -238,7 +238,8 @@
       const sectionTitleMatch = normalize(sectionTitle).indexOf(keyword) >= 0;
       const snippets = matchSnippets(item.content || "", keyword, 3);
       const matches = [];
-      let score = 0;
+      const hasSectionTitleMatch = sectionTitleMatch && sectionTitle !== fileTitle;
+      let sectionScore = 0;
       let fileGroup = files.get(fileKey);
 
       if (!fileGroup) {
@@ -254,37 +255,21 @@
       }
 
       if (fileTitleMatch && !fileGroup.titleMatched) {
-        const fileMatchKey = item.fileUrl || fileGroup.url || fileKey;
-        let fileMatchGroup = fileGroup.sections.get(fileMatchKey);
-
-        if (!fileMatchGroup) {
-          fileMatchGroup = {
-            title: "全文",
-            url: item.fileUrl || fileGroup.url,
-            score: 0,
-            matches: [],
-          };
-          fileGroup.sections.set(fileMatchKey, fileMatchGroup);
-        }
-
         fileGroup.titleMatched = true;
         fileGroup.score += 8;
         fileGroup.matchCount += 1;
-        fileMatchGroup.score += 8;
-        fileMatchGroup.matches.push({ label: "文件名", text: fileTitle });
       }
 
-      if (sectionTitleMatch && sectionTitle !== fileTitle) {
-        score += 5;
-        matches.push({ label: "章节", text: sectionTitle });
+      if (hasSectionTitleMatch) {
+        sectionScore += 5;
       }
 
       snippets.forEach(function (snippet) {
-        score += 1;
+        sectionScore += 1;
         matches.push({ label: "正文", text: "..." + snippet + "..." });
       });
 
-      if (!matches.length) return;
+      if (!hasSectionTitleMatch && !matches.length) return;
 
       const sectionKey = item.url || sectionTitle;
       let sectionGroup = fileGroup.sections.get(sectionKey);
@@ -299,10 +284,10 @@
         fileGroup.sections.set(sectionKey, sectionGroup);
       }
 
-      fileGroup.score += score;
-      sectionGroup.score += score;
+      fileGroup.score += sectionScore;
+      sectionGroup.score += sectionScore;
       sectionGroup.matches.push.apply(sectionGroup.matches, matches);
-      fileGroup.matchCount += matches.length;
+      fileGroup.matchCount += matches.length + (hasSectionTitleMatch ? 1 : 0);
     });
 
     return Array.from(files.values())
@@ -334,36 +319,39 @@
           .map(function (section) {
             const matchesHtml = section.matches
               .map(function (match) {
-                return (
-                  '<li><a href="' +
-                  escapeHtml(section.url) +
-                  '"><span class="search-match-label">' +
-                  escapeHtml(match.label) +
-                  "</span><span>" +
-                  highlight(match.text, query) +
-                  "</span></a></li>"
-                );
-              })
-              .join("");
-
             return (
-              '<div class="search-section"><a class="search-section-title" href="' +
+              '<li><a href="' +
               escapeHtml(section.url) +
-              '"><span class="search-dim">章节</span>' +
-              highlight(section.title, query) +
-              '</a><ul class="search-matches">' +
-              matchesHtml +
-              "</ul></div>"
+              '"><span class="search-match-label">' +
+              escapeHtml(match.label) +
+              '</span><span class="search-match-text">' +
+              highlight(match.text, query) +
+              "</span></a></li>"
             );
           })
           .join("");
+        const matchesBlock = matchesHtml
+          ? '<ul class="search-matches">' + matchesHtml + "</ul>"
+          : "";
 
         return (
-          '<div class="search-file"><a class="search-file-title" href="' +
-          escapeHtml(file.url) +
-          '"><span class="search-dim">文件</span><strong>' +
-          highlight(file.title, query) +
-          '</strong><span class="search-count">' +
+          '<div class="search-section"><a class="search-section-title" href="' +
+          escapeHtml(section.url) +
+          '"><span class="search-dim search-dim-section">章节</span><span class="search-section-text">' +
+          highlight(section.title, query) +
+          "</span></a>" +
+          matchesBlock +
+          "</div>"
+        );
+      })
+      .join("");
+
+    return (
+      '<div class="search-file"><a class="search-file-title" href="' +
+      escapeHtml(file.url) +
+      '"><span class="search-dim search-dim-file">文件</span><strong>' +
+      highlight(file.title, query) +
+      '</strong><span class="search-count">' +
           file.matchCount +
           " 处</span></a>" +
           sectionsHtml +
@@ -443,15 +431,20 @@
         .search a { text-decoration: none; }
         .search .search-file { border-bottom: 1px solid #eee; padding: 10px 0 8px; }
         .search .search-file-title { align-items: center; color: inherit; display: flex; gap: 6px; line-height: 1.35; }
-        .search .search-file-title strong { flex: 1; font-size: 15px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .search .search-file-title strong { flex: 1; font-family: "PingFang SC", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 15px; font-weight: 700; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .search .search-count { color: #999; flex: 0 0 auto; font-size: 12px; }
-        .search .search-section { margin: 7px 0 0 12px; }
-        .search .search-section-title { color: inherit; display: block; font-size: 13px; line-height: 1.35; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .search .search-matches { list-style: none; margin: 4px 0 0 0; padding: 0; }
-        .search .search-matches li { margin: 3px 0; }
-        .search .search-matches a { color: #666; display: block; font-size: 12px; line-height: 1.45; max-height: 3.1em; overflow: hidden; }
+        .search .search-section { margin: 8px 0 0 14px; }
+        .search .search-section-title { align-items: flex-start; color: inherit; display: flex; font-size: 13px; gap: 5px; line-height: 1.35; min-width: 0; }
+        .search .search-section-text { flex: 1; font-family: "Songti SC", "STSong", "SimSun", serif; font-weight: 600; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .search .search-matches { border-left: 2px solid #f0f0f0; list-style: none; margin: 5px 0 0 18px; padding: 0 0 0 10px; }
+        .search .search-matches li { margin: 4px 0; }
+        .search .search-matches a { align-items: flex-start; color: #666; display: flex; font-family: "Kaiti SC", "STKaiti", "KaiTi", cursive; font-size: 12px; gap: 5px; line-height: 1.5; max-height: 3.2em; overflow: hidden; }
+        .search .search-match-text { flex: 1; min-width: 0; }
         .search .search-match-label,
-        .search .search-dim { border: 1px solid #ddd; border-radius: 3px; color: #888; display: inline-block; font-size: 11px; line-height: 1.2; margin-right: 5px; padding: 1px 3px; vertical-align: 1px; }
+        .search .search-dim { border: 1px solid #ddd; border-radius: 3px; color: #888; display: inline-block; flex: 0 0 auto; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 11px; line-height: 1.2; padding: 1px 3px; vertical-align: 1px; }
+        .search .search-dim-file { border-color: #b9d8ff; color: #2f6db3; }
+        .search .search-dim-section { border-color: #d8c7ef; color: #7553a6; }
+        .search .search-match-label { border-color: #d8ead1; color: #4b8a3f; }
         .search .search-keyword { color: var(--theme-color, #42b983); font-style: normal; font-weight: bold; }
         .search .empty { color: #777; font-size: 14px; }
         .sidebar-nav.hide, .app-name.hide { display: none; }

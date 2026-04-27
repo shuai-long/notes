@@ -216,11 +216,12 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
       codeElement,
       fallbackCodeTextTop
     );
+    const lineBoxTop = Math.max(0, codeTextTop - Math.max(0, (lineHeight - fontSize) / 2) - 1);
     const digits = String(lineCount).length;
     const gutterWidth = Math.ceil(Math.max(fontSize * 3.5, fontSize * (digits + 2)));
 
     preElement.style.setProperty("--code-linenos-left", `${paddingLeft}px`);
-    preElement.style.setProperty("--code-linenos-top", `${codeTextTop}px`);
+    preElement.style.setProperty("--code-linenos-top", `${lineBoxTop}px`);
     preElement.style.setProperty("--code-linenos-width", `${gutterWidth}px`);
     preElement.style.setProperty(
       "--code-linenos-padding-left",
