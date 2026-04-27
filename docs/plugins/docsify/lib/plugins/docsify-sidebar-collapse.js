@@ -1,16 +1,80 @@
 window.$docsify = window.$docsify || {};
 window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook, vm) {
   hook.doneEach(function () {
-    // 添加样式
+    try {
+      localStorage.removeItem('sidebarExpandedState');
+    } catch (error) {
+      // Ignore storage errors; sidebar state is intentionally not persisted.
+    }
+
+    const oldStyle = document.getElementById('docsify-sidebar-collapse-style');
+    if (oldStyle) oldStyle.remove();
+
     const style = document.createElement('style');
+    style.id = 'docsify-sidebar-collapse-style';
     style.textContent = `
+      .sidebar {
+        background: linear-gradient(180deg, rgba(250, 252, 255, 0.98), rgba(246, 248, 251, 0.98));
+      }
+      .sidebar-nav {
+        padding: 8px 10px 24px;
+      }
+      .sidebar-nav ul {
+        margin: 0;
+        padding-left: 0;
+      }
+      .sidebar-nav li {
+        list-style: none;
+        margin: 2px 0;
+        position: relative;
+      }
+      .sidebar-nav li ul {
+        border-left: 1px solid rgba(148, 163, 184, 0.28);
+        margin: 4px 0 6px 13px;
+        padding-left: 10px;
+      }
+      .sidebar-nav li a {
+        align-items: center;
+        border-radius: 6px;
+        color: #475569;
+        display: flex;
+        font-size: 13px;
+        line-height: 1.35;
+        min-height: 28px;
+        padding: 5px 8px;
+        transition: background-color 0.16s ease, color 0.16s ease, transform 0.16s ease;
+      }
+      .sidebar-nav li a:hover {
+        background: rgba(66, 185, 131, 0.10);
+        color: #1f7a56;
+        transform: translateX(1px);
+      }
+      .sidebar-nav li.active > a,
+      .sidebar-nav li.open > a {
+        background: rgba(66, 185, 131, 0.14);
+        color: var(--theme-color, #42b983);
+        font-weight: 600;
+      }
       .sidebar-nav li.arrow::before {
         font-family: 'FontAwesome';
         content: '\\f07b';
+        align-items: center;
+        border-radius: 6px;
+        color: #64748b;
+        cursor: pointer;
         display: inline-block;
+        font-size: 13px;
+        height: 28px;
+        left: 0;
+        line-height: 28px;
+        position: absolute;
+        text-align: center;
+        top: 0;
+        width: 22px;
       }
       .sidebar-nav li.arrow.folder-expanded::before {
         content: '\\f07c';
+        color: var(--theme-color, #42b983);
       }
       .sidebar-nav li.arrow > ul {
         display: none;
@@ -18,10 +82,29 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
       .sidebar-nav li.arrow.folder-expanded > ul {
         display: block;
       }
+      .sidebar-nav li.arrow {
+        border-radius: 6px;
+        color: #334155;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 650;
+        line-height: 28px;
+        min-height: 28px;
+        padding-left: 26px;
+        user-select: none;
+      }
+      .sidebar-nav li.arrow:hover {
+        background: rgba(148, 163, 184, 0.10);
+      }
+      .sidebar-nav li.arrow.folder-expanded {
+        background: rgba(66, 185, 131, 0.06);
+      }
+      .sidebar-nav li.arrow.folder-expanded > ul {
+        background: rgba(255, 255, 255, 0.48);
+        border-radius: 0 0 6px 6px;
+      }
     `;
     document.head.appendChild(style);
-
-    const sidebarState = JSON.parse(localStorage.getItem('sidebarExpandedState')) || {};
 
     // 替代方案：使用相对位置路径作为唯一标识
     function generateElementPath(element) {
@@ -38,34 +121,6 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
       return path.join('-');
     }
 
-    // 展开当前地址对应的目录
-    function expandCurrentPath() {
-      const currentHash = window.location.hash;
-      if (!currentHash) return;
-
-      const sidebarState = JSON.parse(localStorage.getItem('sidebarExpandedState')) || {};
-
-      document.querySelectorAll('.sidebar-nav a[href]').forEach(a => {
-        const aUrl = new URL(a.href, window.location.href);
-        if (aUrl.hash === currentHash) {
-          let parentLi = a.closest('li');
-
-          // 展开所有上级目录
-          while (parentLi) {
-            const elementId = parentLi.dataset.sidebarId;
-            if (elementId) {
-              parentLi.classList.add('folder-expanded');
-              sidebarState[elementId] = true;
-            }
-            parentLi = parentLi.parentElement.closest('li');
-          }
-        }
-      });
-
-      localStorage.setItem('sidebarExpandedState', JSON.stringify(sidebarState));
-    }
-
-
     document.querySelectorAll('.sidebar-nav li').forEach(li => {
       if (li.classList.contains('has-arrow')) return;
 
@@ -80,33 +135,16 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
       const elementId = `sidebar-path-${generateElementPath(li)}`;
       li.dataset.sidebarId = elementId; // 存储标识符到DOM
 
-      // 应用存储状态或默认值
-      const storedState = sidebarState[elementId];
-      li.classList.toggle('folder-expanded', storedState || false);
+      li.classList.remove('folder-expanded');
 
       li.addEventListener('click', function (e) {
         // 判断是否为直接点击 li 元素（而非子元素冒泡）
         if (e.target === this) {
-
-          // 切换展开状态
-          const isExpanded = this.classList.toggle('folder-expanded');
-
-          // 更新存储状态
-          const updatedState = {
-            ...JSON.parse(localStorage.getItem('sidebarExpandedState') || '{}'),
-            [elementId]: isExpanded
-          };
-          localStorage.setItem('sidebarExpandedState', JSON.stringify(updatedState));
-
+          this.classList.toggle('folder-expanded');
           e.stopPropagation();
           e.preventDefault();
         }
       });
     });
-
-    // 监听地址变化
-  window.addEventListener('hashchange', expandCurrentPath);
-  window.addEventListener('popstate', expandCurrentPath);
-
   });
 });

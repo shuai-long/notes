@@ -6,7 +6,8 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
     .code-buttons {
       position: absolute;
       top: 8px;
-      right: 8px;
+      left: var(--code-buttons-left, 8px);
+      right: auto;
       display: flex;
       gap: 8px;
       opacity: 0.68;
@@ -216,7 +217,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
       codeElement,
       fallbackCodeTextTop
     );
-    const lineBoxTop = Math.max(0, codeTextTop - Math.max(0, (lineHeight - fontSize) / 2) - 1);
+    const lineBoxTop = Math.max(0, codeTextTop - Math.max(0, (lineHeight - fontSize) / 2) - 0.5);
     const digits = String(lineCount).length;
     const gutterWidth = Math.ceil(Math.max(fontSize * 3.5, fontSize * (digits + 2)));
 
@@ -225,6 +226,10 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
     preElement.style.setProperty("--code-linenos-width", `${gutterWidth}px`);
     preElement.style.setProperty(
       "--code-linenos-padding-left",
+      `${paddingLeft + gutterWidth + fontSize * 0.75}px`
+    );
+    preElement.style.setProperty(
+      "--code-buttons-left",
       `${paddingLeft + gutterWidth + fontSize * 0.75}px`
     );
     preElement.style.setProperty("--code-linenos-line-height", `${lineHeight}px`);
