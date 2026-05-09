@@ -1,0 +1,104 @@
+.markdown-section code.inline-code-copy {
+  border: 1px solid rgba(66, 185, 131, 0.18);
+  border-radius: 3px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  cursor: copy;
+  font-size: 0.82em;
+  line-height: 1.08;
+  margin: 0 0.03em;
+  padding: 0 0.24em;
+  position: relative;
+  transition: background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease;
+  vertical-align: baseline;
+}
+
+.markdown-section code.inline-code-copy:hover,
+.markdown-section code.inline-code-copy:focus {
+  background: rgba(66, 185, 131, 0.12);
+  border-color: rgba(66, 185, 131, 0.38);
+  color: #2f855a;
+  outline: none;
+}
+
+.markdown-section code.inline-code-copy::after {
+  background: rgba(31, 41, 55, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 5px;
+  bottom: calc(100% + 8px);
+  box-shadow: 0 8px 18px rgba(17, 24, 39, 0.18);
+  color: #ffffff;
+  content: attr(data-copy-label);
+  font-family: var(--docs-mixed-font);
+  font-size: 11px;
+  font-weight: 500;
+  left: 50%;
+  letter-spacing: 0;
+  line-height: 1;
+  opacity: 0;
+  padding: 5px 7px;
+  pointer-events: none;
+  position: absolute;
+  transform: translate(-50%, 3px) scale(0.98);
+  transition: opacity 0.16s ease, transform 0.16s ease;
+  white-space: nowrap;
+  z-index: 20;
+}
+
+.markdown-section code.inline-code-copy::before {
+  border: 5px solid transparent;
+  border-top-color: rgba(31, 41, 55, 0.96);
+  bottom: calc(100% - 1px);
+  content: "";
+  left: 50%;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  transform: translate(-50%, 3px);
+  transition: opacity 0.16s ease, transform 0.16s ease;
+  z-index: 21;
+}
+
+.markdown-section code.inline-code-copy:hover::after,
+.markdown-section code.inline-code-copy:focus::after,
+.markdown-section code.inline-code-copy[data-copy-state="success"]::after,
+.markdown-section code.inline-code-copy[data-copy-state="error"]::after {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+}
+
+.markdown-section code.inline-code-copy:hover::before,
+.markdown-section code.inline-code-copy:focus::before,
+.markdown-section code.inline-code-copy[data-copy-state="success"]::before,
+.markdown-section code.inline-code-copy[data-copy-state="error"]::before {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.markdown-section code.inline-code-copy[data-copy-state="success"] {
+  background: rgba(66, 185, 131, 0.16);
+  border-color: rgba(66, 185, 131, 0.55);
+  color: #2f855a;
+}
+
+.markdown-section code.inline-code-copy[data-copy-state="error"] {
+  background: rgba(224, 108, 117, 0.14);
+  border-color: rgba(224, 108, 117, 0.5);
+  color: #c53030;
+}
+
+.markdown-section code.inline-code-copy[data-copy-state="success"]::after {
+  background: rgba(47, 133, 90, 0.96);
+}
+
+.markdown-section code.inline-code-copy[data-copy-state="success"]::before {
+  border-top-color: rgba(47, 133, 90, 0.96);
+}
+
+.markdown-section code.inline-code-copy[data-copy-state="error"]::after {
+  background: rgba(197, 48, 48, 0.96);
+}
+
+.markdown-section code.inline-code-copy[data-copy-state="error"]::before {
+  border-top-color: rgba(197, 48, 48, 0.96);
+}

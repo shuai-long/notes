@@ -8,14 +8,37 @@
     <meta name="description" content="Description">
     <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="theme-color" content="#fff7eb" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#1f2329" media="(prefers-color-scheme: dark)">
+    <meta name="application-name" content="notes">
+    <meta name="apple-mobile-web-app-title" content="notes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="apple-touch-icon" href="./icons/icon.svg">
     <!-- 设置浏览器图标 -->
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-    <!-- 默认主题 -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/lib/themes/vue.css">
+    <link rel="icon" href="./icons/icon.svg" type="image/svg+xml" />
+    <link rel="shortcut icon" href="./icons/icon.svg" type="image/svg+xml" />
+    <!-- 默认主题，深色模式跟随系统切换 -->
+    <link id="docsify-theme-light" rel="stylesheet" href="./vendor/docsify-themeable/theme-simple.css">
+    <link id="docsify-theme-dark" rel="stylesheet" href="./vendor/docsify-themeable/theme-simple-dark.css"
+        media="(prefers-color-scheme: dark)">
     <!-- 代码高亮主题 -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="./vendor/prism/themes/prism.min.css">
     <link rel="stylesheet" href="./_css/code-highlight.css">
+    <link rel="stylesheet" href="./_css/code-block-tools.css">
+    <link rel="stylesheet" href="./_css/inline-code-copy.css">
+    <link rel="stylesheet" href="./_css/responsive-table.css">
+    <link rel="stylesheet" href="./_css/file-embed.css">
+    <link rel="stylesheet" href="./_css/media-player.css">
+    <link rel="stylesheet" href="./_css/image-frame.css">
+    <link rel="stylesheet" href="./_css/search-enhance.css">
+    <link rel="stylesheet" href="./_css/callout.css">
+    <link rel="stylesheet" href="./_css/sidebar-tree.css">
+    <link rel="stylesheet" href="./_css/heading-number.css">
+    <link rel="stylesheet" href="./_css/layout.css">
+    <link rel="stylesheet" href="./_css/theme-toggle.css">
+    <link rel="stylesheet" href="./_css/plugin-integrations.css">
+    <link rel="stylesheet" href="./_css/warm-light-theme.css">
 </head>
 
 <body>
@@ -39,9 +62,79 @@
             subMaxLevel: 4,
             // 小屏设备下合并导航栏到侧边栏
             mergeNavbar: true,
+            // 顶部固定导航遮挡时，锚点跳转保留偏移
+            topMargin: 56,
             // 代码高亮
             codeHighlight: {
-                languagesPath: '//cdn.jsdelivr.net/npm/prismjs@1.29.0/components/'
+                languagesPath: './vendor/prism/components/'
+            },
+            // 代码块行号和折叠
+            codeBlockTools: {
+                collapseHeight: 420,
+                lineNumbers: true
+            },
+            // 行内代码点击复制
+            inlineCodeCopy: {
+                copyText: '点击复制',
+                copiedText: '已复制',
+                errorText: '复制失败'
+            },
+            // 侧边栏文件夹展开关闭
+            sidebarTree: {
+                collapseByDefault: true,
+                expandActive: true
+            },
+            // 大屏侧边栏宽度调节
+            sidebarResize: {
+                minWidth: 260,
+                maxWidth: 520,
+                storageKey: 'docsify-sidebar-width'
+            },
+            // 正文标题自动编号
+            headingNumber: {
+                selector: 'h1,h2,h3,h4,h5,h6'
+            },
+            // 中英文之间自动增加空格
+            cjkSpacing: {
+                selector: '.markdown-section, .sidebar'
+            },
+            // 小屏幕表格纵向展示
+            responsiveTables: {
+                selector: '.markdown-section table'
+            },
+            // 图片等宽背景展示
+            imageFrame: {
+                selector: '.markdown-section'
+            },
+            // PDF/HTML 文件嵌入预览
+            fileEmbed: {
+                openText: '打开'
+            },
+            // 音频/视频播放
+            mediaPlayer: {
+                openText: '打开',
+                preload: 'metadata'
+            },
+            // Mermaid 图表
+            mermaidConfig: {
+                querySelector: '.mermaid'
+            },
+            // 阅读进度条
+            progress: {
+                position: 'top',
+                color: 'var(--theme-color,#42b983)',
+                height: '2px'
+            },
+            // 上一章/下一章
+            pagination: {
+                previousText: '上一章',
+                nextText: '下一章',
+                crossChapter: true,
+                crossChapterText: true
+            },
+            // 主题切换
+            themeToggle: {
+                storageKey: 'docsify-theme-mode'
             },
             /*搜索相关设置*/
             search: {
@@ -54,29 +147,74 @@
                     '/': 'Type to search'
                 },
                 noData: '找不到结果',
-                depth: 4,
+                depth: 6,
                 hideOtherSidebarContent: false,
-                namespace: 'Docsify-Guide',
+                namespace: 'Docsify-Guide-v2',
             }
         }
     </script>
     <!-- docsify的js依赖 -->
-    <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
+    <script src="./vendor/docsify/docsify.min.js"></script>
     <!-- 代码高亮支持 -->
-    <script src="//cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-abap.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-batch.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markdown.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="./vendor/prism/components/prism-abap.min.js"></script>
+    <script src="./vendor/prism/components/prism-bash.min.js"></script>
+    <script src="./vendor/prism/components/prism-batch.min.js"></script>
+    <script src="./vendor/prism/components/prism-markdown.min.js"></script>
+    <script src="./vendor/prism/plugins/autoloader/prism-autoloader.min.js"></script>
     <script src="./plugins/code-highlight.js"></script>
+    <!-- Mermaid 图表支持 -->
+    <script src="./vendor/mermaid/mermaid.min.js"></script>
+    <script>
+        if (window.mermaid) {
+            window.mermaid.initialize({
+                startOnLoad: false,
+                securityLevel: 'loose',
+                theme: window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'default'
+            });
+        }
+    </script>
+    <script src="./vendor/docsify-mermaid/docsify-mermaid.js"></script>
     <!-- emoji表情支持 -->
-    <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
+    <script src="./vendor/docsify/plugins/emoji.min.js"></script>
     <!-- 图片放大缩小支持 -->
-    <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
+    <script src="./vendor/docsify/plugins/zoom-image.min.js"></script>
     <!-- 搜索功能支持 -->
-    <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+    <script src="./vendor/docsify/plugins/search.min.js"></script>
+    <script src="./plugins/search-enhance.js"></script>
     <!--在所有的代码块上添加一个简单的Click to copy按钮来允许用户从你的文档中轻易地复制代码-->
-    <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
+    <script src="./vendor/docsify-copy-code/docsify-copy-code.min.js"></script>
+    <!-- 代码块行号和折叠 -->
+    <script src="./plugins/code-block-tools.js"></script>
+    <!-- 行内代码点击复制 -->
+    <script src="./plugins/inline-code-copy.js"></script>
+    <!-- 侧边栏文件夹展开关闭 -->
+    <script src="./plugins/sidebar-tree.js"></script>
+    <!-- 大屏侧边栏宽度调节 -->
+    <script src="./plugins/sidebar-resize.js"></script>
+    <!-- 正文标题自动编号 -->
+    <script src="./plugins/heading-number.js"></script>
+    <!-- Note/Warning 等提示块样式 -->
+    <script src="./plugins/callout.js"></script>
+    <!-- 中英文之间自动增加空格 -->
+    <script src="./plugins/cjk-spacing.js"></script>
+    <!-- 小屏幕表格纵向展示 -->
+    <script src="./plugins/responsive-tables.js"></script>
+    <!-- PDF/HTML 文件嵌入预览 -->
+    <script src="./plugins/file-embed.js"></script>
+    <!-- 音频/视频播放 -->
+    <script src="./plugins/media-player.js"></script>
+    <!-- 图片等宽背景展示 -->
+    <script src="./plugins/image-frame.js"></script>
+    <!-- 术语表 -->
+    <script src="./vendor/docsify-glossary/docsify-glossary.js"></script>
+    <!-- 阅读进度条 -->
+    <script src="./vendor/docsify-progress/progress.js"></script>
+    <!-- 上一章/下一章 -->
+    <script src="./vendor/docsify-pagination/docsify-pagination.min.js"></script>
+    <!-- 主题切换 -->
+    <script src="./plugins/theme-toggle.js"></script>
+    <!-- PWA 离线模式 -->
+    <script src="./plugins/pwa-register.js"></script>
 </body>
 
 </html>

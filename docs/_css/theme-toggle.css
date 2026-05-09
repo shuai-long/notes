@@ -1,0 +1,44 @@
+.docsify-theme-toggle {
+  align-items: center;
+  background: var(--base-background-color, #ffffff);
+  border: 1px solid rgba(125, 143, 162, 0.28);
+  border-radius: 999px;
+  box-shadow: 0 6px 18px rgba(31, 41, 55, 0.14);
+  color: var(--base-color, #34495e);
+  cursor: pointer;
+  display: inline-flex;
+  height: 34px;
+  justify-content: center;
+  padding: 0;
+  position: fixed;
+  right: 8px;
+  top: 50px;
+  transition: background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease, transform 0.16s ease;
+  width: 34px;
+  z-index: 80;
+}
+
+.docsify-theme-toggle:hover,
+.docsify-theme-toggle:focus {
+  border-color: var(--theme-color, #42b983);
+  color: var(--theme-color, #42b983);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.docsify-theme-toggle svg {
+  fill: none;
+  height: 18px;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+  width: 18px;
+}
+
+@media screen and (max-width: 768px) {
+  .docsify-theme-toggle {
+    right: 8px;
+    top: 48px;
+  }
+}

@@ -20,4 +20,3 @@
    <fs_fcat>-style = alv_style_font_underlined.
    ```
 
-   

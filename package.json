@@ -1,0 +1,7 @@
+{
+  "name": "notes-docsify",
+  "private": true,
+  "scripts": {
+    "pwa:manifest": "node scripts/build-pwa-manifest.mjs"
+  }
+}

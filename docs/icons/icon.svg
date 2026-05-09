@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">SAP notes</title>
+  <desc id="desc">A warm notebook icon with an SAP badge for personal SAP notes.</desc>
+  <defs>
+    <linearGradient id="bg" x1="82" x2="430" y1="42" y2="472" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff7e6"/>
+      <stop offset="0.55" stop-color="#f4c681"/>
+      <stop offset="1" stop-color="#c9783a"/>
+    </linearGradient>
+    <linearGradient id="book" x1="137" x2="377" y1="112" y2="408" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#fff0d8"/>
+    </linearGradient>
+    <linearGradient id="sap" x1="134" x2="334" y1="138" y2="244" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0a6ed1"/>
+      <stop offset="1" stop-color="#064d94"/>
+    </linearGradient>
+    <filter id="shadow" x="86" y="82" width="340" height="366" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="18" flood-color="#7a3f1d" flood-opacity="0.2" stdDeviation="18"/>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="104" fill="url(#bg)"/>
+  <path fill="#ffffff" opacity="0.42" d="M78 112c54-52 122-76 204-72 52 3 94 18 126 45-40-9-86-9-138 1-78 14-143 44-192 26Z"/>
+  <g filter="url(#shadow)">
+    <path fill="#bd7138" d="M134 116h234c23 0 42 19 42 42v213c0 23-19 42-42 42H134c-18 0-32-14-32-32V148c0-18 14-32 32-32Z" opacity="0.28"/>
+    <path fill="url(#book)" d="M124 100h242c23 0 42 19 42 42v230c0 23-19 42-42 42H124c-14 0-25-11-25-25V125c0-14 11-25 25-25Z"/>
+    <path fill="#e2ad62" d="M99 132c0-18 14-32 32-32h31v314h-38c-14 0-25-11-25-25V132Z"/>
+    <path fill="#8c542d" opacity="0.16" d="M158 100h8v314h-8z"/>
+    <path fill="url(#sap)" d="M163 133h169l52 54-52 54H163z"/>
+    <text x="204" y="204" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="800" letter-spacing="-3">SAP</text>
+    <path fill="#ffffff" opacity="0.28" d="M334 133l50 54h-50z"/>
+    <path fill="#b86b35" opacity="0.68" d="M196 283h150a10 10 0 0 1 0 20H196a10 10 0 0 1 0-20Zm0 48h118a10 10 0 0 1 0 20H196a10 10 0 0 1 0-20Z"/>
+    <path fill="#0a6ed1" opacity="0.18" d="M196 375h82a9 9 0 0 1 0 18h-82a9 9 0 0 1 0-18Z"/>
+  </g>
+  <path fill="#5d361d" opacity="0.16" d="M412 156c19 40 17 77-6 112v-95c0-7 2-13 6-17Z"/>
+</svg>

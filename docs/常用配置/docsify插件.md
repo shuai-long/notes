@@ -64,3 +64,63 @@
   > [!ATTENTION]
   > An alert of type 'attention' using global style 'callout'.
   ```
+
+### 音频播放
+
+在 markdown 文件中使用 `audio` 代码块即可渲染音频播放器。第一行填写音频地址，后续可选配置使用 `key=value`。
+
+````markdown
+```audio
+./media/demo.mp3
+title=示例音频
+```
+````
+
+也可以直接访问音频文件路由，例如：
+
+```markdown
+http://localhost:3000/#/media/demo.mp3
+```
+
+支持的音频格式：`mp3`、`wav`、`ogg`、`m4a`、`aac`、`flac`、`opus`。
+
+### 视频播放
+
+在 markdown 文件中使用 `video` 代码块即可渲染视频播放器。第一行填写视频地址，可使用 `title` 设置标题，使用 `poster` 设置封面图。
+
+````markdown
+```video
+./media/demo.mp4
+title=示例视频
+poster=./media/demo-cover.jpg
+```
+````
+
+也可以直接访问视频文件路由，例如：
+
+```markdown
+http://localhost:3000/#/media/demo.mp4
+```
+
+支持的视频格式：`mp4`、`webm`、`ogv`、`mov`、`m4v`。
+
+### Mermaid 流程图
+
+在 markdown 文件中使用 `mermaid` 代码块即可渲染流程图。
+
+````markdown
+```mermaid
+flowchart TD
+  A[开始] --> B{是否通过校验}
+  B -- 是 --> C[执行处理]
+  B -- 否 --> D[返回错误]
+  C --> E[结束]
+```
+````
+
+常用方向：
+
+```markdown
+flowchart TD  从上到下
+flowchart LR  从左到右
+```

@@ -1,0 +1,122 @@
+.markdown-section {
+  --docs-file-embed-bg: var(--base-background-color, #ffffff);
+  --docs-file-embed-border: rgba(125, 143, 162, 0.24);
+  --docs-file-embed-toolbar-bg: rgba(247, 249, 250, 0.92);
+  --docs-file-embed-label-bg: rgba(66, 185, 131, 0.12);
+  --docs-file-embed-label-color: #2f855a;
+  --docs-file-embed-link-color: var(--theme-color, #42b983);
+  --docs-file-embed-muted-color: rgba(52, 73, 94, 0.68);
+}
+
+.markdown-section .docs-file-embed {
+  background: var(--docs-file-embed-bg);
+  border: 1px solid var(--docs-file-embed-border);
+  border-radius: 8px;
+  box-sizing: border-box;
+  margin: 1rem 0;
+  overflow: hidden;
+  width: 100%;
+}
+
+.markdown-section .docs-file-embed-toolbar {
+  align-items: center;
+  background: var(--docs-file-embed-toolbar-bg);
+  border-bottom: 1px solid var(--docs-file-embed-border);
+  box-sizing: border-box;
+  display: flex;
+  gap: 10px;
+  min-height: 34px;
+  padding: 6px 10px;
+}
+
+.markdown-section .docs-file-embed-type {
+  background: var(--docs-file-embed-label-bg);
+  border-radius: 4px;
+  color: var(--docs-file-embed-label-color);
+  flex: 0 0 auto;
+  font-family: var(--docs-mono-font);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 4px 6px;
+  text-transform: uppercase;
+}
+
+.markdown-section .docs-file-embed-title {
+  color: var(--docs-file-embed-muted-color);
+  flex: 1 1 auto;
+  font-size: 12px;
+  line-height: 1.35;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.markdown-section .docs-file-embed-action {
+  border-bottom: 0;
+  color: var(--docs-file-embed-link-color);
+  flex: 0 0 auto;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.markdown-section .docs-file-embed-action:hover,
+.markdown-section .docs-file-embed-action:focus {
+  color: var(--docs-file-embed-link-color);
+  text-decoration: underline;
+}
+
+.markdown-section .docs-file-embed-viewer {
+  border: 0;
+  display: block;
+  height: calc(100vh - 92px);
+  min-height: 560px;
+  width: 100%;
+}
+
+.markdown-section .docs-file-embed-fallback {
+  color: var(--docs-file-embed-muted-color);
+  font-size: 13px;
+  margin: 0;
+  padding: 16px;
+}
+
+@media screen and (max-width: 47.99em) {
+  .markdown-section .docs-file-embed-toolbar {
+    gap: 8px;
+    min-height: 32px;
+    padding: 6px 8px;
+  }
+
+  .markdown-section .docs-file-embed-title {
+    font-size: 11px;
+  }
+
+  .markdown-section .docs-file-embed-viewer {
+    height: calc(100vh - 82px);
+    min-height: 420px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-docsify-theme="light"]) .markdown-section {
+    --docs-file-embed-bg: rgba(31, 35, 41, 0.96);
+    --docs-file-embed-border: rgba(255, 255, 255, 0.1);
+    --docs-file-embed-toolbar-bg: rgba(35, 40, 48, 0.95);
+    --docs-file-embed-label-bg: rgba(126, 226, 184, 0.12);
+    --docs-file-embed-label-color: #8de6bd;
+    --docs-file-embed-muted-color: rgba(220, 227, 235, 0.7);
+  }
+}
+
+html[data-docsify-theme="dark"] .markdown-section {
+  --docs-file-embed-bg: rgba(31, 35, 41, 0.96);
+  --docs-file-embed-border: rgba(255, 255, 255, 0.1);
+  --docs-file-embed-toolbar-bg: rgba(35, 40, 48, 0.95);
+  --docs-file-embed-label-bg: rgba(126, 226, 184, 0.12);
+  --docs-file-embed-label-color: #8de6bd;
+  --docs-file-embed-muted-color: rgba(220, 227, 235, 0.7);
+}

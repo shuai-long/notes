@@ -1,0 +1,243 @@
+:root {
+  --docs-warm-bg: #fff7eb;
+  --docs-warm-surface: #fffaf3;
+  --docs-warm-surface-strong: #fff0db;
+  --docs-warm-border: rgba(181, 118, 64, 0.24);
+  --docs-warm-border-soft: rgba(181, 118, 64, 0.15);
+  --docs-warm-text: #3f362d;
+  --docs-warm-muted: #8a7561;
+  --docs-warm-heading: #2f271f;
+  --docs-warm-accent: #b86b35;
+  --docs-warm-accent-strong: #8f4f25;
+  --docs-warm-accent-soft: rgba(184, 107, 53, 0.12);
+  --docs-warm-accent-softer: rgba(184, 107, 53, 0.07);
+  --docs-warm-shadow: rgba(89, 58, 31, 0.1);
+}
+
+@media (prefers-color-scheme: light) {
+  html:not([data-docsify-theme="dark"]) {
+    --mono-hue: 31;
+    --mono-saturation: 18%;
+    --mono-shade3: #2f271f;
+    --mono-shade2: #3f362d;
+    --mono-shade1: #6f5d4d;
+    --mono-base: #9b876f;
+    --mono-tint1: #d5bd9f;
+    --mono-tint2: #ead9c3;
+    --mono-tint3: #fff3e3;
+    --theme-hue: 24;
+    --theme-saturation: 55%;
+    --theme-lightness: 46%;
+    --theme-color: var(--docs-warm-accent);
+    --base-background-color: var(--docs-warm-bg);
+    --base-color: var(--docs-warm-text);
+    --heading-color: var(--docs-warm-heading);
+    --link-color: var(--docs-warm-accent-strong);
+    --link-color--hover: var(--docs-warm-accent);
+    --mark-background: #ffe3a5;
+    --mark-color: #4e3219;
+    --selection-color: rgba(246, 191, 120, 0.5);
+    --sidebar-background: #fff0dc;
+    --sidebar-border-color: var(--docs-warm-border);
+    --table-cell-border-color: rgba(181, 118, 64, 0.26);
+    --table-row-odd-background: rgba(184, 107, 53, 0.045);
+  }
+}
+
+html[data-docsify-theme="light"] {
+  --mono-hue: 31;
+  --mono-saturation: 18%;
+  --mono-shade3: #2f271f;
+  --mono-shade2: #3f362d;
+  --mono-shade1: #6f5d4d;
+  --mono-base: #9b876f;
+  --mono-tint1: #d5bd9f;
+  --mono-tint2: #ead9c3;
+  --mono-tint3: #fff3e3;
+  --theme-hue: 24;
+  --theme-saturation: 55%;
+  --theme-lightness: 46%;
+  --theme-color: var(--docs-warm-accent);
+  --base-background-color: var(--docs-warm-bg);
+  --base-color: var(--docs-warm-text);
+  --heading-color: var(--docs-warm-heading);
+  --link-color: var(--docs-warm-accent-strong);
+  --link-color--hover: var(--docs-warm-accent);
+  --mark-background: #ffe3a5;
+  --mark-color: #4e3219;
+  --selection-color: rgba(246, 191, 120, 0.5);
+  --sidebar-background: #fff0dc;
+  --sidebar-border-color: var(--docs-warm-border);
+  --table-cell-border-color: rgba(181, 118, 64, 0.26);
+  --table-row-odd-background: rgba(184, 107, 53, 0.045);
+}
+
+@media (prefers-color-scheme: light) {
+  html:not([data-docsify-theme="dark"]) body {
+    background: var(--docs-warm-bg);
+  }
+
+  html:not([data-docsify-theme="dark"]) .sidebar {
+    background: var(--sidebar-background, #fff0dc);
+  }
+
+  html:not([data-docsify-theme="dark"]) body::before {
+    background: rgba(255, 247, 235, 0.9);
+    border-bottom-color: var(--docs-warm-border-soft);
+  }
+}
+
+html[data-docsify-theme="light"] body {
+  background: var(--docs-warm-bg);
+}
+
+html[data-docsify-theme="light"] .sidebar {
+  background: var(--sidebar-background, #fff0dc);
+}
+
+html[data-docsify-theme="light"] body::before {
+  background: rgba(255, 247, 235, 0.9);
+  border-bottom-color: var(--docs-warm-border-soft);
+}
+
+@media (prefers-color-scheme: light) {
+  html:not([data-docsify-theme="dark"]) .sidebar {
+    --sidebar-tree-border: rgba(181, 118, 64, 0.2);
+    --sidebar-tree-folder-color: #3d3126;
+    --sidebar-tree-file-color: #5f4e3e;
+    --sidebar-tree-section-color: #8a7561;
+    --sidebar-tree-muted-color: #a58d74;
+    --sidebar-tree-toggle-color: #a5754d;
+    --sidebar-tree-hover-bg: rgba(184, 107, 53, 0.09);
+    --sidebar-tree-active-bg: linear-gradient(90deg, rgba(184, 107, 53, 0.18), rgba(184, 107, 53, 0.06));
+    --sidebar-tree-active-color: #8f4f25;
+    --sidebar-tree-active-folder-bg: linear-gradient(90deg, rgba(184, 107, 53, 0.2), rgba(184, 107, 53, 0.055));
+    --sidebar-tree-active-folder-bg-l1: linear-gradient(90deg, rgba(184, 107, 53, 0.22), rgba(184, 107, 53, 0.08));
+    --sidebar-tree-active-folder-bg-l2: linear-gradient(90deg, rgba(184, 107, 53, 0.15), rgba(184, 107, 53, 0.045));
+    --sidebar-tree-active-folder-bg-l3: linear-gradient(90deg, rgba(184, 107, 53, 0.1), rgba(184, 107, 53, 0.03));
+    --sidebar-tree-active-folder-border: rgba(184, 107, 53, 0.25);
+    --sidebar-tree-active-folder-border-l1: rgba(184, 107, 53, 0.3);
+    --sidebar-tree-active-folder-border-l2: rgba(184, 107, 53, 0.22);
+    --sidebar-tree-active-folder-border-l3: rgba(184, 107, 53, 0.15);
+    --sidebar-tree-active-folder-dot-ring: rgba(184, 107, 53, 0.16);
+    --sidebar-tree-active-marker: #b86b35;
+    --sidebar-tree-icon-border: #caa77f;
+    --sidebar-tree-folder-icon-bg: linear-gradient(180deg, #fff8ef 0%, #efd2ae 100%) padding-box,
+      linear-gradient(180deg, #d7ad7f 0%, #b57442 100%) border-box;
+    --sidebar-tree-folder-icon-shadow: -2px -4px 0 -3px #b57442, -1px -5px 0 -3px #efd2ae,
+      inset 0 3px 0 rgba(184, 107, 53, 0.13);
+    --sidebar-tree-file-icon-bg: linear-gradient(135deg, transparent 0 24%, #e3c49f 25% 36%, transparent 37%) top right / 7px 7px no-repeat,
+      linear-gradient(180deg, #fffaf3 0%, #f1dcc1 100%);
+    --sidebar-tree-active-folder-icon-bg: linear-gradient(180deg, #fff1dd 0%, #e9bd86 100%) padding-box,
+      linear-gradient(180deg, #c9783a 0%, #8f4f25 100%) border-box;
+    --sidebar-tree-active-file-icon-bg: linear-gradient(135deg, transparent 0 24%, #d99a5a 25% 36%, transparent 37%) top right / 7px 7px no-repeat,
+      linear-gradient(180deg, #fff0dc 0%, #e9bd86 100%);
+  }
+}
+
+html[data-docsify-theme="light"] .sidebar {
+  --sidebar-tree-border: rgba(181, 118, 64, 0.2);
+  --sidebar-tree-folder-color: #3d3126;
+  --sidebar-tree-file-color: #5f4e3e;
+  --sidebar-tree-section-color: #8a7561;
+  --sidebar-tree-muted-color: #a58d74;
+  --sidebar-tree-toggle-color: #a5754d;
+  --sidebar-tree-hover-bg: rgba(184, 107, 53, 0.09);
+  --sidebar-tree-active-bg: linear-gradient(90deg, rgba(184, 107, 53, 0.18), rgba(184, 107, 53, 0.06));
+  --sidebar-tree-active-color: #8f4f25;
+  --sidebar-tree-active-folder-bg: linear-gradient(90deg, rgba(184, 107, 53, 0.2), rgba(184, 107, 53, 0.055));
+  --sidebar-tree-active-folder-bg-l1: linear-gradient(90deg, rgba(184, 107, 53, 0.22), rgba(184, 107, 53, 0.08));
+  --sidebar-tree-active-folder-bg-l2: linear-gradient(90deg, rgba(184, 107, 53, 0.15), rgba(184, 107, 53, 0.045));
+  --sidebar-tree-active-folder-bg-l3: linear-gradient(90deg, rgba(184, 107, 53, 0.1), rgba(184, 107, 53, 0.03));
+  --sidebar-tree-active-folder-border: rgba(184, 107, 53, 0.25);
+  --sidebar-tree-active-folder-border-l1: rgba(184, 107, 53, 0.3);
+  --sidebar-tree-active-folder-border-l2: rgba(184, 107, 53, 0.22);
+  --sidebar-tree-active-folder-border-l3: rgba(184, 107, 53, 0.15);
+  --sidebar-tree-active-folder-dot-ring: rgba(184, 107, 53, 0.16);
+  --sidebar-tree-active-marker: #b86b35;
+  --sidebar-tree-icon-border: #caa77f;
+  --sidebar-tree-folder-icon-bg: linear-gradient(180deg, #fff8ef 0%, #efd2ae 100%) padding-box,
+    linear-gradient(180deg, #d7ad7f 0%, #b57442 100%) border-box;
+  --sidebar-tree-folder-icon-shadow: -2px -4px 0 -3px #b57442, -1px -5px 0 -3px #efd2ae,
+    inset 0 3px 0 rgba(184, 107, 53, 0.13);
+  --sidebar-tree-file-icon-bg: linear-gradient(135deg, transparent 0 24%, #e3c49f 25% 36%, transparent 37%) top right / 7px 7px no-repeat,
+    linear-gradient(180deg, #fffaf3 0%, #f1dcc1 100%);
+  --sidebar-tree-active-folder-icon-bg: linear-gradient(180deg, #fff1dd 0%, #e9bd86 100%) padding-box,
+    linear-gradient(180deg, #c9783a 0%, #8f4f25 100%) border-box;
+  --sidebar-tree-active-file-icon-bg: linear-gradient(135deg, transparent 0 24%, #d99a5a 25% 36%, transparent 37%) top right / 7px 7px no-repeat,
+    linear-gradient(180deg, #fff0dc 0%, #e9bd86 100%);
+}
+
+@media (prefers-color-scheme: light) {
+  html:not([data-docsify-theme="dark"]) .sidebar .search .input-wrap,
+  html:not([data-docsify-theme="dark"]) .sidebar .search .results-panel,
+  html:not([data-docsify-theme="dark"]) .markdown-section .mermaid,
+  html:not([data-docsify-theme="dark"]) .docsify-theme-toggle {
+    background: var(--docs-warm-surface);
+    border-color: var(--docs-warm-border);
+    box-shadow: 0 8px 24px var(--docs-warm-shadow);
+  }
+}
+
+html[data-docsify-theme="light"] .sidebar .search .input-wrap,
+html[data-docsify-theme="light"] .sidebar .search .results-panel,
+html[data-docsify-theme="light"] .markdown-section .mermaid,
+html[data-docsify-theme="light"] .docsify-theme-toggle {
+  background: var(--docs-warm-surface);
+  border-color: var(--docs-warm-border);
+  box-shadow: 0 8px 24px var(--docs-warm-shadow);
+}
+
+@media (prefers-color-scheme: light) {
+  html:not([data-docsify-theme="dark"]) .sidebar .search .input-wrap:focus-within {
+    border-color: var(--docs-warm-accent);
+    box-shadow: 0 0 0 3px rgba(184, 107, 53, 0.14);
+  }
+
+  html:not([data-docsify-theme="dark"]) .sidebar .search-result-file-title::before {
+    background: var(--docs-warm-accent-soft);
+    border-color: rgba(184, 107, 53, 0.24);
+    color: var(--docs-warm-accent-strong);
+  }
+
+  html:not([data-docsify-theme="dark"]) .sidebar .search-result-section a {
+    background: rgba(181, 118, 64, 0.06);
+    border-color: rgba(181, 118, 64, 0.16);
+  }
+
+  html:not([data-docsify-theme="dark"]) .markdown-section table {
+    --docs-table-heading-bg: linear-gradient(180deg, rgba(184, 107, 53, 0.12), rgba(184, 107, 53, 0.045));
+    --docs-table-heading-border: rgba(184, 107, 53, 0.28);
+    --docs-table-heading-color: var(--docs-warm-heading);
+  }
+
+  html:not([data-docsify-theme="dark"]) .markdown-section code:not([class*="lang-"]):not([class*="language-"]) {
+    border-color: rgba(184, 107, 53, 0.22);
+  }
+}
+
+html[data-docsify-theme="light"] .sidebar .search .input-wrap:focus-within {
+  border-color: var(--docs-warm-accent);
+  box-shadow: 0 0 0 3px rgba(184, 107, 53, 0.14);
+}
+
+html[data-docsify-theme="light"] .sidebar .search-result-file-title::before {
+  background: var(--docs-warm-accent-soft);
+  border-color: rgba(184, 107, 53, 0.24);
+  color: var(--docs-warm-accent-strong);
+}
+
+html[data-docsify-theme="light"] .sidebar .search-result-section a {
+  background: rgba(181, 118, 64, 0.06);
+  border-color: rgba(181, 118, 64, 0.16);
+}
+
+html[data-docsify-theme="light"] .markdown-section table {
+  --docs-table-heading-bg: linear-gradient(180deg, rgba(184, 107, 53, 0.12), rgba(184, 107, 53, 0.045));
+  --docs-table-heading-border: rgba(184, 107, 53, 0.28);
+  --docs-table-heading-color: var(--docs-warm-heading);
+}
+
+html[data-docsify-theme="light"] .markdown-section code:not([class*="lang-"]):not([class*="language-"]) {
+  border-color: rgba(184, 107, 53, 0.22);
+}

@@ -1,0 +1,213 @@
+.markdown-section .code-block {
+  background: var(--docs-code-bg, #282c34);
+  border: 1px solid var(--docs-code-border, #3b4048);
+  border-radius: 6px;
+  margin: 1.1em 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.markdown-section .code-block-toolbar {
+  align-items: center;
+  background: var(--docs-code-toolbar-bg, #282c34);
+  border-bottom: 1px solid var(--docs-code-toolbar-border, #333842);
+  display: flex;
+  min-height: 32px;
+  padding: 0 42px 0 12px;
+}
+
+.markdown-section .code-block-language {
+  color: var(--docs-code-label-color, #8f99a8);
+  font-family: var(--docs-mono-font);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1;
+  opacity: 1;
+  transform: none;
+}
+
+.markdown-section .code-block pre[data-lang]::after {
+  content: none;
+  display: none;
+}
+
+.markdown-section .code-block-body {
+  display: flex;
+  isolation: isolate;
+  max-width: 100%;
+  overflow: auto;
+  position: relative;
+}
+
+.markdown-section .code-block-body.is-collapsed {
+  border-bottom: 0;
+}
+
+.markdown-section .code-block pre[data-lang],
+.markdown-section .code-block pre[class*="language-"] {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  flex: 1 1 auto;
+  margin: 0;
+  min-width: 0;
+  overflow: visible;
+}
+
+.markdown-section .code-block pre[class*="language-"] > code {
+  overflow: visible;
+  padding: 1.1rem 1.1rem 1.1rem 1rem;
+  white-space: pre;
+}
+
+.markdown-section .code-line-numbers {
+  align-self: flex-start;
+  background: var(--docs-code-gutter-bg, #282c34);
+  border-right: 1px solid var(--docs-code-gutter-border, rgba(255, 255, 255, 0.08));
+  box-sizing: border-box;
+  box-shadow: inset -14px 0 14px -15px var(--docs-code-gutter-shadow, rgba(0, 0, 0, 0.34));
+  color: var(--docs-code-gutter-color, #6f7782);
+  flex: 0 0 auto;
+  font-family: var(--docs-mono-font);
+  font-size: 13px;
+  line-height: 1.65;
+  min-height: 100%;
+  overflow: visible;
+  padding: 1.1rem 0.7rem;
+  position: sticky;
+  left: 0;
+  text-align: right;
+  transform: translateZ(0);
+  user-select: none;
+  will-change: transform;
+  z-index: 6;
+}
+
+.markdown-section .code-line-numbers span {
+  display: block;
+  min-width: 2ch;
+}
+
+.markdown-section .code-fold-button {
+  align-items: center;
+  background: var(--docs-code-fold-bg, #252a31);
+  border: 0;
+  border-top: 1px solid var(--docs-code-fold-border, #3b4048);
+  color: var(--docs-code-fold-color, #b6beca);
+  cursor: pointer;
+  display: flex;
+  font-size: 13px;
+  font-weight: 600;
+  gap: 8px;
+  height: 38px;
+  justify-content: center;
+  letter-spacing: 0;
+  line-height: 1;
+  padding: 0;
+  text-align: center;
+  transition: background-color 0.16s ease, color 0.16s ease;
+  width: 100%;
+}
+
+.markdown-section .code-fold-button::before {
+  border-bottom: 1.5px solid currentColor;
+  border-right: 1.5px solid currentColor;
+  content: "";
+  height: 7px;
+  transform: rotate(45deg) translateY(-2px);
+  transition: transform 0.16s ease;
+  width: 7px;
+}
+
+.markdown-section .code-fold-button[aria-expanded="true"]::before {
+  transform: rotate(-135deg) translateY(-1px);
+}
+
+.markdown-section .code-fold-button:hover {
+  background: var(--docs-code-fold-hover-bg, #2d333c);
+  color: #ffffff;
+}
+
+.markdown-section .code-block > .docsify-copy-code-button {
+  align-items: center;
+  background: var(--docs-code-copy-bg, rgba(40, 44, 52, 0.96));
+  border: 1px solid var(--docs-code-copy-border, rgba(255, 255, 255, 0.08));
+  border-radius: 4px;
+  color: var(--docs-code-copy-color, #9aa4b2);
+  display: inline-flex;
+  font-size: 0;
+  height: 24px;
+  justify-content: center;
+  line-height: 1;
+  opacity: 1;
+  padding: 0;
+  position: absolute;
+  right: 8px;
+  top: 4px;
+  transform: none;
+  transition: opacity 0.16s ease, transform 0.16s ease, background-color 0.16s ease, color 0.16s ease;
+  width: 24px;
+  z-index: 4;
+}
+
+.markdown-section .code-block:hover > .docsify-copy-code-button,
+.markdown-section .code-block:focus-within > .docsify-copy-code-button,
+.markdown-section .code-block > .docsify-copy-code-button:focus,
+.markdown-section .code-block > .docsify-copy-code-button.success,
+.markdown-section .code-block > .docsify-copy-code-button.error {
+  opacity: 1;
+  transform: none;
+}
+
+.markdown-section .code-block > .docsify-copy-code-button:hover,
+.markdown-section .code-block > .docsify-copy-code-button:focus {
+  background: var(--docs-code-copy-hover-bg, #323842);
+  color: #ffffff;
+}
+
+.markdown-section .code-block > .docsify-copy-code-button > span {
+  background: transparent;
+}
+
+.markdown-section .code-block > .docsify-copy-code-button > .label {
+  display: none;
+}
+
+.markdown-section .code-block > .docsify-copy-code-button > .code-copy-icon {
+  align-items: center;
+  display: inline-flex;
+  height: 16px;
+  justify-content: center;
+  pointer-events: none;
+  width: 16px;
+}
+
+.markdown-section .code-block > .docsify-copy-code-button > .code-copy-icon * {
+  pointer-events: none;
+}
+
+.markdown-section .code-block > .docsify-copy-code-button > .code-copy-icon svg {
+  fill: none;
+  height: 16px;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+  width: 16px;
+}
+
+.markdown-section .code-block > .docsify-copy-code-button > .error,
+.markdown-section .code-block > .docsify-copy-code-button > .success {
+  background: var(--docs-code-copy-status-bg, rgba(33, 37, 43, 0.98));
+  border-radius: 4px;
+  box-shadow: var(--docs-code-copy-status-shadow, 0 6px 16px rgba(0, 0, 0, 0.22));
+  color: #ffffff;
+  font-size: 12px;
+  line-height: 1;
+  padding: 6px 8px;
+  right: calc(100% + 6px);
+  top: 50%;
+  white-space: nowrap;
+  z-index: 5;
+}

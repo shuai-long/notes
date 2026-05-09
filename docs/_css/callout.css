@@ -1,0 +1,163 @@
+.markdown-section blockquote.callout {
+  --callout-accent: #3b82f6;
+  --callout-bg: rgba(59, 130, 246, 0.08);
+  --callout-border: rgba(59, 130, 246, 0.28);
+  --callout-title: #1d4ed8;
+  --callout-text: var(--base-color, #34495e);
+  background: var(--callout-bg);
+  border: 1px solid var(--callout-border);
+  border-left: 4px solid var(--callout-accent);
+  border-radius: 7px;
+  box-shadow: none;
+  color: var(--callout-text);
+  margin: 1.2em 0;
+  padding: 12px 14px 12px 13px;
+}
+
+.markdown-section blockquote.callout p,
+.markdown-section blockquote.callout ul,
+.markdown-section blockquote.callout ol,
+.markdown-section blockquote.callout table {
+  margin-bottom: 0.75em;
+  margin-top: 0.75em;
+}
+
+.markdown-section blockquote.callout > :last-child {
+  margin-bottom: 0;
+}
+
+.markdown-section blockquote.callout .callout-title {
+  align-items: center;
+  color: var(--callout-title);
+  display: flex;
+  font-family: var(--docs-mixed-font);
+  font-size: 13px;
+  font-weight: 800;
+  gap: 7px;
+  line-height: 1.2;
+  margin: 0 0 8px;
+}
+
+.markdown-section blockquote.callout .callout-icon {
+  align-items: center;
+  background: var(--callout-accent);
+  border-radius: 999px;
+  color: #ffffff;
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-family: var(--docs-mono-font);
+  font-size: 11px;
+  font-weight: 800;
+  height: 18px;
+  justify-content: center;
+  line-height: 1;
+  width: 18px;
+}
+
+.markdown-section blockquote.callout-note {
+  --callout-accent: #3b82f6;
+  --callout-bg: rgba(59, 130, 246, 0.08);
+  --callout-border: rgba(59, 130, 246, 0.26);
+  --callout-title: #1d4ed8;
+}
+
+.markdown-section blockquote.callout-tip {
+  --callout-accent: #16a34a;
+  --callout-bg: rgba(22, 163, 74, 0.08);
+  --callout-border: rgba(22, 163, 74, 0.25);
+  --callout-title: #15803d;
+}
+
+.markdown-section blockquote.callout-warning,
+.markdown-section blockquote.callout-attention {
+  --callout-accent: #d97706;
+  --callout-bg: rgba(217, 119, 6, 0.1);
+  --callout-border: rgba(217, 119, 6, 0.28);
+  --callout-title: #b45309;
+}
+
+.markdown-section blockquote.callout-important {
+  --callout-accent: #7c3aed;
+  --callout-bg: rgba(124, 58, 237, 0.08);
+  --callout-border: rgba(124, 58, 237, 0.25);
+  --callout-title: #6d28d9;
+}
+
+.markdown-section blockquote.callout-caution {
+  --callout-accent: #dc2626;
+  --callout-bg: rgba(220, 38, 38, 0.08);
+  --callout-border: rgba(220, 38, 38, 0.25);
+  --callout-title: #b91c1c;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-docsify-theme="light"]) .markdown-section blockquote.callout {
+    --callout-text: var(--base-color, #d3d3d3);
+  }
+
+  html:not([data-docsify-theme="light"]) .markdown-section blockquote.callout-note {
+    --callout-bg: rgba(96, 165, 250, 0.12);
+    --callout-border: rgba(96, 165, 250, 0.3);
+    --callout-title: #93c5fd;
+  }
+
+  html:not([data-docsify-theme="light"]) .markdown-section blockquote.callout-tip {
+    --callout-bg: rgba(74, 222, 128, 0.12);
+    --callout-border: rgba(74, 222, 128, 0.28);
+    --callout-title: #86efac;
+  }
+
+  html:not([data-docsify-theme="light"]) .markdown-section blockquote.callout-warning,
+  html:not([data-docsify-theme="light"]) .markdown-section blockquote.callout-attention {
+    --callout-bg: rgba(251, 191, 36, 0.12);
+    --callout-border: rgba(251, 191, 36, 0.3);
+    --callout-title: #fcd34d;
+  }
+
+  html:not([data-docsify-theme="light"]) .markdown-section blockquote.callout-important {
+    --callout-bg: rgba(167, 139, 250, 0.12);
+    --callout-border: rgba(167, 139, 250, 0.28);
+    --callout-title: #c4b5fd;
+  }
+
+  html:not([data-docsify-theme="light"]) .markdown-section blockquote.callout-caution {
+    --callout-bg: rgba(248, 113, 113, 0.12);
+    --callout-border: rgba(248, 113, 113, 0.28);
+    --callout-title: #fca5a5;
+  }
+}
+
+html[data-docsify-theme="dark"] .markdown-section blockquote.callout {
+  --callout-text: var(--base-color, #d3d3d3);
+}
+
+html[data-docsify-theme="dark"] .markdown-section blockquote.callout-note {
+  --callout-bg: rgba(96, 165, 250, 0.12);
+  --callout-border: rgba(96, 165, 250, 0.3);
+  --callout-title: #93c5fd;
+}
+
+html[data-docsify-theme="dark"] .markdown-section blockquote.callout-tip {
+  --callout-bg: rgba(74, 222, 128, 0.12);
+  --callout-border: rgba(74, 222, 128, 0.28);
+  --callout-title: #86efac;
+}
+
+html[data-docsify-theme="dark"] .markdown-section blockquote.callout-warning,
+html[data-docsify-theme="dark"] .markdown-section blockquote.callout-attention {
+  --callout-bg: rgba(251, 191, 36, 0.12);
+  --callout-border: rgba(251, 191, 36, 0.3);
+  --callout-title: #fcd34d;
+}
+
+html[data-docsify-theme="dark"] .markdown-section blockquote.callout-important {
+  --callout-bg: rgba(167, 139, 250, 0.12);
+  --callout-border: rgba(167, 139, 250, 0.28);
+  --callout-title: #c4b5fd;
+}
+
+html[data-docsify-theme="dark"] .markdown-section blockquote.callout-caution {
+  --callout-bg: rgba(248, 113, 113, 0.12);
+  --callout-border: rgba(248, 113, 113, 0.28);
+  --callout-title: #fca5a5;
+}

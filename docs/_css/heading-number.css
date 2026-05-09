@@ -1,0 +1,13 @@
+.markdown-section .heading-number {
+  color: #7f8c8d;
+  display: inline-block;
+  font-size: 0.86em;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  line-height: 1;
+  margin-right: 0.45em;
+}
+
+.markdown-section h1 .heading-number {
+  color: var(--theme-color, #42b983);
+}

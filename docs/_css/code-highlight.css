@@ -1,8 +1,106 @@
+.markdown-section {
+  --docs-code-bg: #282c34;
+  --docs-code-border: #3b4048;
+  --docs-code-toolbar-bg: #282c34;
+  --docs-code-toolbar-border: #333842;
+  --docs-code-label-bg: rgba(255, 255, 255, 0.08);
+  --docs-code-label-color: #8f99a8;
+  --docs-code-gutter-bg: #282c34;
+  --docs-code-gutter-border: rgba(255, 255, 255, 0.08);
+  --docs-code-gutter-color: #6f7782;
+  --docs-code-gutter-shadow: rgba(0, 0, 0, 0.26);
+  --docs-code-fold-bg: #252a31;
+  --docs-code-fold-hover-bg: #2d333c;
+  --docs-code-fold-border: #3b4048;
+  --docs-code-fold-color: #b6beca;
+  --docs-code-copy-bg: rgba(40, 44, 52, 0.96);
+  --docs-code-copy-hover-bg: #323842;
+  --docs-code-copy-border: rgba(255, 255, 255, 0.08);
+  --docs-code-copy-color: #9aa4b2;
+  --docs-code-copy-status-bg: rgba(33, 37, 43, 0.98);
+  --docs-code-copy-status-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
+  --docs-code-text: #abb2bf;
+  --docs-code-comment: #5c6370;
+  --docs-code-keyword: #c678dd;
+  --docs-code-operator: #56b6c2;
+  --docs-code-string: #98c379;
+  --docs-code-number: #d19a66;
+  --docs-code-function: #61afef;
+  --docs-code-variable: #56b6c2;
+  --docs-code-punctuation: #abb2bf;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-docsify-theme="light"]) .markdown-section {
+    --docs-code-bg: #1f2329;
+    --docs-code-border: #3a4250;
+    --docs-code-toolbar-bg: #21262e;
+    --docs-code-toolbar-border: #323a46;
+    --docs-code-label-bg: rgba(255, 255, 255, 0.07);
+    --docs-code-label-color: #9ba7b7;
+    --docs-code-gutter-bg: #1f2329;
+    --docs-code-gutter-border: rgba(255, 255, 255, 0.075);
+    --docs-code-gutter-color: #768191;
+    --docs-code-gutter-shadow: rgba(0, 0, 0, 0.34);
+    --docs-code-fold-bg: #20262f;
+    --docs-code-fold-hover-bg: #29313c;
+    --docs-code-fold-border: #343d49;
+    --docs-code-fold-color: #c3ccd8;
+    --docs-code-copy-bg: rgba(31, 35, 41, 0.98);
+    --docs-code-copy-hover-bg: #2c3440;
+    --docs-code-copy-border: rgba(255, 255, 255, 0.09);
+    --docs-code-copy-color: #b3bfcc;
+    --docs-code-copy-status-bg: rgba(29, 34, 41, 0.98);
+    --docs-code-copy-status-shadow: 0 8px 18px rgba(0, 0, 0, 0.32);
+    --docs-code-text: #d7dae0;
+    --docs-code-comment: #7c8594;
+    --docs-code-keyword: #c792ea;
+    --docs-code-operator: #56cfe1;
+    --docs-code-string: #a8d576;
+    --docs-code-number: #e5b16f;
+    --docs-code-function: #82aaff;
+    --docs-code-variable: #56cfe1;
+    --docs-code-punctuation: #c9d1d9;
+  }
+}
+
+html[data-docsify-theme="dark"] .markdown-section {
+  --docs-code-bg: #1f2329;
+  --docs-code-border: #3a4250;
+  --docs-code-toolbar-bg: #21262e;
+  --docs-code-toolbar-border: #323a46;
+  --docs-code-label-bg: rgba(255, 255, 255, 0.07);
+  --docs-code-label-color: #9ba7b7;
+  --docs-code-gutter-bg: #1f2329;
+  --docs-code-gutter-border: rgba(255, 255, 255, 0.075);
+  --docs-code-gutter-color: #768191;
+  --docs-code-gutter-shadow: rgba(0, 0, 0, 0.34);
+  --docs-code-fold-bg: #20262f;
+  --docs-code-fold-hover-bg: #29313c;
+  --docs-code-fold-border: #343d49;
+  --docs-code-fold-color: #c3ccd8;
+  --docs-code-copy-bg: rgba(31, 35, 41, 0.98);
+  --docs-code-copy-hover-bg: #2c3440;
+  --docs-code-copy-border: rgba(255, 255, 255, 0.09);
+  --docs-code-copy-color: #b3bfcc;
+  --docs-code-copy-status-bg: rgba(29, 34, 41, 0.98);
+  --docs-code-copy-status-shadow: 0 8px 18px rgba(0, 0, 0, 0.32);
+  --docs-code-text: #d7dae0;
+  --docs-code-comment: #7c8594;
+  --docs-code-keyword: #c792ea;
+  --docs-code-operator: #56cfe1;
+  --docs-code-string: #a8d576;
+  --docs-code-number: #e5b16f;
+  --docs-code-function: #82aaff;
+  --docs-code-variable: #56cfe1;
+  --docs-code-punctuation: #c9d1d9;
+}
+
 .markdown-section pre[data-lang] {
-  background: #282c34;
-  border: 1px solid #3b4048;
+  background: var(--docs-code-bg);
+  border: 1px solid var(--docs-code-border);
   border-radius: 6px;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  box-shadow: none;
   margin: 1.1em 0;
   overflow: hidden;
   padding: 0;
@@ -10,19 +108,31 @@
 }
 
 .markdown-section pre[data-lang]::after {
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 0 0 0 6px;
-  color: #9aa4b2;
+  background: var(--docs-code-label-bg);
+  border-radius: 4px;
+  color: var(--docs-code-label-color);
   content: attr(data-lang);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-family: var(--docs-mono-font);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0;
   line-height: 1;
+  opacity: 1;
   padding: 5px 7px;
+  pointer-events: none;
   position: absolute;
-  right: 0;
-  top: 0;
+  left: 10px;
+  top: 8px;
+  transition: opacity 0.16s ease, transform 0.16s ease;
+  transform: none;
+}
+
+.markdown-section pre[data-lang]:hover::after,
+.markdown-section pre[data-lang]:focus-within::after,
+.markdown-section .code-block:hover pre[data-lang]::after,
+.markdown-section .code-block:focus-within pre[data-lang]::after {
+  opacity: 1;
+  transform: none;
 }
 
 .markdown-section pre[class*="language-"] {
@@ -31,9 +141,9 @@
 
 .markdown-section pre[class*="language-"] > code {
   background: transparent;
-  color: #abb2bf;
+  color: var(--docs-code-text);
   display: block;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-family: var(--docs-mono-font);
   font-size: 13px;
   line-height: 1.65;
   overflow-x: auto;
@@ -46,43 +156,55 @@
   text-shadow: none;
 }
 
+.markdown-section .token {
+  background: transparent !important;
+}
+
 .markdown-section .token.comment,
 .markdown-section .token.prolog,
 .markdown-section .token.doctype,
 .markdown-section .token.cdata {
-  color: #7f848e;
+  color: var(--docs-code-comment);
+  font-size: 0.9em;
   font-style: italic;
+  line-height: 21.45px;
+  opacity: 0.85;
 }
 
 .markdown-section .token.keyword,
-.markdown-section .token.operator,
 .markdown-section .token.boolean {
-  color: #c678dd;
+  color: var(--docs-code-keyword);
+  font-weight: 400;
+}
+
+.markdown-section .token.operator {
+  color: var(--docs-code-operator);
 }
 
 .markdown-section .token.string,
 .markdown-section .token.char,
 .markdown-section .token.attr-value {
-  color: #98c379;
+  color: var(--docs-code-string);
 }
 
 .markdown-section .token.number,
 .markdown-section .token.constant,
 .markdown-section .token.symbol {
-  color: #d19a66;
+  color: var(--docs-code-number);
 }
 
 .markdown-section .token.function,
 .markdown-section .token.class-name {
-  color: #61afef;
+  color: var(--docs-code-function);
 }
 
 .markdown-section .token.property,
 .markdown-section .token.variable,
 .markdown-section .token.attr-name {
-  color: #e06c75;
+  color: var(--docs-code-variable);
+  font-weight: 700;
 }
 
 .markdown-section .token.punctuation {
-  color: #abb2bf;
+  color: var(--docs-code-punctuation);
 }

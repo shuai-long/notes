@@ -1,0 +1,145 @@
+.markdown-section a.docsify-glossary-link {
+  border-bottom: 1px dotted currentColor;
+  color: var(--theme-color, #42b983);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.markdown-section a.docsify-glossary-link:hover,
+.markdown-section a.docsify-glossary-link:focus {
+  border-bottom-style: solid;
+  text-decoration: none;
+}
+
+.markdown-section .mermaid {
+  background: var(--base-background-color, #ffffff);
+  border: 1px solid rgba(125, 143, 162, 0.22);
+  border-radius: 8px;
+  box-sizing: border-box;
+  margin: 1rem 0;
+  overflow: auto;
+  padding: 18px;
+  text-align: center;
+}
+
+.markdown-section .mermaid svg {
+  height: auto;
+  max-width: 100%;
+}
+
+.docsify-pagination-container {
+  border-top-color: var(--mono-tint2, rgba(125, 143, 162, 0.22)) !important;
+  gap: 18px;
+  margin: 3rem 0 1rem;
+  padding-top: 1.35rem;
+}
+
+.pagination-item {
+  max-width: 46%;
+  margin-top: 0;
+}
+
+.pagination-item a {
+  border-bottom: 0;
+  display: block;
+  padding: 0.55rem 0;
+}
+
+.pagination-item-label {
+  align-items: center;
+  color: var(--theme-color, #42b983);
+  display: inline-flex;
+  font-family: var(--docs-mono-font);
+  font-size: 0.72rem;
+  font-weight: 750;
+  gap: 0.35rem;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.pagination-item-label svg {
+  height: 0.72rem;
+  opacity: 0.82;
+  width: auto;
+}
+
+.pagination-item-title {
+  color: var(--heading-color, currentColor);
+  font-family: var(--docs-mixed-font);
+  font-size: 0.96rem;
+  font-weight: 700;
+  line-height: 1.45;
+  margin-top: 0.42rem;
+}
+
+.pagination-item-subtitle {
+  color: var(--mono-shade1, #6f7c8a);
+  font-family: var(--docs-mixed-font);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  margin-top: 0.22rem;
+  opacity: 0.72;
+  text-transform: none;
+}
+
+.pagination-item:not(:last-child) a .pagination-item-label,
+.pagination-item:not(:last-child) a .pagination-item-subtitle,
+.pagination-item:not(:last-child) a .pagination-item-title,
+.pagination-item:last-child .pagination-item-label {
+  opacity: 1;
+}
+
+.pagination-item a:hover .pagination-item-title,
+.pagination-item a:focus .pagination-item-title {
+  color: var(--theme-color, #42b983);
+  text-decoration: none;
+}
+
+#progress-display {
+  box-shadow: 0 0 10px rgba(66, 185, 131, 0.28);
+}
+
+@media screen and (max-width: 47.99em) {
+  .markdown-section .mermaid {
+    border-radius: 6px;
+    padding: 10px;
+  }
+
+  .docsify-pagination-container .pagination-item {
+    flex: 1 1 0;
+    max-width: calc(50% - 9px);
+    min-width: 0;
+    width: auto;
+  }
+
+  .docsify-pagination-container .pagination-item-title {
+    font-size: 0.72rem;
+    line-height: 1.25;
+    margin-top: 0.28rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .docsify-pagination-container .pagination-item-subtitle {
+    font-size: 0.58rem;
+    line-height: 1.2;
+    margin-top: 0.14rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-docsify-theme="light"]) .markdown-section .mermaid {
+    background: rgba(31, 35, 41, 0.96);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+html[data-docsify-theme="dark"] .markdown-section .mermaid {
+  background: rgba(31, 35, 41, 0.96);
+  border-color: rgba(255, 255, 255, 0.1);
+}

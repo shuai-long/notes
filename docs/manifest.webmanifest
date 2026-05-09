@@ -1,0 +1,18 @@
+{
+  "name": "notes",
+  "short_name": "notes",
+  "description": "Docsify notes with offline support",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fff7eb",
+  "theme_color": "#b86b35",
+  "icons": [
+    {
+      "src": "./icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

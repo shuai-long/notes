@@ -11,8 +11,13 @@
     xml: "markup",
   };
   var IGNORED_LANGUAGES = {
+    audio: true,
+    embed: true,
+    iframe: true,
+    media: true,
     mermaid: true,
     pdf: true,
+    video: true,
   };
   var config = (window.$docsify && window.$docsify.codeHighlight) || {};
   var aliases = Object.assign({}, DEFAULT_ALIASES, config.aliases || {});
@@ -65,7 +70,7 @@
 
   if (window.Prism && window.Prism.plugins && window.Prism.plugins.autoloader) {
     window.Prism.plugins.autoloader.languages_path =
-      config.languagesPath || "//cdn.jsdelivr.net/npm/prismjs@1.29.0/components/";
+      config.languagesPath || "./vendor/prism/components/";
   }
 
   window.$docsify = window.$docsify || {};
