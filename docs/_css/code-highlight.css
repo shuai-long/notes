@@ -1,7 +1,8 @@
 .markdown-section pre[data-lang] {
-  background: #f8fafc;
-  border: 1px solid #e5e7eb;
+  background: #282c34;
+  border: 1px solid #3b4048;
   border-radius: 6px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
   margin: 1.1em 0;
   overflow: hidden;
   padding: 0;
@@ -9,9 +10,9 @@
 }
 
 .markdown-section pre[data-lang]::after {
-  background: rgba(15, 23, 42, 0.06);
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 0 0 0 6px;
-  color: #64748b;
+  color: #9aa4b2;
   content: attr(data-lang);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 11px;
@@ -30,6 +31,7 @@
 
 .markdown-section pre[class*="language-"] > code {
   background: transparent;
+  color: #abb2bf;
   display: block;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 13px;
@@ -42,4 +44,45 @@
 .markdown-section code[class*="language-"],
 .markdown-section pre[class*="language-"] {
   text-shadow: none;
+}
+
+.markdown-section .token.comment,
+.markdown-section .token.prolog,
+.markdown-section .token.doctype,
+.markdown-section .token.cdata {
+  color: #7f848e;
+  font-style: italic;
+}
+
+.markdown-section .token.keyword,
+.markdown-section .token.operator,
+.markdown-section .token.boolean {
+  color: #c678dd;
+}
+
+.markdown-section .token.string,
+.markdown-section .token.char,
+.markdown-section .token.attr-value {
+  color: #98c379;
+}
+
+.markdown-section .token.number,
+.markdown-section .token.constant,
+.markdown-section .token.symbol {
+  color: #d19a66;
+}
+
+.markdown-section .token.function,
+.markdown-section .token.class-name {
+  color: #61afef;
+}
+
+.markdown-section .token.property,
+.markdown-section .token.variable,
+.markdown-section .token.attr-name {
+  color: #e06c75;
+}
+
+.markdown-section .token.punctuation {
+  color: #abb2bf;
 }
