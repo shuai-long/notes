@@ -45,6 +45,18 @@
     word-break: keep-all;
   }
 
+  .markdown-section table.responsive-table td {
+    line-height: 1.45;
+    padding-bottom: 0.62em;
+    padding-top: 0.62em;
+  }
+
+  .markdown-section table.responsive-table .responsive-table-value {
+    display: inline-block;
+    min-height: 1.45em;
+    vertical-align: middle;
+  }
+
   .markdown-section table.responsive-table td.table-cell-long {
     padding-right: 2.8em;
   }
