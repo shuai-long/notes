@@ -136,6 +136,11 @@
             themeToggle: {
                 storageKey: 'docsify-theme-mode'
             },
+            // 自动打开上次浏览内容
+            lastVisit: {
+                storageKey: 'docsify-last-visit',
+                restoreAtRoot: true
+            },
             /*搜索相关设置*/
             search: {
                 maxAge: 86400000,// 过期时间，单位毫秒，默认一天
@@ -153,6 +158,8 @@
             }
         }
     </script>
+    <!-- 自动打开上次浏览内容 -->
+    <script src="./plugins/last-visit.js"></script>
     <!-- docsify的js依赖 -->
     <script src="./vendor/docsify/docsify.min.js"></script>
     <!-- 代码高亮支持 -->
@@ -213,6 +220,8 @@
     <script src="./vendor/docsify-pagination/docsify-pagination.min.js"></script>
     <!-- 主题切换 -->
     <script src="./plugins/theme-toggle.js"></script>
+    <!-- 页面状态样式辅助 -->
+    <script src="./plugins/page-state.js"></script>
     <!-- PWA 离线模式 -->
     <script src="./plugins/pwa-register.js"></script>
 </body>

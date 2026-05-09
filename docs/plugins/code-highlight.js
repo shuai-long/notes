@@ -55,15 +55,42 @@
     }
   }
 
-  function highlight() {
+  function highlightCode(code) {
+    var language = readLanguage(code);
+    var grammar;
+
+    if (!language || IGNORED_LANGUAGES[language]) return false;
+
+    setLanguage(code, language);
+    grammar = window.Prism && window.Prism.languages && window.Prism.languages[language];
+
+    if (!grammar || typeof window.Prism.highlight !== "function") return false;
+
+    code.innerHTML = window.Prism.highlight(code.textContent || "", grammar, language);
+    code.dataset.highlighted = "true";
+
+    return true;
+  }
+
+  function highlightHtml(html) {
+    var container;
+
     if (!window.Prism || typeof window.Prism.highlightElement !== "function") return;
 
-    document.querySelectorAll(".markdown-section pre > code").forEach(function (code) {
-      var language = readLanguage(code);
+    container = document.createElement("div");
+    container.innerHTML = html;
 
-      if (!language || IGNORED_LANGUAGES[language]) return;
+    container.querySelectorAll("pre > code").forEach(highlightCode);
 
-      setLanguage(code, language);
+    return container.innerHTML;
+  }
+
+  function highlightRemaining() {
+    if (!window.Prism || typeof window.Prism.highlightElement !== "function") return;
+
+    document.querySelectorAll(".markdown-section pre > code:not([data-highlighted='true'])").forEach(function (code) {
+      if (highlightCode(code)) return;
+
       window.Prism.highlightElement(code);
     });
   }
@@ -75,8 +102,10 @@
 
   window.$docsify = window.$docsify || {};
   window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook) {
-    hook.doneEach(function () {
-      window.requestAnimationFrame(highlight);
+    hook.afterEach(function (html, next) {
+      next(highlightHtml(html) || html);
     });
+
+    hook.doneEach(highlightRemaining);
   });
 })();

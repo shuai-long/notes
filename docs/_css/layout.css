@@ -191,6 +191,15 @@ body > .github-corner svg {
   display: none;
 }
 
+body.is-github-pages-home::before {
+  left: 0 !important;
+  right: 0 !important;
+}
+
+body.is-github-pages-home .sidebar-toggle {
+  display: none !important;
+}
+
 @media screen and (min-width: 48em) {
   body:not(.close)::before {
     left: var(--sidebar-width);

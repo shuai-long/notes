@@ -1,5 +1,5 @@
 {
-  "version": "7f2cffa7b5bac247",
+  "version": "01a0f3fca70ee2e8",
   "files": [
     "./_coverpage.md",
     "./_css/callout.css",
@@ -163,7 +163,9 @@
     "./plugins/heading-number.js",
     "./plugins/image-frame.js",
     "./plugins/inline-code-copy.js",
+    "./plugins/last-visit.js",
     "./plugins/media-player.js",
+    "./plugins/page-state.js",
     "./plugins/pwa-register.js",
     "./plugins/responsive-tables.js",
     "./plugins/search-enhance.js",
