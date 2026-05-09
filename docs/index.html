@@ -31,6 +31,7 @@
     <link rel="stylesheet" href="./_css/file-embed.css">
     <link rel="stylesheet" href="./_css/media-player.css">
     <link rel="stylesheet" href="./_css/image-frame.css">
+    <link rel="stylesheet" href="./_css/image-grid.css">
     <link rel="stylesheet" href="./_css/search-enhance.css">
     <link rel="stylesheet" href="./_css/callout.css">
     <link rel="stylesheet" href="./_css/sidebar-tree.css">
@@ -105,6 +106,13 @@
             // 图片等宽背景展示
             imageFrame: {
                 selector: '.markdown-section'
+            },
+            // 图片排列
+            imageGrid: {
+                defaultColumns: 2,
+                defaultGap: '12px',
+                defaultMinWidth: '260px',
+                maxColumns: 6
             },
             // PDF/HTML 文件嵌入预览
             fileEmbed: {
@@ -210,6 +218,8 @@
     <script src="./plugins/file-embed.js"></script>
     <!-- 音频/视频播放 -->
     <script src="./plugins/media-player.js"></script>
+    <!-- 图片排列 -->
+    <script src="./plugins/image-grid.js"></script>
     <!-- 图片等宽背景展示 -->
     <script src="./plugins/image-frame.js"></script>
     <!-- 术语表 -->

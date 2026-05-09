@@ -1,5 +1,5 @@
 {
-  "version": "6450b0ee5a33a80c",
+  "version": "56942bf28f82276c",
   "files": [
     "./_coverpage.md",
     "./_css/callout.css",
@@ -8,6 +8,7 @@
     "./_css/file-embed.css",
     "./_css/heading-number.css",
     "./_css/image-frame.css",
+    "./_css/image-grid.css",
     "./_css/inline-code-copy.css",
     "./_css/layout.css",
     "./_css/media-player.css",
@@ -162,6 +163,7 @@
     "./plugins/file-embed.js",
     "./plugins/heading-number.js",
     "./plugins/image-frame.js",
+    "./plugins/image-grid.js",
     "./plugins/inline-code-copy.js",
     "./plugins/last-visit.js",
     "./plugins/media-player.js",

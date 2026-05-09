@@ -1,0 +1,36 @@
+.markdown-section .docs-image-grid {
+  --docs-image-grid-cols: 2;
+  --docs-image-grid-gap: 12px;
+  --docs-image-grid-item-width: calc((100% - var(--docs-image-grid-gap)) / 2);
+  --docs-image-grid-min-width: 260px;
+  align-items: stretch;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--docs-image-grid-gap);
+  margin: 1.15rem 0;
+  width: 100%;
+}
+
+.markdown-section .docs-image-grid .docs-image-grid-item {
+  flex: 1 1 var(--docs-image-grid-item-width);
+  min-width: min(100%, var(--docs-image-grid-min-width));
+}
+
+.markdown-section .docs-image-grid .docs-image-frame {
+  margin: 0;
+  width: 100%;
+}
+
+.markdown-section .docs-image-grid .docs-image-frame > a {
+  max-width: 100%;
+}
+
+.markdown-section .docs-image-grid .docs-image-frame img {
+  max-height: var(--docs-image-grid-max-height, none);
+}
+
+@media screen and (max-width: 47.99em) {
+  .markdown-section .docs-image-grid {
+    gap: min(var(--docs-image-grid-gap), 12px);
+  }
+}
