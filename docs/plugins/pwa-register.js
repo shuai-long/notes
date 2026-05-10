@@ -4,7 +4,7 @@
 
   window.addEventListener("load", function () {
     navigator.serviceWorker
-      .register("./sw.js")
+      .register("./sw.js", { updateViaCache: "none" })
       .then(function (registration) {
         if (registration.waiting) {
           registration.waiting.postMessage({ type: "SKIP_WAITING" });
@@ -25,12 +25,5 @@
       .catch(function (error) {
         console.warn("[PWA] service worker registration failed:", error);
       });
-  });
-
-  navigator.serviceWorker.addEventListener("controllerchange", function () {
-    if (window.__docsifyPwaReloading) return;
-
-    window.__docsifyPwaReloading = true;
-    window.location.reload();
   });
 })();

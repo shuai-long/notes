@@ -67,11 +67,15 @@ function isStaticAsset(url) {
   return /\.(?:css|js|mjs|svg|png|jpe?g|gif|webp|ico|woff2?|ttf|map)$/i.test(url.pathname);
 }
 
-async function networkFirst(request) {
+function isCriticalAsset(url) {
+  return /\.(?:css|js|mjs)$/i.test(url.pathname);
+}
+
+async function networkFirst(request, fallbackToIndex) {
   const cache = await openCurrentCache();
 
   try {
-    const response = await fetch(request);
+    const response = await fetch(request, { cache: "no-store" });
 
     if (response && response.ok) {
       cache.put(request, response.clone());
@@ -79,7 +83,12 @@ async function networkFirst(request) {
 
     return response;
   } catch (error) {
-    return (await cache.match(request)) || (await cache.match(toScopedUrl("./index.html"))) || Response.error();
+    return (
+      (await cache.match(request)) ||
+      (await cache.match(request, { ignoreSearch: true })) ||
+      (fallbackToIndex ? await cache.match(toScopedUrl("./index.html")) : null) ||
+      Response.error()
+    );
   }
 }
 
@@ -137,8 +146,18 @@ self.addEventListener("fetch", function (event) {
 
   if (request.method !== "GET" || !isSameOrigin(request)) return;
 
-  if (isNavigationRequest(request) || isDocumentData(url)) {
-    event.respondWith(networkFirst(request));
+  if (isNavigationRequest(request)) {
+    event.respondWith(networkFirst(request, true));
+    return;
+  }
+
+  if (isDocumentData(url)) {
+    event.respondWith(networkFirst(request, false));
+    return;
+  }
+
+  if (isCriticalAsset(url)) {
+    event.respondWith(networkFirst(request, false));
     return;
   }
 
