@@ -10,10 +10,14 @@
   border: 1px solid var(--docs-image-frame-border);
   border-radius: 8px;
   box-sizing: border-box;
+  contain: layout paint;
+  contain-intrinsic-size: auto 320px;
+  content-visibility: auto;
   display: flex;
   justify-content: center;
   margin: 1.15rem 0;
-  min-height: 72px;
+  min-height: clamp(128px, 24vw, 320px);
+  overflow-anchor: none;
   overflow: hidden;
   padding: 18px;
   width: 100%;
@@ -47,7 +51,7 @@
   .markdown-section .docs-image-frame {
     border-radius: 6px;
     margin: 0.9rem 0;
-    min-height: 56px;
+    min-height: clamp(96px, 42vw, 240px);
     padding: 10px;
   }
 }

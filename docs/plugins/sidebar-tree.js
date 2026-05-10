@@ -5,6 +5,8 @@
   };
   var config = Object.assign({}, DEFAULT_CONFIG, (window.$docsify && window.$docsify.sidebarTree) || {});
   var folderState = Object.create(null);
+  var enhanceFrame = 0;
+  var enhanceRetryTimer = 0;
 
   function normalizeText(text) {
     return (text || "").replace(/\u00a0/g, " ").replace(/\s+/g, " ").trim();
@@ -233,10 +235,40 @@
     item.dataset.sidebarDepth = String(getDepth(item));
   }
 
-  function clearSectionNumbers(sidebar) {
-    sidebar.querySelectorAll(".sidebar-section-number").forEach(function (number) {
-      number.remove();
-    });
+  function getDirectSectionNumber(link) {
+    for (var index = 0; index < link.children.length; index += 1) {
+      if (link.children[index].classList.contains("sidebar-section-number")) {
+        return link.children[index];
+      }
+    }
+
+    return null;
+  }
+
+  function ensureSectionNumber(link, text) {
+    var number = getDirectSectionNumber(link);
+    var children;
+    var index;
+
+    if (!number) {
+      number = document.createElement("span");
+      number.className = "sidebar-section-number";
+      number.setAttribute("aria-hidden", "true");
+      link.insertBefore(number, link.firstChild);
+    } else if (number !== link.firstChild) {
+      link.insertBefore(number, link.firstChild);
+    }
+
+    if (number.textContent !== text) {
+      number.textContent = text;
+    }
+
+    children = Array.prototype.slice.call(link.children);
+    for (index = 0; index < children.length; index += 1) {
+      if (children[index] !== number && children[index].classList.contains("sidebar-section-number")) {
+        children[index].remove();
+      }
+    }
   }
 
   function numberSectionList(list, prefix) {
@@ -260,11 +292,8 @@
       lastNumber = current;
 
       if (link) {
-        number = document.createElement("span");
-        number.className = "sidebar-section-number";
-        number.setAttribute("aria-hidden", "true");
-        number.textContent = current.join(".") + ".";
-        link.insertBefore(number, link.firstChild);
+        number = current.join(".") + ".";
+        ensureSectionNumber(link, number);
       }
     });
   }
@@ -284,7 +313,6 @@
   }
 
   function numberSections(sidebar) {
-    clearSectionNumbers(sidebar);
     Array.prototype.slice.call(sidebar.querySelectorAll(".app-sub-sidebar")).forEach(function (list) {
       if (isRootSectionList(list)) {
         numberSectionList(list, []);
@@ -399,7 +427,7 @@
   function enhanceSidebar() {
     var sidebar = document.querySelector(".sidebar .sidebar-nav");
 
-    if (!sidebar) return;
+    if (!sidebar || !sidebar.querySelector("li")) return false;
 
     bindSidebarEvents(sidebar);
     bindSidebarScrollContainment(sidebar);
@@ -412,12 +440,21 @@
         enhanceLeaf(item);
       }
     });
+
+    return true;
   }
 
   function scheduleEnhanceSidebar() {
-    window.requestAnimationFrame(enhanceSidebar);
-    window.setTimeout(enhanceSidebar, 80);
-    window.setTimeout(enhanceSidebar, 240);
+    window.cancelAnimationFrame(enhanceFrame);
+    window.clearTimeout(enhanceRetryTimer);
+
+    enhanceFrame = window.requestAnimationFrame(function () {
+      enhanceFrame = 0;
+
+      if (!enhanceSidebar()) {
+        enhanceRetryTimer = window.setTimeout(enhanceSidebar, 80);
+      }
+    });
   }
 
   window.$docsify = window.$docsify || {};

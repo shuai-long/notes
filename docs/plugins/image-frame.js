@@ -43,19 +43,27 @@
     frame.className = "docs-image-frame";
     target.parentNode.insertBefore(frame, target);
     frame.appendChild(target);
+    img.setAttribute("decoding", "async");
     img.classList.add(config.imageClass);
   }
 
-  function enhanceImages() {
-    document.querySelectorAll(config.selector).forEach(function (root) {
-      root.querySelectorAll("img").forEach(wrapImage);
-    });
+  function enhanceRoot(root) {
+    root.querySelectorAll("img").forEach(wrapImage);
+  }
+
+  function enhanceHtml(html) {
+    var container = document.createElement("div");
+
+    container.innerHTML = html;
+    enhanceRoot(container);
+
+    return container.innerHTML;
   }
 
   window.$docsify = window.$docsify || {};
   window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook) {
-    hook.doneEach(function () {
-      window.requestAnimationFrame(enhanceImages);
+    hook.afterEach(function (html, next) {
+      next(enhanceHtml(html));
     });
   });
 })();
