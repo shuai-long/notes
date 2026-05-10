@@ -75,7 +75,7 @@
   function highlightHtml(html) {
     var container;
 
-    if (!window.Prism || typeof window.Prism.highlightElement !== "function") return;
+    if (!window.Prism || typeof window.Prism.highlight !== "function") return;
 
     container = document.createElement("div");
     container.innerHTML = html;
@@ -83,16 +83,6 @@
     container.querySelectorAll("pre > code").forEach(highlightCode);
 
     return container.innerHTML;
-  }
-
-  function highlightRemaining() {
-    if (!window.Prism || typeof window.Prism.highlightElement !== "function") return;
-
-    document.querySelectorAll(".markdown-section pre > code:not([data-highlighted='true'])").forEach(function (code) {
-      if (highlightCode(code)) return;
-
-      window.Prism.highlightElement(code);
-    });
   }
 
   if (window.Prism && window.Prism.plugins && window.Prism.plugins.autoloader) {
@@ -105,7 +95,5 @@
     hook.afterEach(function (html, next) {
       next(highlightHtml(html) || html);
     });
-
-    hook.doneEach(highlightRemaining);
   });
 })();
