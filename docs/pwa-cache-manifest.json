@@ -1,5 +1,5 @@
 {
-  "version": "f5d08496f5bc7b83",
+  "version": "6a880662241fcf37",
   "files": [
     "./_coverpage.md",
     "./_css/callout.css",
@@ -7,6 +7,7 @@
     "./_css/code-highlight.css",
     "./_css/file-embed.css",
     "./_css/heading-number.css",
+    "./_css/html-live-preview.css",
     "./_css/image-frame.css",
     "./_css/image-grid.css",
     "./_css/inline-code-copy.css",
@@ -84,7 +85,6 @@
     "./ABAP/动态编程/动态函数.md",
     "./ABAP/动态编程/反射.md",
     "./ABAP/实用程序/Word 模版填充封装类.md",
-    "./ABAP/实用程序/培训服务协议违约金计算.md",
     "./ABAP/实用程序/展示 HTML 页面.md",
     "./ABAP/实用程序/版本批量对比程序.md",
     "./ABAP/实用程序/邮件发送封装类.md",
@@ -112,6 +112,7 @@
     "./ABAP/常用增强/Debug 校验和替代.md",
     "./ABAP/常用增强/FBLxN 增强.md",
     "./ABAP/常用增强/HR常用增强点.md",
+    "./ABAP/常用增强/HR时间定额补偿.md",
     "./ABAP/常用增强/MIGO收货QA32的检验说明增强.md",
     "./ABAP/常用增强/凭证修改Colding Block字段.md",
     "./ABAP/常用增强/替代和校验.md",
@@ -162,6 +163,7 @@
     "./plugins/code-highlight.js",
     "./plugins/file-embed.js",
     "./plugins/heading-number.js",
+    "./plugins/html-live-preview.js",
     "./plugins/image-frame.js",
     "./plugins/image-grid.js",
     "./plugins/inline-code-copy.js",

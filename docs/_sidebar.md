@@ -71,6 +71,7 @@
     - [Debug 校验和替代](ABAP/常用增强/Debug%20校验和替代.md)
     - [FBLxN 增强](ABAP/常用增强/FBLxN%20增强.md)
     - [HR常用增强点](ABAP/常用增强/HR常用增强点.md)
+    - [HR时间定额补偿](ABAP/常用增强/HR时间定额补偿.md)
     - [MIGO收货QA32的检验说明增强](ABAP/常用增强/MIGO收货QA32的检验说明增强.md)
     - [凭证修改Colding Block字段](ABAP/常用增强/凭证修改Colding%20Block字段.md)
     - [替代和校验](ABAP/常用增强/替代和校验.md)
@@ -89,7 +90,6 @@
     - [标准搜索帮助增强](ABAP/搜索帮助/标准搜索帮助增强.md)
     - [请求号相关搜索帮助](ABAP/搜索帮助/请求号相关搜索帮助.md)
   -  数据处理 
-    - [ABAP 内置类型](ABAP/数据处理/ABAP%20内置类型.md)
     - [Lock 锁](ABAP/数据处理/Lock%20锁.md)
     - [UUID 与 时间戳](ABAP/数据处理/UUID%20与%20时间戳.md)
     - [内表处理](ABAP/数据处理/内表处理.md)

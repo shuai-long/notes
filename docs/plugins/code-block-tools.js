@@ -198,7 +198,9 @@
 
   function copyText(text) {
     if (navigator.clipboard && window.isSecureContext) {
-      return navigator.clipboard.writeText(text);
+      return navigator.clipboard.writeText(text).catch(function () {
+        return copyWithFallback(text);
+      });
     }
 
     return copyWithFallback(text);

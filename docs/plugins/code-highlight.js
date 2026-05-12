@@ -30,12 +30,16 @@
     return aliases[raw] || aliases[raw.toLowerCase()] || raw.toLowerCase();
   }
 
-  function readLanguage(code) {
+  function readSourceLanguage(code) {
     var className = code.className || "";
     var classMatch = className.match(/(?:^|\s)(?:lang|language)-([^\s]+)/i);
     var dataLang = code.parentElement && code.parentElement.getAttribute("data-lang");
 
-    return normalizeLanguage((classMatch && classMatch[1]) || dataLang || "");
+    return (classMatch && classMatch[1]) || dataLang || "";
+  }
+
+  function readLanguage(code) {
+    return normalizeLanguage(readSourceLanguage(code));
   }
 
   function setLanguage(code, language) {
@@ -56,12 +60,18 @@
   }
 
   function highlightCode(code) {
+    var sourceLanguage = readSourceLanguage(code);
     var language = readLanguage(code);
     var grammar;
 
     if (!language || IGNORED_LANGUAGES[language]) return false;
 
+    code.dataset.sourceLang = sourceLanguage;
     setLanguage(code, language);
+    if (code.parentElement && code.parentElement.tagName === "PRE") {
+      code.parentElement.dataset.sourceLang = sourceLanguage;
+    }
+
     grammar = window.Prism && window.Prism.languages && window.Prism.languages[language];
 
     if (!grammar || typeof window.Prism.highlight !== "function") return false;
