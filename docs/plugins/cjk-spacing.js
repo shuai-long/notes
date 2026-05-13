@@ -16,9 +16,11 @@
     ".no-cjk-spacing",
   ].join(",");
   var cjk = "\\u2E80-\\u2EFF\\u2F00-\\u2FDF\\u3040-\\u30FF\\u3100-\\u312F\\u31A0-\\u31BF\\u3400-\\u4DBF\\u4E00-\\u9FFF\\uF900-\\uFAFF";
-  var latin = "A-Za-z0-9";
-  var cjkBeforeLatin = new RegExp("([" + cjk + "])([" + latin + "])", "g");
-  var latinBeforeCjk = new RegExp("([" + latin + "])([" + cjk + "])", "g");
+  var latin = "A-Za-z";
+  var digit = "0-9\\uFF10-\\uFF19";
+  var alnum = latin + digit;
+  var cjkBeforeAlnum = new RegExp("([" + cjk + "])([" + alnum + "])", "g");
+  var alnumBeforeCjk = new RegExp("([" + alnum + "])([" + cjk + "])", "g");
   var punctuationAfterCode = /^[,.;:!?，。；：！？、)\]}）】》]/;
 
   function shouldSkip(node) {
@@ -28,7 +30,7 @@
   }
 
   function addSpacing(text) {
-    return text.replace(cjkBeforeLatin, "$1 $2").replace(latinBeforeCjk, "$1 $2");
+    return text.replace(cjkBeforeAlnum, "$1 $2").replace(alnumBeforeCjk, "$1 $2");
   }
 
   function spacingElement(root) {
