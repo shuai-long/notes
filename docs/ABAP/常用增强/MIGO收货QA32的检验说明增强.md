@@ -25,44 +25,56 @@ SMOD 查找 QPAP0002，并实现 EXIT_SAPLQPAP_002 函数![image-202410141842158
 *& 包含               ZXQPAU04
 *&---------------------------------------------------------------------*
 
-  field-symbols: <fs_goitem> type goitem.
+  field-symbols: <fs_goitem> type goitem,
+                 <fs_ekko>   type ekko.
+  data: lv_ebeln type ebeln.
 
-  break-point.
-  assign ('(SAPLMIGO)GOITEM') to <fs_goitem>.
-  if <fs_goitem> is assigned.
+  data(lt_maplb) = t_maplb[].
+  data(lt_plkob) = t_plkob[].
 
-    data(lt_maplb) = t_maplb[].
-    data(lt_plkob) = t_plkob[].
+  sort lt_maplb by plnnr.
+  delete adjacent duplicates from lt_maplb comparing plnnr.
+  sort lt_plkob by plnnr.
+  delete adjacent duplicates from lt_plkob comparing plnnr.
+  if lines( lt_maplb ) gt 1 or lines( lt_plkob ) gt 1.
 
-    sort lt_maplb by plnnr.
-    delete adjacent duplicates from lt_maplb comparing plnnr.
-    sort lt_plkob by plnnr.
-    delete adjacent duplicates from lt_plkob comparing plnnr.
+    select single matkl into @data(lv_matkl) from mara
+      where matnr eq @i_rcpse-matnr.
+      
+    assign ('(SAPLMIGO)GOITEM') to <fs_goitem>.
+    if <fs_goitem> is assigned.
+      lv_ebeln = <fs_goitem>-ebeln.
+    endif.
 
-    if lines( lt_maplb ) gt 1 or lines( lt_plkob ) gt 1.
+    assign ('(SAPMV50A)EKKO') to <fs_ekko>.
+    if <fs_ekko> is assigned.
+      lv_ebeln = <fs_ekko>-ebeln.
+    endif.
 
-      select single matkl into @data(lv_matkl) from mara
-        where matnr eq @<fs_goitem>-matnr.
-
-      select single case when bu_group in ( 'Z001', 'Z003' ) then '1'
-                         when bu_group in ( 'Z002', 'Z004' ) then '2'
-       end as bu_group from but000 where partner eq @<fs_goitem>-lifnr
-       into @data(lv_bu_group) .
-
-      select single case when bsart in ( 'NF','NH','NM','NZ' ) then '2' else '1'
-        end as bsart from ekko where ebeln eq @<fs_goitem>-ebeln
+    if lv_ebeln is not initial.
+      select single case when bsart = 'NB' or bsart = 'NPO' or bsart = 'NG03' or bsart = 'COP' then '1'
+                         when bsart = 'CER' then '2'
+        end as bsart from ekko where ebeln eq @lv_ebeln
         into @data(lv_bsart).
+      select single admoi
+        from ekpo
+        where ebeln = @lv_ebeln
+          and matnr = @i_rcpse-matnr
+      into @data(lv_old_new).
 
-      select single plnnr from zmmt_ip
-        where matkl eq @lv_matkl and zipcc eq @lv_bu_group and zbt eq @lv_bsart
+      select single plnnr
+        from zmmt_ip
+        where matkl eq @lv_matkl
+          and zbt eq @lv_bsart
+          and new_old_part = @lv_old_new
         into @data(lv_plnnr).
 
       if lv_plnnr is not initial.
         delete t_maplb where plnnr ne lv_plnnr.
         delete t_plkob where plnnr ne lv_plnnr.
       endif.
-
     endif.
+
   endif.
 ```
 
