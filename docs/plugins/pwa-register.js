@@ -2,7 +2,7 @@
   if (!("serviceWorker" in navigator)) return;
   if (!/^https?:$/.test(window.location.protocol)) return;
 
-  window.addEventListener("load", function () {
+  function registerServiceWorker() {
     navigator.serviceWorker
       .register("./sw.js", { updateViaCache: "none" })
       .then(function (registration) {
@@ -25,5 +25,11 @@
       .catch(function (error) {
         console.warn("[PWA] service worker registration failed:", error);
       });
-  });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", registerServiceWorker, { once: true });
+  } else {
+    registerServiceWorker();
+  }
 })();

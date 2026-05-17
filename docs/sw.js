@@ -1,6 +1,7 @@
 const CACHE_PREFIX = "notes-docs-";
 const MANIFEST_URL = "./pwa-cache-manifest.json";
 const CORE_ASSETS = ["./", "./index.html", "./README.md", "./_sidebar.md", "./manifest.webmanifest"];
+const NETWORK_TIMEOUT_MS = 2500;
 
 let cacheNamePromise = null;
 
@@ -64,25 +65,38 @@ function isDocumentData(url) {
 }
 
 function isStaticAsset(url) {
-  return /\.(?:css|js|mjs|svg|png|jpe?g|gif|webp|ico|woff2?|ttf|map)$/i.test(url.pathname);
+  return /\.(?:css|js|mjs|svg|png|jpe?g|gif|webp|ico|pdf|woff2?|ttf|map)$/i.test(url.pathname);
 }
 
 function isCriticalAsset(url) {
   return /\.(?:css|js|mjs)$/i.test(url.pathname);
 }
 
-async function networkFirst(request, fallbackToIndex) {
+function rejectAfterTimeout(timeoutMs) {
+  return new Promise(function (_, reject) {
+    setTimeout(function () {
+      reject(new Error("network timeout"));
+    }, timeoutMs || NETWORK_TIMEOUT_MS);
+  });
+}
+
+async function networkFirst(request, fallbackToIndex, timeoutMs) {
   const cache = await openCurrentCache();
-
-  try {
-    const response = await fetch(request, { cache: "no-store" });
-
+  const network = fetch(request, { cache: "no-store" }).then(function (response) {
     if (response && response.ok) {
       cache.put(request, response.clone());
     }
 
     return response;
+  });
+
+  try {
+    return await Promise.race([network, rejectAfterTimeout(timeoutMs)]);
   } catch (error) {
+    network.catch(function () {
+      return null;
+    });
+
     return (
       (await cache.match(request)) ||
       (await cache.match(request, { ignoreSearch: true })) ||

@@ -17,6 +17,7 @@ const includedExtensions = new Set([
   ".map",
   ".md",
   ".png",
+  ".pdf",
   ".svg",
   ".webmanifest",
   ".webp",
