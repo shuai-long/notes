@@ -5,7 +5,7 @@ import sys
 from pathlib import Path
 from urllib.parse import quote
 
-EXCLUDE = ['_css', 'metadata', 'plugins', '_coverpage.md', '_navbar.md', '_sidebar.md', 'tags.md', 'readme.md', '_glossary.md']
+EXCLUDE = ['_css', 'metadata', 'plugins', '_coverpage.md', '_navbar.md', '_sidebar.md', 'tags.md', 'readme.md', '_glossary.md', '_404.md']
 
 def read_lines(path):
     """读取文本文件快照"""
