@@ -4,7 +4,7 @@
 
 ---
 
-## 1. 聚合函数
+## 聚合函数
 
 - **`COUNT( * )`**
   - 函数作用：统计查询结果集或分组中的行数。
@@ -111,7 +111,7 @@
 
 ---
 
-## 2. 字符串函数
+## 字符串函数
 
 - **`CONCAT( arg1, arg2 )`**
   - 函数作用：拼接两个字符串。
@@ -408,7 +408,7 @@
 
 ---
 
-## 3. 数值函数
+## 数值函数
 
 - **`ABS( arg )`**
   - 函数作用：返回数值的绝对值。
@@ -543,7 +543,7 @@
 
 ---
 
-## 4. 空值处理函数
+## 空值处理函数
 
 - **`COALESCE( arg1, arg2, ..., argn )`**
   - 函数作用：返回参数列表中第一个非数据库 `NULL` 的值。
@@ -576,7 +576,7 @@
 
 ---
 
-## 5. 日期函数
+## 日期函数
 
 - **`DATS_IS_VALID( date )`**
   - 函数作用：判断日期是否合法。
@@ -688,7 +688,7 @@
 
 ---
 
-## 6. 类型转换表达式
+## 类型转换表达式
 
 - **`CAST( operand AS dtype )`**
   - 函数作用：将字段或 SQL 表达式转换为指定的 ABAP Dictionary 类型。
@@ -724,7 +724,7 @@
 
 ---
 
-## 7. 常用组合示例
+## 常用组合示例
 
 - 查询物料描述，处理空值并转大写。
 
@@ -817,7 +817,7 @@
 
 ---
 
-## 8. 使用注意点
+## 使用注意点
 
 - 函数参数位置要按定义写，不能随意交换。
   - `SUBSTRING( arg, pos, len )` 中，第二个参数一定是 [`pos`](#param-pos)，第三个参数一定是 [`len`](#param-len)。
@@ -854,7 +854,7 @@
 
 ---
 
-## 9. 参考资料
+## 参考资料
 
 - [SAP Help - Open SQL Functions](https://help.sap.com/doc/abapdocu_751_index_htm/7.51/en-us/abenopen_sql_functions.htm)
 - [SAP Help - SQL String Functions](https://help.sap.com/doc/abapdocu_750_index_htm/7.50/en-US/abensql_functions_string.htm)
