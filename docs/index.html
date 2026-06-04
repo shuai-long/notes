@@ -153,8 +153,9 @@
             },
             // 自动打开上次浏览内容
             lastVisit: {
+                alwaysValidPaths: ['./README.md'],
                 storageKey: 'docsify-last-visit',
-                restoreSessionKey: 'docsify-last-visit-restored',
+                restoreSessionKey: 'docsify-last-visit-restored-v2',
                 restoreAtRoot: true,
                 manifestPath: './pwa-cache-manifest.json',
                 validateRestore: true
@@ -177,7 +178,7 @@
         }
     </script>
     <!-- 自动打开上次浏览内容 -->
-    <script src="./plugins/last-visit.js?v=20260604-once"></script>
+    <script src="./plugins/last-visit.js?v=20260604-readme-restore"></script>
     <!-- docsify的js依赖 -->
     <script src="./vendor/docsify/docsify.min.js"></script>
     <!-- 代码高亮支持 -->

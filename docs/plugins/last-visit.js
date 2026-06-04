@@ -1,7 +1,8 @@
 (function () {
   var DEFAULT_CONFIG = {
+    alwaysValidPaths: ["./README.md"],
     manifestPath: "./pwa-cache-manifest.json",
-    restoreSessionKey: "docsify-last-visit-restored",
+    restoreSessionKey: "docsify-last-visit-restored-v2",
     storageKey: "docsify-last-visit",
     restoreAtRoot: true,
     validateRestore: true,
@@ -109,6 +110,9 @@
     if (config.validateRestore === false) return Promise.resolve(true);
 
     targetPath = hashToManifestPath(hash);
+    if ((config.alwaysValidPaths || []).indexOf(targetPath) >= 0) {
+      return Promise.resolve(true);
+    }
 
     return fetch(config.manifestPath, { cache: "no-store" })
       .then(function (response) {
