@@ -1,6 +1,7 @@
 (function () {
   var DEFAULT_CONFIG = {
     manifestPath: "./pwa-cache-manifest.json",
+    restoreSessionKey: "docsify-last-visit-restored",
     storageKey: "docsify-last-visit",
     restoreAtRoot: true,
     validateRestore: true,
@@ -84,6 +85,24 @@
     return true;
   }
 
+  function hasRestoredInSession() {
+    try {
+      return window.sessionStorage.getItem(config.restoreSessionKey) === "1";
+    } catch (error) {
+      return false;
+    }
+  }
+
+  function markRestoredInSession() {
+    try {
+      window.sessionStorage.setItem(config.restoreSessionKey, "1");
+    } catch (error) {
+      return false;
+    }
+
+    return true;
+  }
+
   function validateStoredHash(hash) {
     var targetPath;
 
@@ -132,6 +151,7 @@
     var storedHash = normalizeHash(readLastHash());
 
     if (config.restoreAtRoot === false) return;
+    if (hasRestoredInSession()) return;
     if (!isRootHash(window.location.hash)) return;
     if (!isStorableHash(storedHash)) return;
 
@@ -145,6 +165,7 @@
 
       if (!isRootHash(window.location.hash)) return;
 
+      markRestoredInSession();
       nextUrl = window.location.pathname + window.location.search + storedHash;
       window.location.replace(nextUrl);
     });
