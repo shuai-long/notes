@@ -192,6 +192,7 @@ body > .github-corner svg {
 }
 
 body.is-github-pages-home::before {
+  display: none !important;
   left: 0 !important;
   right: 0 !important;
 }
