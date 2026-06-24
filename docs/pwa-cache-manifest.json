@@ -1,5 +1,5 @@
 {
-  "version": "1e0ca2b51622f419",
+  "version": "f31ebf9a32307f2e",
   "files": [
     "./_404.md",
     "./_coverpage.md",
@@ -76,6 +76,7 @@
     "./ABAP/HR模块相关/PA-人事管理.md",
     "./ABAP/HR模块相关/PT-考勤管理.md",
     "./ABAP/HR模块相关/PY-薪酬管理.md",
+    "./ABAP/HR模块相关/SAP_HCM结构化授权从0到1配置执行手册.md",
     "./ABAP/HR模块相关/Schema增强.md",
     "./ABAP/HR模块相关/TY-附录.md",
     "./ABAP/HR模块相关/标准薪资过账.md",
@@ -86,6 +87,7 @@
     "./ABAP/动态编程/反射.md",
     "./ABAP/实用程序/Word 模版填充封装类.md",
     "./ABAP/实用程序/员工工时合规校验工具类.md",
+    "./ABAP/实用程序/员工请销假接口.md",
     "./ABAP/实用程序/展示 HTML 页面.md",
     "./ABAP/实用程序/版本批量对比程序.md",
     "./ABAP/实用程序/辅助小程序.md",
