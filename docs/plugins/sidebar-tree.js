@@ -245,6 +245,87 @@
     return null;
   }
 
+  function getLinkText(link) {
+    var clone = link.cloneNode(true);
+
+    clone.querySelectorAll(".sidebar-section-number").forEach(function (number) {
+      number.remove();
+    });
+
+    return normalizeText(clone.textContent);
+  }
+
+  function normalizeNumberParts(value) {
+    var parts = value.replace(/．/g, ".").split(".");
+
+    if (!parts.length) return null;
+
+    parts = parts.map(function (part) {
+      return Number(part);
+    });
+
+    return parts.every(function (part) {
+      return Number.isFinite(part);
+    })
+      ? parts
+      : null;
+  }
+
+  function getContentNumberParts(link) {
+    var text = getLinkText(link);
+    var match;
+
+    match = text.match(/^\s*[（(]\s*(\d+)\s*[）)]/);
+    if (match) return normalizeNumberParts(match[1]);
+
+    match = text.match(/^\s*(\d+(?:[.．]\d+)+)(?=$|[^\d])/);
+    if (match) return normalizeNumberParts(match[1]);
+
+    match = text.match(/^\s*(\d+)\s*[.．、)）]/);
+    if (match) return normalizeNumberParts(match[1]);
+
+    return null;
+  }
+
+  function getSectionNumberPath(prefix, parts) {
+    var depth = prefix.length + 1;
+    var numberParts = parts.slice();
+
+    if (numberParts.length > depth) {
+      numberParts = numberParts.slice(numberParts.length - depth);
+    }
+
+    if (numberParts.length < depth) {
+      numberParts = prefix.slice(0, depth - numberParts.length).concat(numberParts);
+    }
+
+    return numberParts;
+  }
+
+  function isBeforeNumberPath(path, targetPath) {
+    var length = Math.min(path.length, targetPath.length);
+
+    for (var index = 0; index < length; index += 1) {
+      if (path[index] !== targetPath[index]) {
+        return path[index] < targetPath[index];
+      }
+    }
+
+    return false;
+  }
+
+  function formatNumberPath(path) {
+    return path.join(".") + ".";
+  }
+
+  function removeSectionNumber(link) {
+    var numbers = Array.prototype.slice.call(link.querySelectorAll(".sidebar-section-number"));
+
+    numbers.forEach(function (number) {
+      number.remove();
+    });
+  }
+
   function ensureSectionNumber(link, text) {
     var number = getDirectSectionNumber(link);
     var children;
@@ -271,30 +352,90 @@
     }
   }
 
-  function numberSectionList(list, prefix) {
+  function getFirstContentNumberPath(list, prefix) {
+    var children = Array.prototype.slice.call(list.children);
+    var firstPath = null;
+
+    children.some(function (item) {
+      var link;
+      var parts;
+
+      if (item.tagName !== "LI") return false;
+
+      link = getDirectLink(item);
+      if (!link) return false;
+
+      parts = getContentNumberParts(link);
+      if (!parts) return false;
+
+      firstPath = getSectionNumberPath(prefix, parts);
+      return true;
+    });
+
+    return firstPath;
+  }
+
+  function sectionListHasContentNumbers(list) {
+    return Boolean(
+      Array.prototype.slice.call(list.querySelectorAll("a")).some(function (link) {
+        return getContentNumberParts(link);
+      })
+    );
+  }
+
+  function numberSectionList(list, prefix, hasContentNumbers) {
     var index = 0;
     var lastNumber = null;
+    var firstContentPath = getFirstContentNumberPath(list, prefix);
+    var hasSeenContentNumber = false;
 
     Array.prototype.slice.call(list.children).forEach(function (item) {
       var link = getDirectLink(item);
       var current;
-      var number;
+      var contentNumberParts;
+      var nextNumberPath;
+      var shouldGenerate;
 
       if (item.tagName === "UL" && lastNumber) {
-        numberSectionList(item, lastNumber);
+        numberSectionList(item, lastNumber, hasContentNumbers);
         return;
       }
 
       if (item.tagName !== "LI") return;
+      if (!link) {
+        lastNumber = null;
+        return;
+      }
+
+      contentNumberParts = getContentNumberParts(link);
+
+      if (contentNumberParts) {
+        current = getSectionNumberPath(prefix, contentNumberParts);
+        index = current[prefix.length] || index;
+        lastNumber = current;
+        hasSeenContentNumber = true;
+        removeSectionNumber(link);
+        return;
+      }
+
+      nextNumberPath = prefix.concat(index + 1);
+      shouldGenerate =
+        !hasContentNumbers ||
+        hasSeenContentNumber ||
+        prefix.length > 0 ||
+        !firstContentPath ||
+        isBeforeNumberPath(nextNumberPath, firstContentPath);
+
+      if (!shouldGenerate) {
+        lastNumber = null;
+        removeSectionNumber(link);
+        return;
+      }
 
       index += 1;
-      current = prefix.concat(index);
+      current = nextNumberPath;
       lastNumber = current;
-
-      if (link) {
-        number = current.join(".") + ".";
-        ensureSectionNumber(link, number);
-      }
+      ensureSectionNumber(link, formatNumberPath(current));
     });
   }
 
@@ -315,7 +456,7 @@
   function numberSections(sidebar) {
     Array.prototype.slice.call(sidebar.querySelectorAll(".app-sub-sidebar")).forEach(function (list) {
       if (isRootSectionList(list)) {
-        numberSectionList(list, []);
+        numberSectionList(list, [], sectionListHasContentNumbers(list));
       }
     });
   }

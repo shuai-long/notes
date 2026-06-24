@@ -197,6 +197,11 @@ body.is-github-pages-home::before {
   right: 0 !important;
 }
 
+body.is-docs-home::before {
+  left: 0 !important;
+  right: 0 !important;
+}
+
 body.is-github-pages-home .sidebar-toggle {
   display: none !important;
 }
@@ -414,4 +419,9 @@ body.is-github-pages-home .sidebar-toggle {
   body.close .sidebar-toggle {
     z-index: 130 !important;
   }
+}
+
+body.is-docs-home .sidebar-toggle,
+body.is-github-pages-home .sidebar-toggle {
+  display: none !important;
 }
