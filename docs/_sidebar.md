@@ -30,6 +30,8 @@
     - [Schema增强](ABAP/HR模块相关/Schema增强.md)
     - [TY-附录](ABAP/HR模块相关/TY-附录.md)
     - [标准薪资过账](ABAP/HR模块相关/标准薪资过账.md)
+    - [考勤常用schema](ABAP/HR模块相关/考勤常用schema.md)
+    - [薪酬常用schema](ABAP/HR模块相关/薪酬常用schema.md)
   -  SF开发 
     - [Untitled](ABAP/SF开发/Untitled.md)
   -  T-code 
@@ -41,7 +43,6 @@
     - [反射](ABAP/动态编程/反射.md)
   -  实用程序 
     - [Word 模版填充封装类](ABAP/实用程序/Word%20模版填充封装类.md)
-    - [员工工时合规校验工具类](ABAP/实用程序/员工工时合规校验工具类.md)
     - [员工请销假接口](ABAP/实用程序/员工请销假接口.md)
     - [展示 HTML 页面](ABAP/实用程序/展示%20HTML%20页面.md)
     - [版本批量对比程序](ABAP/实用程序/版本批量对比程序.md)

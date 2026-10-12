@@ -1,5 +1,5 @@
 {
-  "version": "f31ebf9a32307f2e",
+  "version": "96cd316e30e62fce",
   "files": [
     "./_404.md",
     "./_coverpage.md",
@@ -80,13 +80,14 @@
     "./ABAP/HR模块相关/Schema增强.md",
     "./ABAP/HR模块相关/TY-附录.md",
     "./ABAP/HR模块相关/标准薪资过账.md",
+    "./ABAP/HR模块相关/考勤常用schema.md",
+    "./ABAP/HR模块相关/薪酬常用schema.md",
     "./ABAP/SF开发/Untitled.md",
     "./ABAP/T-code/常用T-code.md",
     "./ABAP/UI5/UI5.md",
     "./ABAP/动态编程/动态函数.md",
     "./ABAP/动态编程/反射.md",
     "./ABAP/实用程序/Word 模版填充封装类.md",
-    "./ABAP/实用程序/员工工时合规校验工具类.md",
     "./ABAP/实用程序/员工请销假接口.md",
     "./ABAP/实用程序/展示 HTML 页面.md",
     "./ABAP/实用程序/版本批量对比程序.md",
